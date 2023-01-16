@@ -184,6 +184,7 @@ public class PostService {
 
             for(int i=0; i<photoList.size(); i++){
                 PostFile postFile = photoList.get(i);
+//                System.out.println(postFile.getSavedFileName());
                 postFileRepository.save(postFile);
 //                postFile.setPost(post);
 //                post.addPostFile(postFileRepository.save(postFile));
