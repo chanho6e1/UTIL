@@ -28,8 +28,9 @@ public class PostController {
     @PostMapping("/upload")
 //    @PreAuthorize(roles = {"ROLE_AUTH"})
     public ResponseEntity<CommonResponse> createPost(@RequestPart(value="image", required=false) List<MultipartFile> files) throws Exception {
+//        System.out.println(files);
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.CREATED, "파일 등록 성공", postService.uploadPostFile(files)));
+                               HttpStatus.CREATED, "파일 등록 성공", postService.uploadPostFile(files)));
     }
 
 }
