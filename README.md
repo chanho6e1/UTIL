@@ -36,8 +36,7 @@ Nginx
 
 **아키텍쳐**
 
-![util 아키텍처 설계.png](util%20d20673c0aea54f4ca05162b7f87409c2/util_%25EC%2595%2584%25ED%2582%25A4%25ED%2585%258D%25EC%25B2%2598_%25EC%2584%25A4%25EA%25B3%2584.png)
-
+<img src=https://user-images.githubusercontent.com/105181946/212804119-6a8317e9-a691-4775-8998-67db73946036.png></ing>
 ## 개발 팀 소개
 
 ---
