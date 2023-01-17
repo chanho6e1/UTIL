@@ -9,7 +9,9 @@ import axios from "axios";
 const MarkdownEditor = (props) => {
   
   const [frontData, setFrontData] = useState([''])
-  const lineRef = useRef([])
+  const lineRef = useRef()
+  const imageRef = useRef([])
+  const imageUrlRef= useRef([])
   const editorWrapperRef = useRef()
 
   const preventDeletingFirstLine = (event) => {
@@ -34,9 +36,7 @@ const MarkdownEditor = (props) => {
 
 
 
-  const imageRef = useRef([])
-  const imageUrlRef= useRef([])
-
+  
   const imageProcessor = (url) => {
     const order = imageRef.current? imageRef.current.length + 1 : 0
     const reactImage = (
@@ -49,7 +49,6 @@ const MarkdownEditor = (props) => {
         </div>
       </React.Fragment>
     )
-    
     return {image: reactImage, order: order}
   }
 
@@ -80,12 +79,20 @@ const MarkdownEditor = (props) => {
     renderImage(processedImage.image, processedImage.order)
   }
 
+
+
+
+
   const sendImageData = (data, order) => {
     const frm = new FormData();
     frm.append("image", data);
     for (let value of frm.values()) {
       console.log(value);
     }
+
+
+
+
 
     axios({
       method: 'post',
@@ -103,8 +110,6 @@ const MarkdownEditor = (props) => {
       console.log(err);
       console.log("게시물 작성에 실패했습니다.");
     });
-
-
   };
   
 
