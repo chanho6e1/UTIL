@@ -78,6 +78,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User updateUser(User user, OAuth2UserInfo userInfo) {
+//        System.out.println("updateUser " + userInfo.getName() );
+
+//        if(user.getUsername()==null){
+//            user.setUsername(userInfo.getName());
+//        }
+
         if (userInfo.getName() != null && !user.getUsername().equals(userInfo.getName())) {
             user.setUsername(userInfo.getName());
         }
