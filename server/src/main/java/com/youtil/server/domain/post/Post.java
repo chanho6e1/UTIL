@@ -56,7 +56,7 @@ public class Post extends BaseEntity {
 
 
     public void addView() {
-        this.views++;
+        this.views = this.views+1;
     }
 
     public void update(String title, String content){
