@@ -1,0 +1,30 @@
+.date-range-wrapper {
+    width: 50vw;
+    height: 50vh;
+    overflow: scroll;
+}
+
+.month-bar-container {
+    
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.month-title-bar {
+    width: 300px;
+    height: 48px;
+    background-color: rgba(230, 230, 230);
+    border: 1px solid rgba(245, 245, 245);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.month-plan-bar {
+    width: 300px;
+    height: 48px;
+    background-color: rgba(230, 230, 230);
+    border: 1px solid rgba(245, 245, 245);
+
+}
