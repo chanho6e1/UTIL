@@ -21,18 +21,12 @@ public class QUser extends EntityPathBase<User> {
 
     public final com.youtil.server.domain.QBaseEntity _super = new com.youtil.server.domain.QBaseEntity(this);
 
-    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
-
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
     public final StringPath department = createString("department");
 
     public final StringPath email = createString("email");
-
-    public final StringPath emailVerifiedYn = createString("emailVerifiedYn");
-
-    public final DateTimePath<java.time.LocalDateTime> modifiedAt = createDateTime("modifiedAt", java.time.LocalDateTime.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
@@ -47,11 +41,9 @@ public class QUser extends EntityPathBase<User> {
 
     public final EnumPath<com.youtil.server.oauth.entity.RoleType> roleType = createEnum("roleType", com.youtil.server.oauth.entity.RoleType.class);
 
-    public final StringPath userId = createString("userId");
+    public final NumberPath<Long> userId = createNumber("userId", Long.class);
 
-    public final StringPath username = createString("username");
-
-    public final NumberPath<Long> userSeq = createNumber("userSeq", Long.class);
+    public final StringPath userName = createString("userName");
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));
