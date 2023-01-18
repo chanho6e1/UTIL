@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import styles from './MarkdownEditor.module.css'
 import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
+import * as ReactDOMClient from 'react-dom/client';
 import logo from '../../img/util-logo.png'
 import Example2 from "./Example2";
 import axios from "axios";
@@ -137,19 +138,36 @@ const MarkdownEditor = (props) => {
         if (img.length !== 0) {
           const processedImg = imageProcessor(img[0].src)
           formData.push(processedImg.image)
-          renderImage(processedImg.image, processedImg.order)
+          // renderImage(processedImg.image, processedImg.order)
           
         } else {
           formData.push(element.textContent)
-          range.insertNode( document.createTextNode(element.textContent + '\n') );
+          // range.insertNode( document.createTextNode(element.textContent + '\n') );
 
         }
         console.log(formData)
-        
       });
       // const range = document.createRange();
       // range.selectNodeContents(editorWrapperRef.current);
-      
+      const renderOutput = (
+        <React.Fragment>
+          <div contentEditable="true" className={styles[`line`]} id="line" >
+            {lineRef.current.textContent}
+          </div>
+          {formData.map((el, idx) => {
+            <div ref={lineRef} contentEditable="true" className={styles[`line`]} id="line" >
+              {el}
+            </div>
+          })}
+        </React.Fragment>
+      )
+
+      const test = <div>djalfhslsghferuilafndsjkfhearlidfjk</div>
+
+      const domLine = lineRef.current
+      const root = createRoot(domLine)
+      root.render(renderOutput)
+      console.log(lineRef)
     }
 
     editorWrapperRef.current.addEventListener('paste', pasteProcessor);
