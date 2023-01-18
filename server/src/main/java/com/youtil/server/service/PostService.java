@@ -64,31 +64,30 @@ public class PostService {
 //        return postRepository.save(request.of()).getId();
     }
 
-//    public List<PostResponse> findPostList(int offset) {
-//        return postQueryRepository.findPostList(PageRequest.of(offset - 1, 10))
-//                .stream().map(PostResponse::new).collect(Collectors.toList());
-//    }
-//
-//    public List<PostResponse> findPostListRank(String criteria, int offset) {
-//        return postQueryRepository.findPostListRank(criteria, PageRequest.of(offset - 1, 10))
-//                .stream().map(PostResponse::new).collect(Collectors.toList());
-//    }
-//
-//    public List<PostResponse> findByPostContent(String content, int offset) {//내용으로 검색(최근 날짜)
-//        return postQueryRepository.findByContentContaining(content, PageRequest.of(offset - 1, 10))
-//                .stream().map(PostResponse::new).collect(Collectors.toList());
-//    }
-//
-//    public List<PostResponse> findByPostContentRank(PostSearch search, int offset) {//내용으로 검색, 정렬 기준도 정해줌
-//        return postQueryRepository.findByContentContainingRank(search, PageRequest.of(offset - 1, 10))
-//                .stream().map(PostResponse::new).collect(Collectors.toList());
-//    }
+    public List<PostResponse> findPostList(int offset) {
+        return postQueryRepository.findPostList(PageRequest.of(offset - 1, 10))
+                .stream().map(PostResponse::new).collect(Collectors.toList());
+    }
 
-//    public List<PostResponse> findUserPost(String userId, int offset) { //내가 쓴 글
-//        return postQueryRepository.findUserPost(userId, PageRequest.of(offset - 1, 10))
-//                .stream().map(PostResponse::new).collect(Collectors.toList());
-//
-//    }
+    public List<PostResponse> findPostListByUser(Long userId, int offset) {
+        return postQueryRepository.findPostListByUser(userId, PageRequest.of(offset - 1, 10))
+                .stream().map(PostResponse::new).collect(Collectors.toList());
+    }
+
+    public List<PostResponse> findPostListRank(String criteria, int offset) {
+        return postQueryRepository.findPostListRank(criteria, PageRequest.of(offset - 1, 10))
+                .stream().map(PostResponse::new).collect(Collectors.toList());
+    }
+
+    public List<PostResponse> findByPostContent(String content, int offset) {//내용으로 검색(최근 날짜)
+        return postQueryRepository.findByContentContaining(content, PageRequest.of(offset - 1, 10))
+                .stream().map(PostResponse::new).collect(Collectors.toList());
+    }
+
+    public List<PostResponse> findByPostContentRank(PostSearch search, int offset) {//내용으로 검색, 정렬 기준도 정해줌
+        return postQueryRepository.findByContentContainingRank(search, PageRequest.of(offset - 1, 10))
+                .stream().map(PostResponse::new).collect(Collectors.toList());
+    }
 
     @Transactional
     public Long deletePost(Long userId, Long postId) {
@@ -155,6 +154,7 @@ public class PostService {
 
         return post.togglePostLike(boardLike);
     }
+
 
 }
 

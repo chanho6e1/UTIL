@@ -47,49 +47,49 @@ public class PostController {
         ));
     }
 
-//    @ApiOperation(value = "게시물 리스트 조회", notes = "전체 게시물 목록을 조회한다.(최근날짜순)")
-//    @GetMapping
-//    public ResponseEntity<CommonResponse> findPostList(@RequestParam(required=false) int offset) {
-//        return ResponseEntity.ok().body(CommonResponse.of(
-//                HttpStatus.OK, "게시물 목록 조회 성공", postService.findPostList(offset))
-//        );
-//    }
-//
-//    @ApiOperation(value = "정렬 기준으로 게시물 리스트 조회", notes = "정렬 기준을 받은 후 전체 게시물 목록을 조회한다.")
-//    @GetMapping("/rank")
-//    public ResponseEntity<CommonResponse> findPostListDesc(@RequestParam String criteria, @RequestParam(required=false) int offset) {
-//        return ResponseEntity.ok().body(CommonResponse.of(
-//                HttpStatus.OK, "게시물 목록 조회 성공", postService.findPostListRank(criteria, offset))
-//        );
-//    }
-//
-//    @ApiOperation(value = "내용 검색으로 게시물 리스트 조회", notes = "내용 검색으로 게시물 목록물 목록을 조회한다.(최근날짜순)")
-//    @GetMapping("/search/rank")
-//    public ResponseEntity<CommonResponse> findBySearchPostList(@RequestParam String content,
-//                                                               @RequestParam(required=false) int offset) {
-//        return ResponseEntity.ok().body(CommonResponse.of(
-//                HttpStatus.OK, "게시물 목록 조회 성공", postService.findByPostContent(content, offset))
-//        );
-//    }
+    @ApiOperation(value = "게시물 리스트 조회", notes = "전체 게시물 목록을 조회한다.(최근날짜순)")
+    @GetMapping
+    public ResponseEntity<CommonResponse> findPostList(@RequestParam(required=false) int offset) {
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "게시물 목록 조회 성공", postService.findPostList(offset))
+        );
+    }
 
-//    @ApiOperation(value = "내용 검색, 정렬 기준으로 게시물 리스트 조회", notes = "내용 검색으로 게시물 목록물 목록을 조회한다.")
-//    @GetMapping("/search")
-//    public ResponseEntity<CommonResponse> findBySearchPostList(@RequestParam String content,
-//                                                               @RequestParam String criteria,
-//                                                               @RequestParam(required=false) int offset) {
-//        return ResponseEntity.ok().body(CommonResponse.of(
-//                HttpStatus.OK, "게시물 목록 조회 성공", postService.findByPostContentRank(PostSearch.of(content, criteria), offset))
-//        );
-//    }
+    @ApiOperation(value = "내가 쓴 게시물 리스트 조회", notes = "내가 쓴 게시물 목록을 조회한다.(최근날짜순)")
+    @GetMapping("/users")
+    public ResponseEntity<CommonResponse> findPostListByUser(@LoginUser SessionUser user, @RequestParam(required=false) int offset) {
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "나의 게시물 목록 조회 성공", postService.findPostListByUser(user.getId(), offset))
+        );
+    }
+//
+    @ApiOperation(value = "정렬 기준으로 게시물 리스트 조회", notes = "정렬 기준(view, like, date)을 받은 후 전체 게시물 목록을 조회한다.")
+    @GetMapping("/rank")
+    public ResponseEntity<CommonResponse> findPostListDesc(@RequestParam String criteria, @RequestParam(required=false) int offset) {
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "정렬 기준별 게시물 목록 조회 성공", postService.findPostListRank(criteria, offset))
+        );
+    }
 
-//    @GetMapping("/users")
-//    public ResponseEntity<CommonResponse> findUserBoard(@AuthenticationPrincipal UserPrincipal currentUser,
-//                                                           @RequestParam int offset) {
-//        return ResponseEntity.ok().body(CommonResponse.of(
-//                HttpStatus.OK, "내가 작성한 게시물 목록 조회",
-//                postService.findUserPost(currentUser.getUserId(), offset)
-//        ));
-//    }
+    @ApiOperation(value = "내용 검색으로 게시물 리스트 조회", notes = "내용 검색으로 게시물 목록물 목록을 조회한다.(최근날짜순)")
+    @GetMapping("/search")
+    public ResponseEntity<CommonResponse> findBySearchPostList(@RequestParam String content,
+                                                               @RequestParam(required=false) int offset) {
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "내용 검색으로 게시물 목록 조회 성공", postService.findByPostContent(content, offset))
+        );
+    }
+
+    @ApiOperation(value = "내용 검색, 정렬 기준으로 게시물 리스트 조회", notes = "내용 검색으로 게시물 목록물 목록을 조회한다.")
+    @GetMapping("/search/rank")
+    public ResponseEntity<CommonResponse> findBySearchPostList(@RequestParam String content,
+                                                               @RequestParam String criteria,
+                                                               @RequestParam(required=false) int offset) {
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "내용검색, 정렬 기준으로 게시물 목록 조회 성공", postService.findByPostContentRank(PostSearch.of(content, criteria), offset))
+        );
+    }
+
 
     @ApiOperation(value = "게시물 등록", notes = "게시물을 등록한다")
     @PostMapping
