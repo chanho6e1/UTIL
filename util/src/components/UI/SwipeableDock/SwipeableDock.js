@@ -104,7 +104,8 @@ const SwipeableDock = (props) => {
           <div className={styles.wrapper}>
             <div className={styles.moveable} ref={movingDiv}>
               {postData.content.map((el, idx) => {
-                  return <div className={styles.content} style={{width: width + 'px', height: height + 'px'}}><Routes><Route path={`${postData.url[idx]}/*`} element={el} /></Routes></div>
+                  // return <div className={styles.content} style={{width: width + 'px', height: height + 'px'}}><Routes><Route path={`${postData.url[idx]}/*`} element={el} /></Routes></div>
+                  return <div className={styles.content} style={{width: width + 'px', height: height + 'px'}}>{el}</div>
               })}
             </div>
           </div>

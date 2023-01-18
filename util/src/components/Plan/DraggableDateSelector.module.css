@@ -3,6 +3,14 @@
     background-color: red;
     border-radius: 10px;
     display: flex;
+    transition-property: width;
+    transition-duration: 0.3s;
+    /* left: 100px; */
+    right: 2600px;
+    position: absolute;
+
+
+    right: 3000px;
 }
 
 .center-move-handler {
