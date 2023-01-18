@@ -1,0 +1,18 @@
+.date-selector-bar {
+    height: 36px;
+    background-color: red;
+    border-radius: 10px;
+    display: flex;
+}
+
+.center-move-handler {
+    flex: 1;
+    background-color: blueviolet;
+    height: 36px;
+}
+
+.resize-handler {
+    width: 24px;
+    height: 36px;
+    background-color: blue;
+}
