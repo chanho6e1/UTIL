@@ -1,27 +1,49 @@
 package com.youtil.server.controller.user;
 
-import com.youtil.server.common.ApiResponse;
+import com.youtil.server.common.CommonResponse;
 import com.youtil.server.domain.user.User;
-import com.youtil.server.service.UserService;
+import com.youtil.server.oauth.config.LoginUser;
+import com.youtil.server.oauth.entity.SessionUser;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/api/v1/users")
+import javax.servlet.http.HttpSession;
+
 @RequiredArgsConstructor
-public class UserController {
+@RestController
+public class UserController{
 
-    private final UserService userService;
+//    private final PostsService postsService;
+    private final HttpSession httpSession;
 
+//    @GetMapping("/")
+//    public String index(Model model, @LoginUser SessionUser user) {
+////        model.addAttribute("posts", postsService.findAllDesc());
+//
+////        SessionUser user = (SessionUser)httpSession.getAttribute("user");
+//
+//        if(user != null) {
+//            model.addAttribute("userName", user.getName());
+//            System.out.println(user.getEmail());
+//        }
+//
+//        return "index";
+//    }
+    @ApiOperation(value = "로그인 사용자 정보", notes = "로그인 사용자 정보를 반환")
     @GetMapping
-    public ApiResponse getUser() {
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity<CommonResponse> getUser(@LoginUser SessionUser user) {
 
-        User user = userService.getUser(principal.getUsername());
+//        SessionUser user = (SessionUser) httpSession.getAttribute("user");
 
-        return ApiResponse.success("user", user);
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.CREATED, "로그인 성공", user.getEmail()));
     }
 }
