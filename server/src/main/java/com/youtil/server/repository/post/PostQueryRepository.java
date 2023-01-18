@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.youtil.server.domain.post.QPost.post;
+import static com.youtil.server.domain.post.QPostComment.postComment;
 
 
 @RequiredArgsConstructor
@@ -23,8 +24,17 @@ public class PostQueryRepository {
         return jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
-//                .where(post.postType.eq(postType))
-                .orderBy(post.createdDate.desc())
+                .orderBy(findCriteria("date"))
+                .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())
+                .fetch();
+    }
+
+    public List<Post> findPostListByUser(Long userId, PageRequest pageRequest){
+        return jpaQueryFactory.select(post)
+                .distinct().from(post)
+                .innerJoin(post.user).fetchJoin()
+                .where(post.user.userId.eq(userId))
+                .orderBy(findCriteria("date"))
                 .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())
                 .fetch();
     }
@@ -42,7 +52,7 @@ public class PostQueryRepository {
         return jpaQueryFactory.selectFrom(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(post.content.contains(content))
-                .orderBy(findCriteria("date"))
+                .orderBy(findCriteria("view"))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
@@ -57,72 +67,52 @@ public class PostQueryRepository {
                 .limit(pageRequest.getPageSize())
                 .fetch();
     }
-//
-////    public List<Post> findByUserComment(Long userId){
-////
-////        return jpaQueryFactory
-////                .select(postComment.post)
-////                .distinct()
-////                .from(postComment)
-////                .innerJoin(postComment.user)
-////                .where(postComment.user.id.eq(userId))
-////                .orderBy(postComment.createdDate.desc()).fetch();
-////    }
-//
-////    public List<Post> findUserPost(Long userId, PageRequest pageRequest){
-////        return jpaQueryFactory.selectFrom(post).distinct()
-////                .innerJoin(post.user).fetchJoin()
-////                .where(post.user.id.eq(userId))
-////                .orderBy(post.createdDate.desc())
-////                .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())
-////                .fetch();
-////    }
-//
-//    public List<Post> findByLotsOfView(int postType, PageRequest pageRequest){
-//        return jpaQueryFactory.selectFrom(post).distinct()
-////                .innerJoin(post.user).fetchJoin()
-//                .where(post.postType.eq(postType))
-//                .orderBy(post.views.desc())
-//                .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())
-//                .fetch();
-//    }
-//
-////    public List<Post> findByLotsOfLike(int postType, PageRequest pageRequest){
-////        return jpaQueryFactory.selectFrom(post).distinct()
-//////                .innerJoin(post.user).fetchJoin()
-////                .where(post.postType.eq(postType))
-////                .orderBy(post.postLikes.postLikes.size().desc())
-////                .offset(pageRequest.getOffset())
-////                .limit(pageRequest.getPageSize())
-////                .fetch();
-////    }
-//
-//    public List<Post> findByTitleContaining(int postType, String name, PageRequest pageRequest){
-//        return jpaQueryFactory.selectFrom(post).distinct()
-////                .innerJoin(post.user).fetchJoin()
-//                .where(post.postType.eq(postType), post.title.contains(name))
-//                .orderBy(post.createdDate.desc())
-//                .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())
-//                .fetch();
-//    }
-//
-//    public List<Post> searchPost(PageRequest pageRequest, PostSearch postSearch){
-//        return jpaQueryFactory.selectFrom(post)
-////                .innerJoin(post.user).fetchJoin()
-//                .where(post.title.contains(postSearch.getTitle()),
-//                        post.postType.eq(postSearch.getPostType()))
-//                .orderBy(findCriteria(postSearch.getCriteria()))
-//                .offset(pageRequest.getOffset())
-//                .limit(pageRequest.getPageSize())
-//                .fetch();
-//    }
-//
+
+    public List<Post> findByUserComment(Long userId){
+        return jpaQueryFactory
+                .select(postComment.post)
+                .distinct()
+                .from(postComment)
+                .innerJoin(postComment.user)
+                .where(postComment.user.userId.eq(userId))
+                .orderBy(findCriteria("date")).fetch();
+    }
+
+    public List<Post> findByLotsOfView(int postType, PageRequest pageRequest){
+        return jpaQueryFactory.selectFrom(post).distinct()
+                .innerJoin(post.user).fetchJoin()
+                .where(post.postType.eq(postType))
+                .orderBy(findCriteria("view"))
+                .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())
+                .fetch();
+    }
+
+    public List<Post> findByLotsOfLike(int postType, PageRequest pageRequest){
+        return jpaQueryFactory.selectFrom(post).distinct()
+                .innerJoin(post.user).fetchJoin()
+                .where(post.postType.eq(postType))
+                .orderBy(findCriteria("like"))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
+                .fetch();
+    }
+
+    public List<Post> findByTitleContaining(String name, PageRequest pageRequest){
+        return jpaQueryFactory.selectFrom(post).distinct()
+                .innerJoin(post.user).fetchJoin()
+                .where(post.title.contains(name))
+                .orderBy(findCriteria("date"))
+                .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())
+                .fetch();
+    }
+
+
     private OrderSpecifier<?> findCriteria(String criteria){ //정렬 조건
-        if(criteria.equals("date")){
+        if(criteria.contains("date")){
             return post.createdDate.desc();
-        } else if(criteria.equals("like")){
-//            return post.postLikes.postLikes.size().desc();
-        } else if(criteria.equals("view")){
+        } else if(criteria.contains("like")){
+            return post.postLikeList.postLikeList.size().desc();
+        } else if(criteria.contains("view")){
             return post.views.desc();
         }
 
