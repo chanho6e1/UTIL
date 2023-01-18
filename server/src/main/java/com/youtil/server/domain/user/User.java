@@ -2,19 +2,14 @@ package com.youtil.server.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import com.sun.istack.Nullable;
 import com.youtil.server.domain.BaseEntity;
-import com.youtil.server.domain.post.Post;
 import com.youtil.server.oauth.entity.ProviderType;
 import com.youtil.server.oauth.entity.RoleType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.DynamicUpdate;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -23,49 +18,35 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "USER")
 public class User extends BaseEntity {
-    @JsonIgnore
+
     @Id
-    @Column(name = "USER_SEQ")
+    @Column(name = "USER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userSeq;
+    private Long userId;
 
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "post_id")
-//    private Post post;
-
-//    private Long userId;
-
+    @Column(name = "NICK_NAME")
+    @Size(max = 100)
     private String nickName;
 
+    @Column(name = "DEPARTMENT")
+    @Size(max = 100)
     private String department;
 
-
-
-    @Column(name = "USER_ID", length = 64, unique = true)
-    @NotNull
-    @Size(max = 64)
-    private String userId;
-
-    @Column(name = "USERNAME", length = 100)
+    @Column(name = "USER_NAME", length = 100)
     @NotNull
     @Size(max = 100)
-    private String username;
+    private String userName;
+
+    @Column(name = "EMAIL", length = 512, unique = true)
+    @Nullable
+    @Size(max = 512)
+    private String email;
 
     @JsonIgnore
     @Column(name = "PASSWORD", length = 128)
     @NotNull
     @Size(max = 128)
     private String password;
-
-    @Column(name = "EMAIL", length = 512, unique = true)
-    @NotNull
-    @Size(max = 512)
-    private String email;
-
-    @Column(name = "EMAIL_VERIFIED_YN", length = 1)
-    @NotNull
-    @Size(min = 1, max = 1)
-    private String emailVerifiedYn;
 
     @Column(name = "PROFILE_IMAGE_URL", length = 512)
     @NotNull
@@ -82,35 +63,50 @@ public class User extends BaseEntity {
     @NotNull
     private RoleType roleType;
 
-    @Column(name = "CREATED_AT")
-    @NotNull
-    private LocalDateTime createdAt;
-
-    @Column(name = "MODIFIED_AT")
-    @NotNull
-    private LocalDateTime modifiedAt;
-
-    public User(
-            @NotNull @Size(max = 64) String userId,
-            @NotNull @Size(max = 100) String username,
-            @NotNull @Size(max = 512) String email,
-            @NotNull @Size(max = 1) String emailVerifiedYn,
-            @NotNull @Size(max = 512) String profileImageUrl,
-            @NotNull ProviderType providerType,
-            @NotNull RoleType roleType,
-            @NotNull LocalDateTime createdAt,
-            @NotNull LocalDateTime modifiedAt
-    ) {
-        this.userId = userId;
-        this.username = username;
+    @Builder
+    public User(String userName, String email, String profileImageUrl, RoleType roleType, ProviderType providerType){
+        this.userName = userName;
+        this.email = email;
         this.password = "NO_PASS";
-        this.email = email != null ? email : "NO_EMAIL";
-        this.emailVerifiedYn = emailVerifiedYn;
         this.profileImageUrl = profileImageUrl != null ? profileImageUrl : "";
         this.providerType = providerType;
         this.roleType = roleType;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
     }
+
+    public User update(String nickName, String profileImageUrl){
+        this.nickName = nickName;
+        this.profileImageUrl = profileImageUrl;
+
+        return this;
+    }
+
+    public String getRoleType(){
+        return this.roleType.getCode();
+    }
+
+
+
+//    public User(
+//            @NotNull @Size(max = 64) String userId,
+//            @NotNull @Size(max = 100) String username,
+//            @NotNull @Size(max = 512) String email,
+//            @NotNull @Size(max = 1) String emailVerifiedYn,
+//            @NotNull @Size(max = 512) String profileImageUrl,
+//            @NotNull ProviderType providerType,
+//            @NotNull RoleType roleType,
+//            @NotNull LocalDateTime createdAt,
+//            @NotNull LocalDateTime modifiedAt
+//    ) {
+//        this.userId = userId;
+//        this.username = username;
+//        this.password = "NO_PASS";
+//        this.email = email != null ? email : "NO_EMAIL";
+//        this.emailVerifiedYn = emailVerifiedYn;
+//        this.profileImageUrl = profileImageUrl != null ? profileImageUrl : "";
+//        this.providerType = providerType;
+//        this.roleType = roleType;
+//        this.createdAt = createdAt;
+//        this.modifiedAt = modifiedAt;
+//    }
 }
 
