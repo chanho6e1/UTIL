@@ -8,19 +8,24 @@
     /* left: 100px; */
     right: 2600px;
     position: absolute;
-
-
     right: 3000px;
+    /* pointer-events: none; */
 }
+
 
 .center-move-handler {
     flex: 1;
     background-color: blueviolet;
     height: 36px;
+    
 }
 
 .resize-handler {
     width: 24px;
     height: 36px;
     background-color: blue;
+
 }
+
+
+

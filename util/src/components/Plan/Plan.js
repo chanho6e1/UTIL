@@ -27,7 +27,7 @@ const Plan = (props) => {
 
     const prototypeDate = new Date()
     const startRange = new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),0,1))
-    const endRange = new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),0,0))
+    const endRange = new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),12,0))
 
 
     return (
