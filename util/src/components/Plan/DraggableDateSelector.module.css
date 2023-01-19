@@ -1,10 +1,12 @@
+
+
 .date-selector-bar {
     height: 36px;
     background-color: red;
     border-radius: 10px;
     display: flex;
     transition-property: width;
-    transition-duration: 0.3s;
+    /* transition-duration: 0.3s; */
     /* left: 100px; */
     right: 2600px;
     position: absolute;
@@ -20,11 +22,23 @@
     
 }
 
+.end-date-string {
+    width: 120px;
+    position: absolute;
+    left: 30px;
+}
+
+.start-date-string {
+    width: 120px;
+    position: absolute;
+    left: -120px;
+}
+
 .resize-handler {
     width: 24px;
     height: 36px;
     background-color: blue;
-
+    position: relative;
 }
 
 
