@@ -10,6 +10,7 @@ import Swipe from "react-easy-swipe";
 
 
 const CalendarBar = (props) => {
+  const planWidthPoint = 10
 
   const getMonthDistance = (start, end) => {
     const startYear = start.getFullYear()
@@ -26,10 +27,23 @@ const CalendarBar = (props) => {
     }
   }
 
+  const getXPointLib = (monthArray, gridWidth) => {
+    const lib = {}
+    monthArray.map((el, idx) => {
+      const year = el.getFullYear()
+      const month = el.getMonth()
+      const date = el.getDate()
+      const xPoint = gridWidth / date
+      const key = parseInt(`${year}${month}`)
+      // lib[key] = Math.ceil(xPoint * 10) / 10 + 0.1
+      lib[key] = xPoint
+      console.log(lib)
+    })
+    setXPointLib(() => lib)
+  }
 
 
   const plans = useSelector(state => state.planSlice.plans)
-  // const monthRange = Array(props.endRange.getMonth() - props.startRange.getMonth() + 1).fill()
   const monthDistance = getMonthDistance(props.startRange, props.endRange);
   const monthRange = Array(monthDistance).fill().map((arr, idx) => {
     return new Date(props.startRange.getFullYear(), props.startRange.getMonth() + idx + 1, 0)
@@ -37,14 +51,16 @@ const CalendarBar = (props) => {
   const planRange = [0, 1, 2, 3]
   const planGridRef = Array(planRange.length).fill(useRef([]), 0, planRange.length)
   const containerRef = useRef()
-  // const [placedMonth, setPlacedMonth] = useState()
-  
+  const [xPointLib, setXPointLib] = useState({})
+
+
   useEffect(() => {
-    console.log(monthRange)
+    if (monthRange) {
+      getXPointLib(monthRange, planGridRef[0].current[0].clientWidth)
+    }
   }, [])
 
 
-  
 
 
   
@@ -79,7 +95,7 @@ const CalendarBar = (props) => {
 
         <div ref={containerRef} className={styles['month-bar-container']} key={`month-bar-container-${idx}`}>
             {columns}
-            <DraggableDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} />
+            <DraggableDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} xPointLib={xPointLib} />
         </div>
 
     )
