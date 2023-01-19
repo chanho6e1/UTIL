@@ -1,6 +1,6 @@
 .date-range-wrapper {
     width: 90vw;
-    height: 50vh;
+    /* height: 50vh; */
     overflow: scroll;
 }
 
@@ -12,7 +12,7 @@
 }
 
 .month-title-bar {
-    width: 300px;
+    width: 200px;
     height: 48px;
     background-color: rgba(230, 230, 230);
     border: 1px solid rgba(245, 245, 245);
@@ -22,7 +22,7 @@
 }
 
 .month-plan-bar {
-    width: 300px;
+    width: 200px;
     height: 48px;
     background-color: rgba(230, 230, 230);
     border: 1px solid rgba(245, 245, 245);

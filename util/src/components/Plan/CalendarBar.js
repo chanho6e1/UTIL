@@ -35,8 +35,8 @@ const CalendarBar = (props) => {
       const date = el.getDate()
       const xPoint = gridWidth / date
       const key = parseInt(`${year}${month}`)
-      // lib[key] = Math.ceil(xPoint * 10) / 10 + 0.1
-      lib[key] = xPoint
+      lib[key] = Math.ceil(xPoint * 10) / 10 + 0.1
+      // lib[key] = xPoint
       console.log(lib)
     })
     setXPointLib(() => lib)
