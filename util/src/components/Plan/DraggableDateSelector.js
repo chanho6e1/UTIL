@@ -119,7 +119,6 @@ const DraggableDateSelector = (props) => {
       console.log(daySplit)
       dateSelectorBar.current.style.width = barWidth + 'px'
       setInitialRight(barWidth)
-      console.log('하하하하하핳ㅎ하ㅏ하ㅏ하하ㅏ하하')
     }
 
     if (initialStartDate.getMonth() === initialEndDate.getMonth()) {
