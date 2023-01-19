@@ -1,6 +1,8 @@
 package com.youtil.server.domain.post;
 
 import com.youtil.server.domain.BaseEntity;
+import com.youtil.server.domain.category.Category;
+import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,6 +47,14 @@ public class Post extends BaseEntity {
     @Embedded
     private final PostLikeList postLikeList = new PostLikeList();
 
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="category_id")
+    private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="goal_id")
+    private Goal goal;
 
     @Builder
     public Post(User user, String title, String content){
