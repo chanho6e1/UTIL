@@ -5,7 +5,7 @@
     background-color: red;
     border-radius: 10px;
     display: flex;
-    transition-property: width;
+    transition-property: width left;
     /* transition-duration: 0.3s; */
     /* left: 100px; */
     right: 2600px;
@@ -19,6 +19,12 @@
     flex: 1;
     background-color: blueviolet;
     height: 36px;
+    cursor: pointer;
+    
+}
+
+.center-swiper {
+    flex: 1;
     
 }
 
@@ -38,6 +44,7 @@
     width: 24px;
     height: 36px;
     background-color: blue;
+    cursor:col-resize;
     position: relative;
 }
 
