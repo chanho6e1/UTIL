@@ -4,6 +4,7 @@ import com.youtil.server.common.CommonResponse;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.oauth.config.LoginUser;
 import com.youtil.server.oauth.entity.SessionUser;
+import com.youtil.server.repository.user.UserRepository;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,9 @@ public class UserController{
 
 //    private final PostsService postsService;
     private final HttpSession httpSession;
+    private final UserRepository userRepository;
 
-//    @GetMapping("/")
+    //    @GetMapping("/")
 //    public String index(Model model, @LoginUser SessionUser user) {
 ////        model.addAttribute("posts", postsService.findAllDesc());
 //
@@ -42,6 +44,8 @@ public class UserController{
     public ResponseEntity<CommonResponse> getUser(@LoginUser SessionUser user) {
 
 //        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+
+        System.out.println(userRepository.findByEmail(user == null ? "없다" : "있다"));
 
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "로그인 성공", user.getEmail()));
