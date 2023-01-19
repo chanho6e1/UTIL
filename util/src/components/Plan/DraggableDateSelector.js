@@ -31,7 +31,20 @@ const DraggableDateSelector = (props) => {
 
 
 
+  const getMonthDistance = (start, end) => {
+    const startYear = start.getFullYear()
+    const endYear = end.getFullYear()
+    const startMonth = start.getMonth()
+    const endMonth = end.getMonth()
+    const startDate = start.getDate()
+    const endDate = end.getDate()
 
+    if (startYear !== endYear) {
+      return ((endYear - startYear) * 12) - startMonth + endMonth + 2;
+    } else {
+      return ((endYear - startYear) * 12) - startMonth + endMonth + 1;
+    }
+  }
 
 
 
@@ -56,7 +69,7 @@ const DraggableDateSelector = (props) => {
     if (initialStartDate.getMonth() !== initialEndDate.getMonth()) {
       const startMonthWidth = (startMonthLastDay - startDate) * startMonthDaySplit
       const endMonthWidth = endMonthDaySplit * endDate
-      const monthDistance = ((endYear - startYear) * 12) - startMonth + endMonth - 1;
+      const monthDistance = getMonthDistance(initialStartDate, initialEndDate) - 2;
       // const monthDistance = endMonth - startMonth - 1
       dateSelectorBar.current.style.width = startMonthWidth + endMonthWidth + (monthDistance * props.planGridRef[columnIdx].current[endMonth].clientWidth) + 'px'
     }
@@ -72,10 +85,11 @@ const DraggableDateSelector = (props) => {
 
 
 
-  const onSwipeMove = (dateKind, position = { x: null }) => {
+  const onSwipeMove = (position = { x: null }) => {
     
     // alert(props.planGridRef[0].current[9].offsetLeft)
     setPositionx(() => position.x)
+    console.log(position.x)
   }
 
 
@@ -84,7 +98,7 @@ const DraggableDateSelector = (props) => {
 
 
 
-  const onSwipeEnd = (dateKind) => {
+  const onSwipeEnd = () => {
     dispatch(modifyPlanSliceActions.modifyStartDate(JSON.stringify({idx: props.idx, updatedDate: startDate.toString()})))
     dispatch(modifyPlanSliceActions.modifyEndDate(JSON.stringify({idx: props.idx, updatedDate: endDate.toString()})))
   }
@@ -96,7 +110,7 @@ const DraggableDateSelector = (props) => {
 
   return (
     <div ref={dateSelectorBar} className={styles['date-selector-bar']}>
-      <Swipe onSwipeStart={(event) => {event.stopPropagation();}} onSwipeEnd={(event) => {onSwipeEnd('start' ,event)}} onSwipeMove={(event) => {onSwipeMove('start', event)}}>
+      <Swipe className={styles['swiper']} onSwipeStart={(event) => {event.stopPropagation();}} onSwipeEnd={onSwipeEnd} onSwipeMove={onSwipeMove} allowMouseEvents={true}>
         <div id="left" className={styles['resize-handler']}>
 
         </div>
@@ -104,7 +118,7 @@ const DraggableDateSelector = (props) => {
       <div className={styles['center-move-handler']}>
         
       </div>
-      <Swipe onSwipeStart={(event) => {event.stopPropagation();}} onSwipeEnd={(event) => {onSwipeEnd('end' ,event)}} onSwipeMove={(event) => {onSwipeMove('end', event)}}>
+      <Swipe className={styles['swiper']} onSwipeStart={(event) => {event.stopPropagation();}} onSwipeEnd={onSwipeEnd} onSwipeMove={onSwipeMove} allowMouseEvents={true}>
         <div id="right" className={styles['resize-handler']}>
           
         </div>
