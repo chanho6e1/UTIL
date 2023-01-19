@@ -48,6 +48,18 @@ spring:
           clientId: 'e83b529fe6bf2f44d9b7'
           clientSecret: '33e61c7d3df57027e01a85a0079e36e0bfa876f8'
           scope:
+        kakao:
+          clientId: '5ccc0d6303d193e2fc171cde4c9a8cf9'
+          clientSecret: 'PAZgffRuTr5fh89fBMJ0Gxd6DInXqYVt'
+          clientAuthenticationMethod: post
+          authorizationGrantType: authorization_code
+          redirectUri: 'http://localhost:8080/login/oauth2/code/kakao'
+#           "{baseUrl}/{action}/oauth2/code/{registrationId}"
+          scope:
+            - profile_nickname
+            - profile_image
+            - account_email
+          clientName: Kakao
 
       #        facebook:
       #          clientId: '{페이스북 client-id}'
@@ -66,17 +78,6 @@ spring:
       #            - email
       #            - profile_image
       #          clientName: Naver
-      #        kakao:
-      #          clientId: '{카카오 client-id}'
-      #          clientSecret: '{카카오 client-secret}'
-      #          clientAuthenticationMethod: post
-      #          authorizationGrantType: authorization_code
-      #          redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
-      #          scope:
-      #            - profile_nickname
-      #            - profile_image
-      #            - account_email
-      #          clientName: Kakao
       # Provider 설정
       provider:
         naver:
