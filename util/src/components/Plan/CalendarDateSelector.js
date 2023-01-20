@@ -1,12 +1,12 @@
 import React, {useState, useRef, useEffect} from "react";
 import Swipe from "react-easy-swipe";
-import styles from "./DraggableDateSelector.module.css"
+import styles from "./CalendarDateSelector.module.css"
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 
 
 
-const DraggableDateSelector = (props) => {
+const CalendarDateSelector = (props) => {
   const dispatch = useDispatch()
   const [positionx, setPositionx] = useState(0)
   const [endSwipe, setEndSwipe] = useState(false)
@@ -39,6 +39,7 @@ const DraggableDateSelector = (props) => {
 
 
   const setStartWidth = () => {
+    
     if (initialStartDate > initialEndDate) {
       const startDateCorrection = new Date(new Date(initialEndDate).setDate(initialEndDate.getDate() - 1))
       setInitialStartDate(startDateCorrection)
@@ -47,6 +48,7 @@ const DraggableDateSelector = (props) => {
       const endDateCorrection = new Date(new Date(initialStartDate).setDate(initialStartDate.getDate() + 1))
       setInitialEndDate(endDateCorrection)
     }
+    
     const startYear = initialStartDate.getFullYear()
     const endYear = initialEndDate.getFullYear()
     const startMonth = initialStartDate.getMonth()
@@ -57,6 +59,9 @@ const DraggableDateSelector = (props) => {
     const endMonthDaySplit = props.xPointLib[parseInt(`${initialEndDate.getFullYear()}${initialEndDate.getMonth()}`)]
     const gridStartIdx = getMonthDistance(props.gridStart ,initialStartDate)
     const gridEndIdx = getMonthDistance(props.gridStart, initialEndDate)
+    if (props.planGridRef[columnIdx].current.length !== getMonthDistance(props.gridStart, props.gridEnd) + 1) {
+      return
+    }
 
     const barWidth = props.planGridRef[columnIdx].current[gridEndIdx].offsetLeft - (startMonthDaySplit * startDate) - props.planGridRef[columnIdx].current[gridStartIdx].offsetLeft + (endMonthDaySplit * endDate)
     const barLeft = props.planGridRef[columnIdx].current[gridStartIdx].offsetLeft + (startMonthDaySplit * startDate)
@@ -64,7 +69,7 @@ const DraggableDateSelector = (props) => {
     dateSelectorBar.current.style.transitionDuration = '0.1s'
     dateSelectorBar.current.style.width = barWidth + 'px'
     dateSelectorBar.current.style.left = barLeft + 'px'
-
+    
     setInitialRight(barWidth)
     setInitialLeft(barLeft)
     setUpdatingStartDate(initialStartDate)
@@ -170,26 +175,24 @@ const DraggableDateSelector = (props) => {
 
   const onStartSwipeQuit = () => {
     const isValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
-    if (positionx > 0 && (isValid >= initialEndDate || initialStartDate >= initialEndDate)) {
-      const startDateCorrection = new Date(new Date(initialEndDate).setDate(initialEndDate.getDate() - 1))
-      setInitialStartDate(() => startDateCorrection)
-      setStartMonth(startDateCorrection.getMonth())
-      setStartMoved(0)
-      setStartPeriod(0)
-      setPositionx(0)
-      return
-    } else {
-      setStartMonth(updatingStartDate.getMonth())
-      setStartMoved(0)
-      setStartPeriod(0)
-      setPositionx(0)
-    }
     if (positionx < 0 && (isValid <= props.gridStart || isValid <= props.gridStart)) {
       props.extendStartRange(1)
       setInitialStartDate(() => props.gridStart)
     } else {
       setInitialStartDate(() => updatingStartDate)
     }
+    if (positionx > 0 && (isValid >= initialEndDate || initialStartDate >= initialEndDate)) {
+      const startDateCorrection = new Date(new Date(initialEndDate).setDate(initialEndDate.getDate() - 1))
+      setInitialStartDate(() => startDateCorrection)
+      setStartMonth(startDateCorrection.getMonth())
+      
+    } else {
+      setStartMonth(updatingStartDate.getMonth())
+      
+    }
+    setStartMoved(0)
+    setStartPeriod(0)
+    setPositionx(0)
     // dispatch(modifyPlanSliceActions.modifyStartDate(JSON.stringify({idx: props.idx, updatedDate: startDate.toString()})))
     // dispatch(modifyPlanSliceActions.modifyEndDate(JSON.stringify({idx: props.idx, updatedDate: endDate.toString()})))
   }
@@ -197,26 +200,22 @@ const DraggableDateSelector = (props) => {
 
   const onEndSwipeQuit = () => {
     const isValid = new Date(updatingEndDate.getFullYear(), updatingEndDate.getMonth(), updatingEndDate.getDate() + 1)
-    if (positionx < 0 && (isValid <= initialStartDate || initialEndDate <= initialStartDate)) {
-      const endDateCorrection = new Date(new Date(initialStartDate).setDate(initialStartDate.getDate() + 1))
-      setInitialEndDate(() => endDateCorrection)
-      setEndMonth(endDateCorrection.getMonth())
-      setEndMoved(0)
-      setEndPeriod(0)
-      setPositionx(0)
-      return
-    } else {
-      setEndMonth(updatingEndDate.getMonth())
-      setEndMoved(0)
-      setEndPeriod(0)
-      setPositionx(0)
-    }
     if (positionx > 0 && (isValid >= props.gridEnd || isValid >= props.gridEnd)) {
       props.extendEndRange(1)
       setInitialEndDate(() => props.gridEnd)
     } else {
       setInitialEndDate(() => updatingEndDate)
     }
+    if (positionx < 0 && (isValid <= initialStartDate || initialEndDate <= initialStartDate)) {
+      const endDateCorrection = new Date(new Date(initialStartDate).setDate(initialStartDate.getDate() + 1))
+      setInitialEndDate(() => endDateCorrection)
+      setEndMonth(endDateCorrection.getMonth())
+    } else {
+      setEndMonth(updatingEndDate.getMonth())
+    }
+    setEndMoved(0)
+    setEndPeriod(0)
+    setPositionx(0)
     // dispatch(modifyPlanSliceActions.modifyStartDate(JSON.stringify({idx: props.idx, updatedDate: startDate.toString()})))
     // dispatch(modifyPlanSliceActions.modifyEndDate(JSON.stringify({idx: props.idx, updatedDate: endDate.toString()})))
   }
@@ -277,4 +276,4 @@ const DraggableDateSelector = (props) => {
   )
 }
 
-export default DraggableDateSelector
+export default CalendarDateSelector

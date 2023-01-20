@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
 import styles from './Plan.module.css'
-import DraggableDateSelector from "./DraggableDateSelector";
-import CalendarBar from "./CalendarBar";
+
+import Calendar from "./Calendar";
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
+import Card from "../UI/Card/Card";
 
 
 const Plan = (props) => {
@@ -15,7 +16,6 @@ const Plan = (props) => {
     const extendStartRange = (amount) => {
         const extendedDate = new Date(startRange.getFullYear(), startRange.getMonth() - amount, 1)
         setStartRange(() => extendedDate)
-        console.log(extendedDate)
     }
 
     const extendEndRange = (amount) => {
@@ -32,13 +32,22 @@ const Plan = (props) => {
     })
 
     return (
-        <div className={styles['plans-wrapper']}>
-            <div>
-                <div className={styles['plan-title-bar']} />
-                {planTitleGrid}
-            </div>
-            <CalendarBar startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} />
+        
+        <div className={styles['plan-page']}>
+            <Card className={styles['plans-wrapper']}>
+                <div>
+                    <div className={styles['plan-title-bar-space']} />
+                    {planTitleGrid}
+                    <div className={styles['scroll-bar-space']} />
+                </div>
+                <div>
+                <Calendar startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} />
+                
+                </div>
+            </Card>
         </div>
+
+        
     )
 }
 
