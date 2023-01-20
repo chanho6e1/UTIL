@@ -7,8 +7,6 @@ import Swipe from "react-easy-swipe";
 
 
 
-
-
 const CalendarBar = (props) => {
   
 
@@ -19,12 +17,6 @@ const CalendarBar = (props) => {
     const endMonth = end.getMonth()
     const startDate = start.getDate()
     const endDate = end.getDate()
-
-    // if (startYear !== endYear) {
-    //   return ((endYear - startYear) * 12) - startMonth + endMonth + 2;
-    // } else {
-    //   return ((endYear - startYear) * 12) - startMonth + endMonth + 1;
-    // }
     return ((endYear - startYear) * 12) - startMonth + endMonth;
   }
 
@@ -37,14 +29,11 @@ const CalendarBar = (props) => {
       const xPoint = gridWidth / date
       const key = parseInt(`${year}${month}`)
       lib[key] = Math.ceil(xPoint * 10) / 10 + 0.1
-      // lib[key] = xPoint
-      console.log(lib)
     })
     setXPointLib(() => lib)
   }
 
 
-  
   const plans = useSelector(state => state.planSlice.plans)
   const [monthDistance, setMonthDistance] = useState(getMonthDistance(props.startRange, props.endRange) + 1);
   const [monthRange, setMonthRange] = useState(Array(monthDistance).fill().map((arr, idx) => {
@@ -71,9 +60,6 @@ const CalendarBar = (props) => {
   }, [monthRange])
 
 
-
-
-  
   // 해당 열의 월간 그리드
   const gridPerPlans = (rowIdx) => {
     const exec = monthRange.map((el, idx) => {
@@ -115,34 +101,15 @@ const CalendarBar = (props) => {
     )
   })
 
-  // const planTitleGrid = plans.map((el, idx) => {
-
-  //   return (
-
-  //     <div className={styles['plan-title-bar']} key={`month-title-bar-${idx}`}>
-  //       {plans[idx].title}
-  //     </div>
-
-  //   )
-  // })
-
-  
-
-
 
   return (
     <div id="date-range" className={styles['date-range-wrapper']}>
-      {/* <div className={styles['plan-title-container']}>
-        <div className={styles['plan-title-bar']} />
-          {planTitleGrid}
-        </div> */}
       <div>
         <div className={styles['month-bar-container']}>
           {monthTitleGrid}
         </div>
         {totalPlansGrid}
       </div>
-      
     </div>
   )
 }
