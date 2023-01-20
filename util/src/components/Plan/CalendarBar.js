@@ -10,7 +10,7 @@ import Swipe from "react-easy-swipe";
 
 
 const CalendarBar = (props) => {
-  const planWidthPoint = 10
+  
 
   const getMonthDistance = (start, end) => {
     const startYear = start.getFullYear()
@@ -20,11 +20,12 @@ const CalendarBar = (props) => {
     const startDate = start.getDate()
     const endDate = end.getDate()
 
-    if (startYear !== endYear) {
-      return ((endYear - startYear) * 12) - startMonth + endMonth + 2;
-    } else {
-      return ((endYear - startYear) * 12) - startMonth + endMonth + 1;
-    }
+    // if (startYear !== endYear) {
+    //   return ((endYear - startYear) * 12) - startMonth + endMonth + 2;
+    // } else {
+    //   return ((endYear - startYear) * 12) - startMonth + endMonth + 1;
+    // }
+    return ((endYear - startYear) * 12) - startMonth + endMonth;
   }
 
   const getXPointLib = (monthArray, gridWidth) => {
@@ -44,14 +45,15 @@ const CalendarBar = (props) => {
 
 
   const plans = useSelector(state => state.planSlice.plans)
-  const monthDistance = getMonthDistance(props.startRange, props.endRange);
+  const monthDistance = getMonthDistance(props.startRange, props.endRange) + 1;
   const monthRange = Array(monthDistance).fill().map((arr, idx) => {
     return new Date(props.startRange.getFullYear(), props.startRange.getMonth() + idx + 1, 0)
   })
-  const planRange = [0, 1, 2, 3]
-  const planGridRef = Array(planRange.length).fill(useRef([]), 0, planRange.length)
+  const planGridRef = Array(plans.length).fill(useRef([]), 0, plans.length)
   const containerRef = useRef()
   const [xPointLib, setXPointLib] = useState({})
+
+
 
 
   useEffect(() => {
@@ -64,7 +66,7 @@ const CalendarBar = (props) => {
 
 
   
-
+  // 해당 열의 월간 그리드
   const gridPerPlans = (rowIdx) => {
     const exec = monthRange.map((el, idx) => {
       return (
@@ -80,28 +82,41 @@ const CalendarBar = (props) => {
   }
   
   
+  // 월 타이틀 표시
   const monthTitleGrid = monthRange.map((el, idx) => {
+    const tempDate = props.startRange
+    const tempMonth = new Date(tempDate.getFullYear(), tempDate.getMonth() + idx, 1)
     return (
       <div key={`month-title-bar-${idx}`}>
-        <div className={styles['month-title-bar']}>{props.startRange.getMonth() + idx + 1}월</div>
+        <div className={styles['month-title-bar']}>{tempMonth.getFullYear()}년 {tempMonth.getMonth() + 1}월</div>
       </div>
     )
   })
 
 
-  const totalPlansGrid = planRange.map((el, idx) => {
+  // 목표의 개수에 따른 열 반복
+  const totalPlansGrid = plans.map((el, idx) => {
     const columns = gridPerPlans(idx)
     return (
 
         <div ref={containerRef} className={styles['month-bar-container']} key={`month-bar-container-${idx}`}>
             {columns}
-            <DraggableDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} xPointLib={xPointLib} />
+            <DraggableDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} girdEnd={props.endRange} />
         </div>
 
     )
   })
 
+  const planTitleGrid = plans.map((el, idx) => {
 
+    return (
+
+      <div className={styles['plan-title-bar']} key={`month-title-bar-${idx}`}>
+        {plans[idx].title}
+      </div>
+
+    )
+  })
 
   
 
@@ -109,10 +124,17 @@ const CalendarBar = (props) => {
 
   return (
     <div id="date-range" className={styles['date-range-wrapper']}>
-      <div className={styles['month-bar-container']}>
-        {monthTitleGrid}
+      <div className={styles['plan-title-container']}>
+      <div className={styles['plan-title-bar']} />
+        {planTitleGrid}
       </div>
-      {totalPlansGrid}
+      <div>
+        <div className={styles['month-bar-container']}>
+          {monthTitleGrid}
+        </div>
+        {totalPlansGrid}
+      </div>
+      
     </div>
   )
 }

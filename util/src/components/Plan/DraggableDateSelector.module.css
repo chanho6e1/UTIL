@@ -2,7 +2,7 @@
 
 .date-selector-bar {
     height: 36px;
-    background-color: red;
+    /* background-color: red; */
     border-radius: 10px;
     display: flex;
     transition-property: width left;
@@ -12,12 +12,13 @@
     position: absolute;
     right: 3000px;
     /* pointer-events: none; */
+    
 }
 
 
 .center-move-handler {
     flex: 1;
-    background-color: blueviolet;
+    background-color: rgba(154, 76, 249, 0.5);
     height: 36px;
     cursor: pointer;
     
@@ -28,24 +29,64 @@
     
 }
 
+.date-selector-bar:hover .end-date-string {
+    opacity: 255;
+}
+.date-selector-bar:hover .start-date-string {
+    opacity: 255;
+    
+}
+
+
+
 .end-date-string {
+    transition-property: opacity;
+    transition-duration: 0.3s;
+    opacity: 0;
     width: 120px;
+    height: 36px;
     position: absolute;
-    left: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 5px;
+    font-size: 13px;
+    color:rgb(100, 100, 100);
+    user-select: none;
 }
 
 .start-date-string {
+    transition-property: opacity;
+    transition-duration: 0.3s;
+    opacity: 0;
     width: 120px;
+    height: 36px;
     position: absolute;
-    left: -120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: -100px;
+    font-size: 13px;
+    color:rgb(100, 100, 100);
+    user-select: none;
 }
 
 .resize-handler {
     width: 24px;
     height: 36px;
-    background-color: blue;
+    background-color: rgba(154, 76, 249, 0.5);
     cursor:col-resize;
     position: relative;
+}
+
+
+
+.left-resize {
+    border-radius: 10px 0px 0px 10px;
+}
+
+.right-resize {
+    border-radius: 0px 10px 10px 0px;
 }
 
 
