@@ -31,14 +31,22 @@ const DraggableDateSelector = (props) => {
     return ((endYear - startYear) * 12) - startMonth + endMonth;
   }
 
-  // useEffect(() => {
-  //   setInitialLeft(() => dateSelectorBar.current.offsetLeft)
-  //   setInitialRight(() => dateSelectorBar.current.clientWidth)
-  // }, [dateSelectorBar.current])
+  const getDayDistance = (start, end) => {
+    const diffDate = start.getTime() - end.getTime();
+    return Math.abs(diffDate / (1000 * 60 * 60 * 24)); // 밀리세컨 * 초 * 분 * 시 = 일
+  }
 
 
 
   const setStartWidth = () => {
+    if (initialStartDate > initialEndDate) {
+      const startDateCorrection = new Date(new Date(initialEndDate).setDate(initialEndDate.getDate() - 1))
+      setInitialStartDate(startDateCorrection)
+    }
+    if (initialEndDate < initialStartDate) {
+      const endDateCorrection = new Date(new Date(initialStartDate).setDate(initialStartDate.getDate() + 1))
+      setInitialEndDate(endDateCorrection)
+    }
     // 시작 위치 지정
     const startYear = initialStartDate.getFullYear()
     const endYear = initialEndDate.getFullYear()
@@ -82,6 +90,14 @@ const DraggableDateSelector = (props) => {
 
 
   const onStartSwipeMove = (position = { x: null }) => {
+    const isValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
+    if (position.x < 0 && (isValid <= props.gridStart || initialStartDate <= props.gridStart)) {
+      return
+    }
+    if (position.x > 0 && (isValid >= initialEndDate || initialStartDate >= initialEndDate)) {
+      return
+    }
+
     dateSelectorBar.current.style.transitionDuration = '0s'
     dateSelectorBar.current.style.left = initialLeft + position.x + 'px'
     dateSelectorBar.current.style.width = initialRight + (-position.x) + 'px'
@@ -101,6 +117,13 @@ const DraggableDateSelector = (props) => {
 
 
   const onEndSwipeMove = (position = { x: null }) => {
+    const isValid = new Date(updatingEndDate.getFullYear(), updatingEndDate.getMonth(), updatingEndDate.getDate() + 1)
+    if (position.x > 0 && (isValid >= props.gridEnd || initialEndDate >= props.gridEnd)) {
+      return
+    }
+    if (position.x < 0 && (isValid <= initialStartDate || initialEndDate <= initialStartDate)) {
+      return
+    }
     dateSelectorBar.current.style.transitionDuration = '0s'
     dateSelectorBar.current.style.width = initialRight + position.x + 'px'
     const xPoint = props.xPointLib[parseInt(`${updatingEndDate.getFullYear()}${updatingEndDate.getMonth()}`)]
@@ -119,6 +142,13 @@ const DraggableDateSelector = (props) => {
 
 
   const onTransferMove = (position = { x: null }) => {
+    const isStartValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
+    const isEndValid = new Date(updatingEndDate.getFullYear(), updatingEndDate.getMonth(), updatingEndDate.getDate() + 1)
+    if ((position.x < 0 && (isStartValid <= props.gridStart || isStartValid <= props.gridStart)) || (position.x > 0 && (isEndValid >= props.gridEnd || isEndValid >= props.gridEnd))) {
+      return
+    }
+    
+
     dateSelectorBar.current.style.transitionDuration = '0s'
     dateSelectorBar.current.style.left = initialLeft + position.x + 'px'
     const xPoint = props.xPointLib[parseInt(`${updatingStartDate.getFullYear()}${updatingStartDate.getMonth()}`)]
@@ -146,29 +176,87 @@ const DraggableDateSelector = (props) => {
 
 
   const onStartSwipeQuit = () => {
-    setInitialStartDate(() => updatingStartDate)
-    setStartMoved(0)
-    setStartPeriod(0)
-    setStartMonth(updatingStartDate.getMonth())
-    setPositionx(0)
+    const isValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
+    if (positionx > 0 && (isValid >= initialEndDate || initialStartDate >= initialEndDate)) {
+      const startDateCorrection = new Date(new Date(initialEndDate).setDate(initialEndDate.getDate() - 1))
+      setInitialStartDate(() => startDateCorrection)
+      setStartMonth(startDateCorrection.getMonth())
+      setStartMoved(0)
+      setStartPeriod(0)
+      setPositionx(0)
+      return
+    } else {
+      setStartMonth(updatingStartDate.getMonth())
+      setStartMoved(0)
+      setStartPeriod(0)
+      setPositionx(0)
+    }
+
+    if (positionx < 0 && (isValid <= props.gridStart || isValid <= props.gridStart)) {
+      props.extendStartRange(1)
+      setInitialStartDate(() => props.gridStart)
+    } else {
+      setInitialStartDate(() => updatingStartDate)
+    }
+    
+    
+    
     // dispatch(modifyPlanSliceActions.modifyStartDate(JSON.stringify({idx: props.idx, updatedDate: startDate.toString()})))
     // dispatch(modifyPlanSliceActions.modifyEndDate(JSON.stringify({idx: props.idx, updatedDate: endDate.toString()})))
   }
 
 
   const onEndSwipeQuit = () => {
-    setInitialEndDate(() => updatingEndDate)
-    setEndMoved(0)
-    setEndPeriod(0)
-    setEndMonth(updatingEndDate.getMonth())
-    setPositionx(0)
+    const isValid = new Date(updatingEndDate.getFullYear(), updatingEndDate.getMonth(), updatingEndDate.getDate() + 1)
+    if (positionx < 0 && (isValid <= initialStartDate || initialEndDate <= initialStartDate)) {
+      const endDateCorrection = new Date(new Date(initialStartDate).setDate(initialStartDate.getDate() + 1))
+      setInitialEndDate(() => endDateCorrection)
+      setEndMonth(endDateCorrection.getMonth())
+      setEndMoved(0)
+      setEndPeriod(0)
+      setPositionx(0)
+      return
+    } else {
+      setEndMonth(updatingEndDate.getMonth())
+      setEndMoved(0)
+      setEndPeriod(0)
+      setPositionx(0)
+    }
+
+    if (positionx > 0 && (isValid >= props.gridEnd || isValid >= props.gridEnd)) {
+      props.extendEndRange(1)
+      setInitialEndDate(() => props.gridEnd)
+    } else {
+      setInitialEndDate(() => updatingEndDate)
+    }
+    
     // dispatch(modifyPlanSliceActions.modifyStartDate(JSON.stringify({idx: props.idx, updatedDate: startDate.toString()})))
     // dispatch(modifyPlanSliceActions.modifyEndDate(JSON.stringify({idx: props.idx, updatedDate: endDate.toString()})))
   }
 
   const onTransferSwipeQuit = () => {
-    setInitialStartDate(() => updatingStartDate)
-    setInitialEndDate(() => updatingEndDate)
+    const isStartValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
+    const isEndValid = new Date(updatingEndDate.getFullYear(), updatingEndDate.getMonth(), updatingEndDate.getDate() + 1)
+    const dayDistance = getDayDistance(updatingStartDate, updatingEndDate)
+    if (positionx < 0 && (isStartValid <= props.gridStart || isStartValid <= props.gridStart)) {
+      props.extendStartRange(1)
+      const endDateCorrection = new Date(new Date(props.gridStart).setDate(props.gridStart.getDate() + dayDistance))
+      console.log(endDateCorrection)
+      setInitialStartDate(() => props.gridStart)
+      setInitialEndDate(() => endDateCorrection)
+    } else if (positionx > 0 && (isEndValid >= props.gridEnd || isEndValid >= props.gridEnd)) {
+      props.extendEndRange(1)
+      const startDateCorrection = new Date(new Date(props.gridEnd).setDate(props.gridEnd.getDate() - dayDistance))
+      setInitialStartDate(() => startDateCorrection)
+      setInitialEndDate(() => props.gridEnd)
+    } else {
+      setInitialStartDate(() => updatingStartDate)
+      setInitialEndDate(() => updatingEndDate)
+    }
+
+    
+    
+    
     setStartMoved(0)
     setEndMoved(0)
     setStartPeriod(0)

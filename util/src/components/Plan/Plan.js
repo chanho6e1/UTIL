@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from "react";
-
+import styles from './Plan.module.css'
 import DraggableDateSelector from "./DraggableDateSelector";
 import CalendarBar from "./CalendarBar";
-
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 
@@ -10,35 +9,45 @@ import { modifyPlanSliceActions } from '../../redux/planSlice'
 const Plan = (props) => {
     
     const plans = useSelector(state => state.planSlice.plans)
-    // const day1 = new Date('2023-1-15')
-    // const day2 = new Date('2023-1-20')
-    // const day3 = Math.abs((day1.getTime() - day2.getTime()) / (1000 * 60 * 60 * 24))
-    // const [show, setShow] = useState(today.toLocaleString())
-    // useEffect(() => {
-    //     today.setDate(today.getDate() + 50)
-    //     setToday(() => today)
-    //     setShow(() => today.toLocaleString())
-    // }, [])
-    
-    // today.date += 40
-    // let year = today.getFullYear(); // 년도
-    // let month = today.getMonth() + 1;  // 월
-    // let date = today.getDate();  // 날짜 
-
     const prototypeDate = new Date()
-    const startRange = new Date(2022,0,1)
-    const endRange = new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),12,0))
+    const [startRange, setStartRange] = useState(new Date(2023,0,1))
+    const [endRange, setEndRange] = useState(new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),5,0)))
+
+    const extendStartRange = (amount) => {
+        const extendedDate = new Date(startRange.getFullYear(), startRange.getMonth() - amount, 1)
+        setStartRange(() => extendedDate)
+        console.log(extendedDate)
+    }
+
+    const extendEndRange = (amount) => {
+        const extendedDate = new Date(endRange.getFullYear(), endRange.getMonth() + amount + 1, 0)
+        setEndRange(() => extendedDate)
+    }
+
+
+
+    const planTitleGrid = plans.map((el, idx) => {
+
+        return (
+
+            <div className={styles['plan-title-bar']} key={`month-title-bar-${idx}`}>
+            {plans[idx].title}
+            </div>
+
+        )
+    })
 
 
     return (
-        <div>
-            <CalendarBar startRange={startRange} endRange={endRange} />
+        <div className={styles['plans-wrapper']}>
+            <div>
+                <div className={styles['plan-title-bar']} />
+                {planTitleGrid}
+            </div>
             
-            {/* <div onMouseEnter={() => console.log('touched')} style={{width:'64px', height:'64px', backgroundColor:'black'}}></div> */}
-            
-            
-            
-
+        
+      
+            <CalendarBar startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} />
         </div>
     )
 }

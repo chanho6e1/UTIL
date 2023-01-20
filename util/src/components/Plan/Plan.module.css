@@ -1,0 +1,14 @@
+.plans-wrapper {
+    display: flex;
+    
+}
+
+.plan-title-bar {
+    width: 300px;
+    height: 48px;
+    background-color: rgb(230, 230, 235);
+    border: 1px solid rgba(220, 220, 225);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
