@@ -1,24 +1,18 @@
 import React, {useState, useRef, useEffect} from "react";
 import Swipe from "react-easy-swipe";
 import styles from "./DraggableDateSelector.module.css"
-
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 
 
-const DraggableDateSelector = (props) => {
 
-  const columnIdx = props.idx
-  const dateSelectorBar = useRef()
-  
+const DraggableDateSelector = (props) => {
   const dispatch = useDispatch()
   const [positionx, setPositionx] = useState(0)
   const [endSwipe, setEndSwipe] = useState(false)
-  
 
-
-
-  
+  const columnIdx = props.idx
+  const dateSelectorBar = useRef()
   const [initialStartDate, setInitialStartDate] = useState(new Date(props.startDate))
   const [initialEndDate, setInitialEndDate] = useState(new Date(props.endDate))
   const [initialLeft, setInitialLeft] = useState()
@@ -26,12 +20,21 @@ const DraggableDateSelector = (props) => {
   const [updatingStartDate, setUpdatingStartDate] = useState(initialStartDate)
   const [updatingEndDate, setUpdatingEndDate] = useState(initialEndDate)
 
-  useEffect(() => {
-    setInitialLeft(() => dateSelectorBar.current.offsetLeft)
-    setInitialRight(() => dateSelectorBar.current.clientWidth)
-  }, [dateSelectorBar.current])
 
+  const getMonthDistance = (start, end) => {
+    const startYear = start.getFullYear()
+    const endYear = end.getFullYear()
+    const startMonth = start.getMonth()
+    const endMonth = end.getMonth()
+    const startDate = start.getDate()
+    const endDate = end.getDate()
+    return ((endYear - startYear) * 12) - startMonth + endMonth;
+  }
 
+  // useEffect(() => {
+  //   setInitialLeft(() => dateSelectorBar.current.offsetLeft)
+  //   setInitialRight(() => dateSelectorBar.current.clientWidth)
+  // }, [dateSelectorBar.current])
 
 
 
@@ -45,29 +48,27 @@ const DraggableDateSelector = (props) => {
     const endDate = initialEndDate.getDate()
     const startMonthDaySplit = props.xPointLib[parseInt(`${initialStartDate.getFullYear()}${initialStartDate.getMonth()}`)]
     const endMonthDaySplit = props.xPointLib[parseInt(`${initialEndDate.getFullYear()}${initialEndDate.getMonth()}`)]
-  
-    dateSelectorBar.current.style.transitionDuration = '0.1s'
+    const gridStartIdx = getMonthDistance(props.gridStart ,initialStartDate)
+    const gridEndIdx = getMonthDistance(props.gridStart, initialEndDate)
 
-    const barWidth = props.planGridRef[columnIdx].current[endMonth].offsetLeft - (startMonthDaySplit * startDate) - props.planGridRef[columnIdx].current[startMonth].offsetLeft + (endMonthDaySplit * endDate)
-    dateSelectorBar.current.style.width = barWidth + 'px'
-    setInitialRight(barWidth)
+    const barWidth = props.planGridRef[columnIdx].current[gridEndIdx].offsetLeft - (startMonthDaySplit * startDate) - props.planGridRef[columnIdx].current[gridStartIdx].offsetLeft + (endMonthDaySplit * endDate)
+    const barLeft = props.planGridRef[columnIdx].current[gridStartIdx].offsetLeft + (startMonthDaySplit * startDate)
     
-    const barLeft = props.planGridRef[columnIdx].current[startMonth].offsetLeft + (startMonthDaySplit * startDate)
+    dateSelectorBar.current.style.transitionDuration = '0.1s'
+    dateSelectorBar.current.style.width = barWidth + 'px'
     dateSelectorBar.current.style.left = barLeft + 'px'
-    setInitialLeft(barLeft)
 
+    setInitialRight(barWidth)
+    setInitialLeft(barLeft)
     setUpdatingStartDate(initialStartDate)
     setUpdatingEndDate(initialEndDate)
   }
 
 
+
   useEffect(() => {
     setStartWidth()
   }, [props.xPointLib, initialStartDate, initialEndDate])
-
-
-
-
 
 
 
@@ -77,6 +78,7 @@ const DraggableDateSelector = (props) => {
   const [endPeriod, setEndPeriod] = useState(0)
   const [endMoved, setEndMoved] = useState(0)
   const [endMonth, setEndMonth] = useState(initialEndDate.getMonth())
+
 
 
   const onStartSwipeMove = (position = { x: null }) => {
@@ -98,7 +100,6 @@ const DraggableDateSelector = (props) => {
 
 
 
-  
   const onEndSwipeMove = (position = { x: null }) => {
     dateSelectorBar.current.style.transitionDuration = '0s'
     dateSelectorBar.current.style.width = initialRight + position.x + 'px'
@@ -115,6 +116,8 @@ const DraggableDateSelector = (props) => {
     setPositionx(position.x)
   }
 
+
+
   const onTransferMove = (position = { x: null }) => {
     dateSelectorBar.current.style.transitionDuration = '0s'
     dateSelectorBar.current.style.left = initialLeft + position.x + 'px'
@@ -126,13 +129,11 @@ const DraggableDateSelector = (props) => {
     const updatedDateEnd = new Date(tempDateEnd.setDate(tempDateEnd.getDate() + periodValue))
     setUpdatingStartDate(updatedDateStart)
     setUpdatingEndDate(updatedDateEnd)
-
     if (updatedDateStart.getMonth() !== startMonth) {
       setStartMoved(position.x)
       setStartPeriod(periodValue)
       setStartMonth(updatedDateStart.getMonth())
     }
-
     if (updatedDateEnd.getMonth() !== endMonth) {
       setEndMoved(position.x)
       setEndPeriod(periodValue)
@@ -150,7 +151,6 @@ const DraggableDateSelector = (props) => {
     setStartPeriod(0)
     setStartMonth(updatingStartDate.getMonth())
     setPositionx(0)
-
     // dispatch(modifyPlanSliceActions.modifyStartDate(JSON.stringify({idx: props.idx, updatedDate: startDate.toString()})))
     // dispatch(modifyPlanSliceActions.modifyEndDate(JSON.stringify({idx: props.idx, updatedDate: endDate.toString()})))
   }
@@ -162,7 +162,6 @@ const DraggableDateSelector = (props) => {
     setEndPeriod(0)
     setEndMonth(updatingEndDate.getMonth())
     setPositionx(0)
-    
     // dispatch(modifyPlanSliceActions.modifyStartDate(JSON.stringify({idx: props.idx, updatedDate: startDate.toString()})))
     // dispatch(modifyPlanSliceActions.modifyEndDate(JSON.stringify({idx: props.idx, updatedDate: endDate.toString()})))
   }
@@ -177,7 +176,6 @@ const DraggableDateSelector = (props) => {
     setStartMonth(updatingStartDate.getMonth())
     setEndMonth(updatingEndDate.getMonth())
     setPositionx(0)
-    
     // dispatch(modifyPlanSliceActions.modifyStartDate(JSON.stringify({idx: props.idx, updatedDate: startDate.toString()})))
     // dispatch(modifyPlanSliceActions.modifyEndDate(JSON.stringify({idx: props.idx, updatedDate: endDate.toString()})))
   }
@@ -188,32 +186,27 @@ const DraggableDateSelector = (props) => {
 
 
   return (
-
-
       <div ref={dateSelectorBar} className={styles['date-selector-bar']} draggable='false'>
         <Swipe onSwipeStart={(event) => {event.stopPropagation();}} onSwipeEnd={onStartSwipeQuit} onSwipeMove={onStartSwipeMove} allowMouseEvents={true}>
-          <div id="left" className={styles['resize-handler']}>
+          <div id="left" className={`${styles['resize-handler']} ${styles['left-resize']}`}>
             <div className={styles['start-date-string']}>
-              {updatingStartDate.toLocaleString()}
+            {/* {updatingStartDate.getFullYear()}/{(updatingStartDate.getMonth() + 1)}/{(updatingStartDate.getDate())} */}
+            {updatingStartDate.getFullYear()+"/"+(("00"+(updatingStartDate.getMonth() + 1).toString()).slice(-2))+"/"+(("00"+(updatingStartDate.getDate()).toString()).slice(-2))}
             </div>
           </div>
         </Swipe>
         <Swipe className={styles['center-swiper']} onSwipeStart={(event) => {event.stopPropagation();}} onSwipeEnd={onTransferSwipeQuit} onSwipeMove={onTransferMove} allowMouseEvents={true}>
         <div className={styles['center-move-handler']}>
-          
         </div>
         </Swipe>
         <Swipe onSwipeStart={(event) => {event.stopPropagation();}} onSwipeEnd={onEndSwipeQuit} onSwipeMove={onEndSwipeMove} allowMouseEvents={true}>
-          <div id="right" className={styles['resize-handler']}>
+          <div id="right" className={`${styles['resize-handler']} ${styles['right-resize']}`}>
             <div className={styles['end-date-string']}>
-              {updatingEndDate.toLocaleString()}
+            {updatingEndDate.getFullYear()+"/"+(("00"+(updatingEndDate.getMonth() + 1).toString()).slice(-2))+"/"+(("00"+(updatingEndDate.getDate()).toString()).slice(-2))}
             </div>
           </div>
         </Swipe>
       </div>
-      
-
-    
   )
 }
 

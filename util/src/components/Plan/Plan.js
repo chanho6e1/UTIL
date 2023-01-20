@@ -26,7 +26,7 @@ const Plan = (props) => {
     // let date = today.getDate();  // 날짜 
 
     const prototypeDate = new Date()
-    const startRange = new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),0,1))
+    const startRange = new Date(2022,0,1)
     const endRange = new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),12,0))
 
 
