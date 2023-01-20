@@ -33,7 +33,7 @@ const DraggableDateSelector = (props) => {
 
   const getDayDistance = (start, end) => {
     const diffDate = start.getTime() - end.getTime();
-    return Math.abs(diffDate / (1000 * 60 * 60 * 24)); // 밀리세컨 * 초 * 분 * 시 = 일
+    return Math.abs(diffDate / (1000 * 60 * 60 * 24));
   }
 
 
@@ -47,7 +47,6 @@ const DraggableDateSelector = (props) => {
       const endDateCorrection = new Date(new Date(initialStartDate).setDate(initialStartDate.getDate() + 1))
       setInitialEndDate(endDateCorrection)
     }
-    // 시작 위치 지정
     const startYear = initialStartDate.getFullYear()
     const endYear = initialEndDate.getFullYear()
     const startMonth = initialStartDate.getMonth()
@@ -72,8 +71,6 @@ const DraggableDateSelector = (props) => {
     setUpdatingEndDate(initialEndDate)
   }
 
-
-
   useEffect(() => {
     setStartWidth()
   }, [props.xPointLib, initialStartDate, initialEndDate])
@@ -97,7 +94,6 @@ const DraggableDateSelector = (props) => {
     if (position.x > 0 && (isValid >= initialEndDate || initialStartDate >= initialEndDate)) {
       return
     }
-
     dateSelectorBar.current.style.transitionDuration = '0s'
     dateSelectorBar.current.style.left = initialLeft + position.x + 'px'
     dateSelectorBar.current.style.width = initialRight + (-position.x) + 'px'
@@ -147,8 +143,6 @@ const DraggableDateSelector = (props) => {
     if ((position.x < 0 && (isStartValid <= props.gridStart || isStartValid <= props.gridStart)) || (position.x > 0 && (isEndValid >= props.gridEnd || isEndValid >= props.gridEnd))) {
       return
     }
-    
-
     dateSelectorBar.current.style.transitionDuration = '0s'
     dateSelectorBar.current.style.left = initialLeft + position.x + 'px'
     const xPoint = props.xPointLib[parseInt(`${updatingStartDate.getFullYear()}${updatingStartDate.getMonth()}`)]
@@ -174,7 +168,6 @@ const DraggableDateSelector = (props) => {
 
 
 
-
   const onStartSwipeQuit = () => {
     const isValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
     if (positionx > 0 && (isValid >= initialEndDate || initialStartDate >= initialEndDate)) {
@@ -191,16 +184,12 @@ const DraggableDateSelector = (props) => {
       setStartPeriod(0)
       setPositionx(0)
     }
-
     if (positionx < 0 && (isValid <= props.gridStart || isValid <= props.gridStart)) {
       props.extendStartRange(1)
       setInitialStartDate(() => props.gridStart)
     } else {
       setInitialStartDate(() => updatingStartDate)
     }
-    
-    
-    
     // dispatch(modifyPlanSliceActions.modifyStartDate(JSON.stringify({idx: props.idx, updatedDate: startDate.toString()})))
     // dispatch(modifyPlanSliceActions.modifyEndDate(JSON.stringify({idx: props.idx, updatedDate: endDate.toString()})))
   }
@@ -222,14 +211,12 @@ const DraggableDateSelector = (props) => {
       setEndPeriod(0)
       setPositionx(0)
     }
-
     if (positionx > 0 && (isValid >= props.gridEnd || isValid >= props.gridEnd)) {
       props.extendEndRange(1)
       setInitialEndDate(() => props.gridEnd)
     } else {
       setInitialEndDate(() => updatingEndDate)
     }
-    
     // dispatch(modifyPlanSliceActions.modifyStartDate(JSON.stringify({idx: props.idx, updatedDate: startDate.toString()})))
     // dispatch(modifyPlanSliceActions.modifyEndDate(JSON.stringify({idx: props.idx, updatedDate: endDate.toString()})))
   }
@@ -253,10 +240,6 @@ const DraggableDateSelector = (props) => {
       setInitialStartDate(() => updatingStartDate)
       setInitialEndDate(() => updatingEndDate)
     }
-
-    
-    
-    
     setStartMoved(0)
     setEndMoved(0)
     setStartPeriod(0)
@@ -270,15 +253,11 @@ const DraggableDateSelector = (props) => {
 
 
   
-
-
-
   return (
       <div ref={dateSelectorBar} className={styles['date-selector-bar']} draggable='false'>
         <Swipe onSwipeStart={(event) => {event.stopPropagation();}} onSwipeEnd={onStartSwipeQuit} onSwipeMove={onStartSwipeMove} allowMouseEvents={true}>
           <div id="left" className={`${styles['resize-handler']} ${styles['left-resize']}`}>
             <div className={styles['start-date-string']}>
-            {/* {updatingStartDate.getFullYear()}/{(updatingStartDate.getMonth() + 1)}/{(updatingStartDate.getDate())} */}
             {updatingStartDate.getFullYear()+"/"+(("00"+(updatingStartDate.getMonth() + 1).toString()).slice(-2))+"/"+(("00"+(updatingStartDate.getDate()).toString()).slice(-2))}
             </div>
           </div>
