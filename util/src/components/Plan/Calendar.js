@@ -1,14 +1,14 @@
 import React, {useEffect, useRef, useState} from "react";
-import styles from './CalendarBar.module.css'
+import styles from './Calendar.module.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
-import DraggableDateSelector from "./DraggableDateSelector";
+import CalendarDateSelector from "./CalendarDateSelector";
 import Swipe from "react-easy-swipe";
 
 
 
-const CalendarBar = (props) => {
-  
+const Calendar = (props) => {
+  const dateRangeWrapperRef = useRef()
 
   const getMonthDistance = (start, end) => {
     const startYear = start.getFullYear()
@@ -95,23 +95,28 @@ const CalendarBar = (props) => {
 
         <div ref={containerRef} className={styles['month-bar-container']} key={`month-bar-container-${idx}`}>
             {columns}
-            <DraggableDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
+            <CalendarDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
         </div>
 
     )
   })
 
+  const scrollHorizontalOnWheel = (event) => {
+    const deltaX = event.deltaY * 5
+    dateRangeWrapperRef.current.scrollBy({top:0, left:deltaX, behavior:'smooth'})
+  }
+
 
   return (
-    <div id="date-range" className={styles['date-range-wrapper']}>
-      <div>
-        <div className={styles['month-bar-container']}>
-          {monthTitleGrid}
+      <div id="date-range" ref={dateRangeWrapperRef} onClick={() => console.log(dateRangeWrapperRef)} onWheel={scrollHorizontalOnWheel} className={styles['date-range-wrapper']}>
+        <div>
+          <div className={styles['month-bar-container']}>
+            {monthTitleGrid}
+          </div>
+          {totalPlansGrid}
         </div>
-        {totalPlansGrid}
       </div>
-    </div>
   )
 }
 
-export default CalendarBar
+export default Calendar

@@ -2,23 +2,24 @@
 
 .date-selector-bar {
     height: 36px;
-    /* background-color: red; */
     border-radius: 10px;
     display: flex;
-    transition-property: width left;
-    /* transition-duration: 0.3s; */
-    /* left: 100px; */
+    transition-property: width left border;
     right: 2600px;
     position: absolute;
     right: 3000px;
-    /* pointer-events: none; */
-    
+    background-color: rgba(154, 76, 249, 0.5);
+}
+
+.date-selector-bar:hover {
+    background-color: rgba(154, 76, 249, 0.8);
+
 }
 
 
 .center-move-handler {
     flex: 1;
-    background-color: rgba(154, 76, 249, 0.5);
+    
     height: 36px;
     cursor: pointer;
     
@@ -74,7 +75,6 @@
 .resize-handler {
     width: 4px;
     height: 36px;
-    background-color: rgba(154, 76, 249, 0.5);
     cursor:col-resize;
     position: relative;
 }

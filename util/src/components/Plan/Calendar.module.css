@@ -1,0 +1,73 @@
+.date-range-wrapper {
+    width: 40vw;
+    overflow: scroll;
+    overflow-y:hidden;
+    user-select: none;
+    display: flex;
+    /* background: rgb(240, 240, 245); */
+}
+
+.date-range-wrapper::-webkit-scrollbar {
+    height:14px;
+}
+.date-range-wrapper::-webkit-scrollbar-track {
+    /* background: rgb(245, 245, 250); */
+  }
+.date-range-wrapper::-webkit-scrollbar-thumb {
+    background: rgb(180, 180, 190);
+    background-clip: padding-box;
+    border: 4px solid transparent;
+    border-radius: 10px;
+}
+
+
+
+
+
+.month-bar-container {
+    
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.month-title-bar {
+    /* 겉 테두리 없애기 */
+    border-top: 1px solid transparent;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    border-bottom: 1px solid rgba(220, 220, 225);
+
+
+    width: 150px;
+    height: 48px;
+    /* background-color: rgb(235, 235, 240); */
+    /* border: 1px solid rgba(220, 220, 225); */
+    /* border: 1px solid transparent; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:rgb(100, 100, 100);
+    font-size: 13px;
+}
+
+.month-plan-bar {
+    width: 150px;
+    height: 48px;
+    /* background-color: rgba(245, 245, 250); */
+    border: 1px solid rgba(235, 235, 245);
+    position: relative;
+}
+
+/* .plan-title-bar {
+    width: 300px;
+    height: 48px;
+    background-color: rgb(230, 230, 235);
+    border: 1px solid rgba(220, 220, 225);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+
+
+
