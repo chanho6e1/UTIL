@@ -31,7 +31,6 @@ const Plan = (props) => {
         )
     })
 
-
     return (
         <div className={styles['plans-wrapper']}>
             <div>
