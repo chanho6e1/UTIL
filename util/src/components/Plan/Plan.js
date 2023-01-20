@@ -7,7 +7,6 @@ import { modifyPlanSliceActions } from '../../redux/planSlice'
 
 
 const Plan = (props) => {
-    
     const plans = useSelector(state => state.planSlice.plans)
     const prototypeDate = new Date()
     const [startRange, setStartRange] = useState(new Date(2023,0,1))
@@ -24,16 +23,11 @@ const Plan = (props) => {
         setEndRange(() => extendedDate)
     }
 
-
-
     const planTitleGrid = plans.map((el, idx) => {
-
         return (
-
             <div className={styles['plan-title-bar']} key={`month-title-bar-${idx}`}>
             {plans[idx].title}
             </div>
-
         )
     })
 
@@ -44,9 +38,6 @@ const Plan = (props) => {
                 <div className={styles['plan-title-bar']} />
                 {planTitleGrid}
             </div>
-            
-        
-      
             <CalendarBar startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} />
         </div>
     )
