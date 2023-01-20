@@ -22,7 +22,7 @@ public class UserResponse {
     private String department;
 
     public static UserResponse from(User user) {
-        return new UserResponse(user.getUserId(), user.getEmail(), user.getNickName(), user.getDepartment());
+        return new UserResponse(user.getUserId(), user.getNickName(), user.getEmail(),user.getDepartment());
     }
 
     public void setNickname(String nickname) {

@@ -1,0 +1,53 @@
+package com.youtil.server.server.controller.user;
+
+import com.youtil.server.common.CommonResponse;
+import com.youtil.server.domain.user.User;
+import com.youtil.server.oauth.config.LoginUser;
+import com.youtil.server.oauth.entity.SessionUser;
+import com.youtil.server.repository.user.UserRepository;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpSession;
+
+@RequiredArgsConstructor
+@RestController
+public class UserController{
+
+//    private final PostsService postsService;
+    private final HttpSession httpSession;
+    private final UserRepository userRepository;
+
+    //    @GetMapping("/")
+//    public String index(Model model, @LoginUser SessionUser user) {
+////        model.addAttribute("posts", postsService.findAllDesc());
+//
+////        SessionUser user = (SessionUser)httpSession.getAttribute("user");
+//
+//        if(user != null) {
+//            model.addAttribute("userName", user.getName());
+//            System.out.println(user.getEmail());
+//        }
+//
+//        return "index";
+//    }
+    @ApiOperation(value = "로그인 사용자 정보", notes = "로그인 사용자 정보를 반환")
+    @GetMapping
+    public ResponseEntity<CommonResponse> getUser(@LoginUser SessionUser user) {
+
+//        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+
+        System.out.println(userRepository.findByEmail(user == null ? "없다" : "있다"));
+
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.CREATED, "로그인 성공", user.getEmail()));
+    }
+}
