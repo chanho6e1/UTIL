@@ -11,8 +11,17 @@ public class PostSearch {
 
     private String criteria;
 
+    public PostSearch(String criteria){
+        this.criteria = criteria;
+    }
+
+
     public static PostSearch of(String content, String criteria){
         return new PostSearch(content, criteria);
+    }
+
+    public static PostSearch of(String criteria){
+        return new PostSearch(criteria);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.youtil.server.domain.post;
 
 import com.youtil.server.domain.BaseEntity;
+import com.youtil.server.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,13 +22,19 @@ public class PostLike extends BaseEntity {
     @JoinColumn(name = "Post_id", nullable = false)
     private Post post;
 
-    @Column(nullable = false)
-    private Long userId;
+//    @Column(nullable = false)
+//    private Long userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id")
+    private User user;
+
+    private Boolean likeStatus;
 
     @Builder
-    public PostLike(Post post, Long userId){
+    public PostLike(Post post, User user){
         this.post = post;
-        this.userId = userId;
+        this.user = user;
     }
 
     public void setPost(Post post) {
@@ -35,6 +42,6 @@ public class PostLike extends BaseEntity {
     }
 
     public boolean ownedBy(Long userId) {
-        return this.userId.equals(userId);
+        return this.user.getUserId().equals(userId);
     }
 }
