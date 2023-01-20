@@ -23,7 +23,7 @@ public class PostLikeList {
     }
 
     public boolean togglePostLike(PostLike postLike){
-        if(contains(postLike.getUserId())){
+        if(contains(postLike.getUser().getUserId())){
             removePostLike(postLike);
             return false;
         }
@@ -37,7 +37,7 @@ public class PostLikeList {
     }
 
     private void removePostLike(PostLike postLike) {
-        Long userId = postLike.getUserId();
+        Long userId = postLike.getUser().getUserId();
         PostLike removalTarget = postLikeList.parallelStream()
                 .filter(l -> l.ownedBy(userId))
                 .findAny()

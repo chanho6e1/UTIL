@@ -4,6 +4,8 @@ import com.youtil.server.domain.BaseEntity;
 import com.youtil.server.domain.category.Category;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.user.User;
+import com.youtil.server.dto.post.PostSaveRequest;
+import com.youtil.server.dto.post.PostUpdateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,23 +25,25 @@ public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
-    private Long id;
+    private Long postId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    private Integer postType;
-
     private String title;
 
+    @Column(columnDefinition="TEXT")
     private String content;
 
     private String shortDescription;
 
     private Integer views;//조회수
 
-    private Boolean likeStatus;
+    private Integer isPrivate; //공개2, 팔로워1, 비공개0
+
+    private String thumbnail;
+
 
     @Embedded
     private final PostCommentList postCommentList = new PostCommentList();
@@ -51,16 +55,17 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
     private Category category;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="goal_id")
     private Goal goal;
 
     @Builder
-    public Post(User user, String title, String content){
+    public Post(User user, String title, String content, String thumbnail, Integer isPrivate){
         this.user = user;
         this.title = title;
         this.content = content;
+        this.thumbnail = thumbnail;
+        this.isPrivate = isPrivate;
         this.views=0;
     }
 
@@ -69,10 +74,21 @@ public class Post extends BaseEntity {
         this.views = this.views+1;
     }
 
-    public void update(String title, String content){
-        this.title = title;
-        this.content = content;
+    public void update(PostUpdateRequest request){
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.thumbnail = request.getThumbnail();
+        this.isPrivate = request.getIsPrivate();
     }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+
+//    public void setLikeStatus(postLike category) {
+//        this.category = category;
+//    }
 
 
     public void addComment(PostComment postComment){
@@ -83,12 +99,12 @@ public class Post extends BaseEntity {
     public boolean togglePostLike(PostLike postLike) {
         return postLikeList.togglePostLike(postLike);
     }
-//
-    public int getTotalComments(){
+
+    public Integer getTotalComments(){
         return postCommentList.size();
     }
 
-    public int getTotalLikes(){
+    public Integer getTotalLikes(){
         return postLikeList.size();
     }
 

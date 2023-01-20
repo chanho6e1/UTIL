@@ -16,9 +16,15 @@ public class Category extends BaseEntity {
     @Column(name = "category_id")
     private Long id;
 
-    private String name;
+    private String categoryName;
 
     @Embedded
     private final PostList postList = new PostList();
+
+    public void addCategory(Post post){
+        this.postList.getPostList().add(post);
+        post.setCategory(this);
+    }
+
 
 }
