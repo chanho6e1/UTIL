@@ -91,18 +91,26 @@ const Calendar = (props) => {
   // 목표의 개수에 따른 열 반복
   const totalPlansGrid = plans.map((el, idx) => {
     const columns = gridPerPlans(idx)
-    return (
-
-        <div ref={containerRef} className={styles['month-bar-container']} key={`month-bar-container-${idx}`}>
+    if (idx % 2 === 0) {
+      return (
+        <div ref={containerRef} className={`${styles['month-bar-container']} ${styles['container-even']}`} key={`month-bar-container-${idx}`}>
             {columns}
             <CalendarDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
         </div>
-
-    )
+      )
+    } else {
+      return (
+        <div ref={containerRef} className={`${styles['month-bar-container']} ${styles['container-odd']}`} key={`month-bar-container-${idx}`}>
+            {columns}
+            <CalendarDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
+        </div>
+      )
+    }
+    
   })
 
   const scrollHorizontalOnWheel = (event) => {
-    const deltaX = event.deltaY * 5
+    const deltaX = event.deltaY * 4
     dateRangeWrapperRef.current.scrollBy({top:0, left:deltaX, behavior:'smooth'})
   }
 
