@@ -84,7 +84,6 @@ const CalendarDateSelector = (props) => {
   }, [props.xPointLib, initialStartDate, initialEndDate])
 
 
-
   const [startPeriod, setStartPeriod] = useState(0)
   const [startMoved, setStartMoved] = useState(0)
   const [startMonth, setStartMonth] = useState(initialStartDate.getMonth())
