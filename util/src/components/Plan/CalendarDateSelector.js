@@ -20,6 +20,9 @@ const CalendarDateSelector = (props) => {
   const [updatingStartDate, setUpdatingStartDate] = useState(initialStartDate)
   const [updatingEndDate, setUpdatingEndDate] = useState(initialEndDate)
 
+  useEffect(() => {
+    dateSelectorBar.current.style.backgroundColor = "#"+(parseInt(Math.random()*0xffffff)).toString(16)
+  }, [])
 
   const getMonthDistance = (start, end) => {
     const startYear = start.getFullYear()
@@ -227,7 +230,6 @@ const CalendarDateSelector = (props) => {
     if (positionx < 0 && (isStartValid <= props.gridStart || isStartValid <= props.gridStart)) {
       props.extendStartRange(1)
       const endDateCorrection = new Date(new Date(props.gridStart).setDate(props.gridStart.getDate() + dayDistance))
-      console.log(endDateCorrection)
       setInitialStartDate(() => props.gridStart)
       setInitialEndDate(() => endDateCorrection)
     } else if (positionx > 0 && (isEndValid >= props.gridEnd || isEndValid >= props.gridEnd)) {
@@ -256,6 +258,7 @@ const CalendarDateSelector = (props) => {
       <div ref={dateSelectorBar} className={styles['date-selector-bar']} draggable='false'>
         <Swipe onSwipeStart={(event) => {event.stopPropagation();}} onSwipeEnd={onStartSwipeQuit} onSwipeMove={onStartSwipeMove} allowMouseEvents={true}>
           <div id="left" className={`${styles['resize-handler']} ${styles['left-resize']}`}>
+            <div className={styles['on-mouse-block-left']} />
             <div className={styles['start-date-string']}>
             {updatingStartDate.getFullYear()+"/"+(("00"+(updatingStartDate.getMonth() + 1).toString()).slice(-2))+"/"+(("00"+(updatingStartDate.getDate()).toString()).slice(-2))}
             </div>
@@ -267,6 +270,7 @@ const CalendarDateSelector = (props) => {
         </Swipe>
         <Swipe onSwipeStart={(event) => {event.stopPropagation();}} onSwipeEnd={onEndSwipeQuit} onSwipeMove={onEndSwipeMove} allowMouseEvents={true}>
           <div id="right" className={`${styles['resize-handler']} ${styles['right-resize']}`}>
+            <div className={styles['on-mouse-block-right']} />
             <div className={styles['end-date-string']}>
             {updatingEndDate.getFullYear()+"/"+(("00"+(updatingEndDate.getMonth() + 1).toString()).slice(-2))+"/"+(("00"+(updatingEndDate.getDate()).toString()).slice(-2))}
             </div>

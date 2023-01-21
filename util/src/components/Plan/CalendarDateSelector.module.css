@@ -4,16 +4,17 @@
     height: 36px;
     border-radius: 10px;
     display: flex;
-    transition-property: width left border;
+    transition-property: width left border opacity;
     right: 2600px;
     position: absolute;
     right: 3000px;
-    background-color: rgba(154, 76, 249, 0.5);
+    /* background-color: rgba(154, 76, 249, 0.5); */
+    opacity: 70%;
 }
 
 .date-selector-bar:hover {
-    background-color: rgba(154, 76, 249, 0.8);
-
+    /* background-color: rgba(154, 76, 249, 0.8); */
+    opacity: 100%;
 }
 
 
@@ -73,7 +74,7 @@
 }
 
 .resize-handler {
-    width: 4px;
+    width: 2px;
     height: 36px;
     cursor:col-resize;
     position: relative;
@@ -90,4 +91,35 @@
 }
 
 
+.on-mouse-block-left {
+    transition-property: opacity;
+    transition-duration: 0.3s;
+    opacity: 0;
+    background-color: white;
+    width: 5px;
+    height: 25px;
+    border-radius: 20px;
+    margin: 6px;;
+    position: absolute;
+}
 
+.date-selector-bar:hover .on-mouse-block-left {
+    opacity: 60%;
+}
+
+.on-mouse-block-right {
+    transition-property: opacity;
+    transition-duration: 0.3s;
+    opacity: 0;
+    background-color: white;
+    width: 5px;
+    height: 25px;
+    border-radius: 20px;
+    margin: 6px;;
+    position: absolute;
+    left:-15px;
+}
+
+.date-selector-bar:hover .on-mouse-block-right {
+    opacity: 60%;
+}
