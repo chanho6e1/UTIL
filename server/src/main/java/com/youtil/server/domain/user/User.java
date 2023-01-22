@@ -4,13 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 import com.youtil.server.domain.BaseEntity;
-import com.youtil.server.oauth.entity.ProviderType;
-import com.youtil.server.oauth.entity.RoleType;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-
+@DynamicUpdate
 @Getter
 @Setter
 @NoArgsConstructor
@@ -48,65 +47,46 @@ public class User extends BaseEntity {
     @Size(max = 128)
     private String password;
 
-    @Column(name = "PROFILE_IMAGE_URL", length = 512)
+    @Column(name = "IMAGE_URL", length = 512)
     @NotNull
     @Size(max = 512)
-    private String profileImageUrl;
+    private String imageUrl;
 
     @Column(name = "PROVIDER_TYPE", length = 20)
     @Enumerated(EnumType.STRING)
     @NotNull
-    private ProviderType providerType;
+    private AuthProvider provider;
 
-    @Column(name = "ROLE_TYPE", length = 20)
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private RoleType roleType;
+    String providerId;
+
+//    @Column(name = "ROLE_TYPE", length = 20)
+//    @Enumerated(EnumType.STRING)
+//    @NotNull
+//    private Role role;
 
     @Builder
-    public User(String userName, String email, String profileImageUrl, RoleType roleType, ProviderType providerType){
+    public User(String userName, String email, String password, String imageUrl, String providerId){
         this.userName = userName;
         this.email = email;
         this.password = "NO_PASS";
-        this.profileImageUrl = profileImageUrl != null ? profileImageUrl : "";
-        this.providerType = providerType;
-        this.roleType = roleType;
+        this.imageUrl = imageUrl != null ? imageUrl : "";
+        this.providerId = providerId;
+//        this.role = role;
     }
 
-    public User update(String nickName, String profileImageUrl){
+    public User update(String nickName, String imageUrl){
         this.nickName = nickName;
-        this.profileImageUrl = profileImageUrl;
+        this.imageUrl = imageUrl;
 
         return this;
     }
-
-    public String getRoleType(){
-        return this.roleType.getCode();
+    public void updateNickName(String nickName){
+        this.nickName = nickName;
     }
 
+    public void updateImageUrl(String profileImageUrl){
+        this.imageUrl = imageUrl;
+    }
 
-
-//    public User(
-//            @NotNull @Size(max = 64) String userId,
-//            @NotNull @Size(max = 100) String username,
-//            @NotNull @Size(max = 512) String email,
-//            @NotNull @Size(max = 1) String emailVerifiedYn,
-//            @NotNull @Size(max = 512) String profileImageUrl,
-//            @NotNull ProviderType providerType,
-//            @NotNull RoleType roleType,
-//            @NotNull LocalDateTime createdAt,
-//            @NotNull LocalDateTime modifiedAt
-//    ) {
-//        this.userId = userId;
-//        this.username = username;
-//        this.password = "NO_PASS";
-//        this.email = email != null ? email : "NO_EMAIL";
-//        this.emailVerifiedYn = emailVerifiedYn;
-//        this.profileImageUrl = profileImageUrl != null ? profileImageUrl : "";
-//        this.providerType = providerType;
-//        this.roleType = roleType;
-//        this.createdAt = createdAt;
-//        this.modifiedAt = modifiedAt;
-//    }
 }
 
