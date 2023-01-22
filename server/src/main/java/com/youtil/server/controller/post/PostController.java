@@ -4,8 +4,8 @@ import com.youtil.server.common.CommonResponse;
 import com.youtil.server.dto.post.PostSaveRequest;
 import com.youtil.server.dto.post.PostSearch;
 import com.youtil.server.dto.post.PostUpdateRequest;
-import com.youtil.server.oauth.config.LoginUser;
-import com.youtil.server.oauth.entity.SessionUser;
+import com.youtil.server.security.CurrentUser;
+import com.youtil.server.security.UserPrincipal;
 import com.youtil.server.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,7 +38,7 @@ public class PostController {
 
     @ApiOperation(value = "단일 게시물 조회", notes = "게시물 id로 게시물을 조회한다.")
     @GetMapping("/{postId}")
-    public ResponseEntity<CommonResponse> getPost(@LoginUser SessionUser user, @PathVariable Long postId) {
+    public ResponseEntity<CommonResponse> getPost(@CurrentUser UserPrincipal user, @PathVariable Long postId) {
 
         System.out.println(
                 user.getId()
@@ -50,7 +50,7 @@ public class PostController {
 
     @ApiOperation(value = "내가 쓴 게시물 리스트 조회", notes = "내가 쓴 게시물 목록을 조회한다.(최근날짜순)")
     @GetMapping("/users")
-    public ResponseEntity<CommonResponse> findPostListByUser(@LoginUser SessionUser user, @RequestParam(required=false) int offset) {
+    public ResponseEntity<CommonResponse> findPostListByUser(@CurrentUser UserPrincipal user, @RequestParam(required=false) int offset) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "나의 게시물 목록 조회 성공", postService.findPostListByUser(user.getId(), offset))
         );
@@ -66,7 +66,7 @@ public class PostController {
 
     @ApiOperation(value = "정렬 기준(선택)으로 내가 구독한 사람의 게시물 리스트 조회", notes = "내가 구독한 사람만,정렬 기준(view/date/like)으로 게시물 목록물 목록을 조회한다.")
     @GetMapping("/subscribes")
-    public ResponseEntity<CommonResponse> findBySubscribesPostList(@LoginUser SessionUser user,
+    public ResponseEntity<CommonResponse> findBySubscribesPostList(@CurrentUser UserPrincipal user,
                                                                @RequestParam(required=false) String criteria,
                                                                @RequestParam int offset) {
         return ResponseEntity.ok().body(CommonResponse.of(
@@ -88,14 +88,14 @@ public class PostController {
 
     @ApiOperation(value = "게시물 등록", notes = "게시물을 등록한다")
     @PostMapping
-    public ResponseEntity<CommonResponse> createPost(@LoginUser SessionUser user, @RequestBody @Valid PostSaveRequest request) throws Exception {
+    public ResponseEntity<CommonResponse> createPost(@CurrentUser UserPrincipal user, @RequestBody @Valid PostSaveRequest request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "등록 성공", postService.createPost(user.getId(), request)));
     }
 
     @ApiOperation(value = "게시물 수정", notes = "해당 게시물을 수정한다")
     @PutMapping("/{postId}")
-    public ResponseEntity<CommonResponse> updatepost(@LoginUser SessionUser user, @PathVariable Long postId,
+    public ResponseEntity<CommonResponse> updatepost(@CurrentUser UserPrincipal user, @PathVariable Long postId,
                                                      @RequestBody @Valid PostUpdateRequest request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "수정 성공", postService.updatePost(user.getId(), postId, request)));
@@ -103,14 +103,14 @@ public class PostController {
 
     @ApiOperation(value = "게시물 삭제", notes = "단일 게시물을 삭제한다")
     @DeleteMapping("/{postId}")
-    public ResponseEntity<CommonResponse> deletepost(@LoginUser SessionUser user, @PathVariable Long postId) {
+    public ResponseEntity<CommonResponse> deletepost(@CurrentUser UserPrincipal user, @PathVariable Long postId) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.NO_CONTENT, "삭제 성공", postService.deletePost(user.getId(), postId)));
     }
 
     @ApiOperation(value = "게시물 좋아요 토글", notes = "단일 게시물에 대한 좋아요 선택/해제한다")
     @PutMapping("/{postId}/likes")
-    public ResponseEntity<CommonResponse> togglePostLikes(@LoginUser SessionUser user,
+    public ResponseEntity<CommonResponse> togglePostLikes(@CurrentUser UserPrincipal user,
                                                               @PathVariable Long postId) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "좋아요 성공", postService.togglePostLikes(user.getId(), postId)));
@@ -118,7 +118,7 @@ public class PostController {
 
     @ApiOperation(value = "해당 게시물을 좋아요한 유저를 반환한다", notes = "해당 게시물을 좋아요한 유저 프로필이미지와 닉네임을 반환한다")
     @GetMapping("/{postId}/likes/users")
-    public ResponseEntity<CommonResponse> PostLikesPeople(@LoginUser SessionUser user,
+    public ResponseEntity<CommonResponse> PostLikesPeople(@CurrentUser UserPrincipal user,
                                                           @PathVariable Long postId, @RequestParam(required=false) int offset) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "좋아요한 유저 리스트 반환 성공", postService.PostLikesPeople(user.getId(), postId, offset)));
