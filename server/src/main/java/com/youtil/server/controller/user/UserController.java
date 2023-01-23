@@ -2,52 +2,36 @@ package com.youtil.server.controller.user;
 
 import com.youtil.server.common.CommonResponse;
 import com.youtil.server.domain.user.User;
-import com.youtil.server.oauth.config.LoginUser;
-import com.youtil.server.oauth.entity.SessionUser;
+import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.repository.user.UserRepository;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import lombok.RequiredArgsConstructor;
+import com.youtil.server.security.CurrentUser;
+import com.youtil.server.security.UserPrincipal;
+import com.youtil.server.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
-
-@RequiredArgsConstructor
 @RestController
-public class UserController{
+@RequestMapping("/user")
+public class UserController {
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
-//    private final PostsService postsService;
-    private final HttpSession httpSession;
-    private final UserRepository userRepository;
-
-    //    @GetMapping("/")
-//    public String index(Model model, @LoginUser SessionUser user) {
-////        model.addAttribute("posts", postsService.findAllDesc());
-//
-////        SessionUser user = (SessionUser)httpSession.getAttribute("user");
-//
-//        if(user != null) {
-//            model.addAttribute("userName", user.getName());
-//            System.out.println(user.getEmail());
-//        }
-//
-//        return "index";
-//    }
-    @ApiOperation(value = "로그인 사용자 정보", notes = "로그인 사용자 정보를 반환")
-    @GetMapping
-    public ResponseEntity<CommonResponse> getUser(@LoginUser SessionUser user) {
-
-//        SessionUser user = (SessionUser) httpSession.getAttribute("user");
-
-        System.out.println(userRepository.findByEmail(user == null ? "없다" : "있다"));
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('USER')")
+    public  ResponseEntity<CommonResponse>  getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
 
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.CREATED, "로그인 성공", user.getEmail()));
+                HttpStatus.OK, "유저 정보 조회 성공", userService.getUser(userPrincipal.getId())));
+        
     }
+
+
 }
