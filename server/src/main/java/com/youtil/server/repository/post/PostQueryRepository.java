@@ -36,6 +36,18 @@ public class PostQueryRepository {
                 .fetch();
     }
 
+//    public List<Post> findPostList(String criteria, String cop, Long cursor, PageRequest pageRequest){ //정렬
+//        if(criteria == null){
+//            criteria = "date";
+//        }
+//        return jpaQueryFactory.select(post)
+//                .distinct().from(post)
+//                .innerJoin(post.user).fetchJoin()
+//                .orderBy(findCriteria(criteria))
+//                .where((cop.eq("<"), post.postId < cursor .or(cop = '>' , post.postId > cursor))
+//                .fetch();
+//    }
+
     public List<Post> findPostList(String criteria, PageRequest pageRequest){ //정렬
         if(criteria == null){
             criteria = "date";
@@ -78,10 +90,20 @@ public class PostQueryRepository {
         return jpaQueryFactory.selectFrom(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(post.user.in(postSubscribe))
+//                .where(post.isPrivate.in(2,1))
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
+
+//        return jpaQueryFactory.selectFrom(post)
+//                .innerJoin(post.user).fetchJoin()
+//                .innerJoin(follow).fetchJoin()
+//                .where(follow.fromUser.userId.eq(user.getUserId()))
+//                .orderBy(findCriteria(criteria))
+//                .offset(pageRequest.getOffset())
+//                .limit(pageRequest.getPageSize())
+//                .fetch();
     }
 
     public List<PostLike> PostLikesPeople(Long postId, PageRequest pageRequest) {
