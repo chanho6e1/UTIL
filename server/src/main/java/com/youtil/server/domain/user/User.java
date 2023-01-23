@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 import com.youtil.server.domain.BaseEntity;
+import com.youtil.server.dto.user.UserUpdateRequest;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -74,9 +75,17 @@ public class User extends BaseEntity {
 //        this.role = role;
     }
 
-    public User update(String nickName, String imageUrl){
-        this.nickName = nickName;
-        this.imageUrl = imageUrl;
+//    public User update(String nickName, String imageUrl){
+//        this.nickName = nickName;
+//        this.imageUrl = imageUrl;
+//
+//        return this;
+//    }
+
+    public User update(UserUpdateRequest user){
+        this.nickName = user.getNickName();
+        this.imageUrl = user.getImageUrl();
+        this.department = user.getDepartment();
 
         return this;
     }
