@@ -1,10 +1,12 @@
 package com.youtil.server.controller.post;
 
 import com.youtil.server.common.CommonResponse;
-import com.youtil.server.dto.post.*;
-import com.youtil.server.oauth.config.LoginUser;
-import com.youtil.server.oauth.entity.SessionUser;
-import com.youtil.server.service.post.PostService;
+import com.youtil.server.dto.post.PostSaveRequest;
+import com.youtil.server.dto.post.PostSearch;
+import com.youtil.server.dto.post.PostUpdateRequest;
+import com.youtil.server.security.CurrentUser;
+import com.youtil.server.security.UserPrincipal;
+import com.youtil.server.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,7 @@ public class PostController {
 
     @ApiOperation(value = "단일 게시물 조회", notes = "게시물 id로 게시물을 조회한다.")
     @GetMapping("/{postId}")
-    public ResponseEntity<CommonResponse> getPost(@LoginUser SessionUser user, @PathVariable Long postId) {
+    public ResponseEntity<CommonResponse> getPost(@CurrentUser UserPrincipal user, @PathVariable Long postId) {
 
         System.out.println(
                 user.getId()
@@ -166,14 +168,14 @@ public class PostController {
 
     @ApiOperation(value = "게시물 등록", notes = "게시물을 등록한다")
     @PostMapping
-    public ResponseEntity<CommonResponse> createPost(@LoginUser SessionUser user, @RequestBody @Valid PostSaveRequest request) throws Exception {
+    public ResponseEntity<CommonResponse> createPost(@CurrentUser UserPrincipal user, @RequestBody @Valid PostSaveRequest request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "등록 성공", postService.createPost(user.getId(), request)));
     }
 
     @ApiOperation(value = "게시물 수정", notes = "해당 게시물을 수정한다")
     @PutMapping("/{postId}")
-    public ResponseEntity<CommonResponse> updatepost(@LoginUser SessionUser user, @PathVariable Long postId,
+    public ResponseEntity<CommonResponse> updatepost(@CurrentUser UserPrincipal user, @PathVariable Long postId,
                                                      @RequestBody @Valid PostUpdateRequest request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "수정 성공", postService.updatePost(user.getId(), postId, request)));
@@ -181,14 +183,14 @@ public class PostController {
 
     @ApiOperation(value = "게시물 삭제", notes = "단일 게시물을 삭제한다")
     @DeleteMapping("/{postId}")
-    public ResponseEntity<CommonResponse> deletepost(@LoginUser SessionUser user, @PathVariable Long postId) {
+    public ResponseEntity<CommonResponse> deletepost(@CurrentUser UserPrincipal user, @PathVariable Long postId) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.NO_CONTENT, "삭제 성공", postService.deletePost(user.getId(), postId)));
     }
 
     @ApiOperation(value = "게시물 좋아요 토글", notes = "단일 게시물에 대한 좋아요 선택/해제한다")
     @PutMapping("/{postId}/likes")
-    public ResponseEntity<CommonResponse> togglePostLikes(@LoginUser SessionUser user,
+    public ResponseEntity<CommonResponse> togglePostLikes(@CurrentUser UserPrincipal user,
                                                               @PathVariable Long postId) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "좋아요 성공", postService.togglePostLikes(user.getId(), postId)));
