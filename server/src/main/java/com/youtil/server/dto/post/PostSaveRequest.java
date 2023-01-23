@@ -31,6 +31,8 @@ public class PostSaveRequest {
     @Max(2)
     private Integer isPrivate;
 
+    private Long categoryId;
+
 //    private String tag;
 
     public Post of(User user) {

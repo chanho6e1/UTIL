@@ -1,4 +1,4 @@
-package com.youtil.server.dto.post.category;
+package com.youtil.server.dto.category;
 
 import com.youtil.server.domain.category.Category;
 import com.youtil.server.domain.post.Post;

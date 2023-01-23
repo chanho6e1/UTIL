@@ -6,7 +6,7 @@ import com.youtil.server.dto.post.PostSearch;
 import com.youtil.server.dto.post.PostUpdateRequest;
 import com.youtil.server.security.CurrentUser;
 import com.youtil.server.security.UserPrincipal;
-import com.youtil.server.service.PostService;
+import com.youtil.server.service.post.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class PostController {
 
     @ApiOperation(value = "내가 쓴 게시물 리스트 조회", notes = "내가 쓴 게시물 목록을 조회한다.(최근날짜순)")
     @GetMapping("/users")
-    public ResponseEntity<CommonResponse> findPostListByUser(@LoginUser SessionUser user,
+    public ResponseEntity<CommonResponse> findPostListByUser(@CurrentUser UserPrincipal user,
                                                              @RequestParam(value = "order", required = false, defaultValue = "1") Integer order,
                                                              @RequestParam(value = "cursor") Long cursor,
                                                              @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
@@ -106,7 +106,7 @@ public class PostController {
 
     @ApiOperation(value = "정렬 기준(선택)으로 내가 구독한 사람의 게시물 리스트 조회", notes = "내가 구독한 사람만,정렬 기준(view/date/like)으로 게시물 목록물 목록을 조회한다.")
     @GetMapping("/subscribes")
-    public ResponseEntity<CommonResponse> findBySubscribesPostList(@LoginUser SessionUser user,
+    public ResponseEntity<CommonResponse> findBySubscribesPostList(@CurrentUser UserPrincipal user,
                                                                    @RequestParam(required=false) String criteria,
                                                                    @RequestParam(value = "order", required = false, defaultValue = "1") Integer order,
                                                                    @RequestParam(value = "cursor", required = false) Long cursor,
@@ -198,7 +198,7 @@ public class PostController {
 
     @ApiOperation(value = "해당 게시물을 좋아요한 유저를 반환한다", notes = "해당 게시물을 좋아요한 유저 프로필이미지와 닉네임을 반환한다")
     @GetMapping("/{postId}/likes/users")
-    public ResponseEntity<CommonResponse> PostLikesPeople(@LoginUser SessionUser user,
+    public ResponseEntity<CommonResponse> PostLikesPeople(@CurrentUser UserPrincipal user,
                                                           @PathVariable Long postId,
                                                           @RequestParam(value = "order", required = false, defaultValue = "1") Integer order,
                                                           @RequestParam(value = "cursor") Long cursor,
