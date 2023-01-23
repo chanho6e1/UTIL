@@ -64,13 +64,13 @@ const SwipeableDock = (props) => {
 
   const onSwipeEnd = () => {
     movingDiv.current.style.transitionDuration = '0.3s'
-    if (positionx < -50 && contentCount < postData.content.length) {
+    if (positionx < -20 && contentCount < postData.content.length) {
       setContentCount((prev) => prev + 1)
     }
-    if (positionx > 50 && contentCount > -1) {
+    if (positionx > 20 && contentCount > -1) {
       setContentCount((prev) => prev - 1)
     }
-    if (Math.abs(positionx) <= 50) {
+    if (Math.abs(positionx) <= 20) {
       movingDiv.current.style.transform = `translateX(${-width * (contentCount - 1)}px)`
     }
     setPositionx(() => 0)
@@ -88,7 +88,7 @@ const SwipeableDock = (props) => {
   useEffect(() => {
     movingDiv.current.style.transitionDuration = '0.3s'
     movingDiv.current.style.transform = `translateX(${-width * (contentCount - 1)}px)`
-    navigate(postData.url[contentCount - 1], { replace: true });
+    // navigate(postData.url[contentCount - 1], { replace: true });
   }, [contentCount])
 
 
@@ -133,7 +133,10 @@ const SwipeableDock = (props) => {
 
             <div className={styles['dock-pc']}>
               {postData.dock.dockContracted.map((el, idx) => {
-                  return <div onClick={clickDockHandler.bind(this, idx)} className={styles['dock-individual']} >{el}</div>;
+                  return <div onClick={clickDockHandler.bind(this, idx)} className={styles['dock-individual']} >
+                    <div className={styles['individual-highlighted']}></div>
+                    {el}
+                  </div>;
               })}
             </div>
           </div>
@@ -157,7 +160,10 @@ const SwipeableDock = (props) => {
           <div className={styles['dock-contracted']}>
             <div className={styles['dock-pc-bottom']}>
               {postData.dock.dockContractedBottom.map((el, idx) => {
-                  return <div className={styles['dock-individual']} >{el}</div>;
+                  return <div className={styles['dock-individual']} >
+                    <div className={styles['individual-highlighted']}></div>
+                    {el}
+                    </div>;
               })}
             </div>
           </div>

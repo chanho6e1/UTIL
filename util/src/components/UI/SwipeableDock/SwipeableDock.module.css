@@ -218,8 +218,26 @@
 .dock-individual {
     cursor: pointer;
     text-align: left;
-    
-    overflow: hidden;
+    position: relative;
+    /* overflow: hidden; */
+}
+
+.individual-highlighted:hover {
+    opacity: 255;
+}
+
+.individual-highlighted {
+    position: absolute;
+    left:-16px;
+    top:-10px;
+    width: 260px;
+    height: 52px;
+    background-color: rgba(154, 76, 249, 0.1);
+    z-index: 1;
+    border-radius: 30px;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.2s;
 }
 
 
@@ -251,6 +269,7 @@
     
     /* box-sizing: border-box; */
     overflow-x: hidden;
+    will-change: transform;
     
 }
 

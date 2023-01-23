@@ -1,17 +1,24 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef, useCallback} from "react";
 import styles from './Plan.module.css'
-
+import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate, useMatch, useLocation } from "react-router-dom";
 import Calendar from "./Calendar";
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 import Card from "../UI/Card/Card";
+import Modal from "../UI/Modal/Modal";
+import AddNewPlan from "./AddNewPlan";
 import arrow from '../../img/arrow.png'
 
 const Plan = (props) => {
-    const plans = useSelector(state => state.planSlice.plans)
+    const plans = useSelector(state => state.planSlice.plans).slice(0, props.showRange)
     const prototypeDate = new Date()
-    const [startRange, setStartRange] = useState(new Date(2023,0,1))
-    const [endRange, setEndRange] = useState(new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),6,0)))
+    const [startRange, setStartRange] = useState(new Date(prototypeDate.getFullYear(),0,1))
+    const [endRange, setEndRange] = useState(new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),12,0)))
+
+
+
+
+
 
     const extendStartRange = (amount) => {
         const extendedDate = new Date(startRange.getFullYear(), startRange.getMonth() - amount, 1)
@@ -42,20 +49,37 @@ const Plan = (props) => {
         
     })
 
+
+
+
+    
+
+    
+    
+
     return (
         
-        <div className={styles['plan-page']}>
-            <Card className={styles['plans-wrapper']}>
+        <div>
+            {/* <div className={styles['plans-navbar']}>
+                <div className={styles['navbar-element']}>목표 로드맵</div>
+                <div className={styles['navbar-element']} style={{marginTop: '8px'}}>
+
+
+                </div>
+                
+            </div> */}
+            <div className={styles['plans-wrapper']}>
                 <div>
+                    
                     <div className={styles['plan-title-bar-space']} />
                     {planTitleGrid}
                     <div className={styles['scroll-bar-space']} />
                 </div>
-                <div>
-                <Calendar startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} />
+                {/* <div> */}
+                <Calendar startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plans={plans} />
                 
-                </div>
-            </Card>
+                {/* </div> */}
+            </div>
         </div>
 
         
