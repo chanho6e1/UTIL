@@ -3,11 +3,13 @@ package com.youtil.server.service.post;
 import com.youtil.server.common.PagedResponse;
 import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
+import com.youtil.server.domain.category.Category;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.post.PostFile;
 import com.youtil.server.domain.post.PostLike;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.post.*;
+import com.youtil.server.repository.category.PostCategoryRepository;
 import com.youtil.server.repository.post.*;
 import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +49,9 @@ public class PostService {
 
     @Autowired
     private final UserRepository userRepository;
+
+    @Autowired
+    private final PostCategoryRepository postCategoryRepository;
 
     @Transactional
     public PostResponse findPost(Long postId, Long userId) { //단일 조회
@@ -178,7 +183,17 @@ public class PostService {
     @Transactional
     public Long createPost(Long userId, PostSaveRequest request) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-        return postRepository.save(request.of(user)).getPostId();
+        Post post;
+
+        if(request.getCategoryId() != null){
+            Category category = postCategoryRepository.findById(request.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category", "catogoryId", request.getCategoryId()));
+            post = postRepository.save(request.of(user));
+            post.setCategory(category);
+        }
+        else{
+            post = postRepository.save(request.of(user));
+        }
+        return post.getPostId();
     }
 
     @Transactional
@@ -229,7 +244,17 @@ public class PostService {
 
         validPostUser(userId, post.getUser().getUserId());
         post.update(request);
-        return postId;
+
+        if(request.getCategoryId() != null){
+            Category category = postCategoryRepository.findById(request.getCategoryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Category", "catogoryId", request.getCategoryId()));
+            post.setCategory(category);
+            System.out.println(category.getCategoryId());
+        }
+        else{
+            post.resetCategory();
+        }
+        return post.getPostId();
     }
 
     @Transactional
