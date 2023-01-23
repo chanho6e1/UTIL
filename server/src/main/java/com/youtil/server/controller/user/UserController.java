@@ -26,12 +26,16 @@ public class UserController {
 
     @GetMapping("/me")
     @PreAuthorize("hasRole('USER')")
-    public  ResponseEntity<CommonResponse>  getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-
-        return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "유저 정보 조회 성공", userService.getUser(userPrincipal.getId())));
-        
+    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+        return (User) userRepository.findById(userPrincipal.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
     }
+//    public  ResponseEntity<CommonResponse>  getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+//
+//        return ResponseEntity.ok().body(CommonResponse.of(
+//                HttpStatus.OK, "유저 정보 조회 성공", userService.getUser(userPrincipal.getId())));
+//
+//    }
 
 
 }
