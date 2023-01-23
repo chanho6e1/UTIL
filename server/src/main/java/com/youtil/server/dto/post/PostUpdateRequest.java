@@ -25,6 +25,8 @@ public class PostUpdateRequest {
 
     private String thumbnail;
 
+    private Long categoryId;
+
     @NotNull(message = "공개여부를 입력하세요(//공개2, 팔로워1, 비공개0)")
     @Min(0)
     @Max(2)

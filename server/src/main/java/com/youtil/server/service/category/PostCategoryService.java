@@ -3,9 +3,7 @@ package com.youtil.server.service.category;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.category.Category;
 import com.youtil.server.domain.post.Post;
-import com.youtil.server.domain.user.User;
-import com.youtil.server.dto.post.PostSaveRequest;
-import com.youtil.server.dto.post.category.CategorySaveRequest;
+import com.youtil.server.dto.category.CategorySaveRequest;
 import com.youtil.server.repository.category.PostCategoryRepository;
 import com.youtil.server.repository.post.PostRepository;
 import com.youtil.server.repository.user.UserRepository;
@@ -56,7 +54,7 @@ public class PostCategoryService {
         post.setCategory(category);
         return catogoryId;
     }
-
+    @Transactional
     public Long resetCategory(Long catogoryId, Long postId) {
         Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("post", "postId", postId));
         Category category = postCategoryRepository.findById(catogoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "catogoryId", catogoryId));
