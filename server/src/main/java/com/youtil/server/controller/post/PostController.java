@@ -1,28 +1,21 @@
 package com.youtil.server.controller.post;
 
 import com.youtil.server.common.CommonResponse;
-import com.youtil.server.common.PagedResponse;
-import com.youtil.server.domain.post.PostComment;
 import com.youtil.server.dto.post.*;
 import com.youtil.server.oauth.config.LoginUser;
 import com.youtil.server.oauth.entity.SessionUser;
-import com.youtil.server.service.PostService;
+import com.youtil.server.service.post.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RestController

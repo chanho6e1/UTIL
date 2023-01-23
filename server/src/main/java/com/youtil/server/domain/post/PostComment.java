@@ -4,14 +4,18 @@ import com.youtil.server.domain.BaseEntity;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.post.PostCommentSaveRequest;
 import com.youtil.server.dto.post.PostSaveRequest;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@DynamicUpdate
 public class PostComment extends BaseEntity {
 
     @Id

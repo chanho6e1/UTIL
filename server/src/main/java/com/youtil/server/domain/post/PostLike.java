@@ -2,15 +2,19 @@ package com.youtil.server.domain.post;
 
 import com.youtil.server.domain.BaseEntity;
 import com.youtil.server.domain.user.User;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@DynamicUpdate
 public class PostLike extends BaseEntity {
 
     @Id

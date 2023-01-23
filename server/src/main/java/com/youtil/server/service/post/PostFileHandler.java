@@ -1,4 +1,4 @@
-package com.youtil.server.service;
+package com.youtil.server.service.post;
 
 import com.youtil.server.domain.post.PostFile;
 import com.youtil.server.dto.post.PostFileDto;

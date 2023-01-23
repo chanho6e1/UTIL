@@ -85,11 +85,12 @@ public class Post extends BaseEntity {
         this.category = category;
     }
 
-
-//    public void setLikeStatus(postLike category) {
-//        this.category = category;
-//    }
-
+    public void resetCategory() {
+        if(this.category!=null){
+            this.category = null;
+        }
+        System.out.println(this.category);
+    }
 
     public void addComment(PostComment postComment){
         this.postCommentList.getPostCommentList().add(postComment);

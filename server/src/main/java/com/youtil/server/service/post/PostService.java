@@ -1,11 +1,9 @@
-package com.youtil.server.service;
+package com.youtil.server.service.post;
 
-import com.querydsl.core.types.OrderSpecifier;
 import com.youtil.server.common.PagedResponse;
 import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.post.Post;
-import com.youtil.server.domain.post.PostComment;
 import com.youtil.server.domain.post.PostFile;
 import com.youtil.server.domain.post.PostLike;
 import com.youtil.server.domain.user.User;
@@ -27,8 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.youtil.server.domain.post.QPost.post;
 
 @Slf4j
 @Service
