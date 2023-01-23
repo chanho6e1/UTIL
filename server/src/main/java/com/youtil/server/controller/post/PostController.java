@@ -10,9 +10,9 @@ import com.youtil.server.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,42 +48,122 @@ public class PostController {
         ));
     }
 
+//    @ApiOperation(value = "내가 쓴 게시물 리스트 조회", notes = "내가 쓴 게시물 목록을 조회한다.(최근날짜순)")
+//    @GetMapping("/users")
+//    public ResponseEntity<CommonResponse> findPostListByUser(@LoginUser SessionUser user, @RequestParam(required=false) int offset) {
+//
+//
+//        return ResponseEntity.ok().body(CommonResponse.of(
+//                HttpStatus.OK, "나의 게시물 목록 조회 성공", postService.findPostListByUser(user.getId(), offset))
+//        );
+//    }
+
     @ApiOperation(value = "내가 쓴 게시물 리스트 조회", notes = "내가 쓴 게시물 목록을 조회한다.(최근날짜순)")
     @GetMapping("/users")
-    public ResponseEntity<CommonResponse> findPostListByUser(@CurrentUser UserPrincipal user, @RequestParam(required=false) int offset) {
+    public ResponseEntity<CommonResponse> findPostListByUser(@LoginUser SessionUser user,
+                                                             @RequestParam(value = "order", required = false, defaultValue = "1") Integer order,
+                                                             @RequestParam(value = "cursor") Long cursor,
+                                                             @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+
+        Sort.Direction sort = Sort.Direction.DESC;
+        String comparisonOperator = "<";
+        if (order == -1) {
+            sort = Sort.Direction.ASC;
+            comparisonOperator = ">";
+        }
+
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "나의 게시물 목록 조회 성공", postService.findPostListByUser(user.getId(), offset))
+                HttpStatus.OK, "나의 게시물 목록 조회 성공", postService.findPostListByUser(user.getId(), sort, comparisonOperator, cursor, size))
         );
     }
 
     @ApiOperation(value = "정렬 기준(선택)으로 게시물 리스트 조회", notes = "정렬 기준(view, like, date)을 받은 후 전체 게시물 목록을 조회한다. 디폴트는 최신 날짜순")
     @GetMapping("/lists")
-    public ResponseEntity<CommonResponse> findPostList(@RequestParam(required=false) String criteria, @RequestParam int offset) {
+    public ResponseEntity<CommonResponse> findPostList(  @RequestParam(required=false) String criteria,
+                                                         @RequestParam(value = "order", required = false, defaultValue = "1") Integer order,
+                                                         @RequestParam(value = "cursor", required = false) Long cursor,
+                                                         @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+
+        Sort.Direction sort = Sort.Direction.DESC;
+        String comparisonOperator = "<";
+        if (order == -1) {
+            sort = Sort.Direction.ASC;
+            comparisonOperator = ">";
+        }
+
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "정렬 기준별 게시물 목록 조회 성공", postService.findPostList(criteria, offset))
+                HttpStatus.OK, "정렬 기준별 게시물 목록 조회 성공", postService.findPostList(criteria, sort, comparisonOperator, cursor, size))
         );
     }
 
+//    @ApiOperation(value = "정렬 기준(선택)으로 게시물 리스트 조회", notes = "정렬 기준(view, like, date)을 받은 후 전체 게시물 목록을 조회한다. 디폴트는 최신 날짜순")
+//    @GetMapping("/lists")
+//    public ResponseEntity<CommonResponse> findPostList(@RequestParam(required=false) String criteria, @RequestParam int offset) {
+//        return ResponseEntity.ok().body(CommonResponse.of(
+//                HttpStatus.OK, "정렬 기준별 게시물 목록 조회 성공", postService.findPostList(criteria, offset))
+//        );
+//    }
+
     @ApiOperation(value = "정렬 기준(선택)으로 내가 구독한 사람의 게시물 리스트 조회", notes = "내가 구독한 사람만,정렬 기준(view/date/like)으로 게시물 목록물 목록을 조회한다.")
     @GetMapping("/subscribes")
-    public ResponseEntity<CommonResponse> findBySubscribesPostList(@CurrentUser UserPrincipal user,
-                                                               @RequestParam(required=false) String criteria,
-                                                               @RequestParam int offset) {
+    public ResponseEntity<CommonResponse> findBySubscribesPostList(@LoginUser SessionUser user,
+                                                                   @RequestParam(required=false) String criteria,
+                                                                   @RequestParam(value = "order", required = false, defaultValue = "1") Integer order,
+                                                                   @RequestParam(value = "cursor", required = false) Long cursor,
+                                                                   @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+        Sort.Direction sort = Sort.Direction.DESC;
+        String comparisonOperator = "<";
+        if (order == -1) {
+            sort = Sort.Direction.ASC;
+            comparisonOperator = ">";
+        }
+
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "구독한 사람의 게시물 목록 조회 성공", postService.findByPostSubscribes(PostSearch.of(criteria), user.getId(), offset))
+                HttpStatus.OK, "구독한 사람의 게시물 목록 조회 성공", postService.findByPostSubscribes(PostSearch.of(criteria), user.getId(), sort, comparisonOperator, cursor, size))
         );
     }
+
+//    @ApiOperation(value = "정렬 기준(선택)으로 내가 구독한 사람의 게시물 리스트 조회", notes = "내가 구독한 사람만,정렬 기준(view/date/like)으로 게시물 목록물 목록을 조회한다.")
+//    @GetMapping("/subscribes")
+//    public ResponseEntity<CommonResponse> findBySubscribesPostList(@LoginUser SessionUser user,
+//                                                                   @RequestParam(required=false) String criteria,
+//                                                                   @RequestParam int offset) {
+//        return ResponseEntity.ok().body(CommonResponse.of(
+//                HttpStatus.OK, "구독한 사람의 게시물 목록 조회 성공", postService.findByPostSubscribes(PostSearch.of(criteria), user.getId(), offset))
+//        );
+//    }
 
 
     @ApiOperation(value = "내용 검색, 정렬 기준(선택)으로 게시물 리스트 조회", notes = "내용 검색,정렬 기준(view/date/like)으로 게시물 목록물 목록을 조회한다.")
     @GetMapping("/search")
     public ResponseEntity<CommonResponse> findBySearchPostList(@RequestParam String content,
                                                                @RequestParam(required=false) String criteria,
-                                                               @RequestParam int offset) {
+                                                               @RequestParam(value = "order", required = false, defaultValue = "1") Integer order,
+                                                               @RequestParam(value = "cursor") Long cursor,
+                                                               @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+
+        Sort.Direction sort = Sort.Direction.DESC;
+        String comparisonOperator = "<";
+        if (order == -1) {
+            sort = Sort.Direction.ASC;
+            comparisonOperator = ">";
+        }
+
+
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "내용검색, 정렬 기준으로 게시물 목록 조회 성공", postService.findByPostContent(PostSearch.of(content, criteria), offset))
+                HttpStatus.OK, "내용검색, 정렬 기준으로 게시물 목록 조회 성공", postService.findByPostContent(PostSearch.of(content, criteria),  sort, comparisonOperator, cursor, size))
         );
     }
+
+//    @ApiOperation(value = "내용 검색, 정렬 기준(선택)으로 게시물 리스트 조회", notes = "내용 검색,정렬 기준(view/date/like)으로 게시물 목록물 목록을 조회한다.")
+//    @GetMapping("/search")
+//    public ResponseEntity<CommonResponse> findBySearchPostList(@RequestParam String content,
+//                                                               @RequestParam(required=false) String criteria,
+//                                                               @RequestParam int offset) {
+//        return ResponseEntity.ok().body(CommonResponse.of(
+//                HttpStatus.OK, "내용검색, 정렬 기준으로 게시물 목록 조회 성공", postService.findByPostContent(PostSearch.of(content, criteria), offset))
+//        );
+//    }
 
 
     @ApiOperation(value = "게시물 등록", notes = "게시물을 등록한다")
@@ -118,9 +198,28 @@ public class PostController {
 
     @ApiOperation(value = "해당 게시물을 좋아요한 유저를 반환한다", notes = "해당 게시물을 좋아요한 유저 프로필이미지와 닉네임을 반환한다")
     @GetMapping("/{postId}/likes/users")
-    public ResponseEntity<CommonResponse> PostLikesPeople(@CurrentUser UserPrincipal user,
-                                                          @PathVariable Long postId, @RequestParam(required=false) int offset) {
+    public ResponseEntity<CommonResponse> PostLikesPeople(@LoginUser SessionUser user,
+                                                          @PathVariable Long postId,
+                                                          @RequestParam(value = "order", required = false, defaultValue = "1") Integer order,
+                                                          @RequestParam(value = "cursor") Long cursor,
+                                                          @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+
+        Sort.Direction sort = Sort.Direction.DESC;
+        String comparisonOperator = "<";
+        if (order == -1) {
+            sort = Sort.Direction.ASC;
+            comparisonOperator = ">";
+        }
+
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.CREATED, "좋아요한 유저 리스트 반환 성공", postService.PostLikesPeople(user.getId(), postId, offset)));
+                HttpStatus.CREATED, "좋아요한 유저 리스트 반환 성공", postService.PostLikesPeople(user.getId(), postId,  sort, comparisonOperator, cursor, size)));
     }
+
+//    @ApiOperation(value = "해당 게시물을 좋아요한 유저를 반환한다", notes = "해당 게시물을 좋아요한 유저 프로필이미지와 닉네임을 반환한다")
+//    @GetMapping("/{postId}/likes/users")
+//    public ResponseEntity<CommonResponse> PostLikesPeople(@LoginUser SessionUser user,
+//                                                          @PathVariable Long postId, @RequestParam(required=false) int offset) {
+//        return ResponseEntity.ok().body(CommonResponse.of(
+//                HttpStatus.CREATED, "좋아요한 유저 리스트 반환 성공", postService.PostLikesPeople(user.getId(), postId, offset)));
+//    }
 }
