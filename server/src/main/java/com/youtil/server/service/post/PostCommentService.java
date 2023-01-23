@@ -1,4 +1,4 @@
-package com.youtil.server.service;
+package com.youtil.server.service.post;
 
 import com.youtil.server.common.CursorResult;
 import com.youtil.server.common.PagedResponse;
