@@ -89,7 +89,6 @@ public class Post extends BaseEntity {
         if(this.category!=null){
             this.category = null;
         }
-        System.out.println(this.category);
     }
 
     public void addComment(PostComment postComment){

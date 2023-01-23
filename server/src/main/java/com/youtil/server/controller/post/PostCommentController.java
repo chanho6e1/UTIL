@@ -4,8 +4,8 @@ import com.youtil.server.common.CommonResponse;
 import com.youtil.server.common.PagedResponse;
 import com.youtil.server.dto.post.PostCommentResponse;
 import com.youtil.server.dto.post.PostCommentSaveRequest;
-import com.youtil.server.oauth.config.LoginUser;
-import com.youtil.server.oauth.entity.SessionUser;
+import com.youtil.server.security.CurrentUser;
+import com.youtil.server.security.UserPrincipal;
 import com.youtil.server.service.post.PostCommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -72,14 +72,14 @@ public class PostCommentController {
 
     @ApiOperation(value = "댓글 등록", notes = "댓글을 등록한다")
     @PostMapping("/{postId}")
-    public ResponseEntity<CommonResponse> createPost(@LoginUser SessionUser user, @PathVariable Long postId, @RequestBody @Valid PostCommentSaveRequest request) throws Exception {
+    public ResponseEntity<CommonResponse> createPost(@CurrentUser UserPrincipal user, @PathVariable Long postId, @RequestBody @Valid PostCommentSaveRequest request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "등록 성공", postCommentService.createPostComment(user.getId(), postId, request)));
     }
 
     @ApiOperation(value = "댓글 수정", notes = "댓글을 수정한다")
     @PutMapping("/{commentId}")
-    public ResponseEntity<CommonResponse> updatepost(@LoginUser SessionUser user, @PathVariable Long commentId,
+    public ResponseEntity<CommonResponse> updatepost(@CurrentUser UserPrincipal user, @PathVariable Long commentId,
                                                      @RequestBody @Valid PostCommentSaveRequest request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "수정 성공", postCommentService.updatePostComment(user.getId(), commentId, request)));
@@ -87,7 +87,7 @@ public class PostCommentController {
 
     @ApiOperation(value = "댓글 삭제", notes = "단일 댓글을 삭제한다")
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<CommonResponse> deletepost(@LoginUser SessionUser user, @PathVariable Long commentId) {
+    public ResponseEntity<CommonResponse> deletepost(@CurrentUser UserPrincipal user, @PathVariable Long commentId) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.NO_CONTENT, "삭제 성공", postCommentService.deletePostComment(user.getId(), commentId)));
     }

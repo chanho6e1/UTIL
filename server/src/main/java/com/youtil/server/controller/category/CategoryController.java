@@ -1,14 +1,10 @@
-package com.youtil.server.controller;
+package com.youtil.server.controller.category;
 
 import com.youtil.server.common.CommonResponse;
-import com.youtil.server.domain.category.Category;
-import com.youtil.server.dto.post.PostSaveRequest;
-import com.youtil.server.dto.post.PostUpdateRequest;
-import com.youtil.server.dto.post.category.CategorySaveRequest;
-import com.youtil.server.oauth.config.LoginUser;
-import com.youtil.server.oauth.entity.SessionUser;
+import com.youtil.server.dto.category.CategorySaveRequest;
+import com.youtil.server.security.CurrentUser;
+import com.youtil.server.security.UserPrincipal;
 import com.youtil.server.service.category.PostCategoryService;
-import com.youtil.server.service.post.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +24,7 @@ public class CategoryController {
 
     @ApiOperation(value = "카테고리 등록", notes = "카테고리를 등록한다")
     @PostMapping
-    public ResponseEntity<CommonResponse> createCategory(@LoginUser SessionUser user, @RequestBody @Valid CategorySaveRequest request){
+    public ResponseEntity<CommonResponse> createCategory(@CurrentUser UserPrincipal user, @RequestBody @Valid CategorySaveRequest request){
         System.out.println(request.getName());
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "등록 성공", postCategoryService.createCategory(user.getId(), request)));
