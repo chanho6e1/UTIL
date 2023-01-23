@@ -13,9 +13,7 @@ const initialSliceState = {
     {title:'취업현황 조사', startDate: new Date('2023-02-17').toString(), endDate: new Date('2023-03-27').toString()},
     {title:'취업현황 조사', startDate: new Date('2023-02-17').toString(), endDate: new Date('2023-03-27').toString()},
     {title:'취업현황 조사', startDate: new Date('2023-02-17').toString(), endDate: new Date('2023-03-27').toString()},
-    {title:'취업현황 조사', startDate: new Date('2023-02-17').toString(), endDate: new Date('2023-03-27').toString()},
-    {title:'취업현황 조사', startDate: new Date('2023-02-17').toString(), endDate: new Date('2023-03-27').toString()},
-    {title:'취업현황 조사', startDate: new Date('2023-02-17').toString(), endDate: new Date('2023-03-27').toString()},
+
   ],
 }
 

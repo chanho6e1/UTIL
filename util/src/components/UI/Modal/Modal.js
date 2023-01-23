@@ -12,6 +12,8 @@ const ModalOverlay = (props) => {
   const match = useMatch(props.url);
   const modalRef = useRef()
   const backdropRef = useRef()
+  const contentRef = useRef()
+  const indicatorRef = useRef()
   const navigate = useNavigate()
   
 
@@ -32,35 +34,52 @@ const ModalOverlay = (props) => {
 
   const mountModalHandler = async () => {
     
-    const modalInitialize = () => {
+    const modalInitialize = async () => {
       console.log(props.parentRef)
-      modalRef.current.style.width = props.parentRef.current.clientWidth + 'px'
-      modalRef.current.style.height = props.parentRef.current.clientHeight + 'px'
-      // const scrolledTopLength = window.pageYOffset
-      // const scrolledLeftLength = window.pageXOffset
-      // modalRef.current.style.top = props.parentRef.current.offsetTop - scrolledTopLength + 'px'
-      // modalRef.current.style.left = props.parentRef.current.offsetLeft - scrolledLeftLength + 'px'
-      modalRef.current.style.top = props.parentRef.current.getBoundingClientRect().top + 'px'
-      modalRef.current.style.left = props.parentRef.current.getBoundingClientRect().left + 'px'
+      contentRef.current.style.transitionProperty = 'left top width height opacity'
+      contentRef.current.style.transitionDuration = '0s'
+      indicatorRef.current.style.width = await contentRef.current.clientWidth + 'px'
+      indicatorRef.current.style.height = await contentRef.current.clientHeight + 'px'
+      contentRef.current.style.left = await props.parentRef.current.getBoundingClientRect().left + 'px'
+      contentRef.current.style.top = await props.parentRef.current.getBoundingClientRect().top + 'px'
+      contentRef.current.style.width = await props.parentRef.current.clientWidth + 'px'
+      contentRef.current.style.height = await props.parentRef.current.clientHeight + 'px'
 
-      // const bodyTag = document.querySelector('body')
-      // bodyTag.style.overflowY = 'hidden'
     }
     
     const modalExecute = () => {
       backdropRef.current.style.opacity = 255
       if (props.toggleBoolean) {
-        modalRef.current.style.transitionProperty = 'left top width height opacity'
-        modalRef.current.style.transitionDuration = '0.3s'
+        contentRef.current.style.transitionProperty = 'left top width height opacity'
+        contentRef.current.style.transitionDuration = '0.3s'
+        
       }
-      modalRef.current.style.width = '100%'
-      modalRef.current.style.height = '100%'
-      modalRef.current.style.left = 0 + 'px'
-      modalRef.current.style.top = 0 + 'px'
+
+
+      const responsiveWidth = 100 * indicatorRef.current.clientWidth / window.innerWidth
+      const responsiveHeight = 100 * indicatorRef.current.clientHeight / window.innerHeight
+      contentRef.current.style.width = responsiveWidth + '%'
+      contentRef.current.style.height = responsiveHeight + '%'
+
+      // contentRef.current.style.width = indicatorRef.current.clientWidth + 'px'
+      // contentRef.current.style.height = indicatorRef.current.clientHeight + 'px'
+      contentRef.current.style.left = indicatorRef.current.getBoundingClientRect().left + 'px'
+      contentRef.current.style.top = indicatorRef.current.getBoundingClientRect().top + 'px'
+      
     }
 
     await modalInitialize()
     await modalExecute()
+    console.log(contentRef)
+
+    const displayCorrection =  setTimeout(async () => {
+      contentRef.current.style.position = 'static'
+      modalRef.current.style.display = 'flex'
+      modalRef.current.style.justifyContent = 'center'
+      modalRef.current.style.alignItems = 'center'
+      
+      
+    }, 300);
   }
   
 
@@ -68,30 +87,50 @@ const ModalOverlay = (props) => {
 
 
   const unmountModalHandler = async () => {
+    
+    // modalRef.current.style.justifyContent = await 'left'
+    // modalRef.current.style.alignItems = await 'baseline'
+    
 
     const modalExecute = async () => {
-      modalRef.current.style.transitionProperty = await 'left top width height opacity'
-      modalRef.current.style.transitionDuration = await '0.3s'
-      modalRef.current.style.width = await props.parentRef.current.clientWidth + 'px'
-      modalRef.current.style.height = await props.parentRef.current.clientHeight + 'px'
-      // const scrolledTopLength = await window.pageYOffset
-      // const scrolledLeftLength = await window.pageXOffset
-      // modalRef.current.style.top = await props.parentRef.current.offsetTop - scrolledTopLength + 'px'
-      // modalRef.current.style.left = await props.parentRef.current.offsetLeft - scrolledLeftLength + 'px'
-      modalRef.current.style.top = props.parentRef.current.getBoundingClientRect().top + 'px'
-      modalRef.current.style.left = props.parentRef.current.getBoundingClientRect().left + 'px'
+      contentRef.current.style.transitionProperty = await 'left top width height opacity'
+      contentRef.current.style.transitionDuration = await '0.3s'
+      modalRef.current.style.display = await 'block'
+      contentRef.current.style.position = await 'absolute'
+      contentRef.current.style.left = await indicatorRef.current.getBoundingClientRect().left + 'px'
+      contentRef.current.style.top = await indicatorRef.current.getBoundingClientRect().top + 'px'
+      
+      // const contentLeft = await contentRef.current.getBoundingClientRect().left
+      // const contentTop = await contentRef.current.getBoundingClientRect().top
+
+      
+      
+      
+
+      // modalRef.current.style.transitionProperty = await 'left top width height opacity'
+      // modalRef.current.style.transitionDuration = await '0.3s'
+      
+      
+      
+      contentRef.current.style.top = await props.parentRef.current.getBoundingClientRect().top + 'px'
+      contentRef.current.style.left = await props.parentRef.current.getBoundingClientRect().left + 'px'
+      
+      contentRef.current.style.width = await props.parentRef.current.clientWidth + 'px'
+      contentRef.current.style.height = await props.parentRef.current.clientHeight + 'px'
+
+
       backdropRef.current.style.opacity = await 0
+      
     }
 
+    
+
     const redirect = setTimeout(() => {
-      // const bodyTag = document.querySelector('body')
-      // bodyTag.style.overflowY = 'scroll'
       props.toggleFunction(false)
       navigate(props.prevUrl, { replace: true });
     }, 300);
     
     await modalExecute()
-    // await redirect()
   }
 
 
@@ -106,9 +145,11 @@ const ModalOverlay = (props) => {
 
   return (
     <div>
-      <div ref={backdropRef} className={styles.backdrop} />
+      <div ref={backdropRef} className={styles.backdrop} >
+        <div ref={indicatorRef} className={styles.indicator} />
+      </div>
       <div onClick={(event) => {event.stopPropagation();}} ref={modalRef} id={`modal-${props.name}-${props.id}`} className={`${styles.modal} ${styles.card}`}>
-        <div className={styles.content}>
+        <div ref={contentRef} className={styles.content}>
           {content}
         </div>
       </div>

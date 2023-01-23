@@ -34,7 +34,7 @@ const Calendar = (props) => {
   }
 
 
-  const plans = useSelector(state => state.planSlice.plans)
+  const plans = props.plans
   const [monthDistance, setMonthDistance] = useState(getMonthDistance(props.startRange, props.endRange) + 1);
   const [monthRange, setMonthRange] = useState(Array(monthDistance).fill().map((arr, idx) => {
     return new Date(props.startRange.getFullYear(), props.startRange.getMonth() + idx + 1, 0)
