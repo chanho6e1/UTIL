@@ -32,6 +32,8 @@ public class PostUpdateRequest {
     @Max(2)
     private Integer isPrivate;
 
+
+
 //    private String tag;
 
     public Post of(User user) {
