@@ -3,10 +3,18 @@ package com.youtil.server.domain.tag;
 import com.youtil.server.domain.BaseEntity;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.user.User;
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import javax.validation.OverridesAttribute;
 
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Data
+@DynamicUpdate
 public class Tag extends BaseEntity {
 
     @Id
@@ -17,4 +25,12 @@ public class Tag extends BaseEntity {
     private String tagName;
 
 
+    @Builder
+    public Tag(String name) {
+        this.tagName = name;
+    }
+
+    public void update(String name){
+        this.tagName = name;
+    }
 }
