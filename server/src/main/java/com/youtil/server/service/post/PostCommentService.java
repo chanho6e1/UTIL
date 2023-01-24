@@ -24,7 +24,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -44,19 +46,54 @@ public class PostCommentService {
     @Autowired
     UserRepository userRepository;
 
+    public List<PostCommentResponse> findPostCommentList(Long postId, Sort.Direction sort, String cop, Long cursor, Integer size) {
+
+        Pageable pageable = PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "createdDate"));
+        Slice<PostComment> postComments;
+
+        if(cursor == null){
+            postComments = postCommentRepository.findCommentList(postId, pageable);
+        }
+        else{
+            postComments = postCommentRepository.findCommentListByCursor(postId, cursor, cop, pageable);
+        }
+
+//        List<PostCommentResponse> postComment = postComments.stream().map(PostCommentResponse::new).collect(Collectors.toList());
+
+        return convertNestedStructure(postCommentRepository.findCommentByPostId(postId));
+    }
+
+    private List<PostCommentResponse> convertNestedStructure(List<PostComment> comments) {
+        List<PostCommentResponse> result = new ArrayList<>();
+        Map<Long, PostCommentResponse> map = new HashMap<>();
+        comments.stream().forEach(c -> {
+            PostCommentResponse dto = PostCommentResponse.from(c);
+            map.put(dto.getCommentId(), dto);
+            if(c.getParent() != null) {
+//                System.out.println("////////////");
+//                System.out.println(c.getParent().getCommentId());
+//                System.out.println(c.getParent().getChildren().get(0).getCommentId());
+//                System.out.println(map.get(c.getParent().getCommentId()).getCommentId());
+//                System.out.println("////////////");
+
+//                map.get(c.getParent().getCommentId()).getChildren().add(dto);
+                map.get(c.getParent().getCommentId()).getChildren().add(dto);
+
+            }
+            else result.add(dto);
+        });
+        return result;
+    }
+
     public PagedResponse<PostCommentResponse> findParentCommentList(Long postId, Sort.Direction sort, String cop, Long cursor, Integer size) {
 
         Pageable pageable = PageRequest.of(0, size);
 
         Slice<PostComment> postComments =  postCommentRepository.findCommentListByCursor(postId, cursor, cop, pageable);
-        System.out.println(postComments.getContent());
         List<PostCommentResponse> postComment = postComments.stream().map(PostCommentResponse::new).collect(Collectors.toList());
-//        System.out.println(postComment.get(0).getContent());
 
         return new PagedResponse<PostCommentResponse>(postComment, 0, postComments.getSize(),
-                0, postComments.isLast());
-//        return new CursorResult<>(postComment, postComments.isLast());
-
+                0, postComments.isLast(), postComments.hasNext(), postComments.hasPrevious());
     }
 
     public PagedResponse<PostCommentResponse> findChildCommentList(Long postId, Sort.Direction sort, String cop, Long cursor, Integer size) {
@@ -67,7 +104,7 @@ public class PostCommentService {
         List<PostCommentResponse> postCommentResponse = postComments.stream().map(PostCommentResponse::new).collect(Collectors.toList());
 
         return new PagedResponse<PostCommentResponse>(postCommentResponse, 0, postComments.getSize(),
-                0, postComments.isLast());
+                0, postComments.isLast(), postComments.hasNext(), postComments.hasPrevious());
     }
 
 //    public List<PostCommentResponse> findCommentList(Long postId, int offset) {
@@ -85,29 +122,38 @@ public class PostCommentService {
 //        return list;
 //    }
 
+
+
+    /////////////////////////
     @Transactional
     public Long createPostComment(Long userId, Long postId, PostCommentSaveRequest request) {
 
         Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
+        PostComment postComment = null;
         if(request.getParentId()!=null){
-            PostComment postComment = postCommentRepository.findComment(request.getParentId())
+            PostComment parent = postCommentRepository.findComment(request.getParentId())
                     .orElseThrow(() -> new ResourceNotFoundException("PostComment", "commentId", request.getParentId()));
-            String nickName = postComment.getUser().getNickName();
-            request.setParentWriterNickName(nickName);
+                postComment =  postCommentRepository.save(request.of(user, post, parent,1));
+                parent.setChild(postComment);
         }
-
-        return postCommentRepository.save(request.of(user, post)).getCommentId();
+        else{
+            postComment = postCommentRepository.save(request.of(user, post, 0));
+        }
+        return postComment.getCommentId();
     }
 
     @Transactional
-    public Long updatePostComment(Long userId, Long commentId, PostCommentSaveRequest request) {
-        PostComment postComment = postCommentRepository.findComment(commentId).orElseThrow(() -> new ResourceNotFoundException("PostComment", "commentId", commentId));
-        validPostUser(userId, postComment.getUser().getUserId());
-        postComment.update(request);
-        return commentId;
+    public Long updatePostComment(Long userId, Long commentId, PostCommentUpdateRequest request) {
 
+        PostComment postComment = postCommentRepository.findComment(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("PostComment", "commentId", commentId));
+        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+
+        validPosCommentUser(userId, postComment.getUser().getUserId());
+        postComment.update(request);
+        return postComment.getCommentId();
     }
 
     @Transactional
@@ -115,14 +161,26 @@ public class PostCommentService {
 
         PostComment postComment = postCommentRepository.findComment(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException("PostComment", "commentId", commentId));
-        validPostUser(userId, postComment.getUser().getUserId());
-        postCommentRepository.deleteByCommentId(commentId);
+        validPosCommentUser(userId, postComment.getUser().getUserId());
+
+        if(postComment.getDepth()==0 && !postComment.getChildren().isEmpty()){ //원댓글이 사라지면 숨김 처리
+            postComment.updateDeleteStatus();
+        }else if(!postComment.getChildren().isEmpty()){
+            postComment.getChildren().stream()
+                    .forEach(post -> post.resetChild(postComment.getParent()));
+
+            System.out.println(postComment.getParent().getCommentId());
+            postCommentRepository.deleteByCommentId(commentId);
+        }else{
+            postCommentRepository.deleteByCommentId(commentId);
+        }
+
         return commentId;
     }
 
-    public void validPostUser(Long currentUser, Long CommnetUser) {
+    public void validPosCommentUser(Long currentUser, Long CommentUser) {
 
-        if (currentUser == CommnetUser || currentUser.equals(CommnetUser)) {
+        if (currentUser == CommentUser || currentUser.equals(CommentUser)) {
             return;
         } else {
             throw new ResourceForbiddenException("본인이 작성한 글이 아닙니다");

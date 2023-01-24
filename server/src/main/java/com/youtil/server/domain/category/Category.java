@@ -27,6 +27,11 @@ public class Category extends BaseEntity {
     private Long categoryId;
 
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id")
+    private User user;
+
     @Embedded
     private final PostList postList = new PostList();
 
@@ -35,10 +40,16 @@ public class Category extends BaseEntity {
         post.setCategory(this);
     }
 
-    @Builder
-    public Category(String name) {
-        this.name = name;
+    public void clearUser(){
+        this.user = null;
     }
+
+    @Builder
+    public Category(String name, User user) {
+        this.name = name;
+        this.user = user;
+    }
+
 
     public void update(String name){
         this.name = name;

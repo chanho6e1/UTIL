@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,9 +36,13 @@ import java.util.stream.Collectors;
 public class PostService {
 
     @Autowired
-    PostRepository postRepository;
+    private final PostRepository postRepository;
     @Autowired
-    PostQueryRepository postQueryRepository;
+    private final PostQueryRepository postQueryRepository;
+
+    @Autowired
+    private final PostQueryRepository1 postQueryRepository1;
+
     @Autowired
     private final PostFileRepository postFileRepository;
     @Autowired
@@ -46,10 +51,8 @@ public class PostService {
     private final PostLikeRepository postLikeRepository;
     @Autowired
     private final PostCommentRepository postCommentRepository;
-
     @Autowired
     private final UserRepository userRepository;
-
     @Autowired
     private final PostCategoryRepository postCategoryRepository;
 
@@ -71,10 +74,18 @@ public class PostService {
 
         Pageable pageable = PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "createdDate"));
 
-        Slice<Post> posts =  postRepository.findMyListByCursor(userId, cursor, cop, pageable);
+        Slice<Post> posts;
+
+        if(cursor == null){
+            posts = postRepository.findMyList(userId, pageable);
+        }
+        else{
+            posts = postRepository.findMyListByCursor(userId, cursor, cop, pageable);
+        }
+
         List<PostResponse> postResponses = posts.stream().map(PostResponse::new).collect(Collectors.toList());
         return new PagedResponse<PostResponse>(postResponses, 0, posts.getSize(),
-                0, posts.isLast());
+                0, posts.isLast(), posts.hasNext(), posts.hasPrevious());
     }
 
 //    public List<PostResponse> findPostListByUser(Long userId, int offset) {//내가 쓴 글 조회/오프셋
@@ -82,20 +93,32 @@ public class PostService {
 //                .stream().map(PostResponse::new).collect(Collectors.toList());
 //    }
 
-    public PagedResponse<PostResponse> findPostList(String criteria, Sort.Direction sort, String cop, Long cursor, Integer size) {//전체 리스트 조회,정렬기준(선택/디폴트는 최근 날짜), 커서
+//    public PagedResponse<PostResponse> findPostList(String criteria, Sort.Direction sort, String cop, Long cursor, Integer size) {//전체 리스트 조회,정렬기준(선택/디폴트는 최근 날짜), 커서
+//
+//        Pageable pageable = null;
+//        if(criteria == null){
+//            pageable = findCriteria(size, "date");
+//        }else {
+//            pageable = findCriteria(size, criteria);
+//        }
+//
+//        Slice<Post> posts;
+//
+//        if(cursor==null){
+//            posts = postRepository.findList(pageable);
+//        }
+//        else{
+//            posts =  postRepository.findListByCursor(cursor, cop, pageable);
+//        }
+//
+//        List<PostResponse> postResponses = posts.stream().map(PostResponse::new).collect(Collectors.toList());
+//        return new PagedResponse<PostResponse>(postResponses, 0, posts.getSize(),
+//                0, posts.isLast(), posts.hasNext(), posts.hasPrevious());
+//    }
 
-        Pageable pageable = null;
-        String order = null;
-        if(criteria == null){
-            order =  "date";
-            pageable = findCriteria(size, order);
-        }else {
-            pageable = findCriteria(size, criteria);
-        }
-        Slice<Post> posts =  postRepository.findListByCursor(cursor, cop, pageable);
-        List<PostResponse> postResponses = posts.stream().map(PostResponse::new).collect(Collectors.toList());
-        return new PagedResponse<PostResponse>(postResponses, 0, posts.getSize(),
-                0, posts.isLast());
+    public Slice<PostResponse> findPostList(String criteria, Sort.Direction sort, String cop, Long cursor, Integer size, String createdDate) {//전체 리스트 조회,정렬기준(선택/디폴트는 최근 날짜) ,오프셋
+        return postQueryRepository1.findPostList(criteria, sort, cop, cursor, size, createdDate);
+//                .stream().map(PostResponse::new).collect(Collectors.toList());
     }
 
 //    public List<PostResponse> findPostList(String criteria, int offset) {//전체 리스트 조회,정렬기준(선택/디폴트는 최근 날짜) ,오프셋
@@ -104,6 +127,7 @@ public class PostService {
 //    }
 
     public  PagedResponse<PostResponse> findByPostContent(PostSearch search, Sort.Direction sort, String cop, Long cursor, Integer size) {//내용으로 검색
+
         Pageable pageable = null;
         String order = search.getCriteria();
         if(order == null){
@@ -112,11 +136,19 @@ public class PostService {
         }else {
             pageable = findCriteria(size, order);
         }
-        Slice<Post> posts =  postRepository.findListByContentByCursor(search.getContent(), cursor, cop, pageable);
-        List<PostResponse> postResponses = posts.stream().map(PostResponse::new).collect(Collectors.toList());
-        return new PagedResponse<PostResponse>(postResponses, 0, posts.getSize(),
-                0, posts.isLast());
 
+        Slice<Post> posts;
+
+        if(cursor==null){
+            posts = postRepository.findListByContent(search.getContent(), pageable);
+        }
+        else{
+            posts =  postRepository.findListByContentByCursor(search.getContent(), cursor, cop, pageable);
+        }
+
+        List<PostResponse> postResponses = posts.stream().map(PostResponse::new).collect(Collectors.toList());
+        return new PagedResponse<PostResponse>(postResponses,0, posts.getSize(),
+                0, posts.isLast(), posts.hasNext(), posts.hasPrevious());
       }
 
 //    public List<PostResponse> findByPostContent(PostSearch search, int offset) {//내용으로 검색/오프셋
@@ -127,12 +159,19 @@ public class PostService {
      public PagedResponse<PostLikePeopleResponse> PostLikesPeople(Long id, Long postId, Sort.Direction sort, String cop, Long cursor, Integer size) {//해당 게시물의 좋아요한 사람 리스트
 
          Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
-
          Pageable pageable =  PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-         Slice<PostLike> posts =  postRepository.PostLikesPeople(postId, cursor, cop, pageable);
+
+         Slice<PostLike> posts;
+         if(cursor==null){
+             posts = postRepository.PostLikesPeople(postId, pageable);
+         }
+         else{
+             posts =  postRepository.PostLikesPeopleByCursor(postId, cursor, cop, pageable);
+         }
+
          List<PostLikePeopleResponse> postResponses = posts.stream().map(PostLikePeopleResponse::new).collect(Collectors.toList());
          return new PagedResponse<PostLikePeopleResponse>(postResponses, 0, posts.getSize(),
-                 0, posts.isLast());
+                 0, posts.isLast(), posts.hasNext(), posts.hasPrevious());
     }
 
 
@@ -142,22 +181,30 @@ public class PostService {
 //    }
 
 
-    public  PagedResponse<PostResponse>  findByPostSubscribes(PostSearch search, Long userId, Sort.Direction sort, String cop, Long cursor, Integer size) {//내가 구독한 사람의 글 리스트 조회/커서
+    public  PagedResponse<PostResponse> findByPostSubscribes(PostSearch search, Long userId, Sort.Direction sort, String cop, Long cursor, Integer size) {//내가 구독한 사람의 글 리스트 조회/커서
 
+        Pageable pageable;
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-        Pageable pageable = null;
         String order = search.getCriteria();
+
         if(order == null){
-            order =  "date";
-            pageable = findCriteria(size, order);
+            pageable = findCriteria(size, "date");
         }else {
             pageable = findCriteria(size, order);
         }
 
-        Slice<Post> posts =  postRepository.findByPostSubscribes(userId, cursor, cop, pageable);
+        Slice<Post> posts;
+
+        if(cursor==null){
+            posts = postRepository.findByPostSubscribes(userId, pageable);
+        }
+        else{
+            posts =  postRepository.findByPostSubscribesByCursor(userId, cursor, cop, pageable);
+        }
+
         List<PostResponse> postResponses = posts.stream().map(PostResponse::new).collect(Collectors.toList());
         return new PagedResponse<PostResponse>(postResponses, 0, posts.getSize(),
-                0, posts.isLast());
+                0, posts.isLast(), posts.hasNext(), posts.hasPrevious());
     }
 
 //    public List<PostResponse> findByPostSubscribes(PostSearch search, Long userId, int offset) {//내가 구독한 사람의 글 리스트 조회/오프셋
@@ -168,15 +215,41 @@ public class PostService {
 //    }
 
     private Pageable findCriteria(Integer size, String criteria){ //정렬 조건
+
         if(criteria.contains("date")){
             return PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "createdDate"));
         } else if(criteria.contains("like")){
             return PageRequest.of(0, size, JpaSort.unsafe(Sort.Direction.DESC,"count(l.post.postId)"));
         } else if(criteria.contains("view")){
-            PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "views"));
+            return PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "views"));
         }
         return PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "createdDate"));
     }
+
+    private String generateCustomCursor(LocalDateTime cursorEndDate, Long cursorId){
+        if (cursorEndDate == null && cursorId == null) { // 1
+            return null;
+        }
+
+        cursorEndDate = cursorEndDate.minusHours(9); // 2
+
+        String customCursorEndDate;
+        String customCursorId;
+
+        customCursorEndDate = cursorEndDate.toString()
+                .replaceAll("T", "")
+                .replaceAll("-", "") // 3
+                .replaceAll(":", "") + "00"; // 4
+
+        customCursorEndDate = String.format("%1$" + 20 + "s", customCursorEndDate)
+                .replace(' ', '0'); // 5
+
+        customCursorId = String.format("%1$" + 10 + "s", cursorId)
+                .replace(' ', '0'); // 5
+
+        return customCursorEndDate + customCursorId; // 6
+    }
+
 
     /////////////////////////
 
