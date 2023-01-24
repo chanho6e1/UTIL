@@ -49,6 +49,11 @@ public class PostResponse {
 
     private String modifiedDate;
 
+    private LocalDateTime createdDate1;
+
+    private LocalDateTime modifiedDate1;
+
+
     public PostResponse(Post post) { //전체 조회
 
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
@@ -62,11 +67,11 @@ public class PostResponse {
         }
         this.likeStatus = post.getPostLikeList().getPostLikeList().parallelStream()
                 .anyMatch(l -> l.ownedBy(post.getUser().getUserId()));
-//        this.likeStatus = post.getLikeStatus();
-        this.likeStatus = likeStatus;
         this.likeStatusSize = post.getTotalLikes();
 
-    }
+        this.createdDate1 = post.getCreatedDate();
+        this.modifiedDate1 = post.getModifiedDate();
+   }
 
     public PostResponse(Post post, Boolean likeStatus) { //단건 조회
 
@@ -74,7 +79,7 @@ public class PostResponse {
 
         this.writerInfo = WriterInfo.from(post.getUser());
 //            this.comments = post.getPostCommentList().getPostCommentList().stream()
-//                    .map(PostCommentResponse::from).collect(Collectors.toList());
+//                    .map(PostCommentResponse::new).collect(Collectors.toList());
 
         this.postId = post.getPostId();
         this.title = post.getTitle();

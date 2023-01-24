@@ -21,4 +21,8 @@ public class CategorySaveRequest {
     public Category of() {
         return Category.builder().name(name).build();
     }
+
+    public Category of(User user) {
+        return Category.builder().name(name).user(user).build();
+    }
 }

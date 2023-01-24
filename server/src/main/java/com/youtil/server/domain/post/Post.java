@@ -55,6 +55,7 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
     private Category category;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="goal_id")
     private Goal goal;
@@ -81,14 +82,17 @@ public class Post extends BaseEntity {
         this.isPrivate = request.getIsPrivate();
     }
 
-    public void setCategory(Category category) {
+    public boolean setCategory(Category category) {
         this.category = category;
+        return true;
     }
 
-    public void resetCategory() {
-        if(this.category!=null){
+    public boolean resetCategory() {
+        if(this.category != null){
             this.category = null;
+            return true;
         }
+        return false;
     }
 
     public void addComment(PostComment postComment){
