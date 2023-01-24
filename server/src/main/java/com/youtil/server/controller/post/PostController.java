@@ -15,8 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -60,9 +62,9 @@ public class PostController {
 
     @ApiOperation(value = "내가 쓴 게시물 리스트 조회", notes = "내가 쓴 게시물 목록을 조회한다.(최근날짜순)")
     @GetMapping("/users")
-    public ResponseEntity<CommonResponse> findPostListByUser(@CurrentUser UserPrincipal user,
+    public ResponseEntity<CommonResponse> findPostListByUser(@ApiIgnore @CurrentUser UserPrincipal user,
                                                              @RequestParam(value = "order", required = false, defaultValue = "1") Integer order,
-                                                             @RequestParam(value = "cursor") Long cursor,
+                                                             @RequestParam(value = "cursor" , required = false) Long cursor,
                                                              @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 
         Sort.Direction sort = Sort.Direction.DESC;
@@ -82,7 +84,8 @@ public class PostController {
     public ResponseEntity<CommonResponse> findPostList(  @RequestParam(required=false) String criteria,
                                                          @RequestParam(value = "order", required = false, defaultValue = "1") Integer order,
                                                          @RequestParam(value = "cursor", required = false) Long cursor,
-                                                         @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+                                                         @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+                                                         @RequestParam(value = "createdDate", required = false) String createdDate) {
 
         Sort.Direction sort = Sort.Direction.DESC;
         String comparisonOperator = "<";
@@ -90,9 +93,8 @@ public class PostController {
             sort = Sort.Direction.ASC;
             comparisonOperator = ">";
         }
-
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "정렬 기준별 게시물 목록 조회 성공", postService.findPostList(criteria, sort, comparisonOperator, cursor, size))
+                HttpStatus.OK, "정렬 기준별 게시물 목록 조회 성공", postService.findPostList(criteria, sort, comparisonOperator, cursor, size, createdDate))
         );
     }
 
@@ -106,7 +108,7 @@ public class PostController {
 
     @ApiOperation(value = "정렬 기준(선택)으로 내가 구독한 사람의 게시물 리스트 조회", notes = "내가 구독한 사람만,정렬 기준(view/date/like)으로 게시물 목록물 목록을 조회한다.")
     @GetMapping("/subscribes")
-    public ResponseEntity<CommonResponse> findBySubscribesPostList(@CurrentUser UserPrincipal user,
+    public ResponseEntity<CommonResponse> findBySubscribesPostList(@ApiIgnore @CurrentUser UserPrincipal user,
                                                                    @RequestParam(required=false) String criteria,
                                                                    @RequestParam(value = "order", required = false, defaultValue = "1") Integer order,
                                                                    @RequestParam(value = "cursor", required = false) Long cursor,
@@ -139,7 +141,7 @@ public class PostController {
     public ResponseEntity<CommonResponse> findBySearchPostList(@RequestParam String content,
                                                                @RequestParam(required=false) String criteria,
                                                                @RequestParam(value = "order", required = false, defaultValue = "1") Integer order,
-                                                               @RequestParam(value = "cursor") Long cursor,
+                                                               @RequestParam(value = "cursor", required = false) Long cursor,
                                                                @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 
         Sort.Direction sort = Sort.Direction.DESC;
@@ -168,14 +170,14 @@ public class PostController {
 
     @ApiOperation(value = "게시물 등록", notes = "게시물을 등록한다")
     @PostMapping
-    public ResponseEntity<CommonResponse> createPost(@CurrentUser UserPrincipal user, @RequestBody @Valid PostSaveRequest request) throws Exception {
+    public ResponseEntity<CommonResponse> createPost(@ApiIgnore @CurrentUser UserPrincipal user, @RequestBody @Valid PostSaveRequest request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "등록 성공", postService.createPost(user.getId(), request)));
     }
 
     @ApiOperation(value = "게시물 수정", notes = "해당 게시물을 수정한다")
     @PutMapping("/{postId}")
-    public ResponseEntity<CommonResponse> updatepost(@CurrentUser UserPrincipal user, @PathVariable Long postId,
+    public ResponseEntity<CommonResponse> updatepost(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long postId,
                                                      @RequestBody @Valid PostUpdateRequest request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "수정 성공", postService.updatePost(user.getId(), postId, request)));
@@ -190,7 +192,7 @@ public class PostController {
 
     @ApiOperation(value = "게시물 좋아요 토글", notes = "단일 게시물에 대한 좋아요 선택/해제한다")
     @PutMapping("/{postId}/likes")
-    public ResponseEntity<CommonResponse> togglePostLikes(@CurrentUser UserPrincipal user,
+    public ResponseEntity<CommonResponse> togglePostLikes(@ApiIgnore @CurrentUser UserPrincipal user,
                                                               @PathVariable Long postId) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "좋아요 성공", postService.togglePostLikes(user.getId(), postId)));
@@ -198,10 +200,10 @@ public class PostController {
 
     @ApiOperation(value = "해당 게시물을 좋아요한 유저를 반환한다", notes = "해당 게시물을 좋아요한 유저 프로필이미지와 닉네임을 반환한다")
     @GetMapping("/{postId}/likes/users")
-    public ResponseEntity<CommonResponse> PostLikesPeople(@CurrentUser UserPrincipal user,
+    public ResponseEntity<CommonResponse> PostLikesPeople(@ApiIgnore @CurrentUser UserPrincipal user,
                                                           @PathVariable Long postId,
                                                           @RequestParam(value = "order", required = false, defaultValue = "1") Integer order,
-                                                          @RequestParam(value = "cursor") Long cursor,
+                                                          @RequestParam(value = "cursor", required = false) Long cursor,
                                                           @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 
         Sort.Direction sort = Sort.Direction.DESC;

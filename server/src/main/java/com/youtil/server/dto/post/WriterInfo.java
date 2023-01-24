@@ -21,10 +21,6 @@ public class WriterInfo {
         return new WriterInfo(user.getUserId(), user.getNickName(), user.getDepartment());
     }
 
-//    public static WriterInfo from(Long userId) {
-//        return new WriterInfo(user.getUserId(), user.getNickName(), user.getDepartment());
-//    }
-
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
