@@ -128,7 +128,7 @@ const ModalOverlay = (props) => {
     const redirect = setTimeout(() => {
       props.toggleFunction(false)
       navigate(props.prevUrl, { replace: true });
-    }, 300);
+    }, 290);
     
     await modalExecute()
   }
