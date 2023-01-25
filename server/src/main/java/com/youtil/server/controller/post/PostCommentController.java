@@ -31,19 +31,12 @@ public class PostCommentController {
     @ApiOperation(value = "해당 게시물의 댓글 리스트 조회", notes = "게시물 postId를 입력받은 후 게시물 목록을 조회한다. (최신 날짜순)")
     @GetMapping("/{postId}")
     public ResponseEntity<CommonResponse> findPostCommentList(@PathVariable Long postId,
-                                                                    @RequestParam(value = "order", required = false, defaultValue = "1") Integer order,
-                                                                    @RequestParam(value = "cursor", required = false) Long cursor,
-                                                                    @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+                                                              @RequestParam(required=false, defaultValue = "1") int offset,
+                                                              @RequestParam(value = "size", required = false, defaultValue = "10") int size){
 
-        Sort.Direction sort = Sort.Direction.DESC;
-        String comparisonOperator = "<";
-        if (order == -1) {
-            sort = Sort.Direction.ASC;
-            comparisonOperator = ">";
-        }
 
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "해당 게시물의 댓글 목록 조회 성공", postCommentService.findPostCommentList(postId, sort, comparisonOperator, cursor, size)));
+                HttpStatus.OK, "해당 게시물의 댓글 목록 조회 성공", postCommentService.findPostCommentList(postId, offset, size)));
     }
 
 //    @ApiOperation(value = "해당 게시물의 원댓글 리스트 조회", notes = "게시물 postId를 입력받은 후 게시물 목록을 조회한다. (최신 날짜순)")
