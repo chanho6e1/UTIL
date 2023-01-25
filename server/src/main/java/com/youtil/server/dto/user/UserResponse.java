@@ -16,13 +16,15 @@ public class UserResponse {
 
     private String email;
 
+    private String userName;
+
 
 //    private String profileImg;
 
     private String department;
 
     public static UserResponse from(User user) {
-        return new UserResponse(user.getUserId(), user.getNickName(), user.getEmail(),user.getDepartment());
+        return new UserResponse(user.getUserId(), user.getNickName(), user.getEmail(), user.getUserName(), user.getDepartment());
     }
 
     public void setNickname(String nickname) {
