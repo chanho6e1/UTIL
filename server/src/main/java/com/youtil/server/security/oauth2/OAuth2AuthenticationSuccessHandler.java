@@ -1,7 +1,11 @@
 package com.youtil.server.security.oauth2;
 
+import com.google.gson.Gson;
 import com.youtil.server.config.AppProperties;
 import com.youtil.server.common.exception.BadRequestException;
+import com.youtil.server.domain.user.User;
+import com.youtil.server.dto.user.UserResponse;
+import com.youtil.server.repository.user.UserRepository;
 import com.youtil.server.security.TokenProvider;
 import com.youtil.server.util.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.util.Optional;
 
@@ -29,13 +34,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
+    private final UserRepository userRepository;
 
     @Autowired
     OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider, AppProperties appProperties,
-                                       HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
+                                       HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository, UserRepository userRepository) {
         this.tokenProvider = tokenProvider;
         this.appProperties = appProperties;
         this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -47,8 +54,56 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             return;
         }
 
+        System.out.println("oauth Success");
+
+        String userEmail = authentication.getName();
+        System.out.println(userEmail);
+
+        Optional<User> userOptional = userRepository.findByEmail(userEmail);
+
+//        User user = userOptional.get();
+
+        UserResponse user = UserResponse.from(userOptional.get());
+
+        System.out.println(user.getNickname());
+
+        PrintWriter writer = response.getWriter();
+
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(user);
+        writer.print(jsonString);
+
+//        writer.print(json); //json화
+
+        if(user.getNickname() != null){
+            response.setStatus(200);
+        }else{
+            response.setStatus(201); //회원가입
+        }
+
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
+
+        System.out.println(response.getStatus() + " " + jsonString);
+
+//        System.out.println(currentUser.getUserId());
+
+
+
+        //repository
+
+        //repository 의존성 주입
+        //dto 반환
+        //response.
+
+        //response 넣어 200, 201
+
+        //직렬화 printer writer class = 바디에 넣기
+//        PrintWriter writer = response.getWriter();
+////        writer.print(json); //json화
+//
+//        clearAuthenticationAttributes(request, response);
+//        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {

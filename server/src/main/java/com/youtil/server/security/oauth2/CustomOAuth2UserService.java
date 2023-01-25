@@ -31,6 +31,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         try {
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
+
         } catch (AuthenticationException ex) {
             throw ex;
         } catch (Exception ex) {
@@ -70,6 +71,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setUserName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
+
+        System.out.println("hihihihihih");
         return userRepository.save(user);
     }
 
