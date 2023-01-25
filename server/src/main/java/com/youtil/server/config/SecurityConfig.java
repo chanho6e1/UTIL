@@ -1,13 +1,13 @@
 package com.youtil.server.config;
 
+import com.youtil.server.common.CommonResponse;
 import com.youtil.server.security.*;
-import com.youtil.server.security.oauth2.CustomOAuth2UserService;
-import com.youtil.server.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.youtil.server.security.oauth2.OAuth2AuthenticationFailureHandler;
-import com.youtil.server.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.youtil.server.security.oauth2.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,9 +16,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -35,6 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     @Autowired
     private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+
+//    @Autowired
+//    private SignInSuccessHandler signInSuccessHandler;
 
     @Autowired
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
@@ -105,6 +114,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(customOAuth2UserService)
                 .and()
                 .successHandler(oAuth2AuthenticationSuccessHandler)
+//                .successHandler(signInSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler);
 
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -159,4 +169,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        // Add our custom Token based authentication filter
 //        http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 //    }
+
+
 }
+
