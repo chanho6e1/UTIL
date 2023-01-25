@@ -16,11 +16,10 @@ const Calendar = (props) => {
   const scrollRef = useRef();
   const [initialize, instance] = useOverlayScrollbars({ options: { scrollbars: { autoHide: 'scroll' } }, events: { scroll: () => {syncScroll()} }});
 
+  
   useEffect(() => {
     initialize(scrollRef.current);
   }, [initialize]);
-
-
 
 
   const getMonthDistance = (start, end) => {
@@ -32,6 +31,7 @@ const Calendar = (props) => {
     const endDate = end.getDate()
     return ((endYear - startYear) * 12) - startMonth + endMonth;
   }
+
 
   const getXPointLib = (monthArray, gridWidth) => {
     const lib = {}
@@ -56,6 +56,7 @@ const Calendar = (props) => {
   const containerRef = useRef()
   const [xPointLib, setXPointLib] = useState({})
 
+
   useEffect(() => {
     setMonthDistance(getMonthDistance(props.startRange, props.endRange) + 1)
     if (props.columns) {
@@ -64,11 +65,13 @@ const Calendar = (props) => {
     
   }, [props.startRange, props.endRange])
 
+
   useEffect(() => {
     setMonthRange(Array(monthDistance).fill().map((arr, idx) => {
       return new Date(props.startRange.getFullYear(), props.startRange.getMonth() + idx + 1, 0)
     }))
   }, [monthDistance])
+
 
   useEffect(() => {
     monthSpaceRef.current.style.width = scrollRef.current.children[1].scrollWidth + 'px'
@@ -92,6 +95,7 @@ const Calendar = (props) => {
     )
   })
 
+  
   // 해당 열의 월간 그리드
   const gridPerPlans = (rowIdx) => {
     const exec = monthRange.map((el, idx) => {
@@ -129,11 +133,6 @@ const Calendar = (props) => {
     )
   })
 
-  // const scrollHorizontalOnWheel = (event) => {
-  //   const deltaX = event.deltaY * 4
-  //   dateRangeWrapperRef.current.scrollBy({top:0, left:deltaX, behavior:'smooth'})
-  // }
-
 
   const newPlanDummy = (
     <div className={styles['new-plan-dummy']}>
@@ -141,56 +140,36 @@ const Calendar = (props) => {
     </div>
   )
 
-  const syncScroll = () => {
-    
-    
-    monthTitleWrapperRef.current.style.left = -scrollRef.current.children[1].scrollLeft + 'px'
-    // props.plansTitleWrapperRef.current.scrollTop = scrollRef.current.children[1].scrollTop
-    props.plansTitleWrapperRef.current.style.top = -scrollRef.current.children[1].scrollTop + 'px'
-    
 
+  const syncScroll = () => {
+    monthTitleWrapperRef.current.style.left = -scrollRef.current.children[1].scrollLeft + 'px'
+    props.plansTitleWrapperRef.current.style.top = -scrollRef.current.children[1].scrollTop + 'px'
     if (scrollRef.current.children[1].scrollTop !== 0) {
       monthTitleWrapperRef.current.style.boxShadow = '0px 2px 10px 0px rgb(77, 71, 71, 0.2)'
-
     } else {
       monthTitleWrapperRef.current.style.boxShadow = 'none'
     }
-
     if (scrollRef.current.children[1].scrollLeft !== 0) {
       props.plansTitleInnerRef.current.style.boxShadow = '2px 0px 10px 0px rgb(77, 71, 71, 0.2)'
     } else {
       props.plansTitleInnerRef.current.style.boxShadow = 'none'
     }
-    
   }
+
 
   return (
       <div id="date-range" ref={dateRangeWrapperRef} onClick={() => console.log(dateRangeWrapperRef)}  className={styles['date-range-wrapper']}>
-          <div ref={monthTitleWrapperRef}  className={styles['month-title-container']}>
-              {monthTitleGrid}
-            </div>
+        <div ref={monthTitleWrapperRef}  className={styles['month-title-container']}>
+          {monthTitleGrid}
+        </div>
 
-            <div ref={scrollRef} className={styles['scroll-wrapper']} >
-
-              <div ref={monthBarRef} className={styles['scroll-div']} >
-                {totalPlansGrid}
-                {props.columns? null : newPlanDummy}
-                <div ref={monthSpaceRef} className={styles['month-space']}>
-                </div>
-                
-              </div>
-              
-            </div>
-
-        {/* <div className={styles['month-bar-wrapper']}>
-          {totalPlansGrid}
-          {props.columns? null : newPlanDummy}
-          
-        </div> */}
-
-        {/* 여백 */}
-        {/* <div ref={monthSpaceRef} className={styles['month-space']}>
-                </div> */}
+        <div ref={scrollRef} className={styles['scroll-wrapper']} >
+          <div ref={monthBarRef} className={styles['scroll-div']} >
+            {totalPlansGrid}
+            {props.columns? null : newPlanDummy}
+            <div ref={monthSpaceRef} className={styles['month-space']} />
+          </div>
+        </div>
       </div>
   )
 }
