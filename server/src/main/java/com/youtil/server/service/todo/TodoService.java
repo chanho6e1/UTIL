@@ -7,11 +7,11 @@ import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.tag.Tag;
 import com.youtil.server.domain.todo.Todo;
 import com.youtil.server.domain.user.User;
+import com.youtil.server.dto.category.CategorySaveRequest;
 import com.youtil.server.dto.tag.TagResponse;
 import com.youtil.server.dto.tag.TagSaveRequest;
 import com.youtil.server.dto.tag.TagUpdateRequest;
 import com.youtil.server.dto.todo.TodoSaveRequest;
-import com.youtil.server.repository.goal.GoalRepository;
 import com.youtil.server.repository.tag.TagRepository;
 import com.youtil.server.repository.todo.TodoRepository;
 import com.youtil.server.repository.user.UserRepository;
@@ -34,8 +34,8 @@ public class TodoService {
     @Autowired
     private final UserRepository userRepository;
 
-    @Autowired
-    private final GoalRepository goalRepository;
+//    @Autowired
+//    private final GoalRepository goalRepository;
 
     @Transactional
     public Long createTodo(Long goalId, TodoSaveRequest request) {
@@ -43,6 +43,14 @@ public class TodoService {
 
 //        Goal goal = goalRepository.findById(goalId).orElseThrow(() -> new ResourceNotFoundException("goal", "goalId", goalId));
         todo = todoRepository.save(request.of(goalId));
+
+        return todo.getTodoId();
+    }
+
+    @Transactional
+    public Long updateTodo(Long todoId, TodoSaveRequest request) {
+        Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new ResourceNotFoundException("todo", "todoId", todoId));
+        todo.update(request);
 
         return todo.getTodoId();
     }

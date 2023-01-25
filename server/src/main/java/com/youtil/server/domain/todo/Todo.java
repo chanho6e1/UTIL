@@ -3,6 +3,8 @@ package com.youtil.server.domain.todo;
 import com.youtil.server.domain.BaseEntity;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.tag.Tag;
+import com.youtil.server.dto.post.PostSaveRequest;
+import com.youtil.server.dto.todo.TodoSaveRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,5 +44,10 @@ public class Todo extends BaseEntity {
         this.title = title;
         this.description = description;
     }
+    public void update(TodoSaveRequest request){
+        this.dueDate = request.getDueDate();
+        this.description = request.getDescription();
+        this.title = request.getTitle();
 
+    }
 }
