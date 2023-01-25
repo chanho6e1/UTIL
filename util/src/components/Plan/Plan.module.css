@@ -7,9 +7,10 @@
     flex: 1;
     overflow: hidden;
     /* background-color: rgb(240, 240, 245); */
+    
 }
 
-.plans-navbar {
+/* .plans-navbar {
     width: 100%;
     height: 60px;
     background-color: rgb(234, 236, 240);
@@ -26,11 +27,12 @@
 .navbar-element {
     margin-left: 20px;
     margin-right: 20px;
-}
+} */
 
 .plans-title-wrapper {
     display: flex;
     flex-direction: column;
+    
 }
 
 .plan-title-bar {
@@ -43,7 +45,7 @@
     background-color: rgb(244, 245, 247);
     width: 185px;
     padding-left: 15px;
-    height: 48px;
+    min-height: 48px;
     /* background-color: rgb(235, 235, 240); */
     /* border: 1px solid rgba(220, 220, 225); */
     display: flex;
@@ -51,7 +53,16 @@
     justify-content: left;
     font-size: 14px;
     font-weight: 500;
+    user-select: none;
 
+    transition-property: background-color;
+    transition-duration: 0.3s;
+
+}
+
+.plan-title-bar:hover {
+    background-color: rgb(225, 227, 236);
+    cursor: pointer;
 }
 
 .title-odd {
@@ -66,7 +77,7 @@
     border-bottom: 2px solid rgba(230, 230, 235);
     background-color: rgb(244, 245, 247);
     width: 200px;
-    height: 48px;
+    min-height: 48px;
     /* background-color: rgb(235, 235, 240); */
     
     /* border: 1px solid rgba(220, 220, 225); */
@@ -94,5 +105,30 @@
 }
 
 .plan-space {
+    border-left: 1px solid transparent;
+    border-right: 2px solid rgba(230, 230, 235);
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    box-shadow: inset 0px 10px 10px -10px rgb(77, 71, 71, 0.2);
     flex: 1;
+    background-color: rgb(244, 245, 247);
+}
+
+.new-plan {
+    display: flex;
+    align-items: center;
+}
+
+.new-plan-input {
+    padding-left:12px;
+    padding-right:12px;
+    width: 79%;
+    background-color: rgba(0, 0, 0, 0.075);
+    border-radius: 20px;
+    height:32px;
+    border: none;
+}
+
+.new-plan-input:focus {
+    outline: none;
 }

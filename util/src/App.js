@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import 'overlayscrollbars/overlayscrollbars.css';
 
 import Main from './components/Main/Main';
 
