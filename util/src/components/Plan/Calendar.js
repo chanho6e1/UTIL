@@ -73,8 +73,6 @@ const Calendar = (props) => {
   useEffect(() => {
     monthSpaceRef.current.style.width = scrollRef.current.children[1].scrollWidth + 'px'
     monthTitleWrapperRef.current.style.width = scrollRef.current.children[1].scrollWidth + 'px'
-    const heightCorrection = props.columns? 0 : 1
-    // props.plansTitleWrapperRef.current.style.height = (plans.length + heightCorrection) * (planGridRef[0].current[0].clientHeight + 1.6) + 'px'
     props.plansTitleWrapperRef.current.style.height = props.plansTitleInnerRef.current.clientHeight + 'px'
     if (monthRange) {
       getXPointLib(monthRange, planGridRef[0].current[0].clientWidth)
