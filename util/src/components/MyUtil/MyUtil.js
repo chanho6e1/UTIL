@@ -19,8 +19,8 @@ const MyUtil = (props) => {
 
   return (
     <div>
-      <Card className={styles['plan-wrapper']}>
-        <div ref={planExpandedRef} id="plan-expanded-button" >
+      <Card className={styles['plans-wrapper']}>
+        <div ref={planExpandedRef} id="plan-expanded-button" className={styles['plans-div']}>
 
             <div className={styles['plans-navbar']}>
                 <div className={styles['navbar-element']}>목표 로드맵</div>

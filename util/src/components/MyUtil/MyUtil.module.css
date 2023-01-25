@@ -1,7 +1,15 @@
-.plan-wrapper {
+.plans-wrapper {
     overflow: hidden;
     width:45vw;
+    height: 60vh;
     margin: 15px;
+}
+
+.plans-div {
+    width: 100%;
+    height:100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .plans-navbar {

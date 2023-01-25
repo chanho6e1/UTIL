@@ -9,10 +9,10 @@ const initialSliceState = {
     {title:'리액트 트랙', startDate: new Date('2023-1-16').toString(), endDate: new Date('2023-04-25').toString()},
     {title:'공통 프로젝트 진행', startDate: new Date('2023-03-1').toString(), endDate: new Date('2023-05-11').toString()},
     {title:'포트폴리오 작성', startDate: new Date('2023-04-1').toString(), endDate: new Date('2023-05-03').toString()},
-    {title:'개인 과제 분배', startDate: new Date('2023-02-1').toString(), endDate: new Date('2023-04-13').toString()},
-    {title:'취업현황 조사', startDate: new Date('2023-02-17').toString(), endDate: new Date('2023-03-27').toString()},
-    {title:'취업현황 조사', startDate: new Date('2023-02-17').toString(), endDate: new Date('2023-03-27').toString()},
-    {title:'취업현황 조사', startDate: new Date('2023-02-17').toString(), endDate: new Date('2023-03-27').toString()},
+    // {title:'개인 과제 분배', startDate: new Date('2023-02-1').toString(), endDate: new Date('2023-04-13').toString()},
+    // {title:'취업현황 조사', startDate: new Date('2023-02-17').toString(), endDate: new Date('2023-03-27').toString()},
+    // {title:'취업현황 조사', startDate: new Date('2023-02-17').toString(), endDate: new Date('2023-03-27').toString()},
+    // {title:'취업현황 조사', startDate: new Date('2023-02-17').toString(), endDate: new Date('2023-03-27').toString()},
 
   ],
 }

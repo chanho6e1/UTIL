@@ -59,20 +59,13 @@ const Plan = (props) => {
 
     return (
         
-        <div>
-            {/* <div className={styles['plans-navbar']}>
-                <div className={styles['navbar-element']}>목표 로드맵</div>
-                <div className={styles['navbar-element']} style={{marginTop: '8px'}}>
-
-
-                </div>
-                
-            </div> */}
+       
             <div className={styles['plans-wrapper']}>
-                <div>
+                <div className={styles['plans-title-wrapper']}>
                     
                     <div className={styles['plan-title-bar-space']} />
                     {planTitleGrid}
+                    <div className={styles['plan-space']}>여백</div>
                     <div className={styles['scroll-bar-space']} />
                 </div>
                 {/* <div> */}
@@ -80,7 +73,7 @@ const Plan = (props) => {
                 
                 {/* </div> */}
             </div>
-        </div>
+    
 
         
     )

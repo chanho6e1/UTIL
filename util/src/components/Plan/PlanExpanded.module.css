@@ -5,6 +5,8 @@
     height: 100vh;
     background-color: white;
     overflow: scroll;
+    display: flex;
+    flex-direction: column;
 }
 
 .plans-navbar {
