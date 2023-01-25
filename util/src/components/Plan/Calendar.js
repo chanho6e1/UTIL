@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 import CalendarDateSelector from "./CalendarDateSelector";
 import Swipe from "react-easy-swipe";
-import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import { OverlayScrollbarsComponent, useOverlayScrollbars } from "overlayscrollbars-react";
 
 
 
@@ -12,6 +12,14 @@ const Calendar = (props) => {
   const dateRangeWrapperRef = useRef()
   const monthSpaceRef = useRef()
   const monthBarRef = useRef()
+  const monthTitleWrapperRef = useRef()
+  const scrollRef = useRef();
+  const [initialize, instance] = useOverlayScrollbars({ options: { scrollbars: { autoHide: 'scroll' } }, events: { scroll: () => {syncScroll()} }});
+
+  useEffect(() => {
+    initialize(scrollRef.current);
+  }, [initialize]);
+
 
 
 
@@ -63,7 +71,10 @@ const Calendar = (props) => {
   }, [monthDistance])
 
   useEffect(() => {
-    // monthSpaceRef.current.style.width = monthBarRef.current.clientWidth + 'px'
+    monthSpaceRef.current.style.width = scrollRef.current.children[1].scrollWidth + 'px'
+    monthTitleWrapperRef.current.style.width = scrollRef.current.children[1].scrollWidth + 'px'
+    const heightCorrection = props.columns? 0 : 1
+    props.plansTitleWrapperRef.current.style.height = (plans.length + heightCorrection) * (planGridRef[0].current[0].clientHeight + 2) - 3 + 'px'
     if (monthRange) {
       getXPointLib(monthRange, planGridRef[0].current[0].clientWidth)
     }
@@ -131,13 +142,37 @@ const Calendar = (props) => {
     </div>
   )
 
+  const syncScroll = () => {
+    
+    
+    monthTitleWrapperRef.current.style.left = -scrollRef.current.children[1].scrollLeft + 'px'
+    // props.plansTitleWrapperRef.current.scrollTop = scrollRef.current.children[1].scrollTop
+    props.plansTitleWrapperRef.current.style.top = -scrollRef.current.children[1].scrollTop + 'px'
+    
+
+    if (scrollRef.current.children[1].scrollTop !== 0) {
+      monthTitleWrapperRef.current.style.boxShadow = '0px 2px 10px 0px rgb(77, 71, 71, 0.2)'
+
+    } else {
+      monthTitleWrapperRef.current.style.boxShadow = 'none'
+    }
+
+    if (scrollRef.current.children[1].scrollLeft !== 0) {
+      props.plansTitleInnerRef.current.style.boxShadow = '2px 0px 10px 0px rgb(77, 71, 71, 0.2)'
+    } else {
+      props.plansTitleInnerRef.current.style.boxShadow = 'none'
+    }
+    
+  }
+
   return (
       <div id="date-range" ref={dateRangeWrapperRef} onClick={() => console.log(dateRangeWrapperRef)}  className={styles['date-range-wrapper']}>
-        <div className={styles['month-bar-container']}>
+          <div ref={monthTitleWrapperRef}  className={styles['month-title-container']}>
               {monthTitleGrid}
             </div>
 
-            <OverlayScrollbarsComponent defer options={{ scrollbars: { autoHide: 'scroll' } }} className={styles['scroll-wrapper']}>
+            <div ref={scrollRef} className={styles['scroll-wrapper']} >
+
               <div ref={monthBarRef} className={styles['scroll-div']} >
                 {totalPlansGrid}
                 {props.columns? null : newPlanDummy}
@@ -146,9 +181,7 @@ const Calendar = (props) => {
                 
               </div>
               
-                
-              
-            </OverlayScrollbarsComponent>
+            </div>
 
         {/* <div className={styles['month-bar-wrapper']}>
           {totalPlansGrid}

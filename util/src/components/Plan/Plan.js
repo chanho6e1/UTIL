@@ -15,6 +15,9 @@ const Plan = (props) => {
     const [startRange, setStartRange] = useState(new Date(prototypeDate.getFullYear(),0,1))
     const [endRange, setEndRange] = useState(new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),12,0)))
     const planSpaceRef = useRef()
+    const plansTitleWrapperRef = useRef()
+    const plansTitleInnerRef = useRef()
+
 
 
 
@@ -70,20 +73,30 @@ const Plan = (props) => {
         
        
             <div className={styles['plans-wrapper']}>
-                <div className={styles['plans-title-wrapper']}>
+                <div className={styles['plans-title-wrapper']} >
                     
                     <div className={styles['plan-title-bar-space']} />
-                    {planTitleGrid}
-                    
-                    {/* 목표 새로 작성 */}
-                    {props.columns? null : newPlanDummy}
+                    <div className={styles['plans-titles']} ref={plansTitleWrapperRef}>
 
-                    {/* 여백 */}
+                        <div className={styles['plans-titles-inner']} ref={plansTitleInnerRef}>
+                            {planTitleGrid}
+                            
+                            {/* 목표 새로 작성 */}
+                            {props.columns? null : newPlanDummy}
+                        </div>
+                        
+
+                        {/* 여백 */}
+                        
+                        
+                       
+                        
+                    </div>
                     <div ref={planSpaceRef} className={styles['plan-space']}></div>
-                    {/* <div className={styles['scroll-bar-space']} /> */}
+                    
                 </div>
                 {/* <div> */}
-                <Calendar columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plans={plans} />
+                <Calendar columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} />
                 
                 {/* </div> */}
             </div>
