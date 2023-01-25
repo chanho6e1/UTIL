@@ -42,7 +42,6 @@ const CalendarDateSelector = (props) => {
 
 
   const setStartWidth = () => {
-    
     if (initialStartDate > initialEndDate) {
       const startDateCorrection = new Date(new Date(initialEndDate).setDate(initialEndDate.getDate() - 1))
       setInitialStartDate(startDateCorrection)
