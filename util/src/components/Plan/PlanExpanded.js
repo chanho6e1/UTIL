@@ -12,7 +12,7 @@ const PlanExpanded = (props) => {
         <div className={styles['navbar-element']} style={{marginTop: '8px'}}>
         </div>
       </div>
-      <Plan showRange={256}/>
+      <Plan />
     </div>
 
     

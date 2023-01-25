@@ -19,10 +19,6 @@ const Plan = (props) => {
     const plansTitleInnerRef = useRef()
 
 
-
-
-
-
     const extendStartRange = (amount) => {
         const extendedDate = new Date(startRange.getFullYear(), startRange.getMonth() - amount, 1)
         setStartRange(() => extendedDate)
@@ -61,48 +57,25 @@ const Plan = (props) => {
 
     const newPlanDummy = (
         <div onClick={newPlanClickShow} className={`${styles['plan-title-bar']} ${plans.length % 2 ? styles['title-odd'] : styles['title-even']}`}>
-            
             {newPlan ? <input type="text" onBlur={newPlanClickHide} placeholder="목표를 입력해 주세요." autoFocus className={styles['new-plan-input']} /> : <div className={styles['new-plan']}>{plusImg} 목표 작성</div> }
         </div>
     )
 
     
-    
-
     return (
-        
-       
-            <div className={styles['plans-wrapper']}>
-                <div className={styles['plans-title-wrapper']} >
-                    
-                    <div className={styles['plan-title-bar-space']} />
-                    <div className={styles['plans-titles']} ref={plansTitleWrapperRef}>
-
-                        <div className={styles['plans-titles-inner']} ref={plansTitleInnerRef}>
-                            {planTitleGrid}
-                            
-                            {/* 목표 새로 작성 */}
-                            {props.columns? null : newPlanDummy}
-                        </div>
-                        
-
-                        {/* 여백 */}
-                        
-                        
-                       
-                        
-                    </div>
-                    <div ref={planSpaceRef} className={styles['plan-space']}></div>
-                    
+        <div className={styles['plans-wrapper']}>
+            <div className={styles['plans-title-wrapper']} > 
+                <div className={styles['plan-title-bar-space']} />
+                <div className={styles['plans-titles']} ref={plansTitleWrapperRef}>
+                    <div className={styles['plans-titles-inner']} ref={plansTitleInnerRef}>
+                        {planTitleGrid}
+                        {props.columns? null : newPlanDummy}
+                    </div>    
                 </div>
-                {/* <div> */}
-                <Calendar columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} />
-                
-                {/* </div> */}
+                <div ref={planSpaceRef} className={styles['plan-space']} />
             </div>
-    
-
-        
+            <Calendar columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} />
+        </div>
     )
 }
 
