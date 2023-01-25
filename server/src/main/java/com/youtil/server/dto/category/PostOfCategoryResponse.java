@@ -2,6 +2,7 @@ package com.youtil.server.dto.category;
 
 import com.youtil.server.domain.category.Category;
 import com.youtil.server.domain.post.Post;
+import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.post.PostCommentResponse;
 import com.youtil.server.dto.post.PostResponse;
 import lombok.AllArgsConstructor;
@@ -28,11 +29,11 @@ public class PostOfCategoryResponse {
 //
 //    private String modifiedDate;
 
-    public PostOfCategoryResponse(Category category) { //전체 조회
+    public PostOfCategoryResponse(Category category, User user) { //전체 조회
 
         this.categoryId = category.getCategoryId();
         this.posts = category.getPostList().getPostList().stream()
-                        .map(PostResponse::new).collect(Collectors.toList());
+                        .map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 
 }
