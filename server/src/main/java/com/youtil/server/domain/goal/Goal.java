@@ -5,12 +5,15 @@ import com.youtil.server.domain.category.PostList;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.post.PostLike;
 import com.youtil.server.domain.user.User;
+import lombok.Builder;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 public class Goal extends BaseEntity {
 
     @Id
@@ -33,6 +36,14 @@ public class Goal extends BaseEntity {
 
     private String startDate;
     private String endDate;
+
+    @Builder
+    public Goal(User user, String title, String startDate, String endDate){
+        this.user = user;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
 
 
