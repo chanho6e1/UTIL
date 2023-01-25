@@ -137,16 +137,16 @@ const Calendar = (props) => {
               {monthTitleGrid}
             </div>
 
-            <OverlayScrollbarsComponent defer  className={styles['scroll-wrapper']}>
+            <OverlayScrollbarsComponent defer options={{ scrollbars: { autoHide: 'scroll' } }} className={styles['scroll-wrapper']}>
               <div ref={monthBarRef} className={styles['scroll-div']} >
                 {totalPlansGrid}
                 {props.columns? null : newPlanDummy}
-
-                {/* <div ref={monthSpaceRef} className={styles['month-space']}>
-                </div> */}
+                <div ref={monthSpaceRef} className={styles['month-space']}>
+                </div>
+                
               </div>
               
-              {/* 여백 */}
+                
               
             </OverlayScrollbarsComponent>
 
@@ -155,7 +155,10 @@ const Calendar = (props) => {
           {props.columns? null : newPlanDummy}
           
         </div> */}
-        
+
+        {/* 여백 */}
+        {/* <div ref={monthSpaceRef} className={styles['month-space']}>
+                </div> */}
       </div>
   )
 }
