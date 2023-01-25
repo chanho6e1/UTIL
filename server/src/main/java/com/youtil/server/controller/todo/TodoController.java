@@ -5,6 +5,7 @@ import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.category.Category;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.user.User;
+import com.youtil.server.dto.category.CategorySaveRequest;
 import com.youtil.server.dto.post.PostSaveRequest;
 import com.youtil.server.dto.todo.TodoSaveRequest;
 import com.youtil.server.security.CurrentUser;
@@ -33,5 +34,13 @@ public class TodoController {
     public ResponseEntity<CommonResponse> createTodo(@PathVariable Long goalId, @RequestBody @Valid TodoSaveRequest request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "등록 성공", todoService.createTodo(goalId, request)));
+    }
+
+    @ApiOperation(value = "투두 수정", notes = "해당 투두를 수정한다")
+    @PutMapping("/{todoId}")
+    public ResponseEntity<CommonResponse> updateTodo(@PathVariable Long todoId,
+                                                     @RequestBody @Valid TodoSaveRequest request) throws Exception {
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.CREATED, "카테고리 수정 성공", todoService.updateTodo(todoId, request)));
     }
 }
