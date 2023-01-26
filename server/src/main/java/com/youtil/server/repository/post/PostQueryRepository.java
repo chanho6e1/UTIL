@@ -38,9 +38,6 @@ public class PostQueryRepository {
     }
 
     public List<Post> findPostList(String criteria, PageRequest pageRequest){ //정렬
-        if(criteria == null){
-            criteria = "date";
-        }
         return jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
@@ -52,9 +49,7 @@ public class PostQueryRepository {
     public List<Post> findByContentContaining(PostSearch postSearch, PageRequest pageRequest){ //내용으로 검색, 정렬도 지정
 
         String criteria = postSearch.getCriteria();
-        if(criteria == null){
-            criteria = "date";
-        }
+
         return jpaQueryFactory.selectFrom(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(post.content.contains(postSearch.getContent()))
@@ -67,9 +62,7 @@ public class PostQueryRepository {
     public List<Post> findByPostSubscribes(PostSearch postSearch, User user, PageRequest pageRequest) {
 
         String criteria = postSearch.getCriteria();
-        if(criteria == null){
-            criteria = "date";
-        }
+
         List<User> postSubscribe =  jpaQueryFactory.select(follow.toUser).from(follow)
                 .where(follow.fromUser.userId.eq(user.getUserId()))
                 .offset(pageRequest.getOffset())

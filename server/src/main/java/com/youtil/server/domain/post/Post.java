@@ -82,17 +82,24 @@ public class Post extends BaseEntity {
         this.isPrivate = request.getIsPrivate();
     }
 
-    public boolean setCategory(Category category) {
+    public void setCategory(Category category) {
         this.category = category;
-        return true;
     }
 
-    public boolean resetCategory() {
+    public void resetCategory() {
         if(this.category != null){
             this.category = null;
-            return true;
         }
-        return false;
+    }
+
+    public void setGoal(Goal goal) {
+        this.goal = goal;
+    }
+
+    public void resetGoal() {
+        if(this.goal != null){
+            this.goal = null;
+        }
     }
 
     public void addComment(PostComment postComment){
@@ -115,6 +122,9 @@ public class Post extends BaseEntity {
     public void clearUser() {
         this.user = null;
     }
+
+
+
 
 //    public int getTotalFiles(){
 //        return fileLists.size();

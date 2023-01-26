@@ -33,6 +33,8 @@ public class PostSaveRequest {
 
     private Long categoryId;
 
+    private Long goalId;
+
 //    private String tag;
 
     public Post of(User user) {
