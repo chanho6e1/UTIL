@@ -1,10 +1,10 @@
 package com.youtil.server.service.post;
 
-import com.youtil.server.common.PagedResponse;
 import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.category.Category;
 import com.youtil.server.domain.post.Post;
+import com.youtil.server.domain.post.PostBookmark;
 import com.youtil.server.domain.post.PostFile;
 import com.youtil.server.domain.post.PostLike;
 import com.youtil.server.domain.user.User;
@@ -16,15 +16,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,6 +47,8 @@ public class PostService {
     private final UserRepository userRepository;
     @Autowired
     private final PostCategoryRepository postCategoryRepository;
+    @Autowired
+    private final PostBookmarkRepository postBookmarkRepository;
 
     @Transactional
     public PostResponse findPost(Long postId, Long userId) { //단일 조회
@@ -62,8 +59,11 @@ public class PostService {
         if(postLikeRepository.existsByPostIdAndUserId(postId, userId).isPresent()){
             likeStatus = true;
         }
-        return new PostResponse(post, likeStatus);
-
+        Boolean bookmarkStatus = false;
+        if(postBookmarkRepository.existsByPostIdAndUserId(postId, userId).isPresent()){
+            likeStatus = true;
+        }
+        return new PostResponse(post, likeStatus, bookmarkStatus);
     }
 
 
@@ -102,7 +102,6 @@ public class PostService {
         return postQueryRepository.findByPostSubscribes(search, user, PageRequest.of(offset - 1, size))
                 .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
-
 
 
     /////////////////////////
@@ -193,6 +192,16 @@ public class PostService {
         PostLike postLike = PostLike.builder().post(post).user(user).build();
         return post.togglePostLike(postLike);
     }
+
+    @Transactional
+    public Boolean togglePostBookmarks(Long userId, Long postId) {
+        Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("post", "postId", postId));
+        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("user", "userId", userId));
+        PostBookmark postBookmark = PostBookmark.builder().post(post).user(user).build();
+        return post.togglePostBookmark(postBookmark);
+    }
+
+
 }
 
 
