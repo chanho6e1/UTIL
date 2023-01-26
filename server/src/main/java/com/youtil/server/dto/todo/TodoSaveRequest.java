@@ -1,5 +1,6 @@
 package com.youtil.server.dto.todo;
 
+import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.todo.Todo;
 import com.youtil.server.domain.user.User;
@@ -18,7 +19,7 @@ public class TodoSaveRequest {
     private boolean isDone;
     private String dueDate;
 
-    public Todo of(Long goalId) {
-        return Todo.builder().title(title).description(description).isDone(isDone).dueDate(dueDate).build();
+    public Todo of(Goal goal) {
+        return Todo.builder().goal(goal).title(title).description(description).isDone(isDone).dueDate(dueDate).build();
     }
 }
