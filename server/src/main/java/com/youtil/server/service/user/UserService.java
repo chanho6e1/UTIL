@@ -13,14 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public User getCurrentUser(Long userId) {
-        return userRepository.findByUserId(userId);
+    public UserResponse getCurrentUser(Long userId) {
+        return UserResponse.from(userRepository.findByUserId(userId));
     }
     @Transactional
-    public User updateUser(Long userId, UserUpdateRequest request){
-        User originUser = getCurrentUser(userId);
+    public Long updateUser(Long userId, UserUpdateRequest request){
+        User originUser = userRepository.findByUserId(userId);
         originUser.update(request);
-        return originUser;
+        return userId;
     }
 
     public boolean checkNickName(String nickName){ return userRepository.existsByNickName(nickName); }

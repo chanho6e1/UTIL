@@ -19,12 +19,14 @@ public class UserResponse {
     private String userName;
 
 
-//    private String profileImg;
+    private String imageUrl;
 
     private String department;
 
+    private String discription;
+
     public static UserResponse from(User user) {
-        return new UserResponse(user.getUserId(), user.getNickName(), user.getEmail(), user.getUserName(), user.getDepartment());
+        return new UserResponse(user.getUserId(), user.getNickName(), user.getEmail(), user.getUserName(), user.getImageUrl(), user.getDepartment(), user.getDiscription());
     }
 
     public void setNickname(String nickname) {
