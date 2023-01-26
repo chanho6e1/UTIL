@@ -5,12 +5,20 @@ import com.youtil.server.domain.category.PostList;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.post.PostLike;
 import com.youtil.server.domain.user.User;
+import com.youtil.server.dto.goal.GoalUpdateRequest;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Goal extends BaseEntity {
 
     @Id
@@ -34,6 +42,19 @@ public class Goal extends BaseEntity {
     private String startDate;
     private String endDate;
 
+    @Builder
+    public Goal(User user, String title, String startDate, String endDate){
+        this.user = user;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public void update(GoalUpdateRequest request){
+        this.title = request.getTitle();
+        this.startDate = request.getStartDate();
+        this.endDate = request.getEndDate();
+    }
 
 
 }

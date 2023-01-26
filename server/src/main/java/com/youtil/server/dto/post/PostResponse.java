@@ -3,6 +3,7 @@ package com.youtil.server.dto.post;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.post.PostLike;
+import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.user.UserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -54,7 +55,7 @@ public class PostResponse {
     private LocalDateTime modifiedDate1;
 
 
-    public PostResponse(Post post) { //전체 조회
+    public PostResponse(Post post, User user) { //전체 조회
 
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
 
@@ -66,11 +67,8 @@ public class PostResponse {
             this.modifiedDate = post.getModifiedDate().format(myFormatObj);
         }
         this.likeStatus = post.getPostLikeList().getPostLikeList().parallelStream()
-                .anyMatch(l -> l.ownedBy(post.getUser().getUserId()));
+                .anyMatch(l -> l.ownedBy(user.getUserId()));
         this.likeStatusSize = post.getTotalLikes();
-
-        this.createdDate1 = post.getCreatedDate();
-        this.modifiedDate1 = post.getModifiedDate();
    }
 
     public PostResponse(Post post, Boolean likeStatus) { //단건 조회

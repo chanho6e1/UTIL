@@ -41,9 +41,6 @@ public class PostService {
     private final PostQueryRepository postQueryRepository;
 
     @Autowired
-    private final PostQueryRepository1 postQueryRepository1;
-
-    @Autowired
     private final PostFileRepository postFileRepository;
     @Autowired
     private final PostFileHandler fileHandler;
@@ -70,185 +67,42 @@ public class PostService {
     }
 
 
-    public PagedResponse<PostResponse> findPostListByUser(Long userId, Sort.Direction sort, String cop, Long cursor, Integer size) {//내가 쓴 글 조회/커서
-
-        Pageable pageable = PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-
-        Slice<Post> posts;
-
-        if(cursor == null){
-            posts = postRepository.findMyList(userId, pageable);
-        }
-        else{
-            posts = postRepository.findMyListByCursor(userId, cursor, cop, pageable);
-        }
-
-        List<PostResponse> postResponses = posts.stream().map(PostResponse::new).collect(Collectors.toList());
-        return new PagedResponse<PostResponse>(postResponses, 0, posts.getSize(),
-                0, posts.isLast(), posts.hasNext(), posts.hasPrevious());
-    }
-
-//    public List<PostResponse> findPostListByUser(Long userId, int offset) {//내가 쓴 글 조회/오프셋
-//        return postQueryRepository.findPostListByUser(userId, PageRequest.of(offset - 1, 10))
-//                .stream().map(PostResponse::new).collect(Collectors.toList());
-//    }
-
-//    public PagedResponse<PostResponse> findPostList(String criteria, Sort.Direction sort, String cop, Long cursor, Integer size) {//전체 리스트 조회,정렬기준(선택/디폴트는 최근 날짜), 커서
-//
-//        Pageable pageable = null;
-//        if(criteria == null){
-//            pageable = findCriteria(size, "date");
-//        }else {
-//            pageable = findCriteria(size, criteria);
-//        }
-//
-//        Slice<Post> posts;
-//
-//        if(cursor==null){
-//            posts = postRepository.findList(pageable);
-//        }
-//        else{
-//            posts =  postRepository.findListByCursor(cursor, cop, pageable);
-//        }
-//
-//        List<PostResponse> postResponses = posts.stream().map(PostResponse::new).collect(Collectors.toList());
-//        return new PagedResponse<PostResponse>(postResponses, 0, posts.getSize(),
-//                0, posts.isLast(), posts.hasNext(), posts.hasPrevious());
-//    }
-
-    public Slice<PostResponse> findPostList(String criteria, Sort.Direction sort, String cop, Long cursor, Integer size, String createdDate) {//전체 리스트 조회,정렬기준(선택/디폴트는 최근 날짜) ,오프셋
-        return postQueryRepository1.findPostList(criteria, sort, cop, cursor, size, createdDate);
-//                .stream().map(PostResponse::new).collect(Collectors.toList());
-    }
-
-//    public List<PostResponse> findPostList(String criteria, int offset) {//전체 리스트 조회,정렬기준(선택/디폴트는 최근 날짜) ,오프셋
-//        return postQueryRepository.findPostList(criteria, PageRequest.of(offset - 1, 10))
-//                .stream().map(PostResponse::new).collect(Collectors.toList());
-//    }
-
-    public  PagedResponse<PostResponse> findByPostContent(PostSearch search, Sort.Direction sort, String cop, Long cursor, Integer size) {//내용으로 검색
-
-        Pageable pageable = null;
-        String order = search.getCriteria();
-        if(order == null){
-            order =  "date";
-            pageable = findCriteria(size, order);
-        }else {
-            pageable = findCriteria(size, order);
-        }
-
-        Slice<Post> posts;
-
-        if(cursor==null){
-            posts = postRepository.findListByContent(search.getContent(), pageable);
-        }
-        else{
-            posts =  postRepository.findListByContentByCursor(search.getContent(), cursor, cop, pageable);
-        }
-
-        List<PostResponse> postResponses = posts.stream().map(PostResponse::new).collect(Collectors.toList());
-        return new PagedResponse<PostResponse>(postResponses,0, posts.getSize(),
-                0, posts.isLast(), posts.hasNext(), posts.hasPrevious());
-      }
-
-//    public List<PostResponse> findByPostContent(PostSearch search, int offset) {//내용으로 검색/오프셋
-//        return postQueryRepository.findByContentContaining(search, PageRequest.of(offset - 1, 10))
-//                .stream().map(PostResponse::new).collect(Collectors.toList());
-//    }
-
-     public PagedResponse<PostLikePeopleResponse> PostLikesPeople(Long id, Long postId, Sort.Direction sort, String cop, Long cursor, Integer size) {//해당 게시물의 좋아요한 사람 리스트
-
-         Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
-         Pageable pageable =  PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-
-         Slice<PostLike> posts;
-         if(cursor==null){
-             posts = postRepository.PostLikesPeople(postId, pageable);
-         }
-         else{
-             posts =  postRepository.PostLikesPeopleByCursor(postId, cursor, cop, pageable);
-         }
-
-         List<PostLikePeopleResponse> postResponses = posts.stream().map(PostLikePeopleResponse::new).collect(Collectors.toList());
-         return new PagedResponse<PostLikePeopleResponse>(postResponses, 0, posts.getSize(),
-                 0, posts.isLast(), posts.hasNext(), posts.hasPrevious());
-    }
-
-
-//    public List<PostLikePeopleResponse> PostLikesPeople(Long id, Long postId, int offset) {//해당 게시물의 좋아요한 사람 리스트
-//        return postQueryRepository.PostLikesPeople(postId, PageRequest.of(offset - 1, 10))
-//                .stream().map(PostLikePeopleResponse::new).collect(Collectors.toList());
-//    }
-
-
-    public  PagedResponse<PostResponse> findByPostSubscribes(PostSearch search, Long userId, Sort.Direction sort, String cop, Long cursor, Integer size) {//내가 구독한 사람의 글 리스트 조회/커서
-
-        Pageable pageable;
+    public List<PostResponse> findPostListByUser(Long userId, int offset, int size) {//내가 쓴 글 조회/오프셋
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-        String order = search.getCriteria();
 
-        if(order == null){
-            pageable = findCriteria(size, "date");
-        }else {
-            pageable = findCriteria(size, order);
-        }
-
-        Slice<Post> posts;
-
-        if(cursor==null){
-            posts = postRepository.findByPostSubscribes(userId, pageable);
-        }
-        else{
-            posts =  postRepository.findByPostSubscribesByCursor(userId, cursor, cop, pageable);
-        }
-
-        List<PostResponse> postResponses = posts.stream().map(PostResponse::new).collect(Collectors.toList());
-        return new PagedResponse<PostResponse>(postResponses, 0, posts.getSize(),
-                0, posts.isLast(), posts.hasNext(), posts.hasPrevious());
+        return postQueryRepository.findPostListByUser(userId, PageRequest.of(offset - 1, size))
+                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 
-//    public List<PostResponse> findByPostSubscribes(PostSearch search, Long userId, int offset) {//내가 구독한 사람의 글 리스트 조회/오프셋
-//
-//        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-//        return postQueryRepository.findByPostSubscribes(search, user, PageRequest.of(offset - 1, 10))
-//                .stream().map(PostResponse::new).collect(Collectors.toList());
-//    }
 
-    private Pageable findCriteria(Integer size, String criteria){ //정렬 조건
+    public List<PostResponse> findPostList(Long userId, String criteria, int offset, int size) {//전체 리스트 조회,정렬기준(선택/디폴트는 최근 날짜) ,오프셋
+        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        if(criteria.contains("date")){
-            return PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-        } else if(criteria.contains("like")){
-            return PageRequest.of(0, size, JpaSort.unsafe(Sort.Direction.DESC,"count(l.post.postId)"));
-        } else if(criteria.contains("view")){
-            return PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "views"));
-        }
-        return PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "createdDate"));
+        return postQueryRepository.findPostList(criteria, PageRequest.of(offset - 1, size))
+                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 
-    private String generateCustomCursor(LocalDateTime cursorEndDate, Long cursorId){
-        if (cursorEndDate == null && cursorId == null) { // 1
-            return null;
-        }
+    public List<PostResponse> findByPostContent(Long userId, PostSearch search, int offset, int size) {//내용으로 검색/오프셋
+        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        cursorEndDate = cursorEndDate.minusHours(9); // 2
-
-        String customCursorEndDate;
-        String customCursorId;
-
-        customCursorEndDate = cursorEndDate.toString()
-                .replaceAll("T", "")
-                .replaceAll("-", "") // 3
-                .replaceAll(":", "") + "00"; // 4
-
-        customCursorEndDate = String.format("%1$" + 20 + "s", customCursorEndDate)
-                .replace(' ', '0'); // 5
-
-        customCursorId = String.format("%1$" + 10 + "s", cursorId)
-                .replace(' ', '0'); // 5
-
-        return customCursorEndDate + customCursorId; // 6
+        return postQueryRepository.findByContentContaining(search, PageRequest.of(offset - 1, size))
+                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
+
+
+    public List<PostLikePeopleResponse> PostLikesPeople(Long postId, int offset, int size) {//해당 게시물의 좋아요한 사람 리스트
+        return postQueryRepository.PostLikesPeople(postId, PageRequest.of(offset - 1, size))
+                .stream().map(PostLikePeopleResponse::new).collect(Collectors.toList());
+    }
+
+
+    public List<PostResponse> findByPostSubscribes(PostSearch search, Long userId, int offset, int size) {//내가 구독한 사람의 글 리스트 조회/오프셋
+
+        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        return postQueryRepository.findByPostSubscribes(search, user, PageRequest.of(offset - 1, size))
+                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+    }
+
 
 
     /////////////////////////

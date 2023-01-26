@@ -32,21 +32,10 @@ public class PostQueryRepository {
                 .innerJoin(post.user).fetchJoin()
                 .where(post.user.userId.eq(userId))
                 .orderBy(findCriteria("date"))
-                .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
                 .fetch();
     }
-
-//    public List<Post> findPostList(String criteria, String cop, Long cursor, PageRequest pageRequest){ //정렬
-//        if(criteria == null){
-//            criteria = "date";
-//        }
-//        return jpaQueryFactory.select(post)
-//                .distinct().from(post)
-//                .innerJoin(post.user).fetchJoin()
-//                .orderBy(findCriteria(criteria))
-//                .where((cop.eq("<"), post.postId < cursor .or(cop = '>' , post.postId > cursor))
-//                .fetch();
-//    }
 
     public List<Post> findPostList(String criteria, PageRequest pageRequest){ //정렬
         if(criteria == null){
@@ -95,20 +84,11 @@ public class PostQueryRepository {
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
-
-//        return jpaQueryFactory.selectFrom(post)
-//                .innerJoin(post.user).fetchJoin()
-//                .innerJoin(follow).fetchJoin()
-//                .where(follow.fromUser.userId.eq(user.getUserId()))
-//                .orderBy(findCriteria(criteria))
-//                .offset(pageRequest.getOffset())
-//                .limit(pageRequest.getPageSize())
-//                .fetch();
     }
 
     public List<PostLike> PostLikesPeople(Long postId, PageRequest pageRequest) {
         return jpaQueryFactory.select(postLike).from(postLike).distinct()
-//                .innerJoin(postLike.post).fetchJoin()
+                .innerJoin(postLike.post).fetchJoin()
                 .where(postLike.post.postId.eq(postId))
                 .orderBy(postLike.createdDate.desc())
                 .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())
