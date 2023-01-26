@@ -51,6 +51,8 @@ public class Post extends BaseEntity {
     @Embedded
     private final PostLikeList postLikeList = new PostLikeList();
 
+    @Embedded
+    private final PostBookmarkList postBookmarkList = new PostBookmarkList();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
@@ -108,7 +110,12 @@ public class Post extends BaseEntity {
     }
 
     public boolean togglePostLike(PostLike postLike) {
+
         return postLikeList.togglePostLike(postLike);
+    }
+
+    public boolean togglePostBookmark(PostBookmark postBookmark) {
+        return postBookmarkList.togglePostBookmark(postBookmark);
     }
 
     public Integer getTotalComments(){
