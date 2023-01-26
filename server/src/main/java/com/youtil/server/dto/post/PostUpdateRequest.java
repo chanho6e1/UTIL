@@ -32,6 +32,7 @@ public class PostUpdateRequest {
     @Max(2)
     private Integer isPrivate;
 
+    private Long goalId;
 
 
 //    private String tag;
