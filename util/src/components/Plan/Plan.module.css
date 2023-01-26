@@ -68,7 +68,7 @@
     border-bottom: 1px solid transparent;
 
     background-color: rgb(244, 245, 247);
-    width: 185px;
+    width: 235px;
     padding-left: 15px;
     min-height: 48px;
     /* background-color: rgb(235, 235, 240); */
@@ -79,7 +79,7 @@
     font-size: 14px;
     font-weight: 500;
     user-select: none;
-
+    
     transition-property: background-color;
     transition-duration: 0.3s;
 
@@ -101,7 +101,7 @@
     border-top: 1px solid transparent;
     border-bottom: 2px solid rgba(230, 230, 235);
     background-color: rgb(244, 245, 247);
-    width: 200px;
+    width: 250px;
     min-height: 48px;
     /* background-color: rgb(235, 235, 240); */
     /* box-shadow: 2px -5px 10px 0px rgb(77, 71, 71, 0.2); */
@@ -140,12 +140,18 @@
     padding-left:12px;
     padding-right:12px;
     width: 79%;
-    background-color: rgba(0, 0, 0, 0.075);
-    border-radius: 20px;
-    height:32px;
+    background-color: rgb(220, 220, 228);
+    border-radius: 5px;
+    height:26px;
     border: none;
+    transition-property: background-color;
+    transition-duration: 0.3s;
 }
 
 .new-plan-input:focus {
     outline: none;
+}
+
+.new-plan-input:hover {
+    background-color: rgb(200, 200, 208);
 }

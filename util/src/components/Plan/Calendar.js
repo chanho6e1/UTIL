@@ -5,6 +5,7 @@ import { modifyPlanSliceActions } from '../../redux/planSlice'
 import CalendarDateSelector from "./CalendarDateSelector";
 import Swipe from "react-easy-swipe";
 import { OverlayScrollbarsComponent, useOverlayScrollbars } from "overlayscrollbars-react";
+import PlanTodoListRight from "./PlanTodoListRight";
 
 
 
@@ -74,14 +75,18 @@ const Calendar = (props) => {
 
 
   useEffect(() => {
-    monthSpaceRef.current.style.width = scrollRef.current.children[1].scrollWidth + 'px'
-    monthTitleWrapperRef.current.style.width = scrollRef.current.children[1].scrollWidth + 'px'
-    props.plansTitleWrapperRef.current.style.height = props.plansTitleInnerRef.current.clientHeight + 'px'
     if (monthRange) {
       getXPointLib(monthRange, planGridRef[0].current[0].clientWidth)
     }
-
   }, [monthRange])
+
+
+  useEffect(() => {
+    monthSpaceRef.current.style.width = scrollRef.current.children[1].scrollWidth + 'px'
+    monthTitleWrapperRef.current.style.width = scrollRef.current.children[1].scrollWidth + 'px'
+    props.plansTitleWrapperRef.current.style.height = props.plansTitleInnerRef.current.clientHeight + 'px'
+  }, [monthRange, props.todoFormVisibility])
+
 
 
   const monthGridDummy = monthRange.map((el, idx) => {
@@ -126,10 +131,15 @@ const Calendar = (props) => {
   const totalPlansGrid = plans.map((el, idx) => {
     const columns = gridPerPlans(idx)
     return (
-      <div ref={containerRef} className={styles['month-bar-container']} key={`month-bar-container-${idx}`}>
+      <React.Fragment>
+        <div ref={containerRef} className={styles['month-bar-container']} key={`month-bar-container-${idx}`}>
           {columns}
           <CalendarDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
-      </div>
+          
+        </div>
+        {props.todoFormVisibility[idx] && <PlanTodoListRight goalId={plans[idx].goalId} todos={props.todos} scrollRef={scrollRef} newTodoIdx={props.newTodoIdx} />}
+      </React.Fragment>
+      
     )
   })
 
