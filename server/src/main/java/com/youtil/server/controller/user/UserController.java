@@ -40,7 +40,7 @@ public class UserController {
     public ResponseEntity<CommonResponse> updateUserInfo(@CurrentUser UserPrincipal userPrincipal,
                                                          @RequestBody @Valid UserUpdateRequest request){
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "유저 정보 수정 성공", userService.updateUser(userPrincipal.getId(), request)));
+                HttpStatus.CREATED, "유저 정보 수정 성공", userService.updateUser(userPrincipal.getId(), request)));
     }
 
     @GetMapping("/nickname/{nickName}")
