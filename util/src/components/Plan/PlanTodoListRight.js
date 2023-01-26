@@ -30,7 +30,7 @@ const PlanTodoListRight = (props) => {
                     <div className={styles['todo-duedate-wrapper']}>
                         {`${time.getFullYear()}년 ${time.getMonth() + 1}월 ${time.getDate()}일`}, 
                     </div>
-                    <div>
+                    <div className={styles['todo-description-wrapper']}>
                         {el.description}
                     </div>
                     
