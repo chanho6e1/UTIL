@@ -108,6 +108,18 @@ public class PostService {
                 .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 
+    public List<PostResponse> findByLikePostList(Long userId, String criteria, int offset, int size) {
+        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        return postQueryRepository.findByLikePostList(criteria, user, PageRequest.of(offset - 1, size))
+                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+    }
+
+    public List<PostResponse> findByBookmarkPostList(Long userId, String criteria, int offset, int size) {
+        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        return postQueryRepository.findByBookmarkPostList(criteria, user, PageRequest.of(offset - 1, size))
+                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+    }
+
 
     /////////////////////////
 
@@ -169,14 +181,6 @@ public class PostService {
         return post.getPostId();
     }
 
-    @Transactional
-    public Boolean togglePostLikes(Long userId, Long postId) {
-        Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("post", "postId", postId));
-        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("user", "userId", userId));
-        PostLike postLike = PostLike.builder().post(post).user(user).build();
-        return post.togglePostLike(postLike);
-    }
-
     public void validPostUser(Long currentUser, Long postUser) {
 
         if (currentUser == postUser || currentUser.equals(postUser)) {
@@ -209,26 +213,6 @@ public class PostService {
         }
         return fileUrlList;
     }
-<<<<<<< HEAD
-
-    @Transactional
-    public Long updatePost(Long userId, Long postId, PostUpdateRequest request) {
-        Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("post", "postId", postId));
-
-        validPostUser(userId, post.getUser().getUserId());
-        post.update(request);
-
-        if(request.getCategoryId() != null){
-            Category category = postCategoryRepository.findById(request.getCategoryId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Category", "catogoryId", request.getCategoryId()));
-            post.setCategory(category);
-            System.out.println(category.getCategoryId());
-        }
-        else{
-            post.resetCategory();
-        }
-        return post.getPostId();
-    }
 
     @Transactional
     public Boolean togglePostLikes(Long userId, Long postId) {
@@ -247,8 +231,7 @@ public class PostService {
     }
 
 
-=======
->>>>>>> 6ad7b38f081986001329a64b8b231129ad7b9ab0
+
 }
 
 

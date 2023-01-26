@@ -99,29 +99,27 @@ public class PostController {
         );
     }
 
-//    @ApiOperation(value = "정렬 기준(선택)으로 내가 좋아요한 게시물 리스트 조회", notes = "정렬 기준(view/date/like)으로 내가 좋아요한 게시물 목록물 목록을 조회한다.")
-//    @GetMapping("/likes")
-//    public ResponseEntity<CommonResponse> findByLikePostList(@ApiIgnore @CurrentUser UserPrincipal user,
-//                                                               @RequestParam String content,
-//                                                               @RequestParam(required=false) String criteria,
-//                                                               @RequestParam(required=false, defaultValue = "1") int offset,
-//                                                               @RequestParam(value = "size", required = false, defaultValue = "10") int size){
-//        return ResponseEntity.ok().body(CommonResponse.of(
-//                HttpStatus.OK, "정렬 기준으로 내가 좋아요한 게시물 목록 조회 성공", postService.findByLikePostList(user.getId(), PostSearch.of(content, criteria), offset, size))
-//        );
-//    }
+    @ApiOperation(value = "정렬 기준(선택)으로 내가 좋아요한 게시물 리스트 조회", notes = "정렬 기준(view/date/like)으로 내가 좋아요한 게시물 목록물 목록을 조회한다.")
+    @GetMapping("/likes")
+    public ResponseEntity<CommonResponse> findByLikePostList(@ApiIgnore @CurrentUser UserPrincipal user,
+                                                             @RequestParam(required=false, defaultValue = "date") String criteria,
+                                                               @RequestParam(required=false, defaultValue = "1") int offset,
+                                                               @RequestParam(value = "size", required = false, defaultValue = "10") int size){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "정렬 기준으로 내가 좋아요한 게시물 목록 조회 성공", postService.findByLikePostList(user.getId(), criteria, offset, size))
+        );
+    }
 
-//    @ApiOperation(value = "정렬 기준(선택)으로 내가 북마크한 게시물 리스트 조회", notes = "정렬 기준(view/date/like)으로 내가 북마크한 게시물 목록물 목록을 조회한다.")
-//    @GetMapping("/bookmarks")
-//    public ResponseEntity<CommonResponse> findByBookmarkPostList(@ApiIgnore @CurrentUser UserPrincipal user,
-//                                                             @RequestParam String content,
-//                                                             @RequestParam(required=false) String criteria,
-//                                                             @RequestParam(required=false, defaultValue = "1") int offset,
-//                                                             @RequestParam(value = "size", required = false, defaultValue = "10") int size){
-//        return ResponseEntity.ok().body(CommonResponse.of(
-//                HttpStatus.OK, "정렬 기준으로 내가 북마크한 게시물 목록 조회 성공", postService.findByBookmarkPostList(user.getId(), PostSearch.of(content, criteria), offset, size))
-//        );
-//    }
+    @ApiOperation(value = "정렬 기준(선택)으로 내가 북마크한 게시물 리스트 조회", notes = "정렬 기준(view/date/like)으로 내가 북마크한 게시물 목록물 목록을 조회한다.")
+    @GetMapping("/bookmarks")
+    public ResponseEntity<CommonResponse> findByBookmarkPostList(@ApiIgnore @CurrentUser UserPrincipal user,
+@RequestParam(required=false, defaultValue = "date") String criteria,
+                                                             @RequestParam(required=false, defaultValue = "1") int offset,
+                                                             @RequestParam(value = "size", required = false, defaultValue = "10") int size){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "정렬 기준으로 내가 북마크한 게시물 목록 조회 성공", postService.findByBookmarkPostList(user.getId(), criteria, offset, size))
+        );
+    }
 
 
 

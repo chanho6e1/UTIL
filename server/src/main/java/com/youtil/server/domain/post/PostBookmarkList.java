@@ -24,7 +24,7 @@ public class PostBookmarkList {
 
     public boolean togglePostBookmark(PostBookmark postBookmark){
         if(contains(postBookmark.getUser().getUserId())){
-            removePostLike(postBookmark);
+            removeBookmark(postBookmark);
             return false;//해제
         }
         postBookmarkList.add(postBookmark);
@@ -36,7 +36,7 @@ public class PostBookmarkList {
                 .anyMatch(l -> l.ownedBy(userId));
     }
 
-    private void removePostLike(PostBookmark postBookmark) {
+    private void removeBookmark(PostBookmark postBookmark) {
         Long userId = postBookmark.getUser().getUserId();
         PostBookmark removalTarget = postBookmarkList.parallelStream()
                 .filter(l -> l.ownedBy(userId))
