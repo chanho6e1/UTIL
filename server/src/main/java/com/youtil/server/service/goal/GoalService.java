@@ -60,7 +60,7 @@ public class GoalService {
 
     @Transactional
     public Long deleteGoal(Long userId, Long goalId) {
-        Goal goal = goalRepository.findGoalById(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
+//        Goal goal = goalRepository.findGoalById(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
         goalRepository.deleteById(goalId);
         return goalId;
     }
