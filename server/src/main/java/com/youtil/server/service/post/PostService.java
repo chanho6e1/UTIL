@@ -127,7 +127,9 @@ public class PostService {
     public Long deletePost(Long userId, Long postId) {
         Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
         validPostUser(userId, post.getUser().getUserId());
-        postCommentRepository.deleteByPostId(postId);
+        post.clearUser();
+        post.getPostCommentList().getPostCommentList().clear();
+//        postCommentRepository.deleteByPostId(postId);
         postRepository.deleteById(postId);
         return postId;
     }

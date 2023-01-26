@@ -52,8 +52,8 @@ public class PostCategoryService {
     public Long deleteCategory(Long userId, Long catogoryId) {
         Category category = postCategoryRepository.findById(catogoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "catogoryId", catogoryId));
         validUser(userId, category.getUser().getUserId());
-        category.getPostList().getPostList().parallelStream()
-                .anyMatch(post -> post.resetCategory());
+        category.getPostList().getPostList().stream()
+                .forEach(post -> post.resetCategory());
         category.clearUser();
         postCategoryRepository.deleteByCategoryId(catogoryId);
         return catogoryId;

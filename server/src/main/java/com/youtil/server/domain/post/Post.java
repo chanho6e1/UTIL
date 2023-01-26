@@ -112,6 +112,10 @@ public class Post extends BaseEntity {
         return postLikeList.size();
     }
 
+    public void clearUser() {
+        this.user = null;
+    }
+
 //    public int getTotalFiles(){
 //        return fileLists.size();
 //    }
