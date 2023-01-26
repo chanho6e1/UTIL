@@ -3,6 +3,7 @@ package com.youtil.server.service.post;
 import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.category.Category;
+import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.post.PostBookmark;
 import com.youtil.server.domain.post.PostFile;
@@ -10,6 +11,7 @@ import com.youtil.server.domain.post.PostLike;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.post.*;
 import com.youtil.server.repository.category.PostCategoryRepository;
+import com.youtil.server.repository.goal.GoalRepository;
 import com.youtil.server.repository.post.*;
 import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +51,9 @@ public class PostService {
     private final PostCategoryRepository postCategoryRepository;
     @Autowired
     private final PostBookmarkRepository postBookmarkRepository;
+
+    @Autowired
+    private final GoalRepository goalRepository;
 
     @Transactional
     public PostResponse findPost(Long postId, Long userId) { //단일 조회
@@ -108,17 +113,21 @@ public class PostService {
 
     @Transactional
     public Long createPost(Long userId, PostSaveRequest request) {
+
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-        Post post;
+        Post post = postRepository.save(request.of(user));
 
         if(request.getCategoryId() != null){
-            Category category = postCategoryRepository.findById(request.getCategoryId()).orElseThrow(() -> new ResourceNotFoundException("Category", "catogoryId", request.getCategoryId()));
-            post = postRepository.save(request.of(user));
+            Category category = postCategoryRepository.findById(request.getCategoryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Category", "catogoryId", request.getCategoryId()));
             post.setCategory(category);
         }
-        else{
-            post = postRepository.save(request.of(user));
+        if(request.getGoalId()!=null){
+            Goal goal = goalRepository.findGoalById(request.getGoalId())
+                    .orElseThrow(()-> new ResourceNotFoundException("goal" , "goalId", request.getGoalId()));
+            post.setGoal(goal);
         }
+
         return post.getPostId();
     }
 
@@ -131,6 +140,41 @@ public class PostService {
 //        postCommentRepository.deleteByPostId(postId);
         postRepository.deleteById(postId);
         return postId;
+    }
+
+    @Transactional
+    public Long updatePost(Long userId, Long postId, PostUpdateRequest request) {
+        Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("post", "postId", postId));
+
+        validPostUser(userId, post.getUser().getUserId());
+        post.update(request);
+
+        if(request.getCategoryId() != null){
+            Category category = postCategoryRepository.findById(request.getCategoryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Category", "catogoryId", request.getCategoryId()));
+            post.setCategory(category);
+        }
+        else{ //이 과정 필요할까..?
+            post.resetCategory();
+        }
+
+        if(request.getGoalId()!=null){
+            Goal goal = goalRepository.findGoalById(request.getGoalId())
+                    .orElseThrow(()-> new ResourceNotFoundException("goal" , "goalId", request.getGoalId()));
+            post.setGoal(goal);
+        } else{
+            post.resetGoal();
+        }
+
+        return post.getPostId();
+    }
+
+    @Transactional
+    public Boolean togglePostLikes(Long userId, Long postId) {
+        Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("post", "postId", postId));
+        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("user", "userId", userId));
+        PostLike postLike = PostLike.builder().post(post).user(user).build();
+        return post.togglePostLike(postLike);
     }
 
     public void validPostUser(Long currentUser, Long postUser) {
@@ -165,6 +209,7 @@ public class PostService {
         }
         return fileUrlList;
     }
+<<<<<<< HEAD
 
     @Transactional
     public Long updatePost(Long userId, Long postId, PostUpdateRequest request) {
@@ -202,6 +247,8 @@ public class PostService {
     }
 
 
+=======
+>>>>>>> 6ad7b38f081986001329a64b8b231129ad7b9ab0
 }
 
 

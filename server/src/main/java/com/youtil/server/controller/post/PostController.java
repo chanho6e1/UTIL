@@ -65,7 +65,7 @@ public class PostController {
     @ApiOperation(value = "정렬 기준(선택)으로 게시물 리스트 조회", notes = "정렬 기준(view, like, date)을 받은 후 전체 게시물 목록을 조회한다. 디폴트는 최신 날짜순")
     @GetMapping("/lists")
     public ResponseEntity<CommonResponse> findPostList(@ApiIgnore @CurrentUser UserPrincipal user,
-                                                       @RequestParam(required=false) String criteria,
+                                                       @RequestParam(required=false, defaultValue = "date") String criteria,
                                                        @RequestParam(required=false, defaultValue = "1") int offset,
                                                        @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
         return ResponseEntity.ok().body(CommonResponse.of(
@@ -77,7 +77,7 @@ public class PostController {
     @ApiOperation(value = "정렬 기준(선택)으로 내가 구독한 사람의 게시물 리스트 조회", notes = "내가 구독한 사람만,정렬 기준(view/date/like)으로 게시물 목록물 목록을 조회한다.")
     @GetMapping("/subscribes")
     public ResponseEntity<CommonResponse> findBySubscribesPostList(@ApiIgnore @CurrentUser UserPrincipal user,
-                                                                   @RequestParam(required=false) String criteria,
+                                                                   @RequestParam(required=false, defaultValue = "date") String criteria,
                                                                    @RequestParam(required=false, defaultValue = "1") int offset,
                                                                    @RequestParam(value = "size", required = false, defaultValue = "10") int size){
         return ResponseEntity.ok().body(CommonResponse.of(
@@ -91,7 +91,7 @@ public class PostController {
     @GetMapping("/search")
     public ResponseEntity<CommonResponse> findBySearchPostList(@ApiIgnore @CurrentUser UserPrincipal user,
                                                                @RequestParam String content,
-                                                               @RequestParam(required=false) String criteria,
+                                                               @RequestParam(required=false, defaultValue = "date") String criteria,
                                                                @RequestParam(required=false, defaultValue = "1") int offset,
                                                                @RequestParam(value = "size", required = false, defaultValue = "10") int size){
         return ResponseEntity.ok().body(CommonResponse.of(

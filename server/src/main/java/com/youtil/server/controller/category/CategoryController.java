@@ -32,9 +32,11 @@ public class CategoryController {
 
     @ApiOperation(value = "카테고리별 게시물을 조회", notes = "카테고리별 게시물을 조회한다")
     @GetMapping("/{catogoryId}")
-    public ResponseEntity<CommonResponse> createCategoryPosts(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long catogoryId){
+    public ResponseEntity<CommonResponse> createCategoryPosts(@ApiIgnore @CurrentUser UserPrincipal user,
+                                                              @PathVariable Long catogoryId,
+                                                              @RequestParam(required=false, defaultValue = "date") String criteria){
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.CREATED, "카테고리별 게시물 조회 성공", postCategoryService.getCategoryPosts(user.getId(), catogoryId)));
+                HttpStatus.CREATED, "카테고리별 게시물 조회 성공", postCategoryService.getCategoryPosts(user.getId(), catogoryId, criteria)));
     }
 
 
