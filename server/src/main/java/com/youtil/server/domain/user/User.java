@@ -58,6 +58,10 @@ public class User extends BaseEntity {
     @NotNull
     private AuthProvider provider;
 
+    @Column(name = "DISCRIPTIOIN", length = 200)
+    @Nullable
+    private String discription;
+
     String providerId;
 
 //    @Column(name = "ROLE_TYPE", length = 20)
@@ -86,6 +90,7 @@ public class User extends BaseEntity {
         this.nickName = user.getNickName();
         this.imageUrl = user.getImageUrl();
         this.department = user.getDepartment();
+        this.discription = user.getDiscription();
 
         return this;
     }
