@@ -88,8 +88,8 @@
 .new-todo-date {
     background-color: rgb(220, 220, 228);
     color: rgb(50, 50, 50);
-    margin-right: 24px;
-    margin-left: 48px;
+    margin-right: 12px;
+    /* margin-left: 48px; */
     height:28px;
     width:110px;
     display: flex;
