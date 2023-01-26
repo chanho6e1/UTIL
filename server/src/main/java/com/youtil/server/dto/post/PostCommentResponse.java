@@ -32,7 +32,10 @@ public class PostCommentResponse {
 
     private String modifiedDate;
 
+    private Boolean isDelete;
+
     private List<PostCommentResponse> children = new ArrayList<>();
+
 
 
     public PostCommentResponse(PostComment comment) { //전체 조회
@@ -50,6 +53,8 @@ public class PostCommentResponse {
         if( comment.getParent()!= null) {
             this.parentWriterNickName = comment.getParent().getUser().getUserName();
         }
+
+        this.isDelete = comment.getIsDelete();
     }
 
     public PostCommentResponse(PostComment comment, String content) {
@@ -65,6 +70,8 @@ public class PostCommentResponse {
         if( comment.getParent()!= null) {
             this.parentWriterNickName = comment.getParent().getUser().getUserName();
         }
+        this.isDelete = comment.getIsDelete();
+
     }
 
     public static PostCommentResponse from(PostComment comment) {
