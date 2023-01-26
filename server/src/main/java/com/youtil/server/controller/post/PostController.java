@@ -99,6 +99,31 @@ public class PostController {
         );
     }
 
+    @ApiOperation(value = "정렬 기준(선택)으로 내가 좋아요한 게시물 리스트 조회", notes = "정렬 기준(view/date/like)으로 내가 좋아요한 게시물 목록물 목록을 조회한다.")
+    @GetMapping("/likes")
+    public ResponseEntity<CommonResponse> findByLikePostList(@ApiIgnore @CurrentUser UserPrincipal user,
+                                                             @RequestParam(required=false, defaultValue = "date") String criteria,
+                                                               @RequestParam(required=false, defaultValue = "1") int offset,
+                                                               @RequestParam(value = "size", required = false, defaultValue = "10") int size){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "정렬 기준으로 내가 좋아요한 게시물 목록 조회 성공", postService.findByLikePostList(user.getId(), criteria, offset, size))
+        );
+    }
+
+    @ApiOperation(value = "정렬 기준(선택)으로 내가 북마크한 게시물 리스트 조회", notes = "정렬 기준(view/date/like)으로 내가 북마크한 게시물 목록물 목록을 조회한다.")
+    @GetMapping("/bookmarks")
+    public ResponseEntity<CommonResponse> findByBookmarkPostList(@ApiIgnore @CurrentUser UserPrincipal user,
+@RequestParam(required=false, defaultValue = "date") String criteria,
+                                                             @RequestParam(required=false, defaultValue = "1") int offset,
+                                                             @RequestParam(value = "size", required = false, defaultValue = "10") int size){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "정렬 기준으로 내가 북마크한 게시물 목록 조회 성공", postService.findByBookmarkPostList(user.getId(), criteria, offset, size))
+        );
+    }
+
+
+
+    //////////////
 
     @ApiOperation(value = "게시물 등록", notes = "게시물을 등록한다")
     @PostMapping
@@ -128,6 +153,14 @@ public class PostController {
                                                               @PathVariable Long postId) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "좋아요 성공", postService.togglePostLikes(user.getId(), postId)));
+    }
+
+    @ApiOperation(value = "북마크 토글", notes = "단일 게시물에 대한 북마크를 선택/해제한다")
+    @PutMapping("/{postId}/bookmarks")
+    public ResponseEntity<CommonResponse> togglePostBookmarks(@ApiIgnore @CurrentUser UserPrincipal user,
+                                                          @PathVariable Long postId) {
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.CREATED, "북마크 성공", postService.togglePostBookmarks(user.getId(), postId)));
     }
 
 
