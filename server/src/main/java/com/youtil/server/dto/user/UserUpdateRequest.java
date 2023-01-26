@@ -15,4 +15,5 @@ public class UserUpdateRequest {
     private String nickName;
     private String department;
     private String imageUrl;
+    private String discription;
 }
