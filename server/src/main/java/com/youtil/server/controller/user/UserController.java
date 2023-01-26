@@ -30,16 +30,16 @@ public class UserController {
     @GetMapping("/me")
     @ApiOperation(value = "로그인 유저 조회", notes = "현재 로그인한 유저 정보를 반환한다.")
     @PreAuthorize("hasRole('USER')")
-    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-        return (User) userRepository.findById(userPrincipal.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-    }
-//    public  ResponseEntity<CommonResponse>  getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-//
-//        return ResponseEntity.ok().body(CommonResponse.of(
-//                HttpStatus.OK, "유저 정보 조회 성공", userService.getUser(userPrincipal.getId())));
-//
+//    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+//        return (User) userRepository.findById(userPrincipal.getId())
+//                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
 //    }
+    public  ResponseEntity<CommonResponse>  getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "유저 정보 조회 성공", userService.getCurrentUser(userPrincipal.getId())));
+
+    }
 
     @PutMapping
     @ApiOperation(value = "유저 정보 업데이트", notes = "현재 로그인한 유저 정보를 업데이트한다.")
@@ -63,5 +63,18 @@ public class UserController {
                 HttpStatus.OK, "이메일 중복 조회 성공", userService.checkEmail(email)));
     }
 
+//    @DeleteMapping
+//    @ApiOperation(value = "유저 탈퇴", notes = "가입된 유저를 탈퇴처리한다.")
+//    public ResponseEntity<CommonResponse> deleteUser(@CurrentUser UserPrincipal userPrincipal){
+//        return ResponseEntity.ok().body(CommonResponse.of(
+//                HttpStatus.NO_CONTENT, "유저 탈퇴 성공", userService.deleteUser(userPrincipal.getId())));
+//    }
+
+    @GetMapping("/{userId}")
+    @ApiOperation(value = "유저 정보 조회", notes = "조회하고자 하는 유저의 정보를 반환한다.")
+    public ResponseEntity<CommonResponse> getUser(@PathVariable Long userId){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "유저 조회 성공", userService.getUser(userId)));
+    }
 
 }
