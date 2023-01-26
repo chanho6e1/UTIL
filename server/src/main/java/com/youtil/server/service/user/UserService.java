@@ -1,4 +1,4 @@
-package com.youtil.server.service;
+package com.youtil.server.service.user;
 
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.user.UserResponse;

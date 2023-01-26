@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ReviewService {
-    public Object createReview(Long id, ReviewSaveRequest request) {
+    public Object createReview(Long userId, ReviewSaveRequest request) {
 
         return null;
     }

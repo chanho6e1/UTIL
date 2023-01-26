@@ -1,7 +1,6 @@
 package com.youtil.server.controller.review;
 
 import com.youtil.server.common.CommonResponse;
-import com.youtil.server.dto.goal.GoalSaveRequest;
 import com.youtil.server.dto.review.ReviewSaveRequest;
 import com.youtil.server.security.CurrentUser;
 import com.youtil.server.security.UserPrincipal;
