@@ -8,15 +8,26 @@ import Card from "../UI/Card/Card";
 import Modal from "../UI/Modal/Modal";
 import AddNewPlan from "./AddNewPlan";
 import arrow from '../../img/arrow.png'
+import PlanTodoListLeft from "./PlanTodoListLeft";
 
 const Plan = (props) => {
     const plans = useSelector(state => state.planSlice.plans).slice(0, props.columns)
+    const todos = useSelector(state => state.planSlice.todos)
     const prototypeDate = new Date()
     const [startRange, setStartRange] = useState(new Date(prototypeDate.getFullYear(),0,1))
     const [endRange, setEndRange] = useState(new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),12,0)))
     const planSpaceRef = useRef()
     const plansTitleWrapperRef = useRef()
     const plansTitleInnerRef = useRef()
+    const [todoFormVisibility, setTodoFormVisibility] = useState(Array(plans.length).fill(false))
+
+    const todoFormToggleHandler = (idx) => {
+        const copyArr = [...todoFormVisibility]
+        copyArr[idx] = !copyArr[idx]
+        setTodoFormVisibility(() => copyArr)
+        console.log(todoFormVisibility)
+    }
+
 
 
     const extendStartRange = (amount) => {
@@ -29,14 +40,27 @@ const Plan = (props) => {
         setEndRange(() => extendedDate)
     }
 
+
+    const [newTodoIdx, setNewTodoIdx] = useState()
+    const getNewTodoIdx = (received) => {
+        setNewTodoIdx(received)
+    }
+
+
     const planTitleGrid = plans.map((el, idx) => {
         return (
-            <div className={`${styles['plan-title-bar']} ${idx % 2 ? styles['title-odd'] : styles['title-even']}`} key={`month-title-bar-${idx}`}>
-                <img className={styles['arrow-icon']} src={arrow} style={{width: '12px', height: 'auto'}}/>
-                {plans[idx].title}
-            </div>
+            <React.Fragment>
+                <div onClick={todoFormToggleHandler.bind(this, idx)} id={`${plans[idx].goalId}`} className={`${styles['plan-title-bar']} ${idx % 2 ? styles['title-odd'] : styles['title-even']}`} key={`month-title-bar-${idx}`}>
+                    <img className={styles['arrow-icon']} src={arrow} style={{width: '12px', height: 'auto'}}/>
+                    {plans[idx].title}
+                </div>
+                {todoFormVisibility[idx] && <PlanTodoListLeft goalId={plans[idx].goalId} todos={todos} getNewTodoIdx={getNewTodoIdx} />}
+            </React.Fragment>
+            
         )
     })
+
+    
 
 
     const [newPlan, setNewPlan] = useState(false)
@@ -60,6 +84,7 @@ const Plan = (props) => {
             {newPlan ? <input type="text" onBlur={newPlanClickHide} placeholder="목표를 입력해 주세요." autoFocus className={styles['new-plan-input']} /> : <div className={styles['new-plan']}>{plusImg} 목표 작성</div> }
         </div>
     )
+    
 
     
     return (
@@ -74,7 +99,7 @@ const Plan = (props) => {
                 </div>
                 <div ref={planSpaceRef} className={styles['plan-space']} />
             </div>
-            <Calendar columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} />
+            <Calendar columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} todoFormVisibility={todoFormVisibility} todos={todos} newTodoIdx={newTodoIdx} />
         </div>
     )
 }
