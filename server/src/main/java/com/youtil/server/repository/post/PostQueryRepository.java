@@ -2,6 +2,7 @@ package com.youtil.server.repository.post;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.post.PostLike;
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.youtil.server.domain.post.QPost.post;
+import static com.youtil.server.domain.post.QPostBookmark.postBookmark;
 import static com.youtil.server.domain.post.QPostLike.postLike;
 import static com.youtil.server.domain.user.QFollow.follow;
 
@@ -63,21 +65,58 @@ public class PostQueryRepository {
 
         String criteria = postSearch.getCriteria();
 
-        List<User> postSubscribe =  jpaQueryFactory.select(follow.toUser).from(follow)
-                .where(follow.fromUser.userId.eq(user.getUserId()))
-                .offset(pageRequest.getOffset())
-                .limit(pageRequest.getPageSize())
-                .fetch();
-
         return jpaQueryFactory.selectFrom(post)
                 .innerJoin(post.user).fetchJoin()
-                .where(post.user.in(postSubscribe))
+                .where(
+                        post.user.in(
+                                JPAExpressions
+                                .select(follow.toUser).from(follow)
+                                .where(follow.fromUser.userId.eq(user.getUserId())
+                                )))
 //                .where(post.isPrivate.in(2,1))
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
     }
+
+    public List<Post> findByLikePostList(String criteria, User user, PageRequest pageRequest) {
+
+        return jpaQueryFactory.selectFrom(post)
+                .innerJoin(post.user).fetchJoin()
+                .where(
+                        post.in(
+                                JPAExpressions
+                                        .select(postLike.post)
+                                        .from(postLike)
+                                        .where(postLike.user.eq(user))
+                        )
+                )
+                .orderBy(findCriteria(criteria))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
+                .fetch();
+    }
+
+
+    public  List<Post> findByBookmarkPostList(String criteria, User user, PageRequest pageRequest) {
+
+        return jpaQueryFactory.selectFrom(post)
+                .innerJoin(post.user).fetchJoin()
+                .where(
+                        post.in(
+                                JPAExpressions
+                                        .select(postBookmark.post)
+                                        .from(postBookmark)
+                                        .where(postBookmark.user.eq(user))
+                        )
+                )
+                .orderBy(findCriteria(criteria))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
+                .fetch();
+    }
+
 
     public List<PostLike> PostLikesPeople(Long postId, PageRequest pageRequest) {
         return jpaQueryFactory.select(postLike).from(postLike).distinct()
@@ -101,7 +140,6 @@ public class PostQueryRepository {
 
         return post.createdDate.desc();
     }
-
 
 
 }
