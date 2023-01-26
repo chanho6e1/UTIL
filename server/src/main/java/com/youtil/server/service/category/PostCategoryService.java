@@ -8,6 +8,7 @@ import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.category.CategoryResponse;
 import com.youtil.server.dto.category.CategorySaveRequest;
 import com.youtil.server.dto.category.PostOfCategoryResponse;
+import com.youtil.server.repository.category.PostCategoryQueryRepository;
 import com.youtil.server.repository.category.PostCategoryRepository;
 import com.youtil.server.repository.post.PostRepository;
 import com.youtil.server.repository.user.UserRepository;
@@ -34,6 +35,9 @@ public class PostCategoryService {
 
     @Autowired
     PostRepository postRepository;
+
+    @Autowired
+    PostCategoryQueryRepository postCategoryQueryRepository;
 
     @Transactional
     public Long createCategory(Long userId, CategorySaveRequest request) {
@@ -91,10 +95,10 @@ public class PostCategoryService {
                 .stream().map(CategoryResponse::new).collect(Collectors.toList());
     }
 
-    public List<PostOfCategoryResponse> getCategoryPosts(Long userId, Long categoryId) {
+    public List<PostOfCategoryResponse> getCategoryPosts(Long userId, Long categoryId, String criteria) {
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        return postCategoryRepository.getCategoryPosts(categoryId)
+        return postCategoryQueryRepository.getCategoryPosts(categoryId, criteria)
                 .stream().map((c)-> new PostOfCategoryResponse(c, user)).collect(Collectors.toList());
     }
 }
