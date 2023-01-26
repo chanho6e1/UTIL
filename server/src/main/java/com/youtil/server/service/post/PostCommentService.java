@@ -1,7 +1,5 @@
 package com.youtil.server.service.post;
 
-import com.youtil.server.common.CursorResult;
-import com.youtil.server.common.PagedResponse;
 import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.post.Post;
@@ -10,16 +8,11 @@ import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.post.*;
 import com.youtil.server.repository.post.PostCommentQueryRepository;
 import com.youtil.server.repository.post.PostCommentRepository;
-import com.youtil.server.repository.post.PostQueryRepository;
 import com.youtil.server.repository.post.PostRepository;
 import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -46,19 +38,7 @@ public class PostCommentService {
     @Autowired
     UserRepository userRepository;
 
-    public List<PostCommentResponse> findPostCommentList(Long postId, Sort.Direction sort, String cop, Long cursor, Integer size) {
-
-        Pageable pageable = PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-        Slice<PostComment> postComments;
-
-        if(cursor == null){
-            postComments = postCommentRepository.findCommentList(postId, pageable);
-        }
-        else{
-            postComments = postCommentRepository.findCommentListByCursor(postId, cursor, cop, pageable);
-        }
-
-//        List<PostCommentResponse> postComment = postComments.stream().map(PostCommentResponse::new).collect(Collectors.toList());
+    public List<PostCommentResponse> findPostCommentList(Long postId, int offset, Integer size) {
 
         return convertNestedStructure(postCommentRepository.findCommentByPostId(postId));
     }
@@ -70,42 +50,13 @@ public class PostCommentService {
             PostCommentResponse dto = PostCommentResponse.from(c);
             map.put(dto.getCommentId(), dto);
             if(c.getParent() != null) {
-//                System.out.println("////////////");
-//                System.out.println(c.getParent().getCommentId());
-//                System.out.println(c.getParent().getChildren().get(0).getCommentId());
-//                System.out.println(map.get(c.getParent().getCommentId()).getCommentId());
-//                System.out.println("////////////");
-
-//                map.get(c.getParent().getCommentId()).getChildren().add(dto);
                 map.get(c.getParent().getCommentId()).getChildren().add(dto);
-
             }
             else result.add(dto);
         });
         return result;
     }
 
-    public PagedResponse<PostCommentResponse> findParentCommentList(Long postId, Sort.Direction sort, String cop, Long cursor, Integer size) {
-
-        Pageable pageable = PageRequest.of(0, size);
-
-        Slice<PostComment> postComments =  postCommentRepository.findCommentListByCursor(postId, cursor, cop, pageable);
-        List<PostCommentResponse> postComment = postComments.stream().map(PostCommentResponse::new).collect(Collectors.toList());
-
-        return new PagedResponse<PostCommentResponse>(postComment, 0, postComments.getSize(),
-                0, postComments.isLast(), postComments.hasNext(), postComments.hasPrevious());
-    }
-
-    public PagedResponse<PostCommentResponse> findChildCommentList(Long postId, Sort.Direction sort, String cop, Long cursor, Integer size) {
-
-        Pageable pageable = PageRequest.of(0, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-
-        Slice<PostComment> postComments =  postCommentRepository.findCommentListByCursor(postId, cursor, cop, pageable);
-        List<PostCommentResponse> postCommentResponse = postComments.stream().map(PostCommentResponse::new).collect(Collectors.toList());
-
-        return new PagedResponse<PostCommentResponse>(postCommentResponse, 0, postComments.getSize(),
-                0, postComments.isLast(), postComments.hasNext(), postComments.hasPrevious());
-    }
 
 //    public List<PostCommentResponse> findCommentList(Long postId, int offset) {
 //
@@ -151,7 +102,7 @@ public class PostCommentService {
                 .orElseThrow(() -> new ResourceNotFoundException("PostComment", "commentId", commentId));
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        validPosCommentUser(userId, postComment.getUser().getUserId());
+        validPostCommentUser(userId, postComment.getUser().getUserId());
         postComment.update(request);
         return postComment.getCommentId();
     }
@@ -161,7 +112,7 @@ public class PostCommentService {
 
         PostComment postComment = postCommentRepository.findComment(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException("PostComment", "commentId", commentId));
-        validPosCommentUser(userId, postComment.getUser().getUserId());
+        validPostCommentUser(userId, postComment.getUser().getUserId());
 
         if(postComment.getDepth()==0 && !postComment.getChildren().isEmpty()){ //원댓글이 사라지면 숨김 처리
             postComment.updateDeleteStatus();
@@ -178,7 +129,7 @@ public class PostCommentService {
         return commentId;
     }
 
-    public void validPosCommentUser(Long currentUser, Long CommentUser) {
+    public void validPostCommentUser(Long currentUser, Long CommentUser) {
 
         if (currentUser == CommentUser || currentUser.equals(CommentUser)) {
             return;

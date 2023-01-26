@@ -1,6 +1,7 @@
 package com.youtil.server.dto.category;
 
 import com.youtil.server.domain.category.Category;
+import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.post.PostResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +30,7 @@ public class CategoryDetailResponse {
     private List<PostResponse> posts = new ArrayList<>();
 
 
-    public CategoryDetailResponse(Category category) { //전체 조회
+    public CategoryDetailResponse(Category category, User user) { //전체 조회
 
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
 
@@ -40,7 +41,7 @@ public class CategoryDetailResponse {
             this.modifiedDate = category.getModifiedDate().format(myFormatObj);
         }
         this.posts = category.getPostList().getPostList().stream()
-                .map(PostResponse::new).collect(Collectors.toList());
+                .map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 
 }

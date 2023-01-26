@@ -22,15 +22,10 @@ public interface PostCategoryRepository extends JpaRepository<Category, Long> {
     @Query("delete from Category c where c.categoryId = :categoryId")
     void deleteByCategoryId(@Param("categoryId") Long postId);
 
-    @Query("select c from Category c where c.categoryId = :categoryId")
-    Optional<Category> findPost(@Param("categoryId") Long categoryId);
-
     @Query("select c from Category c where c.user.userId = :userId order by c.createdDate asc")
     List<Category> getCategory(@Param("userId") Long userId);
 
     @Query("select c from Category c where c.categoryId = :categoryId order by c.createdDate asc")
     List<Category> getCategoryPosts(@Param("categoryId")Long categoryId);
 
-//    @Query("delete c from Post c where c.categoryId = :categoryId")
-//    void deletePost(@Param("categoryId") Long categoryId, @Param("postId")Long postId);
 }

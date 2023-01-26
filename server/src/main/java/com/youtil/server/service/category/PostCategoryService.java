@@ -91,8 +91,10 @@ public class PostCategoryService {
                 .stream().map(CategoryResponse::new).collect(Collectors.toList());
     }
 
-    public List<PostOfCategoryResponse> getCategoryPosts(Long id, Long categoryId) {
+    public List<PostOfCategoryResponse> getCategoryPosts(Long userId, Long categoryId) {
+        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+
         return postCategoryRepository.getCategoryPosts(categoryId)
-                .stream().map(PostOfCategoryResponse::new).collect(Collectors.toList());
+                .stream().map((c)-> new PostOfCategoryResponse(c, user)).collect(Collectors.toList());
     }
 }
