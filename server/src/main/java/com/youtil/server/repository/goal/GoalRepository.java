@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface GoalRepository extends JpaRepository<Goal, Long> {
-    List<Goal> findAllByUserId(Long userId);
-    Goal findByGoalId(Long goalId);
+//    List<Goal> findAllByUserId(Long userId);
+//    Goal findByGoalId(Long goalId);
 }
