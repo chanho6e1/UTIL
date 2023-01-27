@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import styles from './PlanTodoListRight.module.css'
+import PlanTodoListRightItem from "./PlanTodoListRightItem";
 
 const PlanTodoListRight = (props) => {
     const todoSpaceRef = useRef([])
@@ -9,34 +10,12 @@ const PlanTodoListRight = (props) => {
 
 
 
-    const isDoneTrue = (
-        <div className={styles['is-done-true-wrapper']}>
-            완료됨
-        </div>
-    )
 
-    const isDoneFalse = (
-        <div className={styles['is-done-false-wrapper']}>
-            진행중
-        </div>
-    )
 
     const todoContents = props.todos[props.goalId]?.map((el, idx) => {
         const time = new Date(el.dueDate)
         return (
-            <div ref={el => (todoSpaceRef.current[idx] = el)} className={styles['todo-space-wrapper']} style={{width: `${props.scrollRef.current.children[1].scrollWidth}px`}}>
-                <div className={styles['todo-space']} >
-                    {el.isDone ? isDoneTrue : isDoneFalse}
-                    <div className={styles['todo-duedate-wrapper']}>
-                        {`${time.getFullYear()}년 ${time.getMonth() + 1}월 ${time.getDate()}일`}, 
-                    </div>
-                    <div className={styles['todo-description-wrapper']}>
-                        {el.description}
-                    </div>
-                    
-                </div>
-                {/*  */}
-            </div>
+            <PlanTodoListRightItem el={el} scrollRef={props.scrollRef} time={time} />
         )
     })
 

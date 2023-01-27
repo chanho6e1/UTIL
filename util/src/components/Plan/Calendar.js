@@ -84,7 +84,7 @@ const Calendar = (props) => {
   useEffect(() => {
     monthSpaceRef.current.style.width = scrollRef.current.children[1].scrollWidth + 'px'
     monthTitleWrapperRef.current.style.width = scrollRef.current.children[1].scrollWidth + 'px'
-    props.plansTitleWrapperRef.current.style.height = props.plansTitleInnerRef.current.clientHeight + 'px'
+    // props.plansTitleWrapperRef.current.style.height = props.plansTitleInnerRef.current.clientHeight + 'px'
   }, [monthRange, props.todoFormVisibility])
 
 
