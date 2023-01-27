@@ -57,13 +57,6 @@ public class UserController {
                 HttpStatus.OK, "이메일 중복 조회 성공", userService.checkEmail(email)));
     }
 
-//    @DeleteMapping
-//    @ApiOperation(value = "유저 탈퇴", notes = "가입된 유저를 탈퇴처리한다.")
-//    public ResponseEntity<CommonResponse> deleteUser(@CurrentUser UserPrincipal userPrincipal){
-//        return ResponseEntity.ok().body(CommonResponse.of(
-//                HttpStatus.NO_CONTENT, "유저 탈퇴 성공", userService.deleteUser(userPrincipal.getId())));
-//    }
-
     @GetMapping("/{userId}")
     @ApiOperation(value = "유저 정보 조회", notes = "조회하고자 하는 유저의 정보를 반환한다.")
     public ResponseEntity<CommonResponse> getUser(@PathVariable Long userId){
