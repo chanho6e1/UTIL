@@ -177,3 +177,27 @@
 }
 
 
+.new-todo-date-input {
+    padding-left:6px;
+    padding-right:6px;
+    width: 100px;
+    margin-right: 10px;
+    background-color: rgb(220, 220, 228);
+    border-radius: 5px;
+    height:28px;
+    border: none;
+    transition-property: background-color;
+    transition-duration: 0.3s;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.new-todo-date-input:focus {
+    outline: none;
+}
+
+.new-todo-date-input:hover {
+    background-color: rgb(200, 200, 208);
+}
+
+

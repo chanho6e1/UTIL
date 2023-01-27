@@ -44,7 +44,7 @@ const PlanTodoListLeft = (props) => {
 
     const newTodoDummy = (
         <div onClick={newTodoClickShow} className={styles['new-todo-wrapper']}>
-            {(props.newTodoIdx === props.goalId) && newTodo ? <input type="text" ref={newTodoInputRef} onBlur={newTodoClickHide} placeholder="일정을 입력해 주세요." autoFocus className={styles['new-todo-input']} /> : <div className={styles['new-todo']}>{plusImg} 목표 작성</div> }
+            {(props.newTodoIdx === props.goalId) && newTodo ? <input type="text" ref={newTodoInputRef} onBlur={newTodoClickHide} placeholder="일정을 입력해 주세요." autoFocus className={styles['new-todo-input']} /> : <div className={styles['new-todo']}>{plusImg} TODO 작성</div> }
         </div>
     )
 
