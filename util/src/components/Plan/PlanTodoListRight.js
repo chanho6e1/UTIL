@@ -24,7 +24,8 @@ const PlanTodoListRight = (props) => {
 
     const newTodoEl = (
         <React.Fragment>
-            <div className={styles['new-todo-date']}>{`${newDate.getFullYear()}년 ${newDate.getMonth() + 1}월 ${newDate.getDate()}일`}</div>
+            <input type="date" className={styles['new-todo-date-input']} />
+            {/* <div className={styles['new-todo-date']}>{`${newDate.getFullYear()}년 ${newDate.getMonth() + 1}월 ${newDate.getDate()}일`}</div> */}
             <input type="text" placeholder="메모를 입력해 주세요." className={styles['new-todo-input']} />
         </React.Fragment>
     )
