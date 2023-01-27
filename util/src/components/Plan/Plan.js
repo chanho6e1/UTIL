@@ -54,7 +54,7 @@ const Plan = (props) => {
                     <img className={styles['arrow-icon']} src={arrow} style={{width: '12px', height: 'auto'}}/>
                     {plans[idx].title}
                 </div>
-                {todoFormVisibility[idx] && <PlanTodoListLeft goalId={plans[idx].goalId} todos={todos} getNewTodoIdx={getNewTodoIdx} />}
+                {todoFormVisibility[idx] && <PlanTodoListLeft goalId={plans[idx].goalId} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoIdx={newTodoIdx} />}
             </React.Fragment>
             
         )
