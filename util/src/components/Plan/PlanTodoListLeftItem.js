@@ -32,7 +32,7 @@ const PlanTodoListLeftItem = (props) => {
 
     const titleEditInput = (
 
-            <input type="text" onBlur={cancelEditMode} onChange={inputChangeHandler} value={titleValue} placeholder="제목을 입력해 주세요." autoFocus className={styles['edit-todo-input']} />
+            <input type="text" onBlur={cancelEditMode} onChange={inputChangeHandler} value={titleValue} placeholder="일정을 입력해 주세요." autoFocus className={styles['edit-todo-input']} />
  
     )
 

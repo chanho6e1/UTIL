@@ -78,7 +78,7 @@ const PlanTodoListRightItem = (props) => {
     )
 
     const descriptionEditInput = (
-        <input type="text" onBlur={cancelDescriptionEditMode} onChange={descriptionInputChangeHandler} value={descriptionValue} autoFocus className={styles['edit-description-input']} />
+        <input type="text" onBlur={cancelDescriptionEditMode} onChange={descriptionInputChangeHandler} value={descriptionValue} placeholder="메모를 입력해 주세요." autoFocus className={styles['edit-description-input']} />
     )
 
     return (
