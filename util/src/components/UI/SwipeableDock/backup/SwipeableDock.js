@@ -94,9 +94,6 @@ const SwipeableDock = (props) => {
 
 
 
-  
-
-
 
   return (
     <div className={styles['dock-view']}>
@@ -117,55 +114,82 @@ const SwipeableDock = (props) => {
 
       
       <div className={styles['dock-wrapper']}>
+        <div className={styles['dock-menu']}>
+          <div className={styles['dock-contracted']}>
 
 
-        <div className={styles['dock-mobile']}>
-          {postData.dock.dockContracted.map((el, idx) => {
-              return <div onClick={clickDockHandler.bind(this, idx)} className={'dock-individual'} style={{width: width / postData.dock.length + 'px'}}>{el}</div>;
-          })}
-        </div>
+            <div className={styles['dock-mobile']}>
+              {postData.dock.dockContracted.map((el, idx) => {
+                  return <div onClick={clickDockHandler.bind(this, idx)} className={'dock-individual'} style={{width: width / postData.dock.length + 'px'}}>{el}</div>;
+              })}
+            </div>
 
 
-        <div className={styles['dock-pc']}>
-
-          <div className={styles['dock-pc-top']}>
             <div className={styles['logo-wrapper']}>
               <div className={styles['logo-contracted']}>{postData.dock.logoContracted}</div>
               <div className={styles['logo-expanded']}>{postData.dock.logoExpanded}</div>
             </div>
 
-            {postData.dock.dockContracted.map((el, idx) => {
-                return (
-                  <div onClick={clickDockHandler.bind(this, idx)} className={styles['dock-pc-individual']} >
+
+            <div className={styles['dock-pc']}>
+              {postData.dock.dockContracted.map((el, idx) => {
+                  return <div onClick={clickDockHandler.bind(this, idx)} className={styles['dock-individual']} >
+                    <div className={styles['individual-highlighted']}></div>
                     {el}
-                    <div onClick={clickDockHandler.bind(this, idx)} className={styles['dock-pc-expanded-individual']} >
-                      {postData.dock.dockExpanded[idx]}
-                    </div>
-                  </div>
-                )
-            })}
-          </div>
-          
-          <div className={styles['dock-pc-bottom']}>
-            {postData.dock.dockContractedBottom.map((el, idx) => {
-              const individual = (
-                <div className={styles['dock-pc-individual']} >
-                    {el}
-                    <div className={styles['dock-pc-expanded-individual']} >
-                      {postData.dock.dockExpandedBottom[idx]}
-                    </div>
-                </div>
-              )
-              const wrapper = postData.dock.dockWrapperBottom[idx]
-              const content = React.cloneElement(wrapper, {children: individual});
-              return content
-            })}
+                    
+
+                  </div>;
+              })}
+            </div>
           </div>
 
+
+          <div className={styles['dock-expanded']}>
+            <div className={styles['expanded-space']}>
+            </div>
+            <div className={styles['dock-pc-expanded']}>
+                {postData.dock.dockExpanded.map((el, idx) => {
+                    return <div onClick={clickDockHandler.bind(this, idx)} className={styles['dock-individual']} >{el}</div>;
+                })}
+            </div>
+          </div>
+
+          
         </div>
 
 
+        
+        <div className={styles['dock-menu-bottom']}>
+          <div className={styles['dock-contracted']}>
+            <div className={styles['dock-pc-bottom']}>
+              {postData.dock.dockContractedBottom.map((el, idx) => {
+                  return (
+                    <div className={styles['dock-individual']} >
+                      {el}
+                      <div className={styles['individual-highlighted']}>
+                        {el}
+                      </div>
+
+                      
+                      
+                    </div>
+                  )
+              })}
+            </div>
+          </div>
+
+          <div className={styles['dock-expanded']}>
+            <div className={styles['dock-pc-expanded-bottom']}>
+                {postData.dock.dockExpandedBottom.map((el, idx) => {
+                    return <div className={styles['dock-individual']}>{el}</div>;
+                })}
+            </div>
+          </div>
+        </div>
       </div>
+
+
+      
     </div>
   )
 }

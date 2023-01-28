@@ -29,6 +29,12 @@
         display: none;
     }
 
+
+
+    .dock-expanded {
+        display: none;
+    }
+
     .logo-contracted {
         display: none;
     }
@@ -37,6 +43,10 @@
         display: none;
     }
 
+    .dock-menu-bottom {
+        display: none;
+    }
+    
     .content {
         padding-bottom: 7vh;
     }
@@ -52,21 +62,24 @@
         left:0;
         background-color: rgba(255, 255, 255, 0.83);
         backdrop-filter: blur(30px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         transition-property: width box-shadow;
         transition-duration: 0.2s;
         
         
     }
 
-    .dock-pc {
+    .dock-menu {
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding-left: 42px;
-        height: 100%;
+        justify-content:center;
     }
-
-
+    .dock-menu-bottom {
+        display: flex;
+        justify-content:center;
+        padding-top: 30px;
+    }
 
     .dock-wrapper:hover {
         width:310px;
@@ -77,17 +90,21 @@
         padding-left: 110px;
     }
 
+    .dock-wrapper:hover .dock-expanded {
+        width:200px;
+        opacity: 255;
+        
 
-    
+    }
 
-    .dock-pc-top {
+    .dock-pc {
         /* width: 100%; */
         width:96px;
-        height: 440px;
+        height: 300px;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        /* align-items: center; */
+        align-items: center;
     }
 
     .dock-pc-bottom {
@@ -97,7 +114,8 @@
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        margin-bottom: 24px;
+        align-items: center;
+        padding-bottom: 24px;
     }
 
     .dock-mobile {
@@ -106,7 +124,7 @@
 
     .logo-wrapper {
         display: flex;
-        margin-left: -36px;
+        
         align-items: center;
         width:96px;
         height:96px;
@@ -118,7 +136,15 @@
     
 
 
-
+    .expanded-space {
+        
+        display: flex;
+        align-items: center;
+        width:96px;
+        height:96px;
+        margin-top: 24px;
+        margin-bottom: 24px;
+    }
     /* .logo-contracted {
         padding-top: 24px;
         padding-bottom: 24px;
@@ -133,18 +159,9 @@
         opacity: 255;
     }
 
-    .dock-wrapper:hover .dock-pc-expanded-individual {
-        opacity: 255;
-    }
-
-
-
 
 
 }
-
-
-
 .dock-wrapper {
     overflow: hidden;
 }
@@ -161,59 +178,75 @@
     
 }
 
+.dock-expanded {
+    transition-property: opacity width;
+    transition-duration: 0.2s;
+    opacity: 0;
+    width: 0px;
+    overflow: hidden;
+    
+
+}
+
+.dock-pc-expanded {
+    width: 200px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items:flex-start;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.dock-pc-expanded-bottom {
+    width: 200px;
+    height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items:flex-start;
+    font-size: 16px;
+    font-weight: 500;
+    padding-bottom: 24px;
+    /* margin-left: -6px; */
+    
+}
 
 
 
 
+.dock-individual {
+    cursor: pointer;
+    text-align: left;
+    position: relative;
+    /* overflow: hidden; */
+}
 
+.individual-highlighted:hover {
+    opacity: 255;
+    
+}
 
-
-
-
-
-
-
-
-.dock-pc-individual {
-    width: 240px;
+.individual-highlighted {
+    position: absolute;
+    left:-16px;
+    top:-10px;
+    width: 260px;
     height: 52px;
+    background-color: rgba(154, 76, 249, 0.1);
     z-index: 1;
     border-radius: 30px;
-    display: flex;
-    cursor: pointer;
-    text-align: left;
-    position: relative;
-    /* overflow: hidden; */
-    display: flex;
-    align-items: center;
-
-    left:-18px;
-    padding-left: 18px;
-    transition-property: background-color;
-    transition-duration: 0.3s;
-    font-weight: 500;
-}
-
-.dock-pc-individual:hover {
-    background-color: rgba(154, 76, 249, 0.1);
-}
-
-.dock-pc-expanded-individual {
-    padding-left: 18px;
-    cursor: pointer;
-    text-align: left;
-    position: relative;
     opacity: 0;
     transition-property: opacity;
-    transition-duration: 0.3s;
-    /* overflow: hidden; */
+    transition-duration: 0.2s;
+    
 }
 
 
-
-
-
-
+.individual-highlighted > * {
+    opacity: 0;
+}
 
 
 
@@ -253,6 +286,21 @@
 
 
 
+
+
+/* .dock-indicator-wrapper {
+    width: 100%;
+
+}
+
+.dock-indicator {
+
+    height: 2px;
+    position: absolute;
+    background-color: rgb(150, 200, 200);
+    transition-property: transform;
+    
+} */
 
 
 

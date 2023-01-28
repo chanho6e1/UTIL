@@ -4,7 +4,7 @@ import SwipeableDock from "../UI/SwipeableDock/SwipeableDock";
 import * as Icons from './Icons'
 import logo from '../../img/util-logo.png'
 import { useSelector, useDispatch } from 'react-redux'
-import { UserIcon, CurrentUser } from './MainUserInfo'
+import { UserIcon, CurrentUser, UserDockWrapper } from './MainUserInfo'
 
 
 
@@ -28,6 +28,7 @@ const Main = (props) => {
       dockExpanded:[<div>마이 유틸</div>, <div>피드</div>, <div>검색</div>, <div>탐색 탭</div>, <div>피드 작성</div>],
       dockContractedBottom: [Icons.notification, <UserIcon />],
       dockExpandedBottom: [<div>알림</div>, <CurrentUser />],
+      dockWrapperBottom: [<React.Fragment />, <UserDockWrapper />]
     },
     url: ['/index', '/feed', '/search', '/setting', '/etc'],
     bottomUrl: ['/notification', '/user']

@@ -10,36 +10,19 @@ import { useNavigate, useLocation } from 'react-router-dom'
 
 export const UserIcon = (props) => {
   const userAuth = useSelector(state => state.userAuthSlice.userAuth)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
 
-  const handleLogout = () => {
-    localStorage.removeItem(ACCESS_TOKEN);
-    dispatch(userAuthSliceActions.changeAuthenticated('false'))
-    dispatch(userAuthSliceActions.changeCurrentUser(null))
-  }
-
-  const navigateLogin = () => {
-    navigate('/login');
-  }
 
   const userImage = (
-    <div onClick={handleLogout}>
       <div className={styles['user-image-wrapper']} >
         <img className={styles['user-image']} src={`${userAuth.authenticated ? userAuth.currentUser.imageUrl : null }`}/>
       </div> 
-    </div>
-      
   )
 
   const anonymous = (
-    <div onClick={navigateLogin}>
-      {Icons.user}
-    </div>
+      <div className={styles['user-image-wrapper']} >
+        {Icons.user}
+      </div>
   )
-
-  
-
 
   return (
     <React.Fragment>
@@ -55,23 +38,52 @@ export const UserIcon = (props) => {
 export const CurrentUser = (props) => {
   const userAuth = useSelector(state => state.userAuthSlice.userAuth)
 
+
+
   const requiredLogin = (
-    <React.Fragment>
+    <div className={styles['label']}>
       로그인
-    </React.Fragment>
+    </div>
   )
 
   const userName = (
-    <React.Fragment>
-      {userAuth.authenticated ? userAuth.currentUser.userName : null}
-      
-    </React.Fragment>
+    <div className={styles['label']}>
+      <b>
+        {userAuth.authenticated ? userAuth.currentUser.userName : null}
+      </b>
+      님 환영합니다!
+    </div>
   )
 
   return (
-    <div>
+    <React.Fragment>
       {userAuth.authenticated ? userName : requiredLogin}
-    </div>
+    </React.Fragment>
     // {userAuth.authenticated ? userName : requiredLogin}
+  )
+}
+
+
+
+export const UserDockWrapper = (props) => {
+  const userAuth = useSelector(state => state.userAuthSlice.userAuth)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    localStorage.removeItem(ACCESS_TOKEN);
+    dispatch(userAuthSliceActions.changeAuthenticated('false'))
+    dispatch(userAuthSliceActions.changeCurrentUser(null))
+  }
+
+  const navigateLogin = () => {
+    navigate('/login');
+  }
+
+  return (
+    <div onClick={userAuth.authenticated ? handleLogout : navigateLogin}>
+      {props.children}
+    </div>
+    
   )
 }

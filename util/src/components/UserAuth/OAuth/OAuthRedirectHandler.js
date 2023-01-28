@@ -17,7 +17,6 @@ const OAuthRedirectHandler = (props) => {
 
   if(token) {
     // 성공
-    console.log('OAuthRedirectHandler Succeeded!')
     localStorage.setItem(ACCESS_TOKEN, token);
     return <Navigate to={{
         pathname: "/",
@@ -25,9 +24,8 @@ const OAuthRedirectHandler = (props) => {
     }}/>; 
   } else {
     // 실패
-    console.log('OAuthRedirectHandler Failed!')
       return <Navigate to={{
-          pathname: "/",
+          pathname: "/login",
           state: { 
               from: location,
               error: error 
