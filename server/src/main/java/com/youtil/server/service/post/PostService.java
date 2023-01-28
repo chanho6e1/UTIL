@@ -2,11 +2,11 @@ package com.youtil.server.service.post;
 
 import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
+import com.youtil.server.config.s3.S3Uploader;
 import com.youtil.server.domain.category.Category;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.post.PostBookmark;
-import com.youtil.server.domain.post.PostFile;
 import com.youtil.server.domain.post.PostLike;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.post.*;
@@ -16,13 +16,17 @@ import com.youtil.server.repository.post.*;
 import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,11 +40,6 @@ public class PostService {
     private final PostRepository postRepository;
     @Autowired
     private final PostQueryRepository postQueryRepository;
-
-    @Autowired
-    private final PostFileRepository postFileRepository;
-    @Autowired
-    private final PostFileHandler fileHandler;
     @Autowired
     private final PostLikeRepository postLikeRepository;
     @Autowired
@@ -51,9 +50,10 @@ public class PostService {
     private final PostCategoryRepository postCategoryRepository;
     @Autowired
     private final PostBookmarkRepository postBookmarkRepository;
-
     @Autowired
     private final GoalRepository goalRepository;
+    @Autowired
+    private final S3Uploader s3Uploader;
 
     @Transactional
     public PostResponse findPost(Long postId, Long userId) { //단일 조회
@@ -87,10 +87,10 @@ public class PostService {
                 .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 
-    public List<PostResponse> findByPostContent(Long userId, PostSearch search, int offset, int size) {//내용으로 검색/오프셋
+    public List<PostResponse> findByPostTitle(Long userId, PostSearch search, int offset, int size) {//내용으로 검색/오프셋
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        return postQueryRepository.findByContentContaining(search, PageRequest.of(offset - 1, size))
+        return postQueryRepository.findByTitleContaining(search, PageRequest.of(offset - 1, size))
                 .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 
@@ -148,8 +148,8 @@ public class PostService {
         Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
         validPostUser(userId, post.getUser().getUserId());
         post.clearUser();
-        post.getPostCommentList().getPostCommentList().clear();
-//        postCommentRepository.deleteByPostId(postId);
+        parseContextAndDeleteImages(post);
+        postCommentRepository.deleteByPostId(postId);
         postRepository.deleteById(postId);
         return postId;
     }
@@ -192,29 +192,6 @@ public class PostService {
     }
 
     @Transactional
-    public List<String> uploadPostFile(List<MultipartFile> files) throws Exception {
-        if (files != null && !files.isEmpty()) {
-            return savePostFIle(files);
-        }
-        return null;
-    }
-
-    private List<String> savePostFIle(List<MultipartFile> files) throws Exception {
-
-        List<PostFile> fileList = fileHandler.parseFileInfo(files);
-        List<String> fileUrlList = new ArrayList<>();
-
-        if (!fileList.isEmpty()) {
-            for (int i = 0; i < fileList.size(); i++) {
-                PostFile postFile = fileList.get(i);
-                postFileRepository.save(postFile);
-                fileUrlList.add(fileList.get(i).getSavedFileName());
-            }
-        }
-        return fileUrlList;
-    }
-
-    @Transactional
     public Boolean togglePostLikes(Long userId, Long postId) {
         Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("post", "postId", postId));
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("user", "userId", userId));
@@ -230,8 +207,36 @@ public class PostService {
         return post.togglePostBookmark(postBookmark);
     }
 
+    public String getThumbnailCandidate(PostContentRequest request) { //섬네일 후보 제공
+        Document doc = Jsoup.parse(request.getContent());
+        Elements images = doc.getElementsByTag("img");
+        String source = null;
+        if (images.size() > 0) {
+            for (Element image : images) {
+                  source = image.attr("src");
+                break;
+            }
+        }
+        return source;
+    }
 
+    public void parseContextAndDeleteImages(Post post) { //post 삭제하면 안의 파일도 삭제
+        Document doc = Jsoup.parse(post.getContent());
+        Elements images = doc.getElementsByTag("img");
+        String source = "";
 
+        if (images.size() > 0) {
+            for (Element image : images) {
+                try {
+                    source = URLDecoder.decode(image.attr("src").replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/", ""), "UTF-8");
+                    System.out.println(source);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                s3Uploader.deleteS3(source);
+            }
+        }
+    }
 }
 
 

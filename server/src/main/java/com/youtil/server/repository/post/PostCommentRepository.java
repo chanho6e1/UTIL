@@ -17,7 +17,7 @@ import java.util.Optional;
 public interface PostCommentRepository extends JpaRepository<PostComment, Long> {
 
     @Transactional
-    @Modifying
+    @Modifying(clearAutomatically = true) // 영속성 컨텍스트 초기화
     @Query("delete from PostComment c where c.post.postId = :postId")
     void deleteByPostId(@Param("postId") Long postId);
 

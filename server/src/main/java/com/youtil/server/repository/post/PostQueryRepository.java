@@ -1,19 +1,16 @@
 package com.youtil.server.repository.post;
 
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.post.PostLike;
-import com.youtil.server.domain.user.Follow;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.post.PostSearch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 
 import static com.youtil.server.domain.post.QPost.post;
@@ -48,13 +45,13 @@ public class PostQueryRepository {
                 .fetch();
     }
 
-    public List<Post> findByContentContaining(PostSearch postSearch, PageRequest pageRequest){ //내용으로 검색, 정렬도 지정
+    public List<Post> findByTitleContaining(PostSearch postSearch, PageRequest pageRequest){ //제목으로 검색, 정렬도 지정
 
         String criteria = postSearch.getCriteria();
 
         return jpaQueryFactory.selectFrom(post)
                 .innerJoin(post.user).fetchJoin()
-                .where(post.content.contains(postSearch.getContent()))
+                .where(post.title.contains(postSearch.getTitle()))
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
@@ -137,11 +134,8 @@ public class PostQueryRepository {
         } else if(criteria == null){
             return post.createdDate.desc();
         }
-
         return post.createdDate.desc();
     }
-
-
 }
 
 

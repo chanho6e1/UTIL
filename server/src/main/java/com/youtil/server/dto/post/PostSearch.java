@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class PostSearch {
 
-    private String content;
+    private String title;
 
     private String criteria;
 
@@ -16,8 +16,8 @@ public class PostSearch {
     }
 
 
-    public static PostSearch of(String content, String criteria){
-        return new PostSearch(content, criteria);
+    public static PostSearch of(String title, String criteria){
+        return new PostSearch(title, criteria);
     }
 
     public static PostSearch of(String criteria){

@@ -57,7 +57,7 @@ public class PostCommentResponse {
         this.isDelete = comment.getIsDelete();
     }
 
-    public PostCommentResponse(PostComment comment, String content) {
+    public PostCommentResponse(PostComment comment, String content) { //삭제 처리된 댓글 결과
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
         this.writerInfo = WriterInfo.from(comment.getUser());
         this.commentId = comment.getCommentId();
