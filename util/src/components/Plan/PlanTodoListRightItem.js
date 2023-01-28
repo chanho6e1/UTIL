@@ -82,7 +82,7 @@ const PlanTodoListRightItem = (props) => {
     )
 
     return (
-        <div className={styles['todo-space-wrapper']} style={{width: `${props.scrollRef.current.children[1].scrollWidth}px`}}>
+        <div className={styles['todo-space-wrapper']} style={{width: `${props.containerRef.current.scrollWidth}px`}}>
             <div className={styles['todo-space']} >
                 {props.el.isDone ? isDoneTrue : isDoneFalse}
                 {isDateEditMode ? dateEditInput : dateReadMode}

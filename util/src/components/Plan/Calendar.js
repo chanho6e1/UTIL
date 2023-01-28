@@ -82,8 +82,8 @@ const Calendar = (props) => {
 
 
   useEffect(() => {
-    monthSpaceRef.current.style.width = scrollRef.current.children[1].scrollWidth + 'px'
-    monthTitleWrapperRef.current.style.width = scrollRef.current.children[1].scrollWidth + 'px'
+    monthSpaceRef.current.style.width = containerRef.current.scrollWidth + 'px'
+    monthTitleWrapperRef.current.style.width = containerRef.current.scrollWidth + 'px'
     // props.plansTitleWrapperRef.current.style.height = props.plansTitleInnerRef.current.clientHeight + 'px'
   }, [monthRange, props.todoFormVisibility])
 
@@ -137,7 +137,7 @@ const Calendar = (props) => {
           <CalendarDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
           
         </div>
-        {props.todoFormVisibility[idx] && <PlanTodoListRight goalId={plans[idx].goalId} todos={props.todos} scrollRef={scrollRef} newTodoIdx={props.newTodoIdx} />}
+        {props.todoFormVisibility[idx] && <PlanTodoListRight goalId={plans[idx].goalId} todos={props.todos} scrollRef={scrollRef} containerRef={containerRef} newTodoIdx={props.newTodoIdx} />}
       </React.Fragment>
       
     )

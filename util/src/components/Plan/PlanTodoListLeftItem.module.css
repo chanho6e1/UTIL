@@ -26,6 +26,7 @@
     /* width: 128px; */
     display: flex;
     /* justify-content: center; */
+    justify-content: space-between;
     align-items: center;
     height: 26px;
     border-radius: 5px;
@@ -40,6 +41,20 @@
     padding-right: 8px;
     width:100%;
 
+}
+
+.todo-title-inner-wrapper {
+    display: flex;
+    align-items: center;
+    
+}
+
+.todo-title {
+    width: 150px;
+    overflow: hidden;  		
+    text-overflow: ellipsis;  	
+    white-space: nowrap; 		
+    word-break:break-all
 }
 
 .todo-title-wrapper:hover {
@@ -68,4 +83,20 @@
 
 .edit-todo-input:hover {
     background-color: rgb(200, 200, 208);
+}
+
+
+.delete-icon {
+    color:rgb(100, 100, 100);
+    /* display: none; */
+    visibility: hidden;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.3s;
+}
+
+.todo-title-wrapper:hover .delete-icon {
+    /* display: block; */
+    visibility: visible;
+    opacity: 255;
 }
