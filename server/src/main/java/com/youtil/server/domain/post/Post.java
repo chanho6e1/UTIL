@@ -84,6 +84,11 @@ public class Post extends BaseEntity {
         this.isPrivate = request.getIsPrivate();
     }
 
+    public void update(String title, String content){
+        this.title = title;
+        this.content = content;
+    }
+
     public void setCategory(Category category) {
         this.category = category;
     }
@@ -130,22 +135,8 @@ public class Post extends BaseEntity {
         this.user = null;
     }
 
-
-
-
-//    public int getTotalFiles(){
-//        return fileLists.size();
-//    }
-
-    // Board에서 파일 처리 위함
-
-//    public void addPostFile(PostFile postfile) {
-//        this.fileLists.add(postfile);
-//
-//        // 게시글에 파일이 저장되어있지 않은 경우
-//        if(postfile.getPost() != this)
-//            // 파일 저장
-//            postfile.setPost(this);
-//    }
+    public void setThubmnail(String source) {
+        this.thumbnail = source;
+    }
 
  }

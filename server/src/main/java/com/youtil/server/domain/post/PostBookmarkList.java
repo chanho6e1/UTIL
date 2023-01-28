@@ -38,7 +38,7 @@ public class PostBookmarkList {
 
     private void removeBookmark(PostBookmark postBookmark) {
         Long userId = postBookmark.getUser().getUserId();
-        PostBookmark removalTarget = postBookmarkList.parallelStream()
+        PostBookmark removalTarget = postBookmarkList.parallelStream()//재검사
                 .filter(l -> l.ownedBy(userId))
                 .findAny()
                 .orElseThrow(()-> new ResourceNotFoundException("이미 북마크를 해제했습니다"));
