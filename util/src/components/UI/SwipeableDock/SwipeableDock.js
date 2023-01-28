@@ -5,9 +5,10 @@ import { useNavigate, useMatch, useLocation, Routes, Route } from "react-router-
 
 
 
+
 const SwipeableDock = (props) => {
   
-
+  
   const movingDiv = useRef()
   const [positionx, setPositionx] = useState(0)
   const [contentCount, setContentCount] = useState(1)
@@ -160,8 +161,8 @@ const SwipeableDock = (props) => {
           <div className={styles['dock-contracted']}>
             <div className={styles['dock-pc-bottom']}>
               {postData.dock.dockContractedBottom.map((el, idx) => {
-                  return <div className={styles['dock-individual']} >
-                    <div className={styles['individual-highlighted']}></div>
+                  return <div className={styles['dock-individual']} {...el.props}>
+                    <div className={styles['individual-highlighted']} ></div>
                     {el}
                     </div>;
               })}
@@ -171,7 +172,7 @@ const SwipeableDock = (props) => {
           <div className={styles['dock-expanded']}>
             <div className={styles['dock-pc-expanded-bottom']}>
                 {postData.dock.dockExpandedBottom.map((el, idx) => {
-                    return <div className={styles['dock-individual']} >{el}</div>;
+                    return <div className={styles['dock-individual']}>{el}</div>;
                 })}
             </div>
           </div>

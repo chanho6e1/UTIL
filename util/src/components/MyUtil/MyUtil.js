@@ -5,6 +5,7 @@ import Card from "../UI/Card/Card";
 import Modal from "../UI/Modal/Modal";
 import Plan from "../Plan/Plan";
 import PlanExpanded from "../Plan/PlanExpanded";
+import SocialLoginModule from "../UserAuth/SocialLoginModule";
 
 const MyUtil = (props) => {
   const navigate = useNavigate()
@@ -38,6 +39,9 @@ const MyUtil = (props) => {
           
         </div>
       </Card>
+
+      <SocialLoginModule />
+      
     </div>
   )
 }
