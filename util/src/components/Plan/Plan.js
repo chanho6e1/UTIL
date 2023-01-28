@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 import Card from "../UI/Card/Card";
 import Modal from "../UI/Modal/Modal";
-import AddNewPlan from "./AddNewPlan";
+
 
 import PlanTodoListLeft from "./PlanTodoListLeft";
 import PlanItem from "./PlanItem";

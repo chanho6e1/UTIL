@@ -5,7 +5,7 @@ import { createSlice } from "@reduxjs/toolkit"
 // 초기 State 선언
 const initialSliceState = {
   plans: [
-    {goalId: 0, title:'자바스크립트 공부', startDate: new Date('2023-01-1').toString(), endDate: new Date('2023-02-18').toString()},
+    {goalId: 0, title:'자바스크립트 공부abcdefghijklmnopqrstuvwxyz', startDate: new Date('2023-01-1').toString(), endDate: new Date('2023-02-18').toString()},
     {goalId: 1, title:'리액트 트랙', startDate: new Date('2023-1-16').toString(), endDate: new Date('2023-04-25').toString()},
     {goalId: 2, title:'공통 프로젝트 진행', startDate: new Date('2023-03-1').toString(), endDate: new Date('2023-05-11').toString()},
     {goalId: 3, title:'포트폴리오 작성', startDate: new Date('2023-04-1').toString(), endDate: new Date('2023-05-03').toString()},
