@@ -60,15 +60,24 @@
 
 
 .delete-icon {
-    color:rgb(100, 100, 100);
-    visibility: hidden;
+    color:rgb(120, 120, 120);
+    /* visibility: hidden; */
     opacity: 0;
-    transition-property: opacity;
+    transition-property: opacity color;
+    transition-duration: 0.3s;
+}
+
+.delete-icon:hover {
+    color:rgb(0, 0, 0);
+}
+
+.delete-icon-wrapper {
+    transition-property: opacity background-color;
     transition-duration: 0.3s;
 }
 
 .plan-title-bar-button:hover .delete-icon {
-    visibility: visible;
+    /* visibility: visible; */
     opacity: 255;
 }
 
@@ -90,6 +99,15 @@
 
 .plan-title-bar-button:hover {
     background-color: rgb(220, 220, 228);
+}
+
+.plan-title {
+    text-align: left;
+    width: 170px;
+    overflow: hidden;  		
+    text-overflow: ellipsis;  	
+    white-space: nowrap; 		
+    word-break:break-all
 }
 
 .plan-title-bar-icon-wrapper {
@@ -170,3 +188,27 @@
 /* .new-plan-input:hover {
     background-color: rgb(200, 200, 208);
 } */
+
+
+.edit-todo-input {
+    padding-left:8px;
+    padding-right:8px;
+    width: 75%;
+    margin-right: 10px;
+    background-color: rgb(220, 220, 228);
+    border-radius: 5px;
+    height:30px;
+    border: none;
+    transition-property: background-color;
+    transition-duration: 0.3s;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.edit-todo-input:focus {
+    outline: none;
+}
+
+.edit-todo-input:hover {
+    background-color: rgb(200, 200, 208);
+}

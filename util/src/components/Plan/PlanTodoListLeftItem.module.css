@@ -50,7 +50,8 @@
 }
 
 .todo-title {
-    width: 150px;
+    text-align: left;
+    width: 160px;
     overflow: hidden;  		
     text-overflow: ellipsis;  	
     white-space: nowrap; 		
@@ -87,16 +88,20 @@
 
 
 .delete-icon {
-    color:rgb(100, 100, 100);
+    color:rgb(120, 120, 120);
     /* display: none; */
-    visibility: hidden;
+    /* visibility: hidden; */
     opacity: 0;
-    transition-property: opacity;
+    transition-property: opacity color;
     transition-duration: 0.3s;
+}
+
+.delete-icon:hover {
+    color:rgb(0, 0, 0);
 }
 
 .todo-title-wrapper:hover .delete-icon {
     /* display: block; */
-    visibility: visible;
+    /* visibility: visible; */
     opacity: 255;
 }
