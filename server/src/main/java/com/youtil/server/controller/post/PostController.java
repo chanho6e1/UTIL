@@ -1,6 +1,7 @@
 package com.youtil.server.controller.post;
 
 import com.youtil.server.common.CommonResponse;
+import com.youtil.server.dto.post.PostContentRequest;
 import com.youtil.server.dto.post.PostSaveRequest;
 import com.youtil.server.dto.post.PostSearch;
 import com.youtil.server.dto.post.PostUpdateRequest;
@@ -29,14 +30,6 @@ public class PostController {
 
     @Autowired
     PostService postService;
-
-    @ApiOperation(value = "파일 업로드 등록", notes = "파일을 업로드하고 주소를 반환한다")
-    @PostMapping("/files")
-    public ResponseEntity<CommonResponse> uploadFile(@RequestPart(value="image", required=false) List<MultipartFile> files) throws Exception {
-//        System.out.println(files);
-        return ResponseEntity.ok().body(CommonResponse.of(
-                               HttpStatus.CREATED, "파일 등록 성공", postService.uploadPostFile(files)));
-    }
 
     @ApiOperation(value = "단일 게시물 조회", notes = "게시물 id로 게시물을 조회한다.")
     @GetMapping("/{postId}")
@@ -87,15 +80,15 @@ public class PostController {
 
 
 
-    @ApiOperation(value = "내용 검색, 정렬 기준(선택)으로 게시물 리스트 조회", notes = "내용 검색,정렬 기준(view/date/like)으로 게시물 목록물 목록을 조회한다.")
+    @ApiOperation(value = "제목 검색, 정렬 기준(선택)으로 게시물 리스트 조회", notes = "제목 검색,정렬 기준(view/date/like)으로 게시물 목록물 목록을 조회한다.")
     @GetMapping("/search")
     public ResponseEntity<CommonResponse> findBySearchPostList(@ApiIgnore @CurrentUser UserPrincipal user,
-                                                               @RequestParam String content,
+                                                               @RequestParam String title,
                                                                @RequestParam(required=false, defaultValue = "date") String criteria,
                                                                @RequestParam(required=false, defaultValue = "1") int offset,
                                                                @RequestParam(value = "size", required = false, defaultValue = "10") int size){
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "내용검색, 정렬 기준으로 게시물 목록 조회 성공", postService.findByPostContent(user.getId(), PostSearch.of(content, criteria), offset, size))
+                HttpStatus.OK, "내용검색, 정렬 기준으로 게시물 목록 조회 성공", postService.findByPostTitle(user.getId(), PostSearch.of(title, criteria), offset, size))
         );
     }
 
@@ -147,6 +140,8 @@ public class PostController {
                 HttpStatus.NO_CONTENT, "삭제 성공", postService.deletePost(user.getId(), postId)));
     }
 
+    ////////////////////
+
     @ApiOperation(value = "게시물 좋아요 토글", notes = "단일 게시물에 대한 좋아요 선택/해제한다")
     @PutMapping("/{postId}/likes")
     public ResponseEntity<CommonResponse> togglePostLikes(@ApiIgnore @CurrentUser UserPrincipal user,
@@ -172,5 +167,14 @@ public class PostController {
                                                           @RequestParam(value = "size", required = false, defaultValue = "10") int size){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "좋아요한 유저 리스트 반환 성공", postService.PostLikesPeople(postId, offset, size)));
+    }
+
+    ////////////////
+
+    @ApiOperation(value = "섬네일 후보를 반환한다", notes = "content를 보내주면 섬네일 후보를 반환한다")
+    @GetMapping("/thumbnail")
+    public ResponseEntity<CommonResponse> getThumbnailCandidate(@RequestBody @Valid PostContentRequest request){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.CREATED, "섬네일 후보 반환 성공", postService.getThumbnailCandidate(request)));
     }
 }
