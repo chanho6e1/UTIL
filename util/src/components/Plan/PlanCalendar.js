@@ -1,15 +1,15 @@
 import React, {useEffect, useRef, useState} from "react";
-import styles from './Calendar.module.css'
+import styles from './PlanCalendar.module.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
-import CalendarDateSelector from "./CalendarDateSelector";
+import PlanCalendarDateSelector from "./PlanCalendarDateSelector";
 import Swipe from "react-easy-swipe";
 import { OverlayScrollbarsComponent, useOverlayScrollbars } from "overlayscrollbars-react";
 import PlanTodoListRight from "./PlanTodoListRight";
 
 
 
-const Calendar = (props) => {
+const PlanCalendar = (props) => {
   const dateRangeWrapperRef = useRef()
   const monthSpaceRef = useRef()
   const monthBarRef = useRef()
@@ -134,7 +134,7 @@ const Calendar = (props) => {
       <React.Fragment>
         <div ref={containerRef} className={styles['month-bar-container']} key={`month-bar-container-${idx}`}>
           {columns}
-          <CalendarDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
+          <PlanCalendarDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
           
         </div>
         {props.todoFormVisibility[idx] && <PlanTodoListRight goalId={plans[idx].goalId} todos={props.todos} scrollRef={scrollRef} containerRef={containerRef} newTodoIdx={props.newTodoIdx} />}
@@ -184,4 +184,4 @@ const Calendar = (props) => {
   )
 }
 
-export default Calendar
+export default PlanCalendar

@@ -1,12 +1,12 @@
 import React, {useState, useRef, useEffect} from "react";
 import Swipe from "react-easy-swipe";
-import styles from "./CalendarDateSelector.module.css"
+import styles from "./PlanCalendarDateSelector.module.css"
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 
 
 
-const CalendarDateSelector = (props) => {
+const PlanCalendarDateSelector = (props) => {
   const dispatch = useDispatch()
   const [positionx, setPositionx] = useState(0)
   const [endSwipe, setEndSwipe] = useState(false)
@@ -278,4 +278,4 @@ const CalendarDateSelector = (props) => {
   )
 }
 
-export default CalendarDateSelector
+export default PlanCalendarDateSelector
