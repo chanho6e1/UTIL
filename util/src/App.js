@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { userAuthSliceActions } from './redux/userAuthSlice'
 import OAuthRedirectHandler from './components/UserAuth/OAuth/OAuthRedirectHandler';
 import SocialLoginModule from './components/UserAuth/SocialLoginModule';
+import { ACCESS_TOKEN } from './constants';
+import SocialLogin from './components/UserAuth/SocialLogin';
 // import OAuth2RedirectHandler from './components/UserAuth/OAuth/OAuth2RedirectHandler';
 
 const App = () => {
@@ -23,17 +25,24 @@ const App = () => {
     getCurrentUser()
     .then(response => {
       dispatch(userAuthSliceActions.changeAuthenticated('true'))
-      dispatch(userAuthSliceActions.changeCurrentUser(JSON.stringify(response)))
+      dispatch(userAuthSliceActions.changeCurrentUser(JSON.stringify(response.data)))
       dispatch(userAuthSliceActions.changeLoading('false'))
     }).catch(error => {
       dispatch(userAuthSliceActions.changeLoading('false'))
     });    
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem(ACCESS_TOKEN);
+    dispatch(userAuthSliceActions.changeAuthenticated('false'))
+    dispatch(userAuthSliceActions.changeCurrentUser(null))
+  }
+
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Main />} />
+        <Route path="/*" element={<Main />} />
+        <Route path="/login" element={<SocialLogin />} />
         <Route path="/oauth2/redirect" element={<OAuthRedirectHandler />} /> 
       </Routes>
     </div>
