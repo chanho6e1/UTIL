@@ -1,0 +1,19 @@
+.user-image-wrapper {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: 128px;
+    overflow: hidden;
+}
+
+.user-image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(50, 50);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: auto;
+}
+

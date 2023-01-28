@@ -224,6 +224,7 @@
 
 .individual-highlighted:hover {
     opacity: 255;
+    
 }
 
 .individual-highlighted {
@@ -238,7 +239,16 @@
     opacity: 0;
     transition-property: opacity;
     transition-duration: 0.2s;
+    
 }
+
+
+.individual-highlighted > * {
+    opacity: 0;
+}
+
+
+
 
 
 .wrapper {

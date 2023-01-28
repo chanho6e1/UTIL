@@ -95,7 +95,6 @@ const SwipeableDock = (props) => {
 
 
 
-  
   return (
     <div className={styles['dock-view']}>
       
@@ -161,10 +160,17 @@ const SwipeableDock = (props) => {
           <div className={styles['dock-contracted']}>
             <div className={styles['dock-pc-bottom']}>
               {postData.dock.dockContractedBottom.map((el, idx) => {
-                  return <div className={styles['dock-individual']} {...el.props}>
-                    <div className={styles['individual-highlighted']} ></div>
-                    {el}
-                    </div>;
+                  return (
+                    <div className={styles['dock-individual']} >
+                      {el}
+                      <div className={styles['individual-highlighted']}>
+                        {el}
+                      </div>
+
+                      
+                      
+                    </div>
+                  )
               })}
             </div>
           </div>
