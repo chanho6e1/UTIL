@@ -1,0 +1,38 @@
+.social-login-header {
+    /* background-color: red; */
+    width: 200px;
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.google-logo {
+    width: 32px;
+    height: auto;
+}
+
+.kakaotalk-logo {
+    width: 48px;
+    height: auto;
+}
+
+.social-login-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 128px;
+    
+}
+
+.google-login {
+    border: 2px solid rgb(220, 220, 220);
+    background-color: rgb(240, 240, 240);
+}   
+
+.kakaotalk-login {
+    border: 2px solid rgb(249, 224, 0);
+    background-color: rgb(249, 224, 0)
+}

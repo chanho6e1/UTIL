@@ -12,6 +12,7 @@ import { createSlice, configureStore } from '@reduxjs/toolkit'
 // Slice 단위로 분할하였으므로 import
 // 별칭으로 import : exampleSlice1Reducer, exampleSlice2Reducer
 import planSliceReducer from './planSlice'
+import userAuthReducer from './userAuthSlice'
 // import exampleSlice2Reducer from './exampleSlice2(toolkit)'
 // -------------------------------------------------------------------------------------------------------
 
@@ -22,7 +23,10 @@ const store = configureStore({
   // 주의할 점은 이때 키의 이름(여기서는 example1, example2)은 Redux를 사용하는 컴포넌트에서 useSelector로 값을 읽어올 때 사용된다.
   // 아래의 구문은 redux store를 Slice 단위로 분할하여 관리할 때의 경우
   // import할 때에 별칭(exampleSlice1Reducer, exampleSlice2Reducer)으로 import하였으므로 그대로 사용한다.
-  reducer: { planSlice: planSliceReducer}
+  reducer: {
+    planSlice: planSliceReducer,
+    userAuthSlice: userAuthReducer
+  }
 
 
 })
