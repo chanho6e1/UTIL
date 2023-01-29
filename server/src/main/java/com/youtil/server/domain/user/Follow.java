@@ -1,8 +1,19 @@
 package com.youtil.server.domain.user;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
+@DynamicUpdate
 public class Follow {
 
     @Id
