@@ -46,13 +46,11 @@ public class PostResponse {
 
     private Boolean likeStatus;
 
+    private Boolean bookmarkStatus;
+
     private String createdDate;
 
     private String modifiedDate;
-
-    private LocalDateTime createdDate1;
-
-    private LocalDateTime modifiedDate1;
 
 
     public PostResponse(Post post, User user) { //전체 조회
@@ -69,9 +67,11 @@ public class PostResponse {
         this.likeStatus = post.getPostLikeList().getPostLikeList().parallelStream()
                 .anyMatch(l -> l.ownedBy(user.getUserId()));
         this.likeStatusSize = post.getTotalLikes();
+        this.bookmarkStatus = post.getPostBookmarkList().getPostBookmarkList().parallelStream()
+                .anyMatch((b)-> b.ownedBy(user.getUserId()));
    }
 
-    public PostResponse(Post post, Boolean likeStatus) { //단건 조회
+    public PostResponse(Post post, Boolean likeStatus, Boolean bookmarkStatus) { //단건 조회
 
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
 
@@ -92,6 +92,6 @@ public class PostResponse {
         this.likeStatus = likeStatus;
         this.totalCommentSize = post.getTotalComments(); //댓글 수
         this.likeStatusSize = post.getTotalLikes(); //좋아요 수
+        this.bookmarkStatus = bookmarkStatus;
     }
-
 }

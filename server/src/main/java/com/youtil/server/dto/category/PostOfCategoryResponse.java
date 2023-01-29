@@ -23,17 +23,22 @@ public class PostOfCategoryResponse {
 
     private Long categoryId;
 
-    private List<PostResponse> posts = new ArrayList<>();
+    private PostResponse posts;
 
 //    private String createdDate;
 //
 //    private String modifiedDate;
 
-    public PostOfCategoryResponse(Category category, User user) { //전체 조회
+//    public PostOfCategoryResponse(Category category, User user) { //전체 조회
+//
+//        this.categoryId = category.getCategoryId();
+//        this.posts = category.getPostList().getPostList().stream()
+//                        .map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+//    }
 
-        this.categoryId = category.getCategoryId();
-        this.posts = category.getPostList().getPostList().stream()
-                        .map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+    public PostOfCategoryResponse(Post post, User user) { //전체 조회
+        this.categoryId = post.getCategory().getCategoryId();
+        this.posts = new PostResponse(post, user);
     }
 
 }
