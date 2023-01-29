@@ -23,11 +23,6 @@ public class TodoController {
     @ApiOperation(value = "투두 등록", notes = "투두를 등록한다")
     @PostMapping("/{goalId}")
     public ResponseEntity<CommonResponse> createTodo(@PathVariable Long goalId, @RequestBody @Valid TodoSaveRequest request) throws Exception {
-        System.out.println("타이틀"+ request.getTitle());
-        System.out.println("세부내용"+ request.getDescription());
-        System.out.println("날짜"+ request.getDueDate());
-        System.out.println("상태"+ request.isState());
-
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "등록 성공", todoService.createTodo(goalId, request)));
     }
@@ -58,7 +53,7 @@ public class TodoController {
     @GetMapping("/goals/{goalId}")
     public ResponseEntity<CommonResponse> getTodoByGoal(@PathVariable Long goalId){
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.CREATED, "목표별 투두 조회 성공", todoService.getTodoByGoal(goalId)));
+                HttpStatus.OK, "목표별 투두 조회 성공", todoService.getTodoByGoal(goalId)));
 
 
     }
@@ -66,6 +61,6 @@ public class TodoController {
     @GetMapping("/today/{dueDate}")
     public ResponseEntity<CommonResponse> getTodoByGoal(@PathVariable String dueDate){
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.CREATED, "날짜별 투두 조회 성공", todoService.getTodoByDate(dueDate)));
+                HttpStatus.OK, "날짜별 투두 조회 성공", todoService.getTodoByDate(dueDate)));
     }
 }
