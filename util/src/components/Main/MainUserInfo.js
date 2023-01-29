@@ -5,6 +5,7 @@ import styles from './MainUserInfo.module.css'
 import { userAuthSliceActions } from '../../redux/userAuthSlice'
 import { ACCESS_TOKEN } from '../../constants';
 import { useNavigate, useLocation } from 'react-router-dom'
+import DropDown from "../UI/DropDown/DropDown";
 
 
 
@@ -80,9 +81,20 @@ export const UserDockWrapper = (props) => {
     navigate('/login');
   }
 
+  const dropDownItems = {
+    label: ['로그아웃', '마이프로필'],
+    function: [handleLogout, null],
+  }
+
+  const [dropDownState, setDropDownState] = useState(false)
+
+  
+
   return (
-    <div onClick={userAuth.authenticated ? handleLogout : navigateLogin}>
+    <div onClick={() => {userAuth.authenticated ? setDropDownState(true) : navigateLogin(); }}>
+      
       {props.children}
+      <DropDown dropDownItems={dropDownItems} dropDownState={dropDownState} setDropDownState={setDropDownState} marginLeft={'-20px'} width={'260px'} direction={'up'} conditionalRender={props.isMouseOn} />
     </div>
     
   )

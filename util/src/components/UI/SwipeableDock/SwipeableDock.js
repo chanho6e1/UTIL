@@ -94,7 +94,11 @@ const SwipeableDock = (props) => {
 
 
 
-  
+  const [isMouseOn, setIsMouseOn] = useState(false)
+
+  const mouseOnHandler = (boolean) => {
+    setIsMouseOn(boolean)
+  }
 
 
 
@@ -116,7 +120,7 @@ const SwipeableDock = (props) => {
 
 
       
-      <div className={styles['dock-wrapper']}>
+      <div className={styles['dock-wrapper']} onMouseEnter={mouseOnHandler.bind(this, true)} onMouseLeave={mouseOnHandler.bind(this, false)}>
 
 
         <div className={styles['dock-mobile']}>
@@ -157,7 +161,7 @@ const SwipeableDock = (props) => {
                 </div>
               )
               const wrapper = postData.dock.dockWrapperBottom[idx]
-              const content = React.cloneElement(wrapper, {children: individual});
+              const content = React.cloneElement(wrapper, {children: individual, isMouseOn: isMouseOn});
               return content
             })}
           </div>

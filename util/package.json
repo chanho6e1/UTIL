@@ -23,6 +23,7 @@
     "react-remark": "^2.1.0",
     "react-router-dom": "^6.6.2",
     "react-scripts": "5.0.1",
+    "react-simplemde-v1": "^2.0.1",
     "react-syntax-highlighter": "^15.5.0",
     "redux": "^4.2.0",
     "rehype-document": "^6.1.0",
@@ -32,6 +33,7 @@
     "remark-gfm": "^3.0.1",
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
+    "simplemde": "^1.11.2",
     "to-vfile": "^7.2.3",
     "unified": "^10.1.2",
     "web-vitals": "^2.1.4"
