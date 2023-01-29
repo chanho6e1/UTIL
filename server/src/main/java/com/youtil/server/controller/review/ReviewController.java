@@ -10,10 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -24,10 +21,25 @@ public class ReviewController {
 
     @Autowired
     ReviewService reviewService;
+
     @ApiOperation(value = "회고록 등록", notes = "회고록을 등록한다.")
-    @PostMapping
-    public ResponseEntity<CommonResponse> createReview(@CurrentUser UserPrincipal userPrincipal, @RequestBody @Valid ReviewSaveRequest request){
+    @PostMapping("/{goalId}")
+    public ResponseEntity<CommonResponse> createReview(@PathVariable Long goalId, @RequestBody @Valid ReviewSaveRequest request){
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.CREATED, "등록 성공", reviewService.createReview(userPrincipal.getId(), request)));
+                HttpStatus.CREATED, "등록 성공", reviewService.createReview(goalId, request)));
+    }
+
+    @ApiOperation(value = "회고록 리스트 조회", notes = "목표에 해당하는 회고록 리스트를 반환한다.")
+    @GetMapping("/{goalId}/goals")
+    public ResponseEntity<CommonResponse> getReviewList(@PathVariable Long goalId){
+        return ResponseEntity.ok().body(CommonResponse.of(
+           HttpStatus.OK, "조회 성공", reviewService.getReviewList(goalId)));
+    }
+
+    @ApiOperation(value = "회고록 상세 조회", notes = "회고록 상세 정보를 반환한다.")
+    @GetMapping("/{reviewId}")
+    public ResponseEntity<CommonResponse> getReview(@PathVariable Long reviewId){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "조회 성공", reviewService.getReview(reviewId)));
     }
 }

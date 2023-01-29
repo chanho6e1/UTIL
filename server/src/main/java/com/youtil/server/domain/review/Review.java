@@ -2,10 +2,19 @@ package com.youtil.server.domain.review;
 
 import com.youtil.server.domain.BaseEntity;
 import com.youtil.server.domain.goal.Goal;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@DynamicUpdate
 public class Review extends BaseEntity {
 
     @Id
@@ -14,12 +23,20 @@ public class Review extends BaseEntity {
     private Long reviewId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "goal_id")
     private Goal goal;
 
     private String title;
-    private String Content;
+    private String content;
 
-    private Long isPrivate;
+    private Long isPrivate; //공개2, 팔로워1, 비공개0
 
+
+    @Builder
+    public Review(Goal goal, String title, String content, Long isPrivate){
+        this.goal = goal;
+        this.title = title;
+        this.content = content;
+        this.isPrivate = isPrivate;
+    }
 }
