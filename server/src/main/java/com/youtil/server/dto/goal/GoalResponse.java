@@ -19,7 +19,7 @@ public class GoalResponse {
     private String endDate;
 
     public GoalResponse(Goal goal){
-        this.goalId = goal.getId();
+        this.goalId = goal.getGoalId();
         this.title = goal.getTitle();
         this.startDate = goal.getStartDate();
         this.endDate = goal.getEndDate();

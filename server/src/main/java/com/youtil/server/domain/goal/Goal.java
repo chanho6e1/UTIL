@@ -24,7 +24,7 @@ public class Goal extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "goal_id")
-    private Long id;
+    private Long goalId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
