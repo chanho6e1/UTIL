@@ -5,6 +5,7 @@ import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.todo.Todo;
 import com.youtil.server.dto.todo.TodoResponse;
 import com.youtil.server.dto.todo.TodoSaveRequest;
+import com.youtil.server.dto.todo.TodoStateRequest;
 import com.youtil.server.repository.goal.GoalRepository;
 import com.youtil.server.repository.todo.TodoRepository;
 import com.youtil.server.repository.user.UserRepository;
@@ -54,6 +55,14 @@ public class TodoService {
     public Long updateTodo(Long todoId, TodoSaveRequest request) {
         Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new ResourceNotFoundException("todo", "todoId", todoId));
         todo.update(request);
+        return todo.getTodoId();
+    }
+
+    @Transactional
+    public Long setTodoState(Long todoId) {
+        Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new ResourceNotFoundException("todo", "todoId", todoId));
+        boolean state = !todo.isState();
+        todo.update(state);
         return todo.getTodoId();
     }
 

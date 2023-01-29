@@ -13,14 +13,14 @@ import lombok.NoArgsConstructor;
 public class TodoResponse {
     private Long todoId;
     private String title;
-    private boolean isDone;
+    private boolean state;
     private String dueDate;
     private String description;
 
     public TodoResponse(Todo todo) {
         todoId = todo.getTodoId();
         title = todo.getTitle();
-        isDone = todo.getIsDone();
+        state = todo.isState();
         dueDate = todo.getDueDate();
         description = todo.getDescription();
     }

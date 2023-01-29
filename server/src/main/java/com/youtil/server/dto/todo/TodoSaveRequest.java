@@ -16,10 +16,10 @@ import lombok.NoArgsConstructor;
 public class TodoSaveRequest {
     private String title;
     private String description;
-    private boolean isDone;
+    private boolean state;
     private String dueDate;
 
     public Todo of(Goal goal) {
-        return Todo.builder().goal(goal).title(title).description(description).isDone(isDone).dueDate(dueDate).build();
+        return Todo.builder().goal(goal).title(title).description(description).state(state).dueDate(dueDate).build();
     }
 }
