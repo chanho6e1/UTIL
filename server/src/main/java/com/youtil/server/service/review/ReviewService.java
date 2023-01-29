@@ -6,6 +6,7 @@ import com.youtil.server.domain.review.Review;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.review.ReviewResponse;
 import com.youtil.server.dto.review.ReviewSaveRequest;
+import com.youtil.server.dto.review.ReviewUpdateRequest;
 import com.youtil.server.repository.goal.GoalRepository;
 import com.youtil.server.repository.review.ReviewQueryRepository;
 import com.youtil.server.repository.review.ReviewRepository;
@@ -49,5 +50,18 @@ public class ReviewService {
         Review review =reviewRepository.findReviewByReviewId(reviewId).orElseThrow(() -> new ResourceNotFoundException("Review", "reviewId", reviewId));
 
         return new ReviewResponse(review);
+    }
+
+    @Transactional
+    public Long updateReview(Long reviewId, ReviewUpdateRequest request) {
+        Review review = reviewRepository.findReviewByReviewId(reviewId).orElseThrow(() -> new ResourceNotFoundException("Review", "reviewId", reviewId));
+        review.update(request);
+        return reviewId;
+    }
+
+    @Transactional
+    public Long deleteReview(Long reviewId) {
+        reviewRepository.deleteById(reviewId);
+        return reviewId;
     }
 }

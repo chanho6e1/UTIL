@@ -2,6 +2,7 @@ package com.youtil.server.domain.review;
 
 import com.youtil.server.domain.BaseEntity;
 import com.youtil.server.domain.goal.Goal;
+import com.youtil.server.dto.review.ReviewUpdateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,5 +39,13 @@ public class Review extends BaseEntity {
         this.title = title;
         this.content = content;
         this.isPrivate = isPrivate;
+    }
+
+    public Review update(ReviewUpdateRequest review){
+        this.title = review.getTitle();
+        this.content = review.getContent();
+        this.isPrivate = review.getIsPrivate();
+
+        return this;
     }
 }
