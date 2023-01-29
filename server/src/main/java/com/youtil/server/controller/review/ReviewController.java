@@ -2,6 +2,7 @@ package com.youtil.server.controller.review;
 
 import com.youtil.server.common.CommonResponse;
 import com.youtil.server.dto.review.ReviewSaveRequest;
+import com.youtil.server.dto.review.ReviewUpdateRequest;
 import com.youtil.server.security.CurrentUser;
 import com.youtil.server.security.UserPrincipal;
 import com.youtil.server.service.review.ReviewService;
@@ -41,5 +42,19 @@ public class ReviewController {
     public ResponseEntity<CommonResponse> getReview(@PathVariable Long reviewId){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "조회 성공", reviewService.getReview(reviewId)));
+    }
+
+    @ApiOperation(value = "회고록 수정", notes = "회고록을 수정한다.")
+    @PutMapping("/{reviewId}")
+    public ResponseEntity<CommonResponse> updateReview(@PathVariable Long reviewId, @RequestBody @Valid ReviewUpdateRequest request){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.CREATED, "수정 성공", reviewService.updateReview(reviewId, request)));
+    }
+
+    @ApiOperation(value = "회고록 삭제", notes = "회고록을 삭제한다.")
+    @DeleteMapping("/{reviewId}")
+    public ResponseEntity<CommonResponse> deleteReview(@PathVariable Long reviewId){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.NO_CONTENT, "삭제 성공", reviewService.deleteReview(reviewId)));
     }
 }
