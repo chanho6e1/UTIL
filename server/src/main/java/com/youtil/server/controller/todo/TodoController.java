@@ -2,6 +2,7 @@ package com.youtil.server.controller.todo;
 
 import com.youtil.server.common.CommonResponse;
 import com.youtil.server.dto.todo.TodoSaveRequest;
+import com.youtil.server.dto.todo.TodoStateRequest;
 import com.youtil.server.service.todo.TodoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +23,11 @@ public class TodoController {
     @ApiOperation(value = "투두 등록", notes = "투두를 등록한다")
     @PostMapping("/{goalId}")
     public ResponseEntity<CommonResponse> createTodo(@PathVariable Long goalId, @RequestBody @Valid TodoSaveRequest request) throws Exception {
+        System.out.println("타이틀"+ request.getTitle());
+        System.out.println("세부내용"+ request.getDescription());
+        System.out.println("날짜"+ request.getDueDate());
+        System.out.println("상태"+ request.isState());
+
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "등록 성공", todoService.createTodo(goalId, request)));
     }
@@ -31,7 +37,14 @@ public class TodoController {
     public ResponseEntity<CommonResponse> updateTodo(@PathVariable Long todoId,
                                                      @RequestBody @Valid TodoSaveRequest request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.CREATED, "카테고리 수정 성공", todoService.updateTodo(todoId, request)));
+                HttpStatus.CREATED, "투두 수정 성공", todoService.updateTodo(todoId, request)));
+    }
+
+    @ApiOperation(value = "투두 상태 수정", notes = "해당 투두 상태를 수정한다")
+    @PutMapping("/{todoId}/state")
+    public ResponseEntity<CommonResponse> setTodoState(@PathVariable Long todoId) throws Exception {
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.CREATED, "투두 상태 수정 성공", todoService.setTodoState(todoId)));
     }
 
     @ApiOperation(value = "투두 삭제", notes = "투두를 삭제한다")

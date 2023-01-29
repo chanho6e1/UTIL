@@ -5,6 +5,7 @@ import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.tag.Tag;
 import com.youtil.server.dto.post.PostSaveRequest;
 import com.youtil.server.dto.todo.TodoSaveRequest;
+import com.youtil.server.dto.todo.TodoStateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,16 +32,16 @@ public class Todo extends BaseEntity {
 
     private String dueDate;
 
-    private Boolean isDone;
+    private boolean state;
 
     private String title;
 
     private String description;
     @Builder
-    public Todo(Goal goal, String dueDate, Boolean isDone, String title, String description){
+    public Todo(Goal goal, String dueDate, Boolean state, String title, String description){
         this.goal = goal;
         this.dueDate = dueDate;
-        this.isDone = isDone;
+        this.state = state;
         this.title = title;
         this.description = description;
     }
@@ -50,4 +51,9 @@ public class Todo extends BaseEntity {
         this.title = request.getTitle();
 
     }
+    public void update(boolean state){
+        this.state = state;
+    }
+
+
 }
