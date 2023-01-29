@@ -36,7 +36,7 @@ public class GoalService {
 
         goal = goalRepository.save(request.of(user));
 
-        return goal.getId();
+        return goal.getGoalId();
     }
 
     public List<GoalResponse> getGoalList(Long userId) {
@@ -45,17 +45,17 @@ public class GoalService {
     }
 
     public GoalResponse getGoal(Long userId, Long goalId) {
-        Goal goal = goalRepository.findGoalById(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
+        Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
 
         return new GoalResponse(goal);
     }
 
     @Transactional
     public Long updateGoal(Long userId, Long goalId, GoalUpdateRequest request) {
-        Goal goal = goalRepository.findGoalById(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
+        Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
 
         goal.update(request);
-        return goal.getId();
+        return goal.getGoalId();
     }
 
     @Transactional

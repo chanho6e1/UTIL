@@ -135,7 +135,7 @@ public class PostService {
             post.setCategory(category);
         }
         if(request.getGoalId()!=null){
-            Goal goal = goalRepository.findGoalById(request.getGoalId())
+            Goal goal = goalRepository.findGoalByGoalId(request.getGoalId())
                     .orElseThrow(()-> new ResourceNotFoundException("goal" , "goalId", request.getGoalId()));
             post.setGoal(goal);
         }
@@ -171,7 +171,7 @@ public class PostService {
         }
 
         if(request.getGoalId()!=null){
-            Goal goal = goalRepository.findGoalById(request.getGoalId())
+            Goal goal = goalRepository.findGoalByGoalId(request.getGoalId())
                     .orElseThrow(()-> new ResourceNotFoundException("goal" , "goalId", request.getGoalId()));
             post.setGoal(goal);
         } else{
