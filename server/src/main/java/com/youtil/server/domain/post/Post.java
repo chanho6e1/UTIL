@@ -51,6 +51,8 @@ public class Post extends BaseEntity {
     @Embedded
     private final PostLikeList postLikeList = new PostLikeList();
 
+    @Embedded
+    private final PostBookmarkList postBookmarkList = new PostBookmarkList();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
@@ -82,17 +84,29 @@ public class Post extends BaseEntity {
         this.isPrivate = request.getIsPrivate();
     }
 
-    public boolean setCategory(Category category) {
-        this.category = category;
-        return true;
+    public void update(String title, String content){
+        this.title = title;
+        this.content = content;
     }
 
-    public boolean resetCategory() {
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void resetCategory() {
         if(this.category != null){
             this.category = null;
-            return true;
         }
-        return false;
+    }
+
+    public void setGoal(Goal goal) {
+        this.goal = goal;
+    }
+
+    public void resetGoal() {
+        if(this.goal != null){
+            this.goal = null;
+        }
     }
 
     public void addComment(PostComment postComment){
@@ -101,7 +115,12 @@ public class Post extends BaseEntity {
     }
 
     public boolean togglePostLike(PostLike postLike) {
+
         return postLikeList.togglePostLike(postLike);
+    }
+
+    public boolean togglePostBookmark(PostBookmark postBookmark) {
+        return postBookmarkList.togglePostBookmark(postBookmark);
     }
 
     public Integer getTotalComments(){
@@ -112,19 +131,12 @@ public class Post extends BaseEntity {
         return postLikeList.size();
     }
 
-//    public int getTotalFiles(){
-//        return fileLists.size();
-//    }
+    public void clearUser() {
+        this.user = null;
+    }
 
-    // Board에서 파일 처리 위함
-
-//    public void addPostFile(PostFile postfile) {
-//        this.fileLists.add(postfile);
-//
-//        // 게시글에 파일이 저장되어있지 않은 경우
-//        if(postfile.getPost() != this)
-//            // 파일 저장
-//            postfile.setPost(this);
-//    }
+    public void setThubmnail(String source) {
+        this.thumbnail = source;
+    }
 
  }

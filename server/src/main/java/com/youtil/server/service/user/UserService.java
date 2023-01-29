@@ -1,6 +1,7 @@
-package com.youtil.server.service;
+package com.youtil.server.service.user;
 
 import com.youtil.server.domain.user.User;
+import com.youtil.server.dto.user.UserResponse;
 import com.youtil.server.dto.user.UserUpdateRequest;
 import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,19 +13,28 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public User getUser(Long userId) {
-        return userRepository.findByUserId(userId);
+    public UserResponse getCurrentUser(Long userId) {
+        return UserResponse.from(userRepository.findByUserId(userId));
     }
     @Transactional
-    public User updateUser(Long userId, UserUpdateRequest request){
-        User originUser = getUser(userId);
+    public Long updateUser(Long userId, UserUpdateRequest request){
+        User originUser = userRepository.findByUserId(userId);
         originUser.update(request);
-        return originUser;
+        return userId;
     }
 
     public boolean checkNickName(String nickName){ return userRepository.existsByNickName(nickName); }
 
     public boolean checkEmail(String email){
         return userRepository.existsByEmail(email);
+    }
+
+    public Object deleteUser(Long id) {
+        // 유저 닉네임 "탈퇴한 회원"으로 변환
+        return null;
+    }
+
+    public UserResponse getUser(Long userId) {
+        return UserResponse.from(userRepository.findByUserId(userId));
     }
 }
