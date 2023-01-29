@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import * as ReactDOMClient from 'react-dom/client';
 import logo from '../../img/util-logo.png'
-import Example2 from "./Example2";
+import Example2 from "../Example2";
 import axios from "axios";
 
 const MarkdownEditor = (props) => {

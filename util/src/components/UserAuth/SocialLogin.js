@@ -7,7 +7,15 @@ const SocialLogin = (props) => {
   return (
 
       <div className={styles['social-login']}>
-        <SocialLoginModule />
+        <div className={styles['background']}>util</div>
+        <div className={styles['content']}>
+
+          <div className={styles['box']}>
+            <div className={styles['signin-label']}>Sign In</div>
+            <SocialLoginModule />
+          </div>
+          
+        </div>
       </div>
       
 

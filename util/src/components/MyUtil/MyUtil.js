@@ -35,7 +35,7 @@ const MyUtil = (props) => {
                 </div>
             </div>
 
-            <Plan columns={6}/>
+            <Plan columns={8}/>
           
         </div>
       </Card>

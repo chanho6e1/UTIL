@@ -1,0 +1,34 @@
+.dropdown-wrapper {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    height: 0px;
+    overflow: hidden;
+    transition-property: height box-shadow;
+    transition-duration: 0.3s;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 30px;
+    z-index: 10;
+
+}
+
+.dropdown-item {
+    width: 100%;
+    height: 53px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    transition-property: background-color color;
+    transition-duration: 0.2s;
+    user-select: none;
+    cursor: pointer;
+    /* border: 1px solid black; */
+}
+
+.dropdown-item:hover {
+    background-color: rgba(154, 76, 249, 0.1);;
+    /* color: rgba(154, 76, 249, 1); */
+}
