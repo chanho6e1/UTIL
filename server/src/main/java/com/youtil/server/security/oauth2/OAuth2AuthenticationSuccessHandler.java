@@ -96,6 +96,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 //        System.out.println(targetUrl + "/code=200");
 
+        targetUrl.replace("https", "http");
+
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
 
 //        System.out.println(response.getStatus() + " " + jsonString);
@@ -133,7 +135,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String token = tokenProvider.createToken(authentication);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("token", response.encodeURL(token))
+                .queryParam("token", token)
                 .build().toUriString();
     }
 
