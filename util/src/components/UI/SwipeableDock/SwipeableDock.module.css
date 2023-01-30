@@ -10,7 +10,7 @@
         width: 100%;
         position: fixed;
         bottom:0;
-        background-color: rgb(255, 255, 255, 0.875);
+        background-color: rgb(255, 255, 255, 0.83);
         backdrop-filter: blur(30px);
         box-shadow: 0px 10px 7px 5px;
         
@@ -29,12 +29,6 @@
         display: none;
     }
 
-
-
-    .dock-expanded {
-        display: none;
-    }
-
     .logo-contracted {
         display: none;
     }
@@ -43,10 +37,6 @@
         display: none;
     }
 
-    .dock-menu-bottom {
-        display: none;
-    }
-    
     .content {
         padding-bottom: 7vh;
     }
@@ -60,51 +50,44 @@
         position: fixed;
         top:0;
         left:0;
-        background-color: rgba(255, 255, 255, 0.875);
+        background-color: rgba(255, 255, 255, 0.83);
         backdrop-filter: blur(30px);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
         transition-property: width box-shadow;
         transition-duration: 0.2s;
         
         
     }
 
-    .dock-menu {
+    .dock-pc {
         display: flex;
-        justify-content:center;
+        flex-direction: column;
+        justify-content: space-between;
+        padding-left: 42px;
+        height: 100%;
     }
-    .dock-menu-bottom {
-        display: flex;
-        justify-content:center;
-        padding-top: 30px;
-    }
+
+
 
     .dock-wrapper:hover {
         width:310px;
-        box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
     }
 
     .content {
         padding-left: 110px;
     }
 
-    .dock-wrapper:hover .dock-expanded {
-        width:200px;
-        opacity: 255;
-        
 
-    }
+    
 
-    .dock-pc {
+    .dock-pc-top {
         /* width: 100%; */
         width:96px;
-        height: 300px;
+        height: 440px;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        align-items: center;
+        /* align-items: center; */
     }
 
     .dock-pc-bottom {
@@ -114,8 +97,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        align-items: center;
-        padding-bottom: 24px;
+        margin-bottom: 24px;
     }
 
     .dock-mobile {
@@ -124,7 +106,7 @@
 
     .logo-wrapper {
         display: flex;
-        
+        margin-left: -36px;
         align-items: center;
         width:96px;
         height:96px;
@@ -136,15 +118,7 @@
     
 
 
-    .expanded-space {
-        
-        display: flex;
-        align-items: center;
-        width:96px;
-        height:96px;
-        margin-top: 24px;
-        margin-bottom: 24px;
-    }
+
     /* .logo-contracted {
         padding-top: 24px;
         padding-bottom: 24px;
@@ -159,9 +133,18 @@
         opacity: 255;
     }
 
+    .dock-wrapper:hover .dock-pc-expanded-individual {
+        opacity: 255;
+    }
+
+
+
 
 
 }
+
+
+
 .dock-wrapper {
     overflow: hidden;
 }
@@ -178,49 +161,62 @@
     
 }
 
-.dock-expanded {
-    transition-property: opacity width;
-    transition-duration: 0.2s;
-    opacity: 0;
-    width: 0px;
-    overflow: hidden;
-    
 
-}
 
-.dock-pc-expanded {
-    width: 200px;
-    height: 300px;
+
+
+
+
+
+
+
+
+
+
+
+.dock-pc-individual {
+    width: 240px;
+    height: 52px;
+    z-index: 1;
+    border-radius: 30px;
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items:flex-start;
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.dock-pc-expanded-bottom {
-    width: 200px;
-    height: 110px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items:flex-start;
-    font-size: 18px;
-    font-weight: 500;
-    padding-bottom: 24px;
-    
-}
-
-
-
-
-.dock-individual {
     cursor: pointer;
     text-align: left;
-    
-    overflow: hidden;
+    position: relative;
+    /* overflow: hidden; */
+    display: flex;
+    align-items: center;
+
+    left:-18px;
+    padding-left: 18px;
+    transition-property: background-color;
+    transition-duration: 0.3s;
+    font-weight: 500;
 }
+
+.dock-pc-individual:hover {
+    background-color: rgba(154, 76, 249, 0.1);
+}
+
+.dock-pc-expanded-individual {
+    padding-left: 18px;
+    cursor: pointer;
+    text-align: left;
+    position: relative;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.3s;
+    /* overflow: hidden; */
+}
+
+
+
+
+
+
+
+
+
 
 
 .wrapper {
@@ -241,6 +237,7 @@
 
 
 .content {
+    width:100%;
     height: 100%;
     box-sizing: border-box;
     /* display: flex;
@@ -251,26 +248,12 @@
     
     /* box-sizing: border-box; */
     overflow-x: hidden;
+    will-change: transform;
     
 }
 
 
 
-
-
-/* .dock-indicator-wrapper {
-    width: 100%;
-
-}
-
-.dock-indicator {
-
-    height: 2px;
-    position: absolute;
-    background-color: rgb(150, 200, 200);
-    transition-property: transform;
-    
-} */
 
 
 

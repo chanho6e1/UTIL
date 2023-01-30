@@ -5,9 +5,10 @@ import { useNavigate, useMatch, useLocation, Routes, Route } from "react-router-
 
 
 
+
 const SwipeableDock = (props) => {
   
-
+  
   const movingDiv = useRef()
   const [positionx, setPositionx] = useState(0)
   const [contentCount, setContentCount] = useState(1)
@@ -64,13 +65,13 @@ const SwipeableDock = (props) => {
 
   const onSwipeEnd = () => {
     movingDiv.current.style.transitionDuration = '0.3s'
-    if (positionx < -50 && contentCount < postData.content.length) {
+    if (positionx < -20 && contentCount < postData.content.length) {
       setContentCount((prev) => prev + 1)
     }
-    if (positionx > 50 && contentCount > -1) {
+    if (positionx > 20 && contentCount > -1) {
       setContentCount((prev) => prev - 1)
     }
-    if (Math.abs(positionx) <= 50) {
+    if (Math.abs(positionx) <= 20) {
       movingDiv.current.style.transform = `translateX(${-width * (contentCount - 1)}px)`
     }
     setPositionx(() => 0)
@@ -88,13 +89,19 @@ const SwipeableDock = (props) => {
   useEffect(() => {
     movingDiv.current.style.transitionDuration = '0.3s'
     movingDiv.current.style.transform = `translateX(${-width * (contentCount - 1)}px)`
-    navigate(postData.url[contentCount - 1], { replace: true });
+    // navigate(postData.url[contentCount - 1], { replace: true });
   }, [contentCount])
 
 
 
+  const [isMouseOn, setIsMouseOn] = useState(false)
 
-  
+  const mouseOnHandler = (boolean) => {
+    setIsMouseOn(boolean)
+  }
+
+
+
   return (
     <div className={styles['dock-view']}>
       
@@ -104,7 +111,8 @@ const SwipeableDock = (props) => {
           <div className={styles.wrapper}>
             <div className={styles.moveable} ref={movingDiv}>
               {postData.content.map((el, idx) => {
-                  return <div className={styles.content} style={{width: width + 'px', height: height + 'px'}}><Routes><Route path={`${postData.url[idx]}/*`} element={el} /></Routes></div>
+                  // return <div className={styles.content} style={{width: width + 'px', height: height + 'px'}}><Routes><Route path={`${postData.url[idx]}/*`} element={el} /></Routes></div>
+                  return <div className={styles.content} style={{width: width + 'px', height: height + 'px'}}>{el}</div>
               })}
             </div>
           </div>
@@ -112,67 +120,56 @@ const SwipeableDock = (props) => {
 
 
       
-      <div className={styles['dock-wrapper']}>
-        <div className={styles['dock-menu']}>
-          <div className={styles['dock-contracted']}>
+      <div className={styles['dock-wrapper']} onMouseEnter={mouseOnHandler.bind(this, true)} onMouseLeave={mouseOnHandler.bind(this, false)}>
 
 
-            <div className={styles['dock-mobile']}>
-              {postData.dock.dockContracted.map((el, idx) => {
-                  return <div onClick={clickDockHandler.bind(this, idx)} className={'dock-individual'} style={{width: width / postData.dock.length + 'px'}}>{el}</div>;
-              })}
-            </div>
+        <div className={styles['dock-mobile']}>
+          {postData.dock.dockContracted.map((el, idx) => {
+              return <div onClick={clickDockHandler.bind(this, idx)} className={'dock-individual'} style={{width: width / postData.dock.length + 'px'}}>{el}</div>;
+          })}
+        </div>
 
 
+        <div className={styles['dock-pc']}>
+
+          <div className={styles['dock-pc-top']}>
             <div className={styles['logo-wrapper']}>
               <div className={styles['logo-contracted']}>{postData.dock.logoContracted}</div>
               <div className={styles['logo-expanded']}>{postData.dock.logoExpanded}</div>
             </div>
 
-
-            <div className={styles['dock-pc']}>
-              {postData.dock.dockContracted.map((el, idx) => {
-                  return <div onClick={clickDockHandler.bind(this, idx)} className={styles['dock-individual']} >{el}</div>;
-              })}
-            </div>
+            {postData.dock.dockContracted.map((el, idx) => {
+                return (
+                  <div onClick={clickDockHandler.bind(this, idx)} className={styles['dock-pc-individual']} >
+                    {el}
+                    <div onClick={clickDockHandler.bind(this, idx)} className={styles['dock-pc-expanded-individual']} >
+                      {postData.dock.dockExpanded[idx]}
+                    </div>
+                  </div>
+                )
+            })}
+          </div>
+          
+          <div className={styles['dock-pc-bottom']}>
+            {postData.dock.dockContractedBottom.map((el, idx) => {
+              const individual = (
+                <div className={styles['dock-pc-individual']} >
+                    {el}
+                    <div className={styles['dock-pc-expanded-individual']} >
+                      {postData.dock.dockExpandedBottom[idx]}
+                    </div>
+                </div>
+              )
+              const wrapper = postData.dock.dockWrapperBottom[idx]
+              const content = React.cloneElement(wrapper, {children: individual, isMouseOn: isMouseOn});
+              return content
+            })}
           </div>
 
-
-          <div className={styles['dock-expanded']}>
-            <div className={styles['expanded-space']}>
-              {/* <div className={styles['logo-expanded']}>{postData.dock.logoExpanded}</div> */}
-            </div>
-            <div className={styles['dock-pc-expanded']}>
-                {postData.dock.dockExpanded.map((el, idx) => {
-                    return <div onClick={clickDockHandler.bind(this, idx)} className={styles['dock-individual']} >{el}</div>;
-                })}
-            </div>
-          </div>
         </div>
 
 
-        
-        <div className={styles['dock-menu-bottom']}>
-          <div className={styles['dock-contracted']}>
-            <div className={styles['dock-pc-bottom']}>
-              {postData.dock.dockContractedBottom.map((el, idx) => {
-                  return <div className={styles['dock-individual']} >{el}</div>;
-              })}
-            </div>
-          </div>
-
-          <div className={styles['dock-expanded']}>
-            <div className={styles['dock-pc-expanded-bottom']}>
-                {postData.dock.dockExpandedBottom.map((el, idx) => {
-                    return <div className={styles['dock-individual']} >{el}</div>;
-                })}
-            </div>
-          </div>
-        </div>
       </div>
-
-
-      
     </div>
   )
 }
