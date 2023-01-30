@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'http://localhost:8081';
+export const API_BASE_URL = 'http://i8d210.p.ssafy.io:8081';
 export const ACCESS_TOKEN = 'accessToken';
 
 export const OAUTH2_REDIRECT_URI = 'http://localhost:3000/oauth2/redirect'

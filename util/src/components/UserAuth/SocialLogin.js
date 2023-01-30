@@ -12,6 +12,7 @@ const SocialLogin = (props) => {
 
           <div className={styles['box']}>
             <div className={styles['signin-label']}>Sign In</div>
+            <div className={styles['welcome-label']}>환영합니다!</div>
             <SocialLoginModule />
           </div>
           

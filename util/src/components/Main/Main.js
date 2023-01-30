@@ -5,7 +5,7 @@ import * as Icons from './Icons'
 import logo from '../../img/util-logo.png'
 import { useSelector, useDispatch } from 'react-redux'
 import { UserIcon, CurrentUser, UserDockWrapper } from './MainUserInfo'
-import Editor from "../MarkdownEditor/Editor";
+import ToastEditor from "../MarkdownEditor/ToastEditor";
 
 
 
