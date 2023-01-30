@@ -112,7 +112,7 @@ const SwipeableDock = (props) => {
             <div className={styles.moveable} ref={movingDiv}>
               {postData.content.map((el, idx) => {
                   // return <div className={styles.content} style={{width: width + 'px', height: height + 'px'}}><Routes><Route path={`${postData.url[idx]}/*`} element={el} /></Routes></div>
-                  return <div className={styles.content} style={{width: width + 'px', height: height + 'px'}}>{el}</div>
+                  return <div key={`dock-content-${idx}`} className={styles.content} style={{width: width + 'px', height: height + 'px'}}>{el}</div>
               })}
             </div>
           </div>
@@ -125,7 +125,7 @@ const SwipeableDock = (props) => {
 
         <div className={styles['dock-mobile']}>
           {postData.dock.dockContracted.map((el, idx) => {
-              return <div onClick={clickDockHandler.bind(this, idx)} className={'dock-individual'} style={{width: width / postData.dock.length + 'px'}}>{el}</div>;
+              return <div key={`dock-mobile-${idx}`}  onClick={clickDockHandler.bind(this, idx)} className={'dock-individual'} style={{width: width / postData.dock.length + 'px'}}>{el}</div>;
           })}
         </div>
 
@@ -140,7 +140,7 @@ const SwipeableDock = (props) => {
 
             {postData.dock.dockContracted.map((el, idx) => {
                 return (
-                  <div onClick={clickDockHandler.bind(this, idx)} className={styles['dock-pc-individual']} >
+                  <div key={`dock-pc-top-${idx}`} onClick={clickDockHandler.bind(this, idx)} className={styles['dock-pc-individual']} >
                     {el}
                     <div onClick={clickDockHandler.bind(this, idx)} className={styles['dock-pc-expanded-individual']} >
                       {postData.dock.dockExpanded[idx]}
@@ -153,7 +153,7 @@ const SwipeableDock = (props) => {
           <div className={styles['dock-pc-bottom']}>
             {postData.dock.dockContractedBottom.map((el, idx) => {
               const individual = (
-                <div className={styles['dock-pc-individual']} >
+                <div  className={styles['dock-pc-individual']} >
                     {el}
                     <div className={styles['dock-pc-expanded-individual']} >
                       {postData.dock.dockExpandedBottom[idx]}
@@ -161,7 +161,7 @@ const SwipeableDock = (props) => {
                 </div>
               )
               const wrapper = postData.dock.dockWrapperBottom[idx]
-              const content = React.cloneElement(wrapper, {children: individual, isMouseOn: isMouseOn});
+              const content = React.cloneElement(wrapper, {children: individual, isMouseOn: isMouseOn, key: `dock-pc-bottom-${idx}`});
               return content
             })}
           </div>

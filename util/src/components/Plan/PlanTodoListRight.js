@@ -31,7 +31,7 @@ const PlanTodoListRight = (props) => {
     )
 
     const newTodo = (
-        <div className={styles['new-todo-wrapper']} style={{width: `${props.containerRef.current.scrollWidth}px`}}>
+        <div className={styles['new-todo-wrapper']} style={{width: `${props.containerRef?.current?.scrollWidth}px`}}>
             <div className={styles['todo-space']} >
                 {(props.newTodoIdx === props.goalId) ? newTodoEl : null}
             </div>
@@ -39,7 +39,7 @@ const PlanTodoListRight = (props) => {
     )
 
     return (
-        <div ref={todosRightRef} className={styles['todos-right']} style={{width: `${props.containerRef.current.scrollWidth}px`}}>
+        <div ref={todosRightRef} className={styles['todos-right']} style={{width: `${props.containerRef?.current?.scrollWidth}px`}}>
             
             {newTodo}
             {props.todos[props.goalId] && todoContents}

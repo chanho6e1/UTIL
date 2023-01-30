@@ -60,7 +60,7 @@ const PlanCalendar = (props) => {
 
   useEffect(() => {
     setMonthDistance(getMonthDistance(props.startRange, props.endRange) + 1)
-    if (props.columns) {
+    if (props.columns && dateRangeWrapperRef?.current?.style?.height) {
       dateRangeWrapperRef.current.style.height = (props.columns + 1) * (planGridRef[0].current[0].clientHeight + 2) + 'px'
     }
     
@@ -75,15 +75,18 @@ const PlanCalendar = (props) => {
 
 
   useEffect(() => {
-    if (monthRange) {
+    if (monthRange && planGridRef[0]?.current[0]?.clientWidth) {
       getXPointLib(monthRange, planGridRef[0].current[0].clientWidth)
     }
   }, [monthRange])
 
 
   useEffect(() => {
-    monthSpaceRef.current.style.width = containerRef.current.scrollWidth + 'px'
-    monthTitleWrapperRef.current.style.width = containerRef.current.scrollWidth + 'px'
+    if (containerRef?.current?.scrollWidth) {
+      monthSpaceRef.current.style.width = containerRef.current.scrollWidth + 'px'
+      monthTitleWrapperRef.current.style.width = containerRef.current.scrollWidth + 'px'
+    }
+    
     // props.plansTitleWrapperRef.current.style.height = props.plansTitleInnerRef.current.clientHeight + 'px'
   }, [monthRange, props.todoFormVisibility])
 
@@ -131,8 +134,8 @@ const PlanCalendar = (props) => {
   const totalPlansGrid = plans.map((el, idx) => {
     const columns = gridPerPlans(idx)
     return (
-      <React.Fragment>
-        <div ref={containerRef} className={styles['month-bar-container']} key={`month-bar-container-${idx}`}>
+      <React.Fragment key={`month-bar-container-${idx}`}>
+        <div ref={containerRef} className={styles['month-bar-container']} >
           {columns}
           <PlanCalendarDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
           

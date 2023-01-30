@@ -6,12 +6,23 @@ import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 import Card from "../UI/Card/Card";
 import Modal from "../UI/Modal/Modal";
-
+import { recvPlans } from "../../api/Plan/recvPlans";
+import useDidMountEffect from "../../hooks/useDidMountEffect";
 
 import PlanTodoListLeft from "./PlanTodoListLeft";
 import PlanItem from "./PlanItem";
 
 const Plan = (props) => {
+    const dispatch = useDispatch()
+    
+    useEffect(() => {
+        recvPlans
+        .then((res) => {
+            dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+        })
+    }, [])
+
+
     const plans = useSelector(state => state.planSlice.plans).slice(0, props.columns)
     const todos = useSelector(state => state.planSlice.todos)
     const prototypeDate = new Date()
@@ -28,6 +39,8 @@ const Plan = (props) => {
         setTodoFormVisibility(() => copyArr)
         console.log(todoFormVisibility)
     }
+
+
 
 
 
@@ -93,7 +106,7 @@ const Plan = (props) => {
         </div>
     )
     
-
+    const planCalender = <PlanCalendar columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} todoFormVisibility={todoFormVisibility} todos={todos} newTodoIdx={newTodoIdx} />
     
     return (
         <div className={styles['plans-wrapper']}>
@@ -107,7 +120,7 @@ const Plan = (props) => {
                 </div>
                 <div ref={planSpaceRef} className={styles['plan-space']} />
             </div>
-            <PlanCalendar columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} todoFormVisibility={todoFormVisibility} todos={todos} newTodoIdx={newTodoIdx} />
+            {plans && planCalender}
         </div>
     )
 }
