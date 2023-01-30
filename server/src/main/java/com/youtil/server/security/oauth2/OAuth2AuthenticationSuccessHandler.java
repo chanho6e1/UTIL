@@ -47,12 +47,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String targetUrl = determineTargetUrl(request, response, authentication);
+        String targetUrl = determineTargetUrl(request, response, authentication); // 여기에 토큰 담아줌
 
         if (response.isCommitted()) {
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
+
+        System.out.println(targetUrl);
 
         System.out.println("oauth Success");
 
@@ -73,20 +75,35 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String jsonString = gson.toJson(user);
         writer.print(jsonString);
 
+//        response.setHeader();
+
 //        writer.print(json); //json화
 
         if(user.getNickname() != null){
             response.setStatus(200);
+            response.setHeader("code", "200");
+            targetUrl += "&code=200";
         }else{
             response.setStatus(201); //회원가입
+            response.setHeader("code", "201");
+            targetUrl += "&code=201";
         }
 
         clearAuthenticationAttributes(request, response);
+
+//        targetUrl = "http://localhost:3000";
+        System.out.println(response.getHeader("code"));
+
+//        System.out.println(targetUrl + "/code=200");
+
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
 
-        System.out.println(response.getStatus() + " " + jsonString);
+//        System.out.println(response.getStatus() + " " + jsonString);
 
 //        System.out.println(currentUser.getUserId());
+
+
+
         //repository
 
         //repository 의존성 주입
