@@ -5,7 +5,7 @@ import { modifyPlanSliceActions } from '../../redux/planSlice'
 import PlanCalendarDateSelector from "./PlanCalendarDateSelector";
 import Swipe from "react-easy-swipe";
 import { OverlayScrollbarsComponent, useOverlayScrollbars } from "overlayscrollbars-react";
-import PlanCalendarItem from "./PlanCalendarItem";
+
 import PlanTodoListRight from "./PlanTodoListRight";
 
 
