@@ -6,9 +6,51 @@
  */
 
 .heading {
-    background: url('https://cdn-icons-png.flaticon.com/128/7350/7350746.png');
-    background-size: 24px;
+    background: url('../../img/Heading.png');
+    background-size: 48px;
     background-repeat: no-repeat;
+}
+
+.heading:hover {
+  background: url('../../img/Heading_focus.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.bold {
+  background: url('../../img/Bold.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.bold:hover {
+background: url('../../img/Bold_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+.italic {
+  background: url('../../img/Italic.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.italic:hover {
+background: url('../../img/Italic_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+.strike {
+  background: url('../../img/Strike.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.strike:hover {
+background: url('../../img/Strike_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
 }
 
 .toastui-editor-toolbar {
@@ -53,7 +95,7 @@ background-color: white;
 
 .toastui-editor-defaultUI-toolbar button:not(:disabled):hover {
     /* border: 1px solid #e4e7ee; */
-    background-color: rgb(245, 245, 245);
+    background-color: rgb(235, 236, 238);
   }
 
 .toastui-editor-defaultUI-toolbar button:not(:disabled) {

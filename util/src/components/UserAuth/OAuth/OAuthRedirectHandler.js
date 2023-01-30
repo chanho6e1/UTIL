@@ -1,9 +1,12 @@
 import React, {useEffect} from "react";
 import { ACCESS_TOKEN } from '../../../constants';
 import { Navigate, useLocation } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { userAuthSliceActions } from '../../../redux/userAuthSlice'
 
 const OAuthRedirectHandler = (props) => {
   const location = useLocation()
+  const dispatch = useDispatch()
 
   const getUrlParameter = (name) => {
     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -18,6 +21,7 @@ const OAuthRedirectHandler = (props) => {
   if(token) {
     // 성공
     localStorage.setItem(ACCESS_TOKEN, token);
+    dispatch(userAuthSliceActions.changeToken(token))
     return <Navigate to={{
         pathname: "/",
         state: { from: location }
