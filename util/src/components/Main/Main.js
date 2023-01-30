@@ -3,27 +3,34 @@ import styles from './Main.module.css'
 import SwipeableDock from "../UI/SwipeableDock/SwipeableDock";
 import * as Icons from './Icons'
 import logo from '../../img/util-logo.png'
+import { useSelector, useDispatch } from 'react-redux'
+import { UserIcon, CurrentUser, UserDockWrapper } from './MainUserInfo'
+import ToastEditor from "../MarkdownEditor/ToastEditor";
 
 
-import PostTag from "../MarkdownEditor/PostTag";
-import Example from "../MarkdownEditor/Example";
-import Example2 from "../MarkdownEditor/Example2";
-import MarkdownEditor from "../MarkdownEditor/MarkdownEditor";
 
+
+
+import Plan from "../Plan/Plan";
+import MyUtil from "../MyUtil/MyUtil";
 
 
 const Main = (props) => {
   const parentRef = useRef()
+  const userAuth = useSelector(state => state.userAuthSlice.userAuth)
+
+
 
   const postData = {
-    content: [ <MarkdownEditor />, <div>test1</div>, <Example />, <div>test1</div>, <div>test1</div>],
+    content: [ <MyUtil />, <div>test1</div>, <div>test1</div>, <div>test1</div>, <div>test1</div>],
     dock: {
       logoContracted:<img className={styles['logo-icon']} src={logo} style={{width: '96px', height: 'auto'}}/>,
       logoExpanded:<div className={styles['logo-text']}>util</div>,
       dockContracted: [Icons.home, Icons.feed, Icons.search, Icons.compass, Icons.plus],
       dockExpanded:[<div>마이 유틸</div>, <div>피드</div>, <div>검색</div>, <div>탐색 탭</div>, <div>피드 작성</div>],
-      dockContractedBottom: [Icons.notification, Icons.user],
-      dockExpandedBottom: [<div>알림</div>, <div>Anonymous</div>],
+      dockContractedBottom: [Icons.notification, <UserIcon />],
+      dockExpandedBottom: [<div>알림</div>, <CurrentUser />],
+      dockWrapperBottom: [<React.Fragment />, <UserDockWrapper />]
     },
     url: ['/index', '/feed', '/search', '/setting', '/etc'],
     bottomUrl: ['/notification', '/user']
