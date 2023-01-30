@@ -39,17 +39,31 @@ public class FollowController {
                 HttpStatus.OK, "단일 팔로우 여부 조회 성공", followService.find(user.getId(), toUserId)));
     }
 
-    @ApiOperation(value = "전체 팔로우 확인", notes = "전체 팔로우 여부 확인한다")
+    @ApiOperation(value = "자신 전체 팔로우 확인", notes = "자신 전체 팔로우 여부 확인한다")
     @GetMapping("/following")
     public ResponseEntity<CommonResponse> getFollowing(@CurrentUser UserPrincipal user){
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "전체 팔로우 여부 조회 성공", followService.getFollowing(user.getId())));
+                HttpStatus.OK, "자신 전체 팔로우 여부 조회 성공", followService.getFollowing(user.getId())));
     }
 
     @ApiOperation(value = "전체 팔로워 확인", notes = "전체 팔로워 여부 확인한다")
     @GetMapping("/follower")
     public ResponseEntity<CommonResponse> getFollower(@CurrentUser UserPrincipal user){
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "전체 팔로워 여부 조회 성공", followService.getFollower(user.getId())));
+                HttpStatus.OK, "자신 전체 팔로워 여부 조회 성공", followService.getFollower(user.getId())));
+    }
+
+    @ApiOperation(value = "타인 전체 팔로우 확인", notes = "자신 전체 팔로우 여부 확인한다")
+    @GetMapping("/following/{userId}")
+    public ResponseEntity<CommonResponse> getOtherFollowing(@PathVariable("userId") Long userId){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "타인 전체 팔로우 여부 조회 성공", followService.getFollowing(userId)));
+    }
+
+    @ApiOperation(value = "타인 전체 팔로워 확인", notes = "타인 전체 팔로워 여부 확인한다")
+    @GetMapping("/follower/{userId}")
+    public ResponseEntity<CommonResponse> getOtherFollower(@PathVariable("userId") Long userId){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "타인 전체 팔로워 여부 조회 성공", followService.getFollower(userId)));
     }
 }
