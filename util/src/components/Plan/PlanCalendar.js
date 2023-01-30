@@ -5,6 +5,7 @@ import { modifyPlanSliceActions } from '../../redux/planSlice'
 import PlanCalendarDateSelector from "./PlanCalendarDateSelector";
 import Swipe from "react-easy-swipe";
 import { OverlayScrollbarsComponent, useOverlayScrollbars } from "overlayscrollbars-react";
+import PlanCalendarItem from "./PlanCalendarItem";
 import PlanTodoListRight from "./PlanTodoListRight";
 
 
@@ -134,15 +135,14 @@ const PlanCalendar = (props) => {
   const totalPlansGrid = plans.map((el, idx) => {
     const columns = gridPerPlans(idx)
     return (
-      <React.Fragment key={`month-bar-container-${idx}`}>
+      <React.Fragment key={`month-bar-container-${el.goalId}`}>
         <div ref={containerRef} className={styles['month-bar-container']} >
           {columns}
-          <PlanCalendarDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
+          <PlanCalendarDateSelector idx={idx} startDate={el.startDate} endDate={el.endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
           
         </div>
         {props.todoFormVisibility[idx] && <PlanTodoListRight goalId={plans[idx].goalId} todos={props.todos} scrollRef={scrollRef} containerRef={containerRef} newTodoIdx={props.newTodoIdx} />}
       </React.Fragment>
-      
     )
   })
 
