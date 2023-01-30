@@ -99,6 +99,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
+                //여기 추가함
+                .requiresChannel().antMatchers("/path/**").requiresSecure()
+                .and()
+                //
                 .oauth2Login()
                 .authorizationEndpoint()
                 .baseUri("/oauth2/authorize")

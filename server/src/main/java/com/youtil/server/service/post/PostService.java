@@ -72,11 +72,20 @@ public class PostService {
     }
 
 
-    public List<PostResponse> findPostListByUser(Long userId, int offset, int size) {//내가 쓴 글 조회/오프셋
+    public List<PostResponse> findPostListByUser(Long userId, int offset, int size, String criteria) {//내가 쓴 글 조회/오프셋
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        return postQueryRepository.findPostListByUser(userId, PageRequest.of(offset - 1, size))
+        return postQueryRepository.findPostListByUser(userId, criteria, PageRequest.of(offset - 1, size))
                 .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+    }
+
+
+    public List<PostResponse> findPostListBySpecUser(Long userId, int offset, int size, String criteria) {
+        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+
+        return postQueryRepository.findPostListBySpecUser(userId, criteria, PageRequest.of(offset - 1, size))
+                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+
     }
 
 
@@ -237,6 +246,8 @@ public class PostService {
             }
         }
     }
+
+
 }
 
 
