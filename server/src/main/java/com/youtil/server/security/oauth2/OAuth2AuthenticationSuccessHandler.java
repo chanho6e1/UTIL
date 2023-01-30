@@ -96,7 +96,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 //        System.out.println(targetUrl + "/code=200");
 
-        targetUrl.replace("https", "http");
+        targetUrl = targetUrl.replace("https", "http");
+        System.out.println(targetUrl);
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
 
