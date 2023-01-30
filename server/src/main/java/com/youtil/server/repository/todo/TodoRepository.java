@@ -20,4 +20,9 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     void deleteByTodoId(@Param("todoId") Long todoId);
     @Query("SELECT t FROM Todo t WHERE t.dueDate = :dueDate")
     List<Todo> findByDate(String dueDate);
+
+    @Transactional
+    @Modifying(clearAutomatically = true) // 영속성 컨텍스트 초기화
+    @Query("delete from Todo t where t.goal.goalId = :goalId")
+    void deleteByGoalId(Long goalId);
 }
