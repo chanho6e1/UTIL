@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { UserIcon, CurrentUser, UserDockWrapper } from './MainUserInfo'
 import ToastEditor from "../MarkdownEditor/ToastEditor";
 
-
+import PlanExpanded from "../Plan/PlanExpanded";
 
 
 

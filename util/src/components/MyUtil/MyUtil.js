@@ -5,6 +5,7 @@ import Card from "../UI/Card/Card";
 import Modal from "../UI/Modal/Modal";
 import Plan from "../Plan/Plan";
 import PlanExpanded from "../Plan/PlanExpanded";
+import PlanLoading from "../Plan/PlanLoading";
 
 
 const MyUtil = (props) => {
@@ -19,8 +20,8 @@ const MyUtil = (props) => {
   const planExpandedModal = <Modal component={<PlanExpanded />} id={'plan-expanded'} name={'plan-expanded'} parentId={`plan-expanded-button`} parentRef={planExpandedRef} toggleFunction={planExpandedToggler} toggleBoolean={planExpandedBoolean} url={`/index/plan/*`} prevUrl={'/index'} />
 
   return (
-    <div>
-      <Card className={styles['plans-wrapper']}>
+    <div className={styles['my-util']}>
+      {/* <Card className={styles['plans-wrapper']}>
         <div ref={planExpandedRef} id="plan-expanded-button" className={styles['plans-div']}>
 
             <div className={styles['plans-navbar']}>
@@ -38,9 +39,9 @@ const MyUtil = (props) => {
             <Plan columns={8}/>
           
         </div>
-      </Card>
-
-      
+      </Card> */}
+      <PlanExpanded />
+      {/* <PlanLoading /> */}
     </div>
   )
 }

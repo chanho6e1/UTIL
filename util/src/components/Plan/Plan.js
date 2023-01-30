@@ -8,22 +8,30 @@ import Card from "../UI/Card/Card";
 import Modal from "../UI/Modal/Modal";
 import { recvPlans } from "../../api/Plan/recvPlans";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
+import PlanLoading from "./PlanLoading";
 
 import PlanTodoListLeft from "./PlanTodoListLeft";
 import PlanItem from "./PlanItem";
 
 const Plan = (props) => {
     const dispatch = useDispatch()
-    
+    const navigate = useNavigate()
+
     useEffect(() => {
-        recvPlans
+        recvPlans()
+        .catch((err) => {
+            navigate('/login');
+        })
         .then((res) => {
             dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
         })
     }, [])
 
 
-    const plans = useSelector(state => state.planSlice.plans).slice(0, props.columns)
+    const plans = useSelector(state => state.planSlice.plans)
+
+
+
     const todos = useSelector(state => state.planSlice.todos)
     const prototypeDate = new Date()
     const [startRange, setStartRange] = useState(new Date(prototypeDate.getFullYear(),0,1))
@@ -108,6 +116,8 @@ const Plan = (props) => {
     
     const planCalender = <PlanCalendar columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} todoFormVisibility={todoFormVisibility} todos={todos} newTodoIdx={newTodoIdx} />
     
+
+
     return (
         <div className={styles['plans-wrapper']}>
             <div className={styles['plans-title-wrapper']} > 
