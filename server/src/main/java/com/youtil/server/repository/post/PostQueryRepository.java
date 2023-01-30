@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import static com.youtil.server.domain.post.QPost.post;
@@ -25,12 +26,23 @@ public class PostQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public List<Post> findPostListByUser(Long userId, PageRequest pageRequest){
+    public List<Post> findPostListByUser(Long userId, String criteria,  PageRequest pageRequest){
         return jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(post.user.userId.eq(userId))
-                .orderBy(findCriteria("date"))
+                .orderBy(findCriteria(criteria))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
+                .fetch();
+    }
+
+    public List<Post> findPostListBySpecUser(Long userId, String criteria, PageRequest pageRequest) {
+        return jpaQueryFactory.select(post)
+                .distinct().from(post)
+                .innerJoin(post.user).fetchJoin()
+                .where(post.user.userId.eq(userId))
+                .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
@@ -136,6 +148,8 @@ public class PostQueryRepository {
         }
         return post.createdDate.desc();
     }
+
+
 }
 
 
