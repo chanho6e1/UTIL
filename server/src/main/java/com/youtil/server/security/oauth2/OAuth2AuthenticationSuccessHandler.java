@@ -87,9 +87,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         System.out.println(response.getStatus() + " " + jsonString);
 
 //        System.out.println(currentUser.getUserId());
-
-
-
         //repository
 
         //repository 의존성 주입
