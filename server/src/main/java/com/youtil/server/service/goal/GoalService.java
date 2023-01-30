@@ -9,6 +9,8 @@ import com.youtil.server.dto.goal.GoalSaveRequest;
 import com.youtil.server.dto.goal.GoalUpdateRequest;
 import com.youtil.server.repository.goal.GoalQueryRepository;
 import com.youtil.server.repository.goal.GoalRepository;
+import com.youtil.server.repository.review.ReviewRepository;
+import com.youtil.server.repository.todo.TodoRepository;
 import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,10 @@ public class GoalService {
     private final GoalRepository goalRepository;
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private final ReviewRepository reviewRepository;
+    @Autowired
+    private final TodoRepository todoRepository;
 
     @Autowired
     private final GoalQueryRepository goalQueryRepository;
@@ -61,6 +67,8 @@ public class GoalService {
     @Transactional
     public Long deleteGoal(Long userId, Long goalId) {
 //        Goal goal = goalRepository.findGoalById(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
+        reviewRepository.deleteByGoalId(goalId);
+        todoRepository.deleteByGoalId(goalId);
         goalRepository.deleteById(goalId);
         return goalId;
     }
