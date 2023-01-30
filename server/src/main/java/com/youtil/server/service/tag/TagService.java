@@ -28,8 +28,8 @@ public class TagService {
     @Transactional
     public int findOrCrateTag(TagSaveRequest request) {
         int cnt = 0;    //추가된 테그 수
-        String[] tags = request.getTagNames().split("\\s");
-        for(String tag : tags){
+        for(String tag : request.getSkill()){
+            System.out.println("tag : " + tag);
             List<Tag> findTags = tagRepository.findByTagName(tag);
 
             if(findTags.size() == 0){
@@ -38,7 +38,6 @@ public class TagService {
             }
         }
         return cnt;
-
     }
     public List<TagResponse> getTag() {
         return tagRepository.findAll()
