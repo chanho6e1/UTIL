@@ -4,7 +4,9 @@ const initialSliceState = {
   userAuth: {
     authenticated: false,
     currentUser: null,
+    token: null,
     loading: true,
+
   }
 }
 
@@ -23,6 +25,10 @@ const userAuthSlice = createSlice({
     changeLoading(state, action) {
       const parsedPayload = JSON.parse(action.payload)
       state.userAuth.loading = parsedPayload
+    },
+    changeToken(state, action) {
+      // const parsedPayload = JSON.parse(action.payload)
+      state.userAuth.token = action.payload
     }
   }
 

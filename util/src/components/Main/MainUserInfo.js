@@ -7,6 +7,8 @@ import { ACCESS_TOKEN } from '../../constants';
 import { useNavigate, useLocation } from 'react-router-dom'
 import DropDown from "../UI/DropDown/DropDown";
 
+import { recvPlans } from "../../api/Plan/recvPlans";
+
 
 
 export const UserIcon = (props) => {
@@ -91,7 +93,7 @@ export const UserDockWrapper = (props) => {
   
 
   return (
-    <div onClick={() => {userAuth.authenticated ? setDropDownState(true) : navigateLogin(); }}>
+    <div onClick={() => {userAuth.authenticated ? setDropDownState(true) : navigateLogin(); recvPlans() }}>
       
       {props.children}
       <DropDown dropDownItems={dropDownItems} dropDownState={dropDownState} setDropDownState={setDropDownState} marginLeft={'-20px'} width={'260px'} direction={'up'} conditionalRender={props.isMouseOn} />
