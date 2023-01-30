@@ -6,9 +6,9 @@ spring:
   # ??? ?? ??
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    #    url: jdbc:mysql://i8d210.p.ssafy.io:3306/youtil?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
-    url: jdbc:mysql://localhost:3306/youtil?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
-    username: root
+    #     url: jdbc:mysql://i8d210.p.ssafy.io:3306/youtil?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://i8d210.p.ssafy.io:3306/youtil?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    username: ssafy
     password: ssafy
     hikari:
       pool-name: jpa-hikari-pool
@@ -44,7 +44,7 @@ spring:
         google:
           clientId: '913035013476-bebq70bsneh30vbjjd0ktsk0con4ofmr.apps.googleusercontent.com'
           clientSecret: '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'
-          redirect-uri: 'http://localhost:8081/oauth2/callback/google'
+          redirect-uri: 'https://i8d210.p.ssafy.io:8081/oauth2/callback/google'
           scope:
             - email
             - profile
@@ -53,7 +53,7 @@ spring:
           clientSecret: 'PAZgffRuTr5fh89fBMJ0Gxd6DInXqYVt'
           clientAuthenticationMethod: post
           authorizationGrantType: authorization_code
-          redirectUri: 'http://localhost:8081/oauth2/callback/kakao'
+          redirectUri: 'https://i8d210.p.ssafy.io:8081/oauth2/callback/kakao'
           scope:
             - profile_nickname
             - profile_image
@@ -94,11 +94,12 @@ app:
     tokenExpirationMsec: 864000000
   oauth2:
     authorizedRedirectUris:
-      - http://localhost:8081/oauth/token
+      - http://i8d210.p.ssafy.io:8081/oauth/token
+      - https://i8d210.p.ssafy.io:8081/oauth/token
       - http://localhost:3000/oauth/redirect
       - http://localhost:3000/oauth2/redirect, myandroidapp://oauth2/redirect, myiosapp://oauth2/redirect
   cors:
-    allowedOrigins: http://localhost:3000, http://localhost:8081
+    allowedOrigins: http://localhost:3000, http://localhost:8080, https://i8d210.p.ssafy.io:8081, http://i8d210.p.ssafy.io:8081
 
 cloud:
   aws:
