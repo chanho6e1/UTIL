@@ -75,17 +75,26 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String jsonString = gson.toJson(user);
         writer.print(jsonString);
 
+//        response.setHeader();
+
 //        writer.print(json); //json화
 
         if(user.getNickname() != null){
             response.setStatus(200);
+            response.setHeader("code", "200");
+            targetUrl += "&code=200";
         }else{
             response.setStatus(201); //회원가입
+            response.setHeader("code", "201");
+            targetUrl += "&code=201";
         }
 
         clearAuthenticationAttributes(request, response);
 
 //        targetUrl = "http://localhost:3000";
+        System.out.println(response.getHeader("code"));
+
+//        System.out.println(targetUrl + "/code=200");
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
 
