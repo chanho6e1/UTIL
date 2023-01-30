@@ -66,4 +66,6 @@ public class FollowService {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "fromUserId", userId));
         return followRepository.getFollower(user).stream().map(FollowerResponse::new).collect(Collectors.toList());
     }
+
+
 }
