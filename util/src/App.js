@@ -11,6 +11,8 @@ import OAuthRedirectHandler from './components/UserAuth/OAuth/OAuthRedirectHandl
 import SocialLoginModule from './components/UserAuth/SocialLoginModule';
 import { ACCESS_TOKEN } from './constants';
 import SocialLogin from './components/UserAuth/SocialLogin';
+
+import ToastEditor from './components/MarkdownEditor/ToastEditor';
 // import OAuth2RedirectHandler from './components/UserAuth/OAuth/OAuth2RedirectHandler';
 
 const App = () => {
@@ -44,6 +46,8 @@ const App = () => {
         <Route path="/*" element={<Main />} />
         <Route path="/login" element={<SocialLogin />} />
         <Route path="/oauth2/redirect" element={<OAuthRedirectHandler />} /> 
+
+        <Route path="/post" element={<ToastEditor />} />
       </Routes>
     </div>
     
