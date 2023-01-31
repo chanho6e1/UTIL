@@ -71,6 +71,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setUserName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
 //        user.setImageUrl(oAuth2UserInfo.getImageUrl());
+        user.setImageUrl("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/ab578efc-b859-4285-b32f-b1cba56fa51b122.jpg");
 
         System.out.println("hihihihihih");
         return userRepository.save(user);
