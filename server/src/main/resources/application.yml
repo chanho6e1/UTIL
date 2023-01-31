@@ -97,9 +97,10 @@ app:
       - http://i8d210.p.ssafy.io:8081/oauth/token
       - https://i8d210.p.ssafy.io:8081/oauth/token
       - http://localhost:3000/oauth/redirect
+      - https://i8d210.p.ssafy.io:3000/oauth2/redirect
       - http://localhost:3000/oauth2/redirect, myandroidapp://oauth2/redirect, myiosapp://oauth2/redirect
   cors:
-    allowedOrigins: http://localhost:3000, http://localhost:8080, https://i8d210.p.ssafy.io:8081, http://i8d210.p.ssafy.io:8081
+    allowedOrigins: http://localhost:3000, https://i8d210.p.ssafy.io:3000, http://localhost:8080, https://i8d210.p.ssafy.io:8081, http://i8d210.p.ssafy.io:8081
 
 cloud:
   aws:
