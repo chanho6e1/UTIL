@@ -100,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 //여기 추가함
-                .requiresChannel().antMatchers("/path/**").requiresSecure()
+                .requiresChannel().antMatchers("/path/**").requiresInsecure()
                 .and()
                 //
                 .oauth2Login()
