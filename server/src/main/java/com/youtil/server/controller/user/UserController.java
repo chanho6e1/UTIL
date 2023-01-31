@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequestMapping("/user")
@@ -38,7 +39,7 @@ public class UserController {
     @PutMapping
     @ApiOperation(value = "유저 정보 업데이트", notes = "현재 로그인한 유저 정보를 업데이트한다.")
     public ResponseEntity<CommonResponse> updateUserInfo(@CurrentUser UserPrincipal userPrincipal,
-                                                         @RequestBody @Valid UserUpdateRequest request){
+                                                         @RequestBody @Valid UserUpdateRequest request) throws UnsupportedEncodingException {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "유저 정보 수정 성공", userService.updateUser(userPrincipal.getId(), request)));
     }
