@@ -138,10 +138,10 @@ const PlanCalendar = (props) => {
       <React.Fragment key={`month-bar-container-${el.goalId}`}>
         <div ref={containerRef} className={styles['month-bar-container']} >
           {columns}
-          <PlanCalendarDateSelector idx={idx} startDate={el.startDate} endDate={el.endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
+          <PlanCalendarDateSelector idx={idx} el={el} startDate={el.startDate} endDate={el.endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
           
         </div>
-        {props.todoFormVisibility[idx] && <PlanTodoListRight goalId={plans[idx].goalId} todos={props.todos} scrollRef={scrollRef} containerRef={containerRef} newTodoIdx={props.newTodoIdx} />}
+        {props.todoFormVisibility[idx] && <PlanTodoListRight applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} goalId={plans[idx].goalId} todos={props.todos} scrollRef={scrollRef} containerRef={containerRef} newTodoIdx={props.newTodoIdx} />}
       </React.Fragment>
     )
   })

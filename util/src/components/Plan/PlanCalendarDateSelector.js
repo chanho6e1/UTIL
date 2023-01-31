@@ -3,6 +3,9 @@ import Swipe from "react-easy-swipe";
 import styles from "./PlanCalendarDateSelector.module.css"
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
+import useDidMountEffect from "../../hooks/useDidMountEffect";
+import { editPlanAPI } from "../../api/Plan/editPlanAPI";
+
 
 
 
@@ -81,6 +84,19 @@ const PlanCalendarDateSelector = (props) => {
   useEffect(() => {
     setStartWidth()
   }, [props.xPointLib, initialStartDate, initialEndDate])
+
+
+  useDidMountEffect(() => {
+    const processing = {
+      title: props.el.title,
+      startDate: initialStartDate,
+      endDate: initialEndDate
+    }
+    editPlanAPI(props.el.goalId, processing)
+    .then((res) => {
+        dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+    })
+  }, [initialStartDate, initialEndDate])
 
 
   const [startPeriod, setStartPeriod] = useState(0)

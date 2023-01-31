@@ -2,10 +2,11 @@ import React, {useState} from "react";
 import arrow from '../../img/arrow.png'
 import styles from './PlanItem.module.css'
 import PlanTodoListLeft from "./PlanTodoListLeft";
-import { delPlan } from "../../api/Plan/delPlan";
+import { delPlanAPI } from "../../api/Plan/delPlanAPI";
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate, useMatch, useLocation } from "react-router-dom";
+import { editPlanAPI } from "../../api/Plan/editPlanAPI";
 
 const PlanItem = (props) => {
   const dispatch = useDispatch()
@@ -19,7 +20,19 @@ const PlanItem = (props) => {
   }
 
   const cancelEditMode = () => {
+    const processing = {
+      title: titleValue,
+      startDate: props.plans[props.idx].startDate,
+      endDate: props.plans[props.idx].endDate
+    }
+    editPlanAPI(props.plans[props.idx].goalId, processing)
+    .then((res) => {
+        dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+    })
+    .then((res) => {
       setIsEditMode(false)
+    })
+      
   }
 
   const inputChangeHandler = (event) => {
@@ -27,16 +40,11 @@ const PlanItem = (props) => {
   }
 
   const deletePlan = () => {
-    delPlan(props.plans[props.idx].goalId)
+    delPlanAPI(props.plans[props.idx].goalId)
     .then((res) => {
-      dispatch(modifyPlanSliceActions.deletePlan(JSON.stringify(props.idx)))
-      console.log(props.plans)
+      dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
     })
-    .catch((err) => {
-      navigate('/login');
-    })
-    
-    
+
   }
 
   const titleEditInput = (
@@ -63,13 +71,13 @@ const PlanItem = (props) => {
   return (
     <React.Fragment>
       <div  id={`${props.plans[props.idx].goalId}`} className={`${styles['plan-title-bar']} ${props.idx % 2 ? styles['title-odd'] : styles['title-even']}`}>
-          <div onClick={props.todoFormToggleHandler.bind(this, props.idx)} className={styles['plan-title-bar-icon-wrapper']}>
+          <div onClick={props.todoFormToggleHandler.bind(this, props.idx, props.el.goalId)} className={styles['plan-title-bar-icon-wrapper']}>
               <img className={styles['arrow-icon']} src={arrow} style={{transform: props.todoFormVisibility[props.idx] ? 'rotate(90deg)' : 'none', marginLeft:'13px', width: '12px', height: 'auto'}}/>
           </div>
 
           {isEditMode ? titleEditInput : titleReadMode }
       </div>
-      {props.todoFormVisibility[props.idx] && <PlanTodoListLeft goalId={props.plans[props.idx].goalId} todos={props.todos} getNewTodoIdx={props.getNewTodoIdx} newTodoIdx={props.newTodoIdx} />}
+      {props.todoFormVisibility[props.idx] && <PlanTodoListLeft applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} goalId={props.plans[props.idx].goalId} todos={props.todos} getNewTodoIdx={props.getNewTodoIdx} newTodoIdx={props.newTodoIdx} />}
   </React.Fragment>
   )
 }
