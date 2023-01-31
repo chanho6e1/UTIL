@@ -58,14 +58,15 @@ public class PostController {
 
     @ApiOperation(value = "유저별 게시물 리스트 조회", notes = "유저별 게시물 목록을 조회한다.(최근날짜순)")
     @GetMapping("/users/{userId}")
-    public ResponseEntity<CommonResponse> findPostListByUser(@PathVariable("userId") Long userId,
+    public ResponseEntity<CommonResponse> findPostListByUser(@ApiIgnore @CurrentUser UserPrincipal user,
+                                                             @PathVariable("userId") Long userId,
                                                              @RequestParam(required=false, defaultValue = "date") String criteria,
                                                              @RequestParam(required=false, defaultValue = "1") int offset,
                                                              @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 
 
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "유저별 게시물 목록 조회 성공", postService.findPostListBySpecUser(userId, offset, size, criteria))
+                HttpStatus.OK, "유저별 게시물 목록 조회 성공", postService.findPostListBySpecUser(userId, offset, size, criteria, user.getId()))
         );
     }
 

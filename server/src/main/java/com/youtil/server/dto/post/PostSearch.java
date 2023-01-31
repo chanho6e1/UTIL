@@ -15,7 +15,6 @@ public class PostSearch {
         this.criteria = criteria;
     }
 
-
     public static PostSearch of(String title, String criteria){
         return new PostSearch(title, criteria);
     }
