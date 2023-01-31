@@ -38,15 +38,16 @@ public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
 //        return (String) attributes.get("account_email");
 //    }
 
-    @Override
-    public String getImageUrl() {
-        Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
-
-        if (properties == null) {
-            return null;
-        }
-
-        return (String) properties.get("thumbnail_image");
-    }
+//    @Override
+//    public String getImageUrl() {
+//        Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+//
+//        if (properties == null) {
+//            return null;
+//        }
+//
+////        return (String) properties.get("thumbnail_image");
+//        return "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/ab578efc-b859-4285-b32f-b1cba56fa51b122.jpg";
+//    }
 }
 

@@ -23,8 +23,8 @@ public class GithubOAuth2UserInfo extends OAuth2UserInfo {
         return (String) attributes.get("email");
     }
 
-    @Override
-    public String getImageUrl() {
-        return (String) attributes.get("avatar_url");
-    }
+//    @Override
+//    public String getImageUrl() {
+//        return (String) attributes.get("avatar_url");
+//    }
 }
