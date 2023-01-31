@@ -1,12 +1,16 @@
 package com.youtil.server.service.tag;
 
 import com.youtil.server.common.exception.ResourceNotFoundException;
+import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.tag.Tag;
+import com.youtil.server.domain.tag.TagOfPost;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.domain.user.UserOfTag;
 import com.youtil.server.dto.tag.TagResponse;
 import com.youtil.server.dto.tag.TagSaveRequest;
 import com.youtil.server.dto.tag.TagUpdateRequest;
+import com.youtil.server.repository.post.PostRepository;
+import com.youtil.server.repository.tag.TagOfPostRepository;
 import com.youtil.server.repository.tag.TagRepository;
 import com.youtil.server.repository.tag.UserOfTagRepository;
 import com.youtil.server.repository.user.UserRepository;
@@ -31,6 +35,10 @@ public class TagService {
     TagRepository tagRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    PostRepository postRepository;
+    @Autowired
+    TagOfPostRepository tagOfPostRepository;
 
     // 관심 테그
     @Transactional
@@ -67,7 +75,45 @@ public class TagService {
         userOfTagRepository.deleteByUser(user);
         return user.getUserId();
     }
+    // 게시글 태그
+    @Transactional
+    public List<Long> findOrCrateTagPost(Long postId, TagSaveRequest request) { // 포스트 테그 추가
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
+        List<Long> list = new ArrayList<>();
+        for(String tag : request.getSkill()){
 
+            Tag findTags = tagRepository.findByTagName(tag);
+
+            if(findTags == null){
+                findTags = tagRepository.save(request.of(tag));
+            }
+            TagOfPost tagOfPost = new TagOfPost(post, findTags);
+            list.add(tagOfPostRepository.save(tagOfPost).getTagOfPostId());
+        }
+        return list;    // UserOfTagId 리스트 리턴
+    }
+    public List<TagResponse> getTagByPost(Long postId) { // 포스트로 테그 조회
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
+        return tagOfPostRepository.findByPost(post)
+                .stream().map(TagResponse::new).collect(Collectors.toList());
+    }
+    @Transactional
+    public Long updateTagPost(Long postId, TagSaveRequest request) {
+        deleteTagPost(postId);
+        findOrCrateTagPost(postId, request);
+        return postId;
+    }
+//    public List<TagResponse> getPostbyTag(Long tagId) { // 테그로 포스트 조회
+//        Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag", "tagId", tagId));
+//        return tagOfPostRepository.findByPost(tag)
+//                .stream().map(TagResponse::new).collect(Collectors.toList());
+//    }
+    @Transactional
+    public Long deleteTagPost(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
+        tagOfPostRepository.deleteByPost(post);
+        return postId;
+    }
 
     // 전체 태그
     public List<TagResponse> getTag() { // 전체 테그 조회

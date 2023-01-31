@@ -1,6 +1,7 @@
 package com.youtil.server.dto.tag;
 
 import com.youtil.server.domain.tag.Tag;
+import com.youtil.server.domain.tag.TagOfPost;
 import com.youtil.server.domain.user.UserOfTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,5 +26,10 @@ public class TagResponse {
     public TagResponse(UserOfTag userOfTag) {
         this.tagId = userOfTag.getTag().getTagId();
         this.tagName = userOfTag.getTag().getTagName();
+    }
+
+    public TagResponse(TagOfPost tagOfPost) {
+        this.tagId =  tagOfPost.getTag().getTagId();
+        this.tagName = tagOfPost.getTag().getTagName();
     }
 }
