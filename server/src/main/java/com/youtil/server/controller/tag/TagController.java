@@ -55,6 +55,34 @@ public class TagController {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "관심 테그 수정 성공", tagService.updateTagLike(user.getId(), request)));
     }
+    // 포스트 테그
+    @ApiOperation(value = "포스트 테그 등록", notes = "포스트 테그를 등록한다")
+    @PostMapping("/posts/{postId}")
+    public ResponseEntity<CommonResponse> findOrCrateTagPost(@PathVariable Long postId, @RequestBody @Valid TagSaveRequest request) throws Exception {
+
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.CREATED, "포스트 테그 등록 성공", tagService.findOrCrateTagPost(postId, request)));
+    }
+    @ApiOperation(value = "포스트 테그 조회", notes = "포스트 id로 테그를 조회한다")
+    @GetMapping("/posts/{postId}")
+    public ResponseEntity<CommonResponse> getTagLike(@PathVariable Long postId){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "포스트 테그 조회 성공", tagService.getTagByPost(postId)));
+    }
+
+    @ApiOperation(value = "포스트 테그 삭제", notes = "포스트 테그를 삭제한다")
+    @DeleteMapping("/posts/{postId}")
+    public ResponseEntity<CommonResponse> deleteTagPost(@PathVariable Long postId) {
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.NO_CONTENT, "포스트 테그 삭제 성공", tagService.deleteTagPost(postId)));
+    }
+    @ApiOperation(value = "포스트 테그 수정", notes = "포스트 테그를 수정한다")
+    @PutMapping("/posts/{postId}")
+    public ResponseEntity<CommonResponse> updateTagLike(@PathVariable Long postId, @RequestBody @Valid TagSaveRequest request) throws Exception {
+
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.CREATED, "포스트 테그 수정 성공", tagService.updateTagPost(postId, request)));
+    }
     // 그냥 테그
     @ApiOperation(value = "테그 조회", notes = "테그를 조회한다")
     @GetMapping
