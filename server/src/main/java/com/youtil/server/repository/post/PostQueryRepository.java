@@ -19,6 +19,7 @@ import static com.youtil.server.domain.post.QPost.post;
 import static com.youtil.server.domain.post.QPostBookmark.postBookmark;
 import static com.youtil.server.domain.post.QPostLike.postLike;
 import static com.youtil.server.domain.user.QFollow.follow;
+import static com.youtil.server.domain.user.QUser.user;
 
 
 @RequiredArgsConstructor
@@ -52,15 +53,20 @@ public class PostQueryRepository {
     }
 
     public List<Post> findPostList(Long userId, String criteria, PageRequest pageRequest){ //정렬
+
         return jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(
                         isPrivate(userId)
+//                        isPrivate2(userId)
+
                 )
                 .orderBy(findCriteria(criteria))
-                .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
                 .fetch();
+
     }
 
     public List<Post> findByTitleContaining(Long userId, PostSearch postSearch, PageRequest pageRequest){ //제목으로 검색, 정렬도 지정
@@ -92,6 +98,7 @@ public class PostQueryRepository {
                                 )),
 
                         isPrivate(user.getUserId())
+//                .or(post.isPrivate.in(2))
                 )
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
@@ -146,17 +153,29 @@ public class PostQueryRepository {
                 .fetch();
     }
 
-    private BooleanExpression isPrivate(Long userId){ //공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
-        return post.isPrivate.ne(0).and(
-                (        JPAExpressions
-                        .select(follow.toUser.userId).from(follow)
-                        .where(follow.fromUser.userId.in(
+    private BooleanExpression isPrivate1(Long userId){ //공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
+        return
+                post.user.userId.in(JPAExpressions
+                        .select(follow.fromUser.userId).from(follow)
+                        .where(follow.toUser.userId.in(
                                 JPAExpressions.select(post.user.userId).from(post)
-                                        .where(post.isPrivate.eq(1)
+                                        .where(post.isPrivate.eq(1),
+                                                follow.toUser.userId.eq(userId)
                                         ))
-                        )).in(userId));
+                        ));
+    }
+    private BooleanExpression isPrivate(Long userId){ //or사용 / 공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
+        return  post.isPrivate.eq(2).or(
+                post.user.userId.in(JPAExpressions
+                    .select(follow.fromUser.userId).from(follow)
+                    .where(follow.toUser.userId.eq(userId),
+                            post.isPrivate.eq(1)
+                    )));
     }
 
+    private BooleanExpression isPrivate2(Long userId){ //공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
+        return  post.isPrivate.ne(0);
+    }
     private OrderSpecifier<?> findCriteria(String criteria){ //정렬 조건
         if(criteria.contains("date")){
             return post.createdDate.desc();
