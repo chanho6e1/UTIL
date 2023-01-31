@@ -31,7 +31,7 @@ public class AppProperties {
         private List<String> authorizedRedirectUris = new ArrayList<>();
         public List<String> getAuthorizedRedirectUris() {
 
-            System.out.println("authorizedRedirectUris : " + authorizedRedirectUris);
+//            System.out.println("authorizedRedirectUris : " + authorizedRedirectUris);
             return authorizedRedirectUris;
         }
         public OAuth2 authorizedRedirectUris(List<String> authorizedRedirectUris) {
