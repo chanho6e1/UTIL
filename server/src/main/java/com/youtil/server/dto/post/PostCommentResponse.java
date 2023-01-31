@@ -34,13 +34,15 @@ public class PostCommentResponse {
 
     private Boolean isDelete;
 
+    private Boolean isPrivate;
+
     private List<PostCommentResponse> children = new ArrayList<>();
 
 
 
     public PostCommentResponse(PostComment comment) { //전체 조회
 
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         this.writerInfo = WriterInfo.from(comment.getUser());
         this.commentId = comment.getCommentId();
@@ -51,14 +53,17 @@ public class PostCommentResponse {
             this.modifiedDate = comment.getModifiedDate().format(myFormatObj);
         }
         if( comment.getParent()!= null) {
-            this.parentWriterNickName = comment.getParent().getUser().getUserName();
+            this.parentWriterNickName = comment.getParent().getUser().getUserName();//닉네임으로 변경 필요
         }
 
         this.isDelete = comment.getIsDelete();
+        this.isPrivate = comment.getIsPrivate();
     }
 
     public PostCommentResponse(PostComment comment, String content) { //삭제 처리된 댓글 결과
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         this.writerInfo = WriterInfo.from(comment.getUser());
         this.commentId = comment.getCommentId();
         this.content = content;
@@ -68,9 +73,10 @@ public class PostCommentResponse {
             this.modifiedDate = comment.getModifiedDate().format(myFormatObj);
         }
         if( comment.getParent()!= null) {
-            this.parentWriterNickName = comment.getParent().getUser().getUserName();
+            this.parentWriterNickName = comment.getParent().getUser().getUserName(); //닉네임으로 변경 필요
         }
         this.isDelete = comment.getIsDelete();
+        this.isPrivate = comment.getIsPrivate();
 
     }
 

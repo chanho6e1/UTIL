@@ -44,7 +44,7 @@ spring:
         google:
           clientId: '913035013476-bebq70bsneh30vbjjd0ktsk0con4ofmr.apps.googleusercontent.com'
           clientSecret: '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'
-          redirect-uri: 'https://i8d210.p.ssafy.io:8081/oauth2/callback/google'
+          redirect-uri: 'http://i8d210.p.ssafy.io:8081/oauth2/callback/google'
           scope:
             - email
             - profile
@@ -70,7 +70,7 @@ spring:
 
 # cors ??
 cors:
-  allowed-origins: 'http://localhost:3000'
+  allowed-origins: 'http://localhost:'
   allowed-methods: GET,POST,PUT,DELETE,OPTIONS
   allowed-headers: '*'
   max-age: 3600
@@ -96,10 +96,12 @@ app:
     authorizedRedirectUris:
       - http://i8d210.p.ssafy.io:8081/oauth/token
       - https://i8d210.p.ssafy.io:8081/oauth/token
-      - http://localhost:3000/oauth/redirect
-      - http://localhost:3000/oauth2/redirect, myandroidapp://oauth2/redirect, myiosapp://oauth2/redirect
+      - http://localhost:/oauth/redirect
+      - http://i8d210.p.ssafy.io:30000/oauth2/redirect
+      - http://i8d210.p.ssafy.io:30000/oauth/redirect
+      - http://localhost:/oauth2/redirect, myandroidapp://oauth2/redirect, myiosapp://oauth2/redirect
   cors:
-    allowedOrigins: http://localhost:3000, http://localhost:8080, https://i8d210.p.ssafy.io:8081, http://i8d210.p.ssafy.io:8081
+    allowedOrigins: http://localhost:3000, http://localhost:8080, https://i8d210.p.ssafy.io:8081, http://i8d210.p.ssafy.io:80, http://i8d210.p.ssafy.io:30000
 
 cloud:
   aws:

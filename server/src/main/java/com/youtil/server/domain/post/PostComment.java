@@ -52,17 +52,21 @@ public class PostComment extends BaseEntity {
     @ColumnDefault("false")
     private Boolean isDelete; //삭제여부
 
+    @ColumnDefault("false")
+    private Boolean isPrivate; //공개 여부
+
     public void setPost(Post post) {
         this.post = post;
     }
 
     @Builder
-    public PostComment(User user, Post post, String content, PostComment parent, Integer depth) {
+    public PostComment(User user, Post post, String content, PostComment parent, Integer depth, Boolean isPrivate) {
         this.user = user;
         this.post = post;
         this.content = content;
         this.parent = parent;
         this.depth = depth;
+        this.isPrivate = isPrivate;
     }
 
     public void update(PostCommentUpdateRequest request){

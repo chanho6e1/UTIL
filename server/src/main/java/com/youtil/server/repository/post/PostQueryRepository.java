@@ -1,6 +1,7 @@
 package com.youtil.server.repository.post;
 
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.youtil.server.domain.post.Post;
@@ -26,7 +27,7 @@ public class PostQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public List<Post> findPostListByUser(Long userId, String criteria,  PageRequest pageRequest){
+    public List<Post> findPostListByUser(Long userId, String criteria,  PageRequest pageRequest){ //내가 쓴 글
         return jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
@@ -37,33 +38,40 @@ public class PostQueryRepository {
                 .fetch();
     }
 
-    public List<Post> findPostListBySpecUser(Long userId, String criteria, PageRequest pageRequest) {
+    public List<Post> findPostListBySpecUser(Long userId, String criteria, PageRequest pageRequest, User user) { //유저별 글
         return jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
-                .where(post.user.userId.eq(userId))
+                .where(post.user.userId.eq(userId)
+                        ,isPrivate(user.getUserId())
+                )
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
     }
 
-    public List<Post> findPostList(String criteria, PageRequest pageRequest){ //정렬
+    public List<Post> findPostList(Long userId, String criteria, PageRequest pageRequest){ //정렬
         return jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
+                .where(
+                        isPrivate(userId)
+                )
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())
                 .fetch();
     }
 
-    public List<Post> findByTitleContaining(PostSearch postSearch, PageRequest pageRequest){ //제목으로 검색, 정렬도 지정
+    public List<Post> findByTitleContaining(Long userId, PostSearch postSearch, PageRequest pageRequest){ //제목으로 검색, 정렬도 지정
 
         String criteria = postSearch.getCriteria();
 
         return jpaQueryFactory.selectFrom(post)
                 .innerJoin(post.user).fetchJoin()
-                .where(post.title.contains(postSearch.getTitle()))
+                .where(post.title.contains(postSearch.getTitle()),
+                        isPrivate(userId)
+                )
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
@@ -81,8 +89,10 @@ public class PostQueryRepository {
                                 JPAExpressions
                                 .select(follow.toUser).from(follow)
                                 .where(follow.fromUser.userId.eq(user.getUserId())
-                                )))
-//                .where(post.isPrivate.in(2,1))
+                                )),
+
+                        isPrivate(user.getUserId())
+                )
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
@@ -127,13 +137,24 @@ public class PostQueryRepository {
     }
 
 
-    public List<PostLike> PostLikesPeople(Long postId, PageRequest pageRequest) {
+    public List<PostLike> PostLikesPeople(Long postId, PageRequest pageRequest) {//해당글 좋아요한 사람들
         return jpaQueryFactory.select(postLike).from(postLike).distinct()
                 .innerJoin(postLike.post).fetchJoin()
                 .where(postLike.post.postId.eq(postId))
                 .orderBy(postLike.createdDate.desc())
                 .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())
                 .fetch();
+    }
+
+    private BooleanExpression isPrivate(Long userId){ //공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
+        return post.isPrivate.ne(0).and(
+                (        JPAExpressions
+                        .select(follow.toUser.userId).from(follow)
+                        .where(follow.fromUser.userId.in(
+                                JPAExpressions.select(post.user.userId).from(post)
+                                        .where(post.isPrivate.eq(1)
+                                        ))
+                        )).in(userId));
     }
 
     private OrderSpecifier<?> findCriteria(String criteria){ //정렬 조건

@@ -80,26 +80,26 @@ public class PostService {
     }
 
 
-    public List<PostResponse> findPostListBySpecUser(Long userId, int offset, int size, String criteria) {
+    public List<PostResponse> findPostListBySpecUser(Long userId, int offset, int size, String criteria, Long myId) {
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        User me = userRepository.findUser(myId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", myId));
 
-        return postQueryRepository.findPostListBySpecUser(userId, criteria, PageRequest.of(offset - 1, size))
+        return postQueryRepository.findPostListBySpecUser(userId, criteria, PageRequest.of(offset - 1, size), me)
                 .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
-
     }
 
 
     public List<PostResponse> findPostList(Long userId, String criteria, int offset, int size) {//전체 리스트 조회,정렬기준(선택/디폴트는 최근 날짜) ,오프셋
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        return postQueryRepository.findPostList(criteria, PageRequest.of(offset - 1, size))
+        return postQueryRepository.findPostList(userId, criteria, PageRequest.of(offset - 1, size))
                 .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 
     public List<PostResponse> findByPostTitle(Long userId, PostSearch search, int offset, int size) {//내용으로 검색/오프셋
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        return postQueryRepository.findByTitleContaining(search, PageRequest.of(offset - 1, size))
+        return postQueryRepository.findByTitleContaining(userId, search, PageRequest.of(offset - 1, size))
                 .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 

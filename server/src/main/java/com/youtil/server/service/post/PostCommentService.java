@@ -39,7 +39,6 @@ public class PostCommentService {
     UserRepository userRepository;
 
     public List<PostCommentResponse> findPostCommentList(Long postId, int offset, Integer size) {
-
         return convertNestedStructure(postCommentRepository.findCommentByPostId(postId));
     }
 
@@ -73,8 +72,6 @@ public class PostCommentService {
 //        return list;
 //    }
 
-
-
     /////////////////////////
     @Transactional
     public Long createPostComment(Long userId, Long postId, PostCommentSaveRequest request) {
@@ -85,7 +82,7 @@ public class PostCommentService {
         PostComment postComment = null;
         if(request.getParentId()!=null){
             PostComment parent = postCommentRepository.findComment(request.getParentId())
-                    .orElseThrow(() -> new ResourceNotFoundException("PostComment", "commentId", request.getParentId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("ParentComment", "parentId", request.getParentId()));
                 postComment =  postCommentRepository.save(request.of(user, post, parent,1));
                 parent.setChild(postComment);
         }
@@ -97,7 +94,6 @@ public class PostCommentService {
 
     @Transactional
     public Long updatePostComment(Long userId, Long commentId, PostCommentUpdateRequest request) {
-
         PostComment postComment = postCommentRepository.findComment(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException("PostComment", "commentId", commentId));
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
@@ -117,11 +113,11 @@ public class PostCommentService {
         if(postComment.getDepth()==0 && !postComment.getChildren().isEmpty()){ //원댓글이 사라지면 숨김 처리
             postComment.updateDeleteStatus();
         }else if(!postComment.getChildren().isEmpty()){
-            postComment.getChildren().stream()
-                    .forEach(post -> post.resetChild(postComment.getParent()));
-
-            System.out.println(postComment.getParent().getCommentId());
-            postCommentRepository.deleteByCommentId(commentId);
+//            postComment.getChildren().stream()
+//                    .forEach(post -> post.resetChild(postComment.getParent()));
+//
+//            System.out.println(postComment.getParent().getCommentId());
+            postComment.updateDeleteStatus();
         }else{
             postCommentRepository.deleteByCommentId(commentId);
         }
