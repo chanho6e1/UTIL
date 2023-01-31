@@ -63,6 +63,7 @@ const PlanCalendar = (props) => {
     setMonthDistance(getMonthDistance(props.startRange, props.endRange) + 1)
     if (props.columns && dateRangeWrapperRef?.current?.style?.height) {
       dateRangeWrapperRef.current.style.height = (props.columns + 1) * (planGridRef[0].current[0].clientHeight + 2) + 'px'
+      
     }
     
   }, [props.startRange, props.endRange])
@@ -72,6 +73,7 @@ const PlanCalendar = (props) => {
     setMonthRange(Array(monthDistance).fill().map((arr, idx) => {
       return new Date(props.startRange.getFullYear(), props.startRange.getMonth() + idx + 1, 0)
     }))
+
   }, [monthDistance])
 
 
@@ -79,17 +81,21 @@ const PlanCalendar = (props) => {
     if (monthRange && planGridRef[0]?.current[0]?.clientWidth) {
       getXPointLib(monthRange, planGridRef[0].current[0].clientWidth)
     }
-  }, [monthRange])
+  }, [monthRange, planGridRef[0]?.current[0]?.clientWidth])
+
 
 
   useEffect(() => {
-    if (containerRef?.current?.scrollWidth) {
-      monthSpaceRef.current.style.width = containerRef.current.scrollWidth + 'px'
-      monthTitleWrapperRef.current.style.width = containerRef.current.scrollWidth + 'px'
-    }
-    
+    // if (containerRef?.current?.scrollWidth) {
+    //   monthSpaceRef.current.style.width = containerRef.current.scrollWidth + 'px'
+    //   monthTitleWrapperRef.current.style.width = containerRef.current.scrollWidth + 'px'
+    // }
+    monthSpaceRef.current.style.width = containerRef?.current?.scrollWidth + 'px'
+    monthTitleWrapperRef.current.style.width = containerRef?.current?.scrollWidth + 'px'
     // props.plansTitleWrapperRef.current.style.height = props.plansTitleInnerRef.current.clientHeight + 'px'
-  }, [monthRange, props.todoFormVisibility])
+  }, [monthRange, props.todoFormVisibility, ])
+
+  
 
 
 
@@ -171,7 +177,7 @@ const PlanCalendar = (props) => {
 
 
   return (
-      <div id="date-range" ref={dateRangeWrapperRef} onClick={() => console.log(dateRangeWrapperRef)}  className={styles['date-range-wrapper']}>
+      <div id="date-range" ref={dateRangeWrapperRef} onClick={() => console.log(planGridRef)} className={styles['date-range-wrapper']}>
         <div ref={monthTitleWrapperRef}  className={styles['month-title-container']}>
           {monthTitleGrid}
         </div>

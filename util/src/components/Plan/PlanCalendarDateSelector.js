@@ -16,8 +16,8 @@ const PlanCalendarDateSelector = (props) => {
 
   const columnIdx = props.idx
   const dateSelectorBar = useRef()
-  const [initialStartDate, setInitialStartDate] = useState(new Date(props.startDate))
-  const [initialEndDate, setInitialEndDate] = useState(new Date(props.endDate))
+  const [initialStartDate, setInitialStartDate] = useState(new Date(props.el.startDate))
+  const [initialEndDate, setInitialEndDate] = useState(new Date(props.el.endDate))
   const [initialLeft, setInitialLeft] = useState()
   const [initialRight, setInitialRight] = useState()
   const [updatingStartDate, setUpdatingStartDate] = useState(initialStartDate)
@@ -83,6 +83,7 @@ const PlanCalendarDateSelector = (props) => {
 
   useEffect(() => {
     setStartWidth()
+    
   }, [props.xPointLib, initialStartDate, initialEndDate])
 
 

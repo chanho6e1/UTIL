@@ -35,7 +35,7 @@ const Plan = (props) => {
 
     const plans = useSelector(state => state.planSlice.plans)
     const todos = useSelector(state => state.planSlice.todos)
-    const prototypeDate = new Date()
+    
 
 
 
@@ -219,6 +219,7 @@ const Plan = (props) => {
                 dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
                 setNewPlanValue('')
                 setNewPlan(false)
+                
             })
         }
         
@@ -235,7 +236,7 @@ const Plan = (props) => {
 
 
     return (
-        <div onClick={() => console.log(todos)} className={styles['plans-wrapper']}>
+        <div className={styles['plans-wrapper']}>
             <div className={styles['plans-title-wrapper']} > 
                 <div className={styles['plan-title-bar-space']} />
                 <div className={styles['plans-titles']} ref={plansTitleWrapperRef}>
@@ -246,7 +247,7 @@ const Plan = (props) => {
                 </div>
                 <div ref={planSpaceRef} className={styles['plan-space']} />
             </div>
-            {plans && planCalender}
+            {planCalender}
         </div>
     )
 }
