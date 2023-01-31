@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.user.User;
+import com.youtil.server.dto.goal.GoalPeriodResponse;
 import com.youtil.server.dto.goal.GoalResponse;
 import com.youtil.server.dto.goal.GoalSaveRequest;
 import com.youtil.server.dto.goal.GoalUpdateRequest;
@@ -40,6 +41,12 @@ public class GoalService {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Goal goal = null;
 
+        String[] arr = request.getStartDate().split("T");
+//        System.out.println(arr[0]);
+        request.setStartDate(arr[0]);
+        arr = request.getEndDate().split("T");
+        request.setEndDate(arr[0]);
+
         goal = goalRepository.save(request.of(user));
 
         return goal.getGoalId();
@@ -60,6 +67,12 @@ public class GoalService {
     public Long updateGoal(Long userId, Long goalId, GoalUpdateRequest request) {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
 
+        String[] arr = request.getStartDate().split("T");
+//        System.out.println(arr[0]);
+        request.setStartDate(arr[0]);
+        arr = request.getEndDate().split("T");
+        request.setEndDate(arr[0]);
+
         goal.update(request);
         return goal.getGoalId();
     }
@@ -71,5 +84,12 @@ public class GoalService {
         todoRepository.deleteByGoalId(goalId);
         goalRepository.deleteById(goalId);
         return goalId;
+    }
+
+    public GoalPeriodResponse getGoalPeriod(Long userId) {
+        String startDate = goalRepository.findMinGoal(userId);
+        String endDate = goalRepository.findMaxGoal(userId);
+
+        return new GoalPeriodResponse(startDate, endDate);
     }
 }
