@@ -1,20 +1,22 @@
 package com.youtil.server.service.tag;
 
 import com.youtil.server.common.exception.ResourceNotFoundException;
-import com.youtil.server.domain.category.Category;
 import com.youtil.server.domain.tag.Tag;
-import com.youtil.server.dto.category.CategoryResponse;
-import com.youtil.server.dto.category.CategorySaveRequest;
+import com.youtil.server.domain.user.User;
+import com.youtil.server.domain.user.UserOfTag;
 import com.youtil.server.dto.tag.TagResponse;
 import com.youtil.server.dto.tag.TagSaveRequest;
 import com.youtil.server.dto.tag.TagUpdateRequest;
 import com.youtil.server.repository.tag.TagRepository;
+import com.youtil.server.repository.tag.UserOfTagRepository;
+import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,23 +26,51 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class TagService {
     @Autowired
+    UserOfTagRepository userOfTagRepository;
+    @Autowired
     TagRepository tagRepository;
+    @Autowired
+    UserRepository userRepository;
+
+    // 관심 테그
     @Transactional
-    public int findOrCrateTag(TagSaveRequest request) {
-        int cnt = 0;    //추가된 테그 수
-        String[] tags = request.getTagNames().split("\\s");
-        for(String tag : tags){
-            List<Tag> findTags = tagRepository.findByTagName(tag);
+    public List<Long> findOrCrateTagLike(Long userId, TagSaveRequest request) { // 관심 테그 추가
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        List<Long> list = new ArrayList<>();
+        for(String tag : request.getSkill()){
 
-            if(findTags.size() == 0){
-                tagRepository.save(request.of(tag));
-                cnt++;
+            Tag findTags = tagRepository.findByTagName(tag);
+
+            if(findTags == null){
+                findTags = tagRepository.save(request.of(tag));
             }
+            UserOfTag userOfTag = new UserOfTag(user, findTags);
+            list.add(userOfTagRepository.save(userOfTag).getUserOfTagId());
         }
-        return cnt;
-
+        return list;    // UserOfTagId 리스트 리턴
     }
-    public List<TagResponse> getTag() {
+    public List<TagResponse> getTagLike(Long userId) { // 관심 테그 조회
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        return userOfTagRepository.findByUser(user)
+                .stream().map(TagResponse::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Long updateTagLike(Long userId, TagSaveRequest request) {
+        deleteTagLike(userId);
+        findOrCrateTagLike(userId, request);
+        return userId;
+    }
+    @Transactional
+    public Long deleteTagLike(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        userOfTagRepository.deleteByUser(user);
+        return user.getUserId();
+    }
+
+
+    // 전체 태그
+    public List<TagResponse> getTag() { // 전체 테그 조회
         return tagRepository.findAll()
                 .stream().map(TagResponse::new).collect(Collectors.toList());
     }
