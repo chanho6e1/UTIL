@@ -1,25 +1,15 @@
 import React, {useState} from "react";
 import styles from './PlanTodoListRightItem.module.css'
+import { modifyPlanSliceActions } from '../../redux/planSlice'
+import { useSelector, useDispatch } from 'react-redux'
+import { editTodoAPI } from "../../api/Plan/editTodoAPI";
+import { chkTodoAPI } from "../../api/Plan/chkTodoAPI";
 
 const PlanTodoListRightItem = (props) => {
-    function leftPad(value) {
-        if (value >= 10) {
-            return value;
-        }
-    
-        return `0${value}`;
-    }
 
-    function toStringByFormatting(source, delimiter = '-') {
-        const year = source.getFullYear();
-        const month = leftPad(source.getMonth() + 1);
-        const day = leftPad(source.getDate());
-    
-        return [year, month, day].join(delimiter);
-    }
-    
+    const dispatch = useDispatch()
     const [isDateEditMode, setIsDateEditMode] = useState(false)
-    const [dateValue, setDateValue] = useState(toStringByFormatting(props.time))
+    const [dateValue, setDateValue] = useState(props.toStringByFormatting(props.time))
     const [isDescriptionEditMode, setIsDescriptionEditMode] = useState(false)
     const [descriptionValue, setDescriptionValue] = useState(props.el.description)
 
@@ -29,7 +19,24 @@ const PlanTodoListRightItem = (props) => {
     }
 
     const cancelDateEditMode = () => {
-        setIsDateEditMode(false)
+        const processing = {
+            title: props.el.title,
+            description: props.el.description,
+            state: props.el.state,
+            dueDate: dateValue,
+        }
+        editTodoAPI(props.el.todoId, props.goalId, processing)
+        .then((res) => {
+            const proccessing = {
+                goalId: props.goalId,
+                data: res
+            }
+            dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
+        })
+        .then((res) => {
+            setIsDateEditMode(false)
+        })
+        
     }
 
     const dateInputChangeHandler = (event) => {
@@ -41,7 +48,27 @@ const PlanTodoListRightItem = (props) => {
     }
 
     const cancelDescriptionEditMode = () => {
-        setIsDescriptionEditMode(false)
+        const processing = {
+            title: props.el.title,
+            description: descriptionValue,
+            state: props.el.state,
+            dueDate: props.el.dueDate,
+        }
+        editTodoAPI(props.el.todoId, props.goalId, processing)
+        .then((res) => {
+            const proccessing = {
+                goalId: props.goalId,
+                data: res
+            }
+            dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
+            
+        })
+        .then((res) => {
+            setIsDescriptionEditMode(false)
+            
+            
+        })
+        
     }
 
     const descriptionInputChangeHandler = (event) => {
@@ -49,14 +76,26 @@ const PlanTodoListRightItem = (props) => {
     }
 
 
+    const toggleIsDone = () => {
+        chkTodoAPI(props.el.todoId, props.goalId)
+        .then((res) => {
+            const proccessing = {
+                goalId: props.goalId,
+                data: res
+            }
+            dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
+        })
+    }
+
+
     const isDoneTrue = (
-        <div className={styles['is-done-true-wrapper']}>
+        <div onClick={toggleIsDone} className={styles['is-done-true-wrapper']}>
             완료됨
         </div>
     )
 
     const isDoneFalse = (
-        <div className={styles['is-done-false-wrapper']}>
+        <div onClick={toggleIsDone} className={styles['is-done-false-wrapper']}>
             진행중
         </div>
     )
@@ -84,7 +123,7 @@ const PlanTodoListRightItem = (props) => {
     return (
         <div className={styles['todo-space-wrapper']} style={{width: `${props.containerRef.current.scrollWidth}px`}}>
             <div className={styles['todo-space']} >
-                {props.el.isDone ? isDoneTrue : isDoneFalse}
+                {props.el.state ? isDoneTrue : isDoneFalse}
                 {isDateEditMode ? dateEditInput : dateReadMode}
                 {isDescriptionEditMode ? descriptionEditInput : descriptionReadMode}
                 

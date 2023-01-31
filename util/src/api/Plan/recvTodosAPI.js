@@ -2,10 +2,10 @@ import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
 
-export const delPlan = (idx) => {
-  return axios({
-    method: 'delete',
-    url: `${API_BASE_URL}/goals/${idx}`,
+export const recvTodosAPI = (goalId) => {
+    return axios({
+    method: 'get',
+    url: `${API_BASE_URL}/todos/goals/${goalId}`,
     headers: {
         Authorization: TOKEN()
     },
@@ -14,7 +14,4 @@ export const delPlan = (idx) => {
         return res.data.data
     })
 }
-
-
-
 

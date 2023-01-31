@@ -4,7 +4,7 @@ import styles from './PlanExpanded.module.css'
 import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate, useMatch, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
-import { recvPlans } from "../../api/Plan/recvPlans";
+import { recvPlansAPI } from "../../api/Plan/recvPlansAPI";
 import PlanLoading from "./PlanLoading";
 
 const PlanExpanded = (props) => {
@@ -13,7 +13,7 @@ const PlanExpanded = (props) => {
   const navigate = useNavigate()
 
   useEffect(() => {
-      recvPlans()
+      recvPlansAPI()
       .catch((err) => {
           navigate('/login');
       })

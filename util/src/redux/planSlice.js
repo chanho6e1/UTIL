@@ -28,20 +28,20 @@ const initialSliceState = {
   //   // {goalId: 17, title:'취업현황 조사', startDate: new Date('2023-02-17').toString(), endDate: new Date('2023-03-27').toString()},
   // ],
   todos: {
-    1: [{
-      todoId : 0,
-      title : "Track1 : useState abcdefghijklmnop",
-      isDone : true,
-      dueDate : "2023-01-19",
-      description : "Track1 PDF 25p ~ 37p"
-    },
-    {
-      todoId : 1,
-      title : "Track2 : useRef",
-      isDone : false,
-      dueDate : "2023-01-20",
-      description : "Track2 PDF 38p ~ 45p"
-    },]
+    // 1: [{
+    //   todoId : 0,
+    //   title : "Track1 : useState abcdefghijklmnop",
+    //   isDone : true,
+    //   dueDate : "2023-01-19",
+    //   description : "Track1 PDF 25p ~ 37p"
+    // },
+    // {
+    //   todoId : 1,
+    //   title : "Track2 : useRef",
+    //   isDone : false,
+    //   dueDate : "2023-01-20",
+    //   description : "Track2 PDF 38p ~ 45p"
+    // },]
   }
 }
 
@@ -52,7 +52,10 @@ const modifyPlanSlice = createSlice({
     responsePlans(state, action) {
       const parsedPayload = JSON.parse(action.payload)
       state.plans = parsedPayload
-      
+    },
+    responseTodos(state, action) {
+      const parsedPayload = JSON.parse(action.payload)
+      state.todos[parsedPayload.goalId] = parsedPayload.data
     },
     deletePlan(state, action) {
       const parsedPayload = JSON.parse(action.payload)
