@@ -19,9 +19,8 @@ public class GoalQueryRepository {
         return jpaQueryFactory.select(goal)
                 .from(goal)
                 .where(goal.user.userId.eq(userId))
-                .orderBy(goal.startDate.asc())
+                .orderBy(goal.goalId.asc())
                 .fetch();
-
     }
 
 }

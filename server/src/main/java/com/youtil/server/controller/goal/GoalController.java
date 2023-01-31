@@ -44,6 +44,7 @@ public class GoalController {
                 HttpStatus.OK, "조회 성공", goalService.getGoal(userPrincipal.getId(), goalId)));
     }
 
+    // input 2023-01-31T06:24:59.000Z
     @ApiOperation(value = "목표 수정", notes = "내가 작성한 목표를 수정한다.")
     @PutMapping("/{goalId}")
     public ResponseEntity<CommonResponse> updateGoal(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId, @RequestBody @Valid GoalUpdateRequest request){
@@ -66,4 +67,14 @@ public class GoalController {
                 HttpStatus.OK, "조회 성공", null
         ));
     }
+
+    @ApiOperation(value = "목표 기간 정렬", notes = "내가 설정한 목표 총 기간(시작이 제일 빠른, 종료가 가장 느린 목표 날짜 각각 반환")
+    @GetMapping("/period")
+    public ResponseEntity<CommonResponse> getGoalPeriod(@CurrentUser UserPrincipal userPrincipal){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "조회 성공", goalService.getGoalPeriod(userPrincipal.getId())
+        ));
+    }
+    // 목표 제일 빠른 startDate, 제일 느린 endDate
+    // input 2023-01-31T06:24:59.000Z
 }

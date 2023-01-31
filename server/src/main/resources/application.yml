@@ -6,7 +6,7 @@ spring:
   # ??? ?? ??
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    #     url: jdbc:mysql://i8d210.p.ssafy.io:3306/youtil?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+#    url: jdbc:mysql://i8d210.p.ssafy.io:3306/youtil?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
     url: jdbc:mysql://i8d210.p.ssafy.io:3306/youtil?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
     username: ssafy
     password: ssafy
@@ -96,12 +96,11 @@ app:
     authorizedRedirectUris:
       - http://i8d210.p.ssafy.io:8081/oauth/token
       - https://i8d210.p.ssafy.io:8081/oauth/token
-      - http://localhost:/oauth/redirect
-      - http://i8d210.p.ssafy.io:30000/oauth2/redirect
-      - http://i8d210.p.ssafy.io:30000/oauth/redirect
-      - http://localhost:/oauth2/redirect, myandroidapp://oauth2/redirect, myiosapp://oauth2/redirect
+      - http://localhost:3000/oauth/redirect
+      - https://i8d210.p.ssafy.io:3000/oauth2/redirect
+      - http://localhost:3000/oauth2/redirect, myandroidapp://oauth2/redirect, myiosapp://oauth2/redirect
   cors:
-    allowedOrigins: http://localhost:3000, http://localhost:8080, https://i8d210.p.ssafy.io:8081, http://i8d210.p.ssafy.io:80, http://i8d210.p.ssafy.io:30000
+    allowedOrigins: http://localhost:3000, https://i8d210.p.ssafy.io:3000, http://localhost:8080, https://i8d210.p.ssafy.io:8081, http://i8d210.p.ssafy.io:8081
 
 cloud:
   aws:
