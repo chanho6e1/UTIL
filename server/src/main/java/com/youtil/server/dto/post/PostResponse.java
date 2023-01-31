@@ -55,7 +55,7 @@ public class PostResponse {
 
     public PostResponse(Post post, User user) { //전체 조회
 
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         this.writerInfo = WriterInfo.from(post.getUser());
         this.postId = post.getPostId();
@@ -64,21 +64,20 @@ public class PostResponse {
         if(post.getModifiedDate()!=null) {
             this.modifiedDate = post.getModifiedDate().format(myFormatObj);
         }
+        this.isPrivate = post.getIsPrivate();
+        this.thumbnail = post.getThumbnail();
         this.likeStatus = post.getPostLikeList().getPostLikeList().parallelStream()
                 .anyMatch(l -> l.ownedBy(user.getUserId()));
         this.likeStatusSize = post.getTotalLikes();
         this.bookmarkStatus = post.getPostBookmarkList().getPostBookmarkList().parallelStream()
                 .anyMatch((b)-> b.ownedBy(user.getUserId()));
-   }
+    }
 
     public PostResponse(Post post, Boolean likeStatus, Boolean bookmarkStatus) { //단건 조회
 
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         this.writerInfo = WriterInfo.from(post.getUser());
-//            this.comments = post.getPostCommentList().getPostCommentList().stream()
-//                    .map(PostCommentResponse::new).collect(Collectors.toList());
-
         this.postId = post.getPostId();
         this.title = post.getTitle();
         this.content = post.getContent();
