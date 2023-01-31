@@ -16,8 +16,4 @@ public class TagUpdateRequest {
     @NotBlank(message = "제목이 없습니다.")
     private String tagName;
 
-//    public Tag of() {
-//        return Tag.builder().name(tagName).build();
-//    }
-
 }

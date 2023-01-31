@@ -1,6 +1,7 @@
 package com.youtil.server.domain.tag;
 
 import com.youtil.server.domain.BaseEntity;
+import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.user.User;
 import lombok.*;
@@ -24,10 +25,14 @@ public class Tag extends BaseEntity {
 
     private String tagName;
 
-
     @Builder
     public Tag(String name) {
         this.tagName = name;
+    }
+
+    public Tag(Tag tag) {
+        this.tagId = tag.getTagId();
+        this.tagName = tag.getTagName();
     }
 
     public void update(String name){

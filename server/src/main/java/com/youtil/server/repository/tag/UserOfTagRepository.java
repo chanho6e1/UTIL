@@ -1,9 +1,8 @@
 package com.youtil.server.repository.tag;
 
-import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.tag.Tag;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
+import com.youtil.server.domain.user.User;
+import com.youtil.server.domain.user.UserOfTag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,17 +10,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
-public interface TagRepository extends JpaRepository<Tag, Long> {
+public interface UserOfTagRepository extends JpaRepository<UserOfTag, Long> {
 
-    @Query("SELECT t FROM Tag t WHERE t.tagName = :tagName")
-    Tag findByTagName(@Param("tagName")String tagName);
-
-
+    @Query("SELECT u FROM UserOfTag u WHERE u.user = :user")
+    List<UserOfTag> findByUser(@Param("user") User user);
     @Transactional
     @Modifying
-    @Query("delete from Tag t where t.tagId = :tagId")
-    void deleteByTagId(@Param("tagId") Long tagId);
+    @Query("DELETE FROM UserOfTag u WHERE u.user = :user")
+    void deleteByUser(@Param("user") User user);
 }
