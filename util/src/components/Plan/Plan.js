@@ -16,6 +16,7 @@ import { newPlanAPI } from "../../api/Plan/newPlanAPI";
 import { newTodoAPI } from "../../api/Plan/newTodoAPI";
 import { recvTodosAPI } from "../../api/Plan/recvTodosAPI";
 import { editTodoAPI } from "../../api/Plan/editTodoAPI";
+import { recvTotalPeriodAPI } from "../../api/Plan/recvTotalPeriodAPI";
 
 const Plan = (props) => {
     const dispatch = useDispatch()
@@ -35,9 +36,15 @@ const Plan = (props) => {
     const plans = useSelector(state => state.planSlice.plans)
     const todos = useSelector(state => state.planSlice.todos)
     const prototypeDate = new Date()
-    const [startRange, setStartRange] = useState(new Date(prototypeDate.getFullYear(),0,1))
-    // const [startRange, setStartRange] = useState(new Date(2022,0,1))
-    const [endRange, setEndRange] = useState(new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),12,0)))
+
+
+
+    // const [startRange, setStartRange] = useState(new Date(prototypeDate.getFullYear(),0,1))
+    // const [endRange, setEndRange] = useState(new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),12,0)))
+    const [startRange, setStartRange] = useState(props.startRange)
+    const [endRange, setEndRange] = useState(props.endRange)
+    
+
     const planSpaceRef = useRef()
     const plansTitleWrapperRef = useRef()
     const plansTitleInnerRef = useRef()
@@ -201,10 +208,10 @@ const Plan = (props) => {
     }
 
     const addNewPlan = (event) => {
-        const endDate = new Date(new Date().setDate(new Date().getDate() + 5)).toString()
+        const endDate = new Date(new Date().setDate(new Date().getDate() + 5))
         if (event.key === "Enter") {
           
-            newPlanAPI(new Date().toString(), endDate, newPlanValue)
+            newPlanAPI(new Date(), endDate, newPlanValue)
             .catch((err) => {
                 navigate('/login');
             })
