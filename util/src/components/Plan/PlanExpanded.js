@@ -20,12 +20,22 @@ const PlanExpanded = (props) => {
 
     recvTotalPeriodAPI()
     .then((res) => {
-        const startDate = new Date(res.startDate)
-        const endDate = new Date(res.endDate)
-        const startRange = new Date(startDate.getFullYear(), startDate.getMonth(), 1)
-        const endRange = new Date(endDate.getFullYear(), endDate.getMonth() + 2, 0)
-        setStartRange(startRange)
-        setEndRange(endRange)
+        if (res?.startDate && res?.endDate) {
+          const startDate = new Date(res.startDate)
+          const endDate = new Date(res.endDate)
+          const startRange = new Date(startDate.getFullYear(), startDate.getMonth(), 1)
+          const endRange = new Date(endDate.getFullYear(), endDate.getMonth() + 2, 0)
+          setStartRange(startRange)
+          setEndRange(endRange)
+        } else {
+          const prototypeDate = new Date()
+          const startRange = new Date(prototypeDate.getFullYear(),0,1)
+          const endRange = new Date(prototypeDate.getFullYear(),12,0)
+          setStartRange(startRange)
+          setEndRange(endRange)
+        }
+
+        
     })
   }, [])
 
