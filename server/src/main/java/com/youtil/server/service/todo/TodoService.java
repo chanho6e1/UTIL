@@ -36,6 +36,10 @@ public class TodoService {
         Todo todo;
 
         Goal goal = goalRepository.findById(goalId).orElseThrow(() -> new ResourceNotFoundException("goal", "goalId", goalId));
+
+        String[] arr = request.getDueDate().split("T");
+        request.setDueDate(arr[0]);
+
         todo = todoRepository.save(request.of(goal));
 
         return todo.getTodoId();
