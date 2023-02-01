@@ -32,6 +32,8 @@ public class GoalQueryRepository {
                 .from(post)
                 .where(post.goal.goalId.eq(goalId))
                 .orderBy(post.goal.goalId.asc())
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
                 .fetch();
     }
 
