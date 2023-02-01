@@ -41,12 +41,14 @@ public class PostCategoryQueryRepository {
     }
 
     private BooleanExpression isPrivate(Long userId){ //or사용 / 공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
-        return  post.isPrivate.eq(2).or(
+        return
+                post.isPrivate.eq(0).and(post.user.userId.eq(userId)).or(
+                post.isPrivate.eq(2).or(
                 post.user.userId.in(JPAExpressions
                         .select(follow.fromUser.userId).from(follow)
                         .where(follow.toUser.userId.eq(userId).or(post.user.userId.eq(userId)),
                                 post.isPrivate.eq(1)
-                        )));
+                        ))));
     }
 
     private OrderSpecifier<?> findCriteria(String criteria) { //정렬 조건
