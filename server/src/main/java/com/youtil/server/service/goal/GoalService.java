@@ -94,11 +94,11 @@ public class GoalService {
     }
 
     public GoalPeriodResponse getGoalPeriod(Long userId) {
-//        String startDate = goalRepository.findMinGoal(userId);
-//        String endDate = goalRepository.findMaxGoal(userId);
+        String startDate = goalRepository.findMinGoal(userId);
+        String endDate = goalRepository.findMaxGoal(userId);
 
 
-//        return new GoalPeriodResponse(startDate, endDate);
-        return goalRepository.findGoalPeriod(userId);
+        return new GoalPeriodResponse(startDate, endDate);
+//        return goalRepository.findGoalPeriod(userId);
     }
 }
