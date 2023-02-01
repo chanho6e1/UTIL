@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.Calendar;
 
@@ -94,11 +95,12 @@ public class GoalService {
     }
 
     public GoalPeriodResponse getGoalPeriod(Long userId) {
-        String startDate = goalRepository.findMinGoal(userId);
-        String endDate = goalRepository.findMaxGoal(userId);
 
+        Map<String, String> map = goalRepository.findGoalPeriod(userId);
+        String startDate = map.get("startDate");
+        String endDate = map.get("endDate");
 
         return new GoalPeriodResponse(startDate, endDate);
-//        return goalRepository.findGoalPeriod(userId);
+
     }
 }
