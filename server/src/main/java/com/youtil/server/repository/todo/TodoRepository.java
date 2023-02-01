@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     @Query("SELECT t FROM Todo t WHERE t.goal = :goal order by t.dueDate asc")
@@ -25,4 +26,10 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     @Modifying(clearAutomatically = true) // 영속성 컨텍스트 초기화
     @Query("delete from Todo t where t.goal.goalId = :goalId")
     void deleteByGoalId(Long goalId);
+
+    @Query(value = "select min(t.due_date), max(t.due_date)" +
+            "from goal g join todo t on g.goal_id = t.goal_id" +
+            "where user_id = :userId "
+            ,nativeQuery = true)
+    Map<String, String> findTodoPeriod(Long userId);
 }

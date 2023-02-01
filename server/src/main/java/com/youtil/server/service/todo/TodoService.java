@@ -3,10 +3,8 @@ package com.youtil.server.service.todo;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.todo.Todo;
-import com.youtil.server.dto.todo.TodoResponse;
-import com.youtil.server.dto.todo.TodoSaveRequest;
-import com.youtil.server.dto.todo.TodoStateRequest;
-import com.youtil.server.dto.todo.TodoUpdateDateRequest;
+import com.youtil.server.dto.goal.GoalPeriodResponse;
+import com.youtil.server.dto.todo.*;
 import com.youtil.server.repository.goal.GoalRepository;
 import com.youtil.server.repository.todo.TodoRepository;
 import com.youtil.server.repository.user.UserRepository;
@@ -17,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -59,6 +58,10 @@ public class TodoService {
     @Transactional
     public Long updateTodo(Long todoId, TodoSaveRequest request) {
         Todo todo = todoRepository.findById(todoId).orElseThrow(() -> new ResourceNotFoundException("todo", "todoId", todoId));
+
+        String[] arr = request.getDueDate().split("T");
+        request.setDueDate(arr[0]);
+
         todo.update(request);
         return todo.getTodoId();
     }
@@ -88,4 +91,12 @@ public class TodoService {
         return todoId;
     }
 
+    public TodoPeriodResponse getTodoPeriod(Long userId) {
+
+        Map<String, String> map = todoRepository.findTodoPeriod(userId);
+        String minDate = map.get("minDate");
+        String maxDate = map.get("maxDate");
+
+        return new TodoPeriodResponse(minDate, maxDate);
+    }
 }
