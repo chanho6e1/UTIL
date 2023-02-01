@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     @Query("SELECT t FROM Todo t WHERE t.goal = :goal order by t.dueDate asc")
@@ -34,4 +35,10 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             "order by g.goal_id asc "
             ,nativeQuery = true)
     List<Map<String, Object>> findTodoPeriod(Long userId);
+
+    @Query(value = "select * " +
+            "from goal g join todo t on t.goal_id = :goal " +
+            "where :dueDate between g.start_date and g.end_date"
+            ,nativeQuery = true)
+    Optional<Todo> checkTodoPeriod(@Param("goal") Goal goal, @Param("dueDate") String dueDate);
 }
