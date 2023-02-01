@@ -18,8 +18,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Calendar;
 
 @Service
 @RequiredArgsConstructor
@@ -87,9 +94,11 @@ public class GoalService {
     }
 
     public GoalPeriodResponse getGoalPeriod(Long userId) {
-        String startDate = goalRepository.findMinGoal(userId);
-        String endDate = goalRepository.findMaxGoal(userId);
+//        String startDate = goalRepository.findMinGoal(userId);
+//        String endDate = goalRepository.findMaxGoal(userId);
 
-        return new GoalPeriodResponse(startDate, endDate);
+
+//        return new GoalPeriodResponse(startDate, endDate);
+        return goalRepository.findGoalPeriod(userId);
     }
 }
