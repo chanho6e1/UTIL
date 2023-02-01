@@ -90,28 +90,31 @@ public class TodoService {
         return todoId;
     }
 
-    public List<Map<String, Map<String, String>>> getTodoPeriod(Long userId) {
+    public List<Map<String, TodoPeriodResponse>> getTodoPeriod(Long userId) {
 
         List<Map<String, Object>> mapList = todoRepository.findTodoPeriod(userId);
 //        List<TodoPeriodResponse> result = new ArrayList<>();
 
-        List<Map<String, Map<String, String>>> result = new ArrayList<>();
+        List<Map<String, TodoPeriodResponse>> result = new ArrayList<>();
+        Map<String, TodoPeriodResponse> maps = new HashMap<>();
 
         for(Map<String, Object> map : mapList){
             String goalId = map.get("goalId").toString();
             String minDate = map.get("minDate").toString();
             String maxDate = map.get("maxDate").toString();
-//            PeriodResponse periodResponse = new PeriodResponse(minDate, maxDate);
+
+            TodoPeriodResponse todoPeriodResponse = new TodoPeriodResponse(minDate, maxDate);
 //            result.add(new TodoPeriodResponse(goalId, minDate, maxDate));
 
-            Map<String, Map<String, String>> maps = new HashMap<>();
-            Map<String, String> date = new HashMap<>();
-            date.put("minDate", minDate);
-            date.put("maxDate", maxDate);
+//            Map<String, TodoPeriodResponse> maps = new HashMap<>();
+//            Map<String, String> date = new HashMap<>();
+//            date.put("minDate", minDate);
+//            date.put("maxDate", maxDate);
 
-            maps.put(goalId, date);
-            result.add(maps);
+            maps.put(goalId, todoPeriodResponse);
+//            result.add(maps);
         }
+        result.add(maps);
 
 //        Map<String, String> map = todoRepository.findTodoPeriod(userId);
 //        String minDate = map.get("minDate");
