@@ -8,13 +8,16 @@ import com.youtil.server.dto.goal.GoalPeriodResponse;
 import com.youtil.server.dto.goal.GoalResponse;
 import com.youtil.server.dto.goal.GoalSaveRequest;
 import com.youtil.server.dto.goal.GoalUpdateRequest;
+import com.youtil.server.dto.post.PostResponse;
 import com.youtil.server.repository.goal.GoalQueryRepository;
 import com.youtil.server.repository.goal.GoalRepository;
 import com.youtil.server.repository.review.ReviewRepository;
 import com.youtil.server.repository.todo.TodoRepository;
 import com.youtil.server.repository.user.UserRepository;
+import com.youtil.server.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -111,5 +114,11 @@ public class GoalService {
         goal.toggleState();
 
         return goal.isState();
+    }
+
+    public List<PostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        return goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size))
+                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 }
