@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 
 @RestController
 @RequestMapping("/goals")
@@ -62,19 +63,29 @@ public class GoalController {
     //목표별 글보기
     @ApiOperation(value = "목표별 글 조회", notes = "목표에 해당하는 글 목록을 조회한다.")
     @GetMapping("/{goalId}/posts")
-    public ResponseEntity<CommonResponse> getGoalPost(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId){
+    public ResponseEntity<CommonResponse> getGoalPost(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId,
+                                                      @RequestParam(required=false, defaultValue = "1") int offset,
+                                                      @RequestParam(value = "size", required = false, defaultValue = "10") int size){
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "조회 성공", null
+                HttpStatus.OK, "조회 성공", goalService.getGoalPost(userPrincipal.getId(), goalId, offset, size)
         ));
     }
 
     @ApiOperation(value = "목표 기간 정렬", notes = "내가 설정한 목표 총 기간(시작이 제일 빠른, 종료가 가장 느린 목표 날짜 각각 반환")
     @GetMapping("/period")
-    public ResponseEntity<CommonResponse> getGoalPeriod(@CurrentUser UserPrincipal userPrincipal){
+    public ResponseEntity<CommonResponse> getGoalPeriod(@CurrentUser UserPrincipal userPrincipal) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "조회 성공", goalService.getGoalPeriod(userPrincipal.getId())
         ));
     }
     // 목표 제일 빠른 startDate, 제일 느린 endDate
     // input 2023-01-31T06:24:59.000Z
+
+    @ApiOperation(value = "목표 달성 유무", notes = "내가 설정한 목표의 달성 상태를 변경")
+    @PutMapping("/{goalId}/state")
+    public ResponseEntity<CommonResponse> updateGoalState(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.CREATED, "수정 성공", goalService.toggleGoalState(userPrincipal.getId(), goalId)
+        ));
+    }
 }
