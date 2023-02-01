@@ -12,12 +12,12 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class TodoPeriodResponse {
 
-    private String goalId;
+//    private String goalId;
     private String minDate;
     private String maxDate;
 
-    public TodoPeriodResponse(String goalId, String minDate, String maxDate){
-        this.goalId = goalId;
+    public TodoPeriodResponse(String minDate, String maxDate){
+//        this.goalId = goalId;
 //        this.periodResponse = periodResponse;
         this.minDate = minDate;
         this.maxDate = maxDate;
