@@ -2,13 +2,17 @@ package com.youtil.server.repository.goal;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.youtil.server.domain.goal.Goal;
+import com.youtil.server.domain.post.Post;
 import com.youtil.server.dto.goal.GoalResponse;
+import com.youtil.server.dto.post.PostResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static com.youtil.server.domain.goal.QGoal.goal;
+import static com.youtil.server.domain.post.QPost.post;
 
 @RequiredArgsConstructor
 @Repository
@@ -20,6 +24,16 @@ public class GoalQueryRepository {
                 .from(goal)
                 .where(goal.user.userId.eq(userId))
                 .orderBy(goal.goalId.asc())
+                .fetch();
+    }
+
+    public List<Post> findPostListByGoalId(Long goalId, PageRequest pageRequest){
+        return jpaQueryFactory.select(post)
+                .from(post)
+                .where(post.goal.goalId.eq(goalId))
+                .orderBy(post.goal.goalId.asc())
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
                 .fetch();
     }
 

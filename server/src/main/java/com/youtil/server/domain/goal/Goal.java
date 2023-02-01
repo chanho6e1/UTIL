@@ -59,5 +59,8 @@ public class Goal extends BaseEntity {
         this.endDate = request.getEndDate();
     }
 
+    public void toggleState(){
+        this.state = !this.state;
+    }
 
 }
