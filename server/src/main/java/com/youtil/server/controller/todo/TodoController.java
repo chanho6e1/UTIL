@@ -4,6 +4,8 @@ import com.youtil.server.common.CommonResponse;
 import com.youtil.server.dto.todo.TodoSaveRequest;
 import com.youtil.server.dto.todo.TodoStateRequest;
 import com.youtil.server.dto.todo.TodoUpdateDateRequest;
+import com.youtil.server.security.CurrentUser;
+import com.youtil.server.security.UserPrincipal;
 import com.youtil.server.service.todo.TodoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -72,5 +74,12 @@ public class TodoController {
     public ResponseEntity<CommonResponse> getTodoByGoal(@PathVariable String dueDate){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "날짜별 투두 조회 성공", todoService.getTodoByDate(dueDate)));
+    }
+
+    @ApiOperation(value = "투두 최소, 최고 날짜 조회", notes = "사용자의 투두에서 최소, 최고 날짜를 조회한다.")
+    @GetMapping("/period")
+    public ResponseEntity<CommonResponse> getTodoPeriod(@CurrentUser UserPrincipal userPrincipal){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "날짜별 투두 조회 성공", todoService.getTodoPeriod(userPrincipal.getId())));
     }
 }
