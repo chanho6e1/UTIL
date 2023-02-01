@@ -38,9 +38,12 @@ public class Goal extends BaseEntity {
 //    private final List<Post> postList = new ArrayList<>();
 
     private String title;
-
     private String startDate;
     private String endDate;
+    private boolean state;
+
+    // 완수
+    // 투두 퍼센트
 
     @Builder
     public Goal(User user, String title, String startDate, String endDate){
@@ -56,5 +59,8 @@ public class Goal extends BaseEntity {
         this.endDate = request.getEndDate();
     }
 
+    public void toggleState(){
+        this.state = !this.state;
+    }
 
 }
