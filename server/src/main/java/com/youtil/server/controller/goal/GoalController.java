@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 
 @RestController
 @RequestMapping("/goals")
@@ -70,7 +71,7 @@ public class GoalController {
 
     @ApiOperation(value = "목표 기간 정렬", notes = "내가 설정한 목표 총 기간(시작이 제일 빠른, 종료가 가장 느린 목표 날짜 각각 반환")
     @GetMapping("/period")
-    public ResponseEntity<CommonResponse> getGoalPeriod(@CurrentUser UserPrincipal userPrincipal){
+    public ResponseEntity<CommonResponse> getGoalPeriod(@CurrentUser UserPrincipal userPrincipal) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "조회 성공", goalService.getGoalPeriod(userPrincipal.getId())
         ));
