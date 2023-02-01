@@ -17,12 +17,14 @@ public class GoalResponse {
     private String title;
     private String startDate;
     private String endDate;
+    private boolean state;
 
     public GoalResponse(Goal goal){
         this.goalId = goal.getGoalId();
         this.title = goal.getTitle();
         this.startDate = goal.getStartDate();
         this.endDate = goal.getEndDate();
+        this.state = goal.isState();
     }
 
 
