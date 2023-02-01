@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -93,16 +90,27 @@ public class TodoService {
         return todoId;
     }
 
-    public List<TodoPeriodResponse> getTodoPeriod(Long userId) {
+    public List<Map<String, Map<String, String>>> getTodoPeriod(Long userId) {
 
         List<Map<String, Object>> mapList = todoRepository.findTodoPeriod(userId);
-        List<TodoPeriodResponse> result = new ArrayList<>();
+//        List<TodoPeriodResponse> result = new ArrayList<>();
+
+        List<Map<String, Map<String, String>>> result = new ArrayList<>();
 
         for(Map<String, Object> map : mapList){
             String goalId = map.get("goalId").toString();
             String minDate = map.get("minDate").toString();
             String maxDate = map.get("maxDate").toString();
-            result.add(new TodoPeriodResponse(goalId, minDate, maxDate));
+//            PeriodResponse periodResponse = new PeriodResponse(minDate, maxDate);
+//            result.add(new TodoPeriodResponse(goalId, minDate, maxDate));
+
+            Map<String, Map<String, String>> maps = new HashMap<>();
+            Map<String, String> date = new HashMap<>();
+            date.put("minDate", minDate);
+            date.put("maxDate", maxDate);
+
+            maps.put(goalId, date);
+            result.add(maps);
         }
 
 //        Map<String, String> map = todoRepository.findTodoPeriod(userId);
