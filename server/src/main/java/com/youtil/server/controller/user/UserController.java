@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("user")
 @Api(tags = {"유저 컨트롤러"})
 public class UserController {
     @Autowired
