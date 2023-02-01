@@ -21,20 +21,20 @@ const Form = (props) => {
         setTimeout(function() {
             indicatorRef.current.style.width = '0px'
             popUpRef.current.style.top = '20px'
-        }, 1);
+        }, 100);
         setTimeout(function() {
             popUpRef.current.style.top = `-${props.height}px`
         }, props.showTime);
         setTimeout(function() {
             props.stateHandler(false)
-        }, props.showTime + 300);
+        }, props.showTime + 290);
     }, [])
 
     return (
         <div className={styles['backdrop']}>
             <div ref={popUpRef} className={styles['pop-up']}>
                 <div className={styles['content']}>
-                    {props.component}
+                    {props.content}
                 </div>
                 <div ref={indicatorRef} className={styles['indicator']} />
             </div>

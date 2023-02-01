@@ -85,15 +85,15 @@ const PlanCalendar = (props) => {
 
 
 
-  useEffect(() => {
-    // if (containerRef?.current?.scrollWidth) {
-    //   monthSpaceRef.current.style.width = containerRef.current.scrollWidth + 'px'
-    //   monthTitleWrapperRef.current.style.width = containerRef.current.scrollWidth + 'px'
-    // }
-    monthSpaceRef.current.style.width = containerRef?.current?.scrollWidth + 'px'
-    monthTitleWrapperRef.current.style.width = containerRef?.current?.scrollWidth + 'px'
-    // props.plansTitleWrapperRef.current.style.height = props.plansTitleInnerRef.current.clientHeight + 'px'
-  }, [monthRange, props.todoFormVisibility, ])
+  // useEffect(() => {
+  //   // if (containerRef?.current?.scrollWidth) {
+  //   //   monthSpaceRef.current.style.width = containerRef.current.scrollWidth + 'px'
+  //   //   monthTitleWrapperRef.current.style.width = containerRef.current.scrollWidth + 'px'
+  //   // }
+  //   monthSpaceRef.current.style.width = containerRef?.current?.scrollWidth + 'px'
+  //   monthTitleWrapperRef.current.style.width = containerRef?.current?.scrollWidth + 'px'
+  //   // props.plansTitleWrapperRef.current.style.height = props.plansTitleInnerRef.current.clientHeight + 'px'
+  // }, [monthRange, props.todoFormVisibility, ])
 
   
 
@@ -144,7 +144,7 @@ const PlanCalendar = (props) => {
       <React.Fragment key={`month-bar-container-${el.goalId}`}>
         <div ref={containerRef} className={styles['month-bar-container']} >
           {columns}
-          <PlanCalendarDateSelector idx={idx} el={el} startDate={el.startDate} endDate={el.endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
+          <PlanCalendarDateSelector idx={idx} el={el} todos={props.todos} startDate={el.startDate} endDate={el.endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
           
         </div>
         {props.todoFormVisibility[idx] && <PlanTodoListRight applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} goalId={plans[idx].goalId} todos={props.todos} scrollRef={scrollRef} containerRef={containerRef} newTodoIdx={props.newTodoIdx} />}
@@ -178,7 +178,7 @@ const PlanCalendar = (props) => {
 
   return (
       <div id="date-range" ref={dateRangeWrapperRef} onClick={() => console.log(planGridRef)} className={styles['date-range-wrapper']}>
-        <div ref={monthTitleWrapperRef}  className={styles['month-title-container']}>
+        <div ref={monthTitleWrapperRef}  className={styles['month-title-container']} style={{width: `${containerRef?.current?.scrollWidth}px`}}>
           {monthTitleGrid}
         </div>
 
@@ -186,7 +186,7 @@ const PlanCalendar = (props) => {
           <div ref={monthBarRef} className={styles['scroll-div']} >
             {totalPlansGrid}
             {props.columns? null : newPlanDummy}
-            <div ref={monthSpaceRef} className={styles['month-space']} />
+            <div ref={monthSpaceRef} className={styles['month-space']} style={{width: `${containerRef?.current?.scrollWidth}px`}} />
           </div>
         </div>
       </div>
