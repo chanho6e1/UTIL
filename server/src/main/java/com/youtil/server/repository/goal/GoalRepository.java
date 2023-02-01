@@ -33,12 +33,12 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
 //from goal
 //where user_id = 3;
 
-    @Query("select min(g.startDate), " +
-            "case when TIMESTAMPDIFF(YEAR, max(g.endDate), min(g.startDate)) = 0 " +
-            "then DATE_ADD(min(g.startDate), INTERVAL 1 YEAR) " +
-            "else max(g.endDate) from Goal g " +
-            "where g.user.userId = :userId")
-    GoalPeriodResponse findGoalPeriod(@Param("userId")Long userId);
+//    @Query("select min(g.startDate), " +
+//            "case when TIMESTAMPDIFF(YEAR, max(g.endDate), min(g.startDate)) = 0 " +
+//            "then DATE_ADD(min(g.startDate), INTERVAL 1 YEAR) " +
+//            "else max(g.endDate) from Goal g " +
+//            "where g.user.userId = :userId")
+//    GoalPeriodResponse findGoalPeriod(@Param("userId")Long userId);
 
 //    List<Goal> findGoalListByUser(Long userId);
 //    List<Goal> findAllByUserId(Long userId);
