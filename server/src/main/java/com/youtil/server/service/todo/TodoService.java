@@ -1,5 +1,6 @@
 package com.youtil.server.service.todo;
 
+import com.youtil.server.common.exception.ArgumentMismatchException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.todo.Todo;
@@ -64,12 +65,15 @@ public class TodoService {
         String[] arr = request.getDueDate().split("T");
         request.setDueDate(arr[0]);
 
+        todoRepository.checkTodoPeriod(todo.getGoal(), request.getDueDate()).orElseThrow(() -> new ArgumentMismatchException("todo 날짜가 목표 범위 벗어남", todoId));
         todo.update(request);
+
+
         return todo.getTodoId();
     }
 
     @Transactional
-    public Long updateTodoDate(List<TodoUpdateDateRequest> request) {
+    public Long updateTodoDate(List<TodoUpdateDateRequest> request) { // 전체 투두 날짜 변경
         Todo todo = new Todo();
         for(TodoUpdateDateRequest re : request){
             todo = todoRepository.findById(re.getTodoId()).orElseThrow(() -> new ResourceNotFoundException("todo", "todoId", re.getTodoId()));
