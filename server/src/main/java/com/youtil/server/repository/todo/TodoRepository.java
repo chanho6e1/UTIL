@@ -27,8 +27,8 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     @Query("delete from Todo t where t.goal.goalId = :goalId")
     void deleteByGoalId(Long goalId);
 
-    @Query(value = "select min(t.due_date), max(t.due_date)" +
-            "from goal g join todo t on g.goal_id = t.goal_id" +
+    @Query(value = "select min(t.due_date) minDate, max(t.due_date) maxDate " +
+            "from goal g join todo t on g.goal_id = t.goal_id " +
             "where user_id = :userId "
             ,nativeQuery = true)
     Map<String, String> findTodoPeriod(Long userId);
