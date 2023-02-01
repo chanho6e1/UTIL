@@ -13,6 +13,7 @@ import { createSlice, configureStore } from '@reduxjs/toolkit'
 // 별칭으로 import : exampleSlice1Reducer, exampleSlice2Reducer
 import planSliceReducer from './planSlice'
 import userAuthReducer from './userAuthSlice'
+import notificationSliceReducer from './notificationSlice'
 // import exampleSlice2Reducer from './exampleSlice2(toolkit)'
 // -------------------------------------------------------------------------------------------------------
 
@@ -25,7 +26,8 @@ const store = configureStore({
   // import할 때에 별칭(exampleSlice1Reducer, exampleSlice2Reducer)으로 import하였으므로 그대로 사용한다.
   reducer: {
     planSlice: planSliceReducer,
-    userAuthSlice: userAuthReducer
+    userAuthSlice: userAuthReducer,
+    notificationSlice: notificationSliceReducer,
   }
 
 

@@ -5,7 +5,8 @@ import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useN
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 import { recvPlansAPI } from "../../api/Plan/recvPlansAPI";
-import { recvTotalPeriodAPI } from "../../api/Plan/recvTotalPeriodAPI";
+import { recvPlansPeriodAPI } from "../../api/Plan/recvPlansPeriodAPI";
+import { recvTodosPeriodAPI } from "../../api/Plan/recvTodosPeriodAPI";
 import PlanLoading from "./PlanLoading";
 
 const PlanExpanded = (props) => {
@@ -18,7 +19,7 @@ const PlanExpanded = (props) => {
 
   useEffect(() => {
 
-    recvTotalPeriodAPI()
+    recvPlansPeriodAPI()
     .then((res) => {
         if (res?.startDate && res?.endDate) {
           const startDate = new Date(res.startDate)
@@ -34,8 +35,15 @@ const PlanExpanded = (props) => {
           setStartRange(startRange)
           setEndRange(endRange)
         }
+    })
 
-        
+
+  }, [])
+
+  useEffect(() => {
+    recvTodosPeriodAPI()
+    .then((res) => {
+      dispatch(modifyPlanSliceActions.responseTodosPeriod(JSON.stringify(res)))
     })
   }, [])
 

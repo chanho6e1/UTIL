@@ -25,6 +25,10 @@ const PlanCalendarDateSelector = (props) => {
   const [updatingStartDate, setUpdatingStartDate] = useState(initialStartDate)
   const [updatingEndDate, setUpdatingEndDate] = useState(initialEndDate)
 
+
+  // 만약 투두 갱신후 투두의 min, max값이 바뀌지 않는다면 아래 코드 체크해볼 것.
+  const todosPeriod = useSelector(state => state.planSlice?.todosPeriod[props.idx])
+
   useEffect(() => {
     dateSelectorBar.current.style.backgroundColor = "#"+(parseInt(Math.random()*0xffffff)).toString(16)
   }, [])
@@ -85,7 +89,6 @@ const PlanCalendarDateSelector = (props) => {
 
   useEffect(() => {
     setStartWidth()
-    
   }, [props.xPointLib, initialStartDate, initialEndDate])
 
 
@@ -119,17 +122,13 @@ const PlanCalendarDateSelector = (props) => {
       editTodosAPI(props.el.goalId, todoDates)
       .then ((res) => {
         const processing = {
-          goalId: props.goalId,
+          goalId: props.el.goalId,
           data: res
         }
         dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
       })
       
     })
-    
-    
-    
-    
   }
   
 
@@ -199,6 +198,25 @@ const PlanCalendarDateSelector = (props) => {
     if ((position.x < 0 && (isStartValid <= props.gridStart || isStartValid <= props.gridStart)) || (position.x > 0 && (isEndValid >= props.gridEnd || isEndValid >= props.gridEnd))) {
       return
     }
+
+
+
+    // if (positionx > 0) {
+    //   if (updatingStartDate > todosPeriod.minDate) {
+    //     return
+    //   }
+    // }
+    // if (positionx < 0) {
+    //   if (updatingEndDate < todosPeriod.maxDate) {
+    //     return
+    //   }
+    // }
+
+
+
+
+
+
     dateSelectorBar.current.style.transitionDuration = '0s'
     dateSelectorBar.current.style.left = initialLeft + position.x + 'px'
     const xPoint = props.xPointLib[parseInt(`${updatingStartDate.getFullYear()}${updatingStartDate.getMonth()}`)]
@@ -273,6 +291,7 @@ const PlanCalendarDateSelector = (props) => {
 
   const onTransferSwipeQuit = () => {
 
+    // 투두가 없을 경우 에러가 난다. 이 부분 수정할 것.
     transferMoveTodo(getDayDistance(initialStartDate, updatingStartDate), initialStartDate > updatingStartDate)
     
     const isStartValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
