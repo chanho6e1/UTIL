@@ -6,7 +6,7 @@ spring:
   # ??? ?? ??
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://i8d210.p.ssafy.io:3306/youtil?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    #    url: jdbc:mysql://i8d210.p.ssafy.io:3306/youtil?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
     url: jdbc:mysql://i8d210.p.ssafy.io:3306/youtil?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
     username: ssafy
     password: ssafy
@@ -44,7 +44,7 @@ spring:
         google:
           clientId: '913035013476-bebq70bsneh30vbjjd0ktsk0con4ofmr.apps.googleusercontent.com'
           clientSecret: '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'
-          redirect-uri: 'https://i8d210.p.ssafy.io:8081/oauth2/callback/google'
+          redirect-uri: 'http://i8d210.p.ssafy.io/oauth2/callback/google'
           scope:
             - email
             - profile
@@ -98,11 +98,9 @@ app:
       - https://i8d210.p.ssafy.io/oauth/token
       - http://localhost:3000/oauth/redirect
       - https://i8d210.p.ssafy.io/oauth2/redirect
-#      - https://i8d210.p.ssafy.io:3000/oauth2/redirect
-      - https://i8d210.p.ssafy.io/oauth2/redirect
       - http://localhost:3000/oauth2/redirect, myandroidapp://oauth2/redirect, myiosapp://oauth2/redirect
   cors:
-    allowedOrigins: http://localhost:3000, https://i8d210.p.ssafy.io, http://localhost:8080, https://i8d210.p.ssafy.io, http://i8d210.p.ssafy.io:8081
+    allowedOrigins: http://localhost:3000, https://i8d210.p.ssafy.io, http://localhost:8080, http://i8d210.p.ssafy.io:8081
 
 cloud:
   aws:
@@ -115,5 +113,5 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
-#server:
-#  port: 8081
+server:
+  port: 8081
