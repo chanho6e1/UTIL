@@ -15,6 +15,7 @@ import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,10 +96,10 @@ public class PostCategoryService {
                 .stream().map(CategoryResponse::new).collect(Collectors.toList());
     }
 
-    public List<PostOfCategoryResponse> getCategoryPosts(Long userId, Long categoryId, String criteria) {
+    public List<PostOfCategoryResponse> getCategoryPosts(Long userId, Long categoryId, String criteria, int offset, int size) {
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        return postCategoryQueryRepository.getCategoryPosts(categoryId, criteria)
+        return postCategoryQueryRepository.getCategoryPosts(userId, categoryId, criteria, PageRequest.of(offset-1, size))
                 .stream().map((c)-> new PostOfCategoryResponse(c, user)).collect(Collectors.toList());
     }
 }
