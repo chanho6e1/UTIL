@@ -38,6 +38,12 @@ const PlanItem = (props) => {
       
   }
 
+  const inputSubmitHandler = (event) => {
+    if (event.key === 'Enter') {
+      cancelEditMode()
+    }
+}
+
   const inputChangeHandler = (event) => {
       setTitleValue(event.target.value)
   }
@@ -75,7 +81,7 @@ const PlanItem = (props) => {
   
 
   const titleEditInput = (
-    <input type="text" onBlur={cancelEditMode} onChange={inputChangeHandler} value={titleValue} placeholder="일정을 입력해 주세요." autoFocus className={styles['edit-todo-input']} />
+    <input type="text" onBlur={cancelEditMode} onKeyPress={inputSubmitHandler} onChange={inputChangeHandler} value={titleValue} placeholder="일정을 입력해 주세요." autoFocus className={styles['edit-todo-input']} />
   )
 
   const titleReadMode = (

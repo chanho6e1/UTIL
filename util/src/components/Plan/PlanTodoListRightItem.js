@@ -1,19 +1,24 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import styles from './PlanTodoListRightItem.module.css'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { editTodoAPI } from "../../api/Plan/editTodoAPI";
 import { chkTodoAPI } from "../../api/Plan/chkTodoAPI";
-import PopUp from "../UI/PopUp/PopUp";
+import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
+
 import Button from "../UI/Button/Button";
 
 const PlanTodoListRightItem = (props) => {
 
     const dispatch = useDispatch()
+    const todos = useSelector(state => state.planSlice.todos)
     const [isDateEditMode, setIsDateEditMode] = useState(false)
     const [dateValue, setDateValue] = useState(props.toStringByFormatting(new Date(props.el.dueDate)))
     const [isDescriptionEditMode, setIsDescriptionEditMode] = useState(false)
     const [descriptionValue, setDescriptionValue] = useState(props.el.description)
+    const [refresh, setRefresh] = useState(false)
+
+    
 
 
     const enterDateEditMode = () => {
@@ -29,11 +34,11 @@ const PlanTodoListRightItem = (props) => {
         }
         editTodoAPI(props.el.todoId, props.goalId, processing)
         .then((res) => {
-            const proccessing = {
+            const processing = {
                 goalId: props.goalId,
                 data: res
             }
-            dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
+            dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
         })
         .then((res) => {
             setIsDateEditMode(false)
@@ -103,12 +108,12 @@ const PlanTodoListRightItem = (props) => {
         })
         .then((res) => {
             if (props.el.state === false) {
-                setDonePopUpState(true)
+                setDoneNotiState(true)
             }
         })
     }
 
-    const popUpContent = (
+    const NotiContent = (
         <div style={{height: '100px', display:'flex', flexDirection:'column', justifyContent:'space-around'}}>
             <div><b>{props.el.title}</b>을 완료하였습니다.</div>
             <div>회고록을 작성 하시겠습니까?</div>
@@ -116,7 +121,7 @@ const PlanTodoListRightItem = (props) => {
         </div>
     )
 
-    const [donePopUpState, setDonePopUpState] = useState(false)
+    const [doneNotiState, setDoneNotiState] = useState(false)
 
 
     const isDoneTrue = (
@@ -133,7 +138,7 @@ const PlanTodoListRightItem = (props) => {
 
     const dateReadMode = (
         <div onClick={enterDateEditMode} className={styles['todo-duedate-wrapper']}>
-            {`${props.time.getFullYear()}년 ${props.time.getMonth() + 1}월 ${props.time.getDate()}일`}, 
+            {`${props.time.getFullYear()}년 ${props.time.getMonth() + 1}월 ${props.time.getDate()}일`},
         </div>
     )
 
@@ -153,7 +158,7 @@ const PlanTodoListRightItem = (props) => {
 
     return (
         <div className={styles['todo-space-wrapper']} style={{width: `${props.containerRef?.current?.scrollWidth}px`}}>
-            <PopUp content={popUpContent} popUpState={donePopUpState} stateHandler={setDonePopUpState} showTime={3000} width={300} height={120} />
+            {doneNotiState && <NotiDeliverer content={NotiContent} stateHandler={setDoneNotiState} duration={5000} />}
             <div className={styles['todo-space']} >
                 {props.el.state ? isDoneTrue : isDoneFalse}
                 {isDateEditMode ? dateEditInput : dateReadMode}

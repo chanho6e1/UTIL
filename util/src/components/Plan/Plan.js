@@ -16,7 +16,7 @@ import { newPlanAPI } from "../../api/Plan/newPlanAPI";
 import { newTodoAPI } from "../../api/Plan/newTodoAPI";
 import { recvTodosAPI } from "../../api/Plan/recvTodosAPI";
 import { editTodoAPI } from "../../api/Plan/editTodoAPI";
-import { recvTotalPeriodAPI } from "../../api/Plan/recvTotalPeriodAPI";
+import { recvTotalPeriodAPI } from "../../api/Plan/recvPlansPeriodAPI";
 
 const Plan = (props) => {
     const dispatch = useDispatch()
