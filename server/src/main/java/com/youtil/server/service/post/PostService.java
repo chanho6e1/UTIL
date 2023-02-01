@@ -1,5 +1,6 @@
 package com.youtil.server.service.post;
 
+import com.youtil.server.common.exception.ArgumentMismatchException;
 import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.config.s3.S3Uploader;
@@ -111,6 +112,8 @@ public class PostService {
 
 
     public List<PostResponse> findByPostSubscribes(PostSearch search, Long userId, int offset, int size) {//내가 구독한 사람의 글 리스트 조회/오프셋
+
+//        User user1 = userRepository.findUser(100L).orElseThrow(() -> new ArgumentMismatchException("잘못된 인자(상황에 맞도록)", data));
 
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         return postQueryRepository.findByPostSubscribes(search, user, PageRequest.of(offset - 1, size))
