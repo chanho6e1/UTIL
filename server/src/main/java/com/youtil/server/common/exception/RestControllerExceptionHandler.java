@@ -1,12 +1,22 @@
 package com.youtil.server.common.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestControllerAdvice
+@Slf4j
 public class RestControllerExceptionHandler {
 
     // 로그인이 필요한 서비스에서 로그인 되어있지 않은 경우 예외 처리
@@ -37,10 +47,26 @@ public class RestControllerExceptionHandler {
         return new ResponseEntity<>(errResponse, HttpStatus.CONFLICT);
     }
 
-    // type mismatch exception
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ErrorResponse> resolveException(MethodArgumentTypeMismatchException exception) {
-        ErrorResponse errResponse =  new ErrorResponse(false, "잘못된 요청", null);
+//    // type mismatch exception
+//    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+//    public ResponseEntity<ErrorResponse> resolveException(MethodArgumentTypeMismatchException exception) {
+//        ErrorResponse errResponse =  new ErrorResponse(false, "잘못된 요청", null);
+//        return new ResponseEntity<>(errResponse, HttpStatus.BAD_REQUEST);
+//    }
+
+    //type mismatch exception
+    @ExceptionHandler(ArgumentMismatchException.class)
+    public ResponseEntity<ErrorResponse> resolveException(ArgumentMismatchException exception) {
+        ErrorResponse errResponse =  exception.getErrResponse();
         return new ResponseEntity<>(errResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    /* @Valid 로 유효성 검사했을 때 발생한 에러 */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<List<ErrorResponse>> handleValidationExceptions(BindingResult bindingResult) {
+        List<ErrorResponse> list = new ArrayList<>();
+//        bindingResult.getAllErrors().forEach(c -> errors.put(((FieldError)c).getField() , c.getDefaultMessage()));
+        bindingResult.getAllErrors().forEach(c ->list.add(new ErrorResponse(false, c.getDefaultMessage(), ((FieldError)c).getField())));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(list);
     }
 }
