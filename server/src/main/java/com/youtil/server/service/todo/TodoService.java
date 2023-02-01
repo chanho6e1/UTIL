@@ -14,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -91,12 +93,22 @@ public class TodoService {
         return todoId;
     }
 
-    public TodoPeriodResponse getTodoPeriod(Long userId) {
+    public List<TodoPeriodResponse> getTodoPeriod(Long userId) {
 
-        Map<String, String> map = todoRepository.findTodoPeriod(userId);
-        String minDate = map.get("minDate");
-        String maxDate = map.get("maxDate");
+        List<Map<String, Object>> mapList = todoRepository.findTodoPeriod(userId);
+        List<TodoPeriodResponse> result = new ArrayList<>();
 
-        return new TodoPeriodResponse(minDate, maxDate);
+        for(Map<String, Object> map : mapList){
+            String goalId = map.get("goalId").toString();
+            String minDate = map.get("minDate").toString();
+            String maxDate = map.get("maxDate").toString();
+            result.add(new TodoPeriodResponse(goalId, minDate, maxDate));
+        }
+
+//        Map<String, String> map = todoRepository.findTodoPeriod(userId);
+//        String minDate = map.get("minDate");
+//        String maxDate = map.get("maxDate");
+
+        return result;
     }
 }
