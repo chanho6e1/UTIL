@@ -56,4 +56,7 @@ public class Todo extends BaseEntity {
     }
 
 
+    public void updateDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
 }
