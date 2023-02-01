@@ -1,7 +1,6 @@
 package com.youtil.server.dto.todo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,15 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class TodoPeriodResponse {
-
-    private String goalId;
+public class PeriodResponse {
     private String minDate;
     private String maxDate;
 
-    public TodoPeriodResponse(String goalId, String minDate, String maxDate){
-        this.goalId = goalId;
-//        this.periodResponse = periodResponse;
+    public PeriodResponse(String minDate, String maxDate){
         this.minDate = minDate;
         this.maxDate = maxDate;
     }
