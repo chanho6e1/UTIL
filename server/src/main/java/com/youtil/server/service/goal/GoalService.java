@@ -103,4 +103,13 @@ public class GoalService {
         return new GoalPeriodResponse(startDate, endDate);
 
     }
+
+    @Transactional
+    public Object toggleGoalState(Long id, Long goalId) {
+        Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
+
+        goal.toggleState();
+
+        return goal.isState();
+    }
 }
