@@ -103,11 +103,11 @@ public class TagService {
         findOrCrateTagPost(postId, request);
         return postId;
     }
-//    public List<TagResponse> getPostbyTag(Long tagId) { // 테그로 포스트 조회
-//        Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag", "tagId", tagId));
-//        return tagOfPostRepository.findByPost(tag)
-//                .stream().map(TagResponse::new).collect(Collectors.toList());
-//    }
+    public List<TagResponse> getPostbyTag(Long tagId) { // 테그로 포스트 조회
+        Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag", "tagId", tagId));
+        return tagOfPostRepository.findByTag(tag)
+                .stream().map(TagResponse::new).collect(Collectors.toList());
+    }
     @Transactional
     public Long deleteTagPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));

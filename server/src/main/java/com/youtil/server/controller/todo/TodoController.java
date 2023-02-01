@@ -3,6 +3,7 @@ package com.youtil.server.controller.todo;
 import com.youtil.server.common.CommonResponse;
 import com.youtil.server.dto.todo.TodoSaveRequest;
 import com.youtil.server.dto.todo.TodoStateRequest;
+import com.youtil.server.dto.todo.TodoUpdateDateRequest;
 import com.youtil.server.service.todo.TodoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/todos")
@@ -40,6 +42,14 @@ public class TodoController {
     public ResponseEntity<CommonResponse> setTodoState(@PathVariable Long todoId) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "투두 상태 수정 성공", todoService.setTodoState(todoId)));
+    }
+    @ApiOperation(value = "전체 투두 날짜 수정", notes = "전체 투두 날짜를 수정한다")
+    @PutMapping("/dates")
+    public ResponseEntity<CommonResponse> updateTodoDate(@RequestBody @Valid List<TodoUpdateDateRequest> request) throws Exception {
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.CREATED, "전체 투두 날짜 수정 성공", todoService.updateTodoDate(request)));
+
+
     }
 
     @ApiOperation(value = "투두 삭제", notes = "투두를 삭제한다")
