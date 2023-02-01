@@ -27,7 +27,7 @@ const modifyPlanSlice = createSlice({
     },
     responseTodosPeriod(state, action) {
       const parsedPayload = JSON.parse(action.payload)
-      state.todosPeriod = parsedPayload
+      state.todosPeriod = parsedPayload[0]
     },
     responseTodoPeriod(state, action) {
       const parsedPayload = JSON.parse(action.payload)
