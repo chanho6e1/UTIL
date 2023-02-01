@@ -8,18 +8,29 @@ import com.youtil.server.dto.goal.GoalPeriodResponse;
 import com.youtil.server.dto.goal.GoalResponse;
 import com.youtil.server.dto.goal.GoalSaveRequest;
 import com.youtil.server.dto.goal.GoalUpdateRequest;
+import com.youtil.server.dto.post.PostResponse;
 import com.youtil.server.repository.goal.GoalQueryRepository;
 import com.youtil.server.repository.goal.GoalRepository;
 import com.youtil.server.repository.review.ReviewRepository;
 import com.youtil.server.repository.todo.TodoRepository;
 import com.youtil.server.repository.user.UserRepository;
+import com.youtil.server.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.Calendar;
 
 @Service
 @RequiredArgsConstructor
@@ -87,9 +98,27 @@ public class GoalService {
     }
 
     public GoalPeriodResponse getGoalPeriod(Long userId) {
-        String startDate = goalRepository.findMinGoal(userId);
-        String endDate = goalRepository.findMaxGoal(userId);
+
+        Map<String, String> map = goalRepository.findGoalPeriod(userId);
+        String startDate = map.get("startDate");
+        String endDate = map.get("endDate");
 
         return new GoalPeriodResponse(startDate, endDate);
+
+    }
+
+    @Transactional
+    public Object toggleGoalState(Long id, Long goalId) {
+        Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
+
+        goal.toggleState();
+
+        return goal.isState();
+    }
+
+    public List<PostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        return goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size))
+                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 }

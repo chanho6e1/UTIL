@@ -14,6 +14,8 @@ public class GoalPeriodResponse {
     private String startDate;
     private String endDate;
 
+    // startDate, endDate 기간 차이 1년 이하면 1년 주기
+
     public GoalPeriodResponse(String startDate, String endDate){
         this.startDate = startDate;
         this.endDate = endDate;
