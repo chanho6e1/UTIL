@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -24,22 +25,13 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
     @Query("select max(g.endDate) from Goal g where g.user.userId = :userId")
     String findMaxGoal(@Param("userId")Long userId);
 
-//    select min(start_date) min,
-//	case
-//		when TIMESTAMPDIFF(YEAR, max(end_date), min(start_date)) = 0
-//        then DATE_ADD(min(start_date), INTERVAL 1 YEAR)
-//        else max(end_date)
-//	end as max
-//from goal
-//where user_id = 3;
-
-    @Query(value = "select min(g.startDate), " +
-            "case when TIMESTAMPDIFF(YEAR, max(g.endDate), min(g.startDate)) = 0 " +
-            "then DATE_ADD(min(g.startDate), INTERVAL 1 YEAR) " +
-            "else max(g.endDate) from Goal g " +
-            "where g.user.userId = :userId"
+    @Query(value = "select min(start_date) startDate, " +
+            "case when TIMESTAMPDIFF(YEAR, max(end_date), min(start_date)) = 0 " +
+            "then DATE_ADD(min(start_date), INTERVAL 1 YEAR) " +
+            "else max(end_date) end as endDate " +
+            "from goal where goal.user_id = :userId "
             ,nativeQuery = true)
-    GoalPeriodResponse findGoalPeriod(@Param("userId")Long userId);
+    Map<String, String> findGoalPeriod(@Param("userId")Long userId);
 
 //    List<Goal> findGoalListByUser(Long userId);
 //    List<Goal> findAllByUserId(Long userId);
