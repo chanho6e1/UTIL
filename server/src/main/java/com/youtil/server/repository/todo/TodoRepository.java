@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
-    @Query("SELECT t FROM Todo t WHERE t.goal = :goal")
+    @Query("SELECT t FROM Todo t WHERE t.goal = :goal order by t.dueDate asc")
     List<Todo> findByGoalId(@Param("goal") Goal goal);
     @Transactional
     @Modifying
