@@ -2,7 +2,10 @@ import React, {useEffect, useRef, useState} from "react";
 import styles from './PlanTodoListRight.module.css'
 import PlanTodoListRightItem from "./PlanTodoListRightItem";
 
+
 const PlanTodoListRight = (props) => {
+
+
 
     function leftPad(value) {
         if (value >= 10) {
@@ -31,9 +34,9 @@ const PlanTodoListRight = (props) => {
 
 
     const todoContents = props.todos[props.goalId]?.map((el, idx) => {
-        const time = new Date(el.dueDate)
+        
         return (
-            <PlanTodoListRightItem key={`todos-${props.goalId}-${idx}`} applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} toStringByFormatting={toStringByFormatting} el={el} scrollRef={props.scrollRef} containerRef={props.containerRef} time={time} goalId={props.goalId} />
+            <PlanTodoListRightItem key={`todos-${props.goalId}-${idx}-${el.dueDate}`} applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} toStringByFormatting={toStringByFormatting} el={el} scrollRef={props.scrollRef} containerRef={props.containerRef} time={new Date(el.dueDate)} goalId={props.goalId} />
         )
     })
 

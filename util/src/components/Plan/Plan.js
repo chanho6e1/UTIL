@@ -5,7 +5,7 @@ import PlanCalendar from "./PlanCalendar";
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 import Card from "../UI/Card/Card";
-import Modal from "../UI/Modal/Modal";
+import Modal from "../UI/FixedModal/FixedModal";
 import { recvPlansAPI } from "../../api/Plan/recvPlansAPI";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
 import PlanLoading from "./PlanLoading";

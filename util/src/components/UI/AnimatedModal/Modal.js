@@ -160,7 +160,7 @@ const ModalOverlay = (props) => {
 
 
 
-const Modal = (props) => {
+const AnimatedModal = (props) => {
   
 
   const match = useMatch(`${props.url}`);
@@ -179,4 +179,4 @@ const Modal = (props) => {
 
 
 
-export default Modal
+export default AnimatedModal

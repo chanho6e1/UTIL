@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 import useDidMountEffect from "../../hooks/useDidMountEffect";
 import { editPlanAPI } from "../../api/Plan/editPlanAPI";
+import { recvTodosAPI } from "../../api/Plan/recvTodosAPI";
+import { editTodosAPI } from "../../api/Plan/editTodosAPI";
 
 
 
@@ -68,8 +70,8 @@ const PlanCalendarDateSelector = (props) => {
       return
     }
 
-    const barWidth = props.planGridRef[columnIdx].current[gridEndIdx].offsetLeft - (startMonthDaySplit * startDate) - props.planGridRef[columnIdx].current[gridStartIdx].offsetLeft + (endMonthDaySplit * endDate)
-    const barLeft = props.planGridRef[columnIdx].current[gridStartIdx].offsetLeft + (startMonthDaySplit * startDate)
+    const barWidth = props.planGridRef[columnIdx]?.current[gridEndIdx]?.offsetLeft - (startMonthDaySplit * startDate) - props.planGridRef[columnIdx]?.current[gridStartIdx]?.offsetLeft + (endMonthDaySplit * endDate)
+    const barLeft = props.planGridRef[columnIdx]?.current[gridStartIdx]?.offsetLeft + (startMonthDaySplit * startDate)
     
     dateSelectorBar.current.style.transitionDuration = '0.1s'
     dateSelectorBar.current.style.width = barWidth + 'px'
@@ -97,8 +99,39 @@ const PlanCalendarDateSelector = (props) => {
     .then((res) => {
         dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
     })
+
   }, [initialStartDate, initialEndDate])
 
+
+  const transferMoveTodo = (distance, reverse) => {
+    const movedDates = recvTodosAPI(props.el.goalId)
+    .then((todos) => {
+      
+      const todoDates = todos.map((el, idx) => {
+        const curDueDate = new Date(el.dueDate)
+        curDueDate.setDate(curDueDate.getDate() + (reverse ? -distance : distance))
+        const processing = {
+          todoId: el.todoId,
+          dueDate: curDueDate
+        }
+        return processing
+      })
+      editTodosAPI(props.el.goalId, todoDates)
+      .then ((res) => {
+        const processing = {
+          goalId: props.goalId,
+          data: res
+        }
+        dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
+      })
+      
+    })
+    
+    
+    
+    
+  }
+  
 
   const [startPeriod, setStartPeriod] = useState(0)
   const [startMoved, setStartMoved] = useState(0)
@@ -239,6 +272,9 @@ const PlanCalendarDateSelector = (props) => {
   }
 
   const onTransferSwipeQuit = () => {
+
+    transferMoveTodo(getDayDistance(initialStartDate, updatingStartDate), initialStartDate > updatingStartDate)
+    
     const isStartValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
     const isEndValid = new Date(updatingEndDate.getFullYear(), updatingEndDate.getMonth(), updatingEndDate.getDate() + 1)
     const dayDistance = getDayDistance(updatingStartDate, updatingEndDate)
@@ -256,6 +292,7 @@ const PlanCalendarDateSelector = (props) => {
       setInitialStartDate(() => updatingStartDate)
       setInitialEndDate(() => updatingEndDate)
     }
+    
     setStartMoved(0)
     setEndMoved(0)
     setStartPeriod(0)
@@ -266,6 +303,8 @@ const PlanCalendarDateSelector = (props) => {
     // dispatch(modifyPlanSliceActions.modifyStartDate(JSON.stringify({idx: props.idx, updatedDate: startDate.toString()})))
     // dispatch(modifyPlanSliceActions.modifyEndDate(JSON.stringify({idx: props.idx, updatedDate: endDate.toString()})))
   }
+
+
 
 
   
