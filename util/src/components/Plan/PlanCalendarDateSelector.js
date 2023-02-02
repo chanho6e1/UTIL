@@ -394,24 +394,30 @@ const PlanCalendarDateSelector = (props) => {
     }
 
     // 투두가 없을 경우 에러가 난다. 이 부분 수정할 것.
-    transferMoveTodo(getDayDistance(initialStartDate, updatingStartDate), initialStartDate > updatingStartDate)
+    // transferMoveTodo(getDayDistance(initialStartDate, updatingStartDate), initialStartDate > updatingStartDate)
     
     const isStartValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
     const isEndValid = new Date(updatingEndDate.getFullYear(), updatingEndDate.getMonth(), updatingEndDate.getDate() + 1)
     
     if (positionx < 0 && (isStartValid <= props.gridStart || isStartValid <= props.gridStart)) {
-      props.extendStartRange(1)
-      const endDateCorrection = new Date(new Date(props.gridStart).setDate(props.gridStart.getDate() + dayDistance))
-      setInitialStartDate(() => props.gridStart)
-      setInitialEndDate(() => endDateCorrection)
+      if ((updatingEndDate > maxDate || maxDate == 'Invalid Date') || (updatingStartDate < minDate || minDate == 'Invalid Date')) {
+        props.extendStartRange(1)
+        const endDateCorrection = new Date(new Date(props.gridStart).setDate(props.gridStart.getDate() + dayDistance))
+        setInitialStartDate(() => props.gridStart)
+        setInitialEndDate(() => endDateCorrection)
+      }
     } else if (positionx > 0 && (isEndValid >= props.gridEnd || isEndValid >= props.gridEnd)) {
-      props.extendEndRange(1)
-      const startDateCorrection = new Date(new Date(props.gridEnd).setDate(props.gridEnd.getDate() - dayDistance))
-      setInitialStartDate(() => startDateCorrection)
-      setInitialEndDate(() => props.gridEnd)
+      if ((updatingEndDate > maxDate || maxDate == 'Invalid Date') || (updatingStartDate < minDate || minDate == 'Invalid Date')) {
+        props.extendEndRange(1)
+        const startDateCorrection = new Date(new Date(props.gridEnd).setDate(props.gridEnd.getDate() - dayDistance))
+        setInitialStartDate(() => startDateCorrection)
+        setInitialEndDate(() => props.gridEnd)
+      }
     } else {
-      setInitialStartDate(() => updatingStartDate)
-      setInitialEndDate(() => updatingEndDate)
+      if ((updatingEndDate > maxDate || maxDate == 'Invalid Date') && (updatingStartDate < minDate || minDate == 'Invalid Date')) {
+        setInitialStartDate(() => updatingStartDate)
+        setInitialEndDate(() => updatingEndDate)
+      }
     }
     
     setStartMoved(0)
