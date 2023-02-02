@@ -19,7 +19,7 @@ const Main = (props) => {
   const userAuth = useSelector((state) => state.userAuthSlice.userAuth);
 
   const postData = {
-    content: [ <MyUtil />, <ToastEditor />, <div>test1</div>, <div>test1</div>, <div>test1</div>],
+    content: [<MyUtil />, <ToastEditor />, <UserPage id={9} />, <div>test1</div>, <div>test1</div>],
     dock: {
       logoContracted: (
         <img className={styles["logo-icon"]} src={logo} style={{ width: "96px", height: "auto" }} />
