@@ -22,7 +22,7 @@ const Main = (props) => {
 
 
   const postData = {
-    content: [ <MyUtil />, <div>test1</div>, <div>test1</div>, <div>test1</div>, <div>test1</div>],
+    content: [ <MyUtil />, <ToastEditor />, <div>test1</div>, <div>test1</div>, <div>test1</div>],
     dock: {
       logoContracted:<img className={styles['logo-icon']} src={logo} style={{width: '96px', height: 'auto'}}/>,
       logoExpanded:<div className={styles['logo-text']}>util</div>,

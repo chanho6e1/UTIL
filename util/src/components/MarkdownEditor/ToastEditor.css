@@ -53,6 +53,168 @@ background-size: 48px;
 background-repeat: no-repeat;
 }
 
+
+.hrline {
+  background: url('../../img/Underline.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.hrline:hover {
+background: url('../../img/Underline_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+.quote {
+  background: url('../../img/Blockquote.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.quote:hover {
+background: url('../../img/Blockquote_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+.bullet-list {
+  background: url('../../img/UnorderedList.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.bullet-list:hover {
+background: url('../../img/UnorderedList_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+.ordered-list {
+  background: url('../../img/OrderedList.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.ordered-list:hover {
+background: url('../../img/OrderedList_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+.task-list {
+  background: url('../../img/Task.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.task-list:hover {
+background: url('../../img/Task_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+.table {
+  background: url('../../img/Table.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.table:hover {
+background: url('../../img/Table_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+.image {
+  background: url('../../img/Image.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.image:hover {
+background: url('../../img/Image_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+.indent {
+  background: url('../../img/Indent.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.indent:hover {
+background: url('../../img/Indent_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+.outdent {
+  background: url('../../img/Outdent.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.outdent:hover {
+background: url('../../img/Outdent_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+.link {
+  background: url('../../img/Insert_link.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.link:hover {
+background: url('../../img/Insert_link_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+.code {
+  background: url('../../img/Inline_code.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.code:hover {
+background: url('../../img/Inline_code_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+.codeblock {
+  background: url('../../img/Insert_code_block.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.codeblock:hover {
+background: url('../../img/Insert_code_block_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+
+
+
+.more {
+  background: url('../../img/More.png');
+  background-size: 48px;
+  background-repeat: no-repeat;
+}
+
+.more:hover {
+background: url('../../img/More_focus.png');
+background-size: 48px;
+background-repeat: no-repeat;
+}
+
+
+
 .toastui-editor-toolbar {
     height: 48px;
     box-sizing: border-box;
@@ -63,9 +225,9 @@ background-repeat: no-repeat;
     display: flex;
     /* padding: 0 25px; */
     height: 48px;
-    background-color: #f7f9fc;
-    border-bottom: 1px solid #ebedf2;
-    border-radius: 3px 3px 0 0;
+    background-color: #ffffff;
+    /* border-bottom: 1px solid #ebedf2;
+    border-radius: 3px 3px 0 0; */
   }
 
 .toastui-editor-toolbar-icons {
@@ -215,6 +377,7 @@ background-color: white;
     display: none;
     overflow: hidden;
     height: 100%;
+    background-color: white;
   }
   
   .toastui-editor-md-container .toastui-editor {
@@ -342,7 +505,7 @@ background-color: white;
   
   .toastui-editor-defaultUI {
     position: relative;
-    border: 1px solid #dadde6;
+    /* border: 1px solid #dadde6; */
     height: 100%;
     font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', 'Arial', '나눔바른고딕',
       'Nanum Barun Gothic', '맑은고딕', 'Malgun Gothic', sans-serif;

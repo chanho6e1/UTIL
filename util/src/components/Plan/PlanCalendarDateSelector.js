@@ -9,6 +9,7 @@ import { recvTodosAPI } from "../../api/Plan/recvTodosAPI";
 import { editTodosAPI } from "../../api/Plan/editTodosAPI";
 import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 import warning from "../../img/Warning.png"
+import { recvTodoPeriodAPI } from "../../api/Plan/recvTodoPeriodAPI";
 
 
 
@@ -135,6 +136,19 @@ const PlanCalendarDateSelector = (props) => {
           data: res
         }
         dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
+      })
+      .then((res) => {
+
+        recvTodoPeriodAPI(props.el.goalId)
+        .then((res) => {
+            const processing = {
+                goalId: props.el.goalId,
+                data: res
+            }
+            console.log(res)
+            dispatch(modifyPlanSliceActions.responseTodoPeriod(JSON.stringify(processing)))
+        })
+
       })
       
     })
@@ -394,7 +408,7 @@ const PlanCalendarDateSelector = (props) => {
     }
 
     // 투두가 없을 경우 에러가 난다. 이 부분 수정할 것.
-    // transferMoveTodo(getDayDistance(initialStartDate, updatingStartDate), initialStartDate > updatingStartDate)
+    transferMoveTodo(getDayDistance(initialStartDate, updatingStartDate), initialStartDate > updatingStartDate)
     
     const isStartValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
     const isEndValid = new Date(updatingEndDate.getFullYear(), updatingEndDate.getMonth(), updatingEndDate.getDate() + 1)
