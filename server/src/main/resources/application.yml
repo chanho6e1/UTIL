@@ -99,6 +99,7 @@ app:
       - http://localhost:3000/oauth/redirect
       - https://i8d210.p.ssafy.io/oauth2/redirect
       - http://localhost:3000/oauth2/redirect, myandroidapp://oauth2/redirect, myiosapp://oauth2/redirect
+      - http://i8d210.p.ssafy.io:3000/oauth2/redirect, myandroidapp://oauth2/redirect, myiosapp://oauth2/redirect
   cors:
     allowedOrigins: http://localhost:3000, https://i8d210.p.ssafy.io, http://localhost:8080, http://i8d210.p.ssafy.io:8081
 
