@@ -39,6 +39,10 @@ public class TodoService {
         String[] arr = request.getDueDate().split("T");
         request.setDueDate(arr[0]);
 
+        todoRepository.checkTodoAndGoalPeriod(goalId, request.getDueDate()).orElseThrow(
+                () -> new ArgumentMismatchException("todo 날짜가 목표 범위 벗어남",goal.getStartDate() + "~" + goal.getEndDate()));
+
+
         todo = todoRepository.save(request.of(goal)) ;
 
         return todo.getTodoId();

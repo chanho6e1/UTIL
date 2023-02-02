@@ -36,6 +36,11 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             ,nativeQuery = true)
     List<Map<String, Object>> findTodoPeriod(Long userId);
 
+    @Query("select g " +
+            "from Goal g " +
+            "where g.goalId = :goal and :dueDate between g.startDate and g.endDate ")
+    Optional<Goal> checkTodoAndGoalPeriod(@Param("goal") Long goal, @Param("dueDate") String dueDate);
+
     @Query(value = "select * " +
             "from goal g join todo t on t.goal_id = g.goal_id " +
             "where g.goal_id = :goal and :dueDate between g.start_date and g.end_date and t.todo_id = :todoId "
