@@ -86,7 +86,7 @@ public class PostService {
         User me = userRepository.findUser(myId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", myId)); //접속 중인 나
 
         return postQueryRepository.findPostListBySpecUser(userId, criteria, PageRequest.of(offset - 1, size), me)
-                .stream().map((post)-> new PostResponse(post, me)).collect(Collectors.toList());
+                .stream().map((post)-> new PostResponse(post, me)).collect(Collectors.toList()); //오류 
     }
 
 
