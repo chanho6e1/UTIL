@@ -15,34 +15,29 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @DynamicUpdate
-public class PostLike extends BaseEntity {
+public class PostFile extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "like_id")
-    private Long id;
+    @Column(name = "file_id")
+    private Long fileId;
+
+    private String path;
+
+    private String fileName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Post_id", nullable = false)
     private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private User user;
-
-    private Boolean likeStatus;
-
-    @Builder
-    public PostLike(Post post, User user){
-        this.post = post;
-        this.user = user;
-    }
-
     public void setPost(Post post) {
         this.post = post;
     }
 
-    public boolean ownedBy(Long userId) {
-        return this.user.getUserId().equals(userId);
+    @Builder
+    public PostFile(String path, Post post){
+        this.path = path;
+        this.post = post;
+        this.fileName = path.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com","");
     }
 }
