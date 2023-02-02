@@ -7,7 +7,6 @@ const PostCardTagList = styled("li")(({ theme }) => ({
 }));
 
 const PostCardTagDataList = (props) => {
-  console.log(props);
   const TagDataItem = [];
 
   const maxIndex = (list) => {

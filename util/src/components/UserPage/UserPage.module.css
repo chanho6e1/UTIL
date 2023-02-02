@@ -3,18 +3,78 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 60%;
-  margin: 0 auto;
+  width: 55%;
+  margin: 20px auto 20px auto;
 }
 
 .user-page-upper {
   display: flex;
   align-items: center;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.avatar-username {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 30px;
+}
+
+.nickname {
+  margin-top: 12px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.follow-userdata {
+}
+
+.follow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.follower {
+  display: flex;
+  align-items: baseline;
+}
+
+.follow-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+.follow-number {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-right: 20px;
+}
+
+.username-department {
+  display: flex;
+}
+
+.username {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-right: 20px;
+}
+
+.department-text {
+}
+
+.department-data {
+}
+
+.email {
 }
 
 .postcard-container {
   width: 100%;
-  margin: 0 auto;
 }
 
 .postcard-container ul {
