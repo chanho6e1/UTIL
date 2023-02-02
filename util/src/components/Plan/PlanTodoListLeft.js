@@ -9,7 +9,7 @@ const PlanTodoListLeft = (props) => {
 
     const todoTitles = props.todos[props.goalId]?.map((el, idx) => {
         return (
-            <PlanTodoListLeftItem applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} el={el} goalId={props.goalId} />
+            <PlanTodoListLeftItem key={`todo-titles-${el.todoId}-${idx}`} applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} el={el} goalId={props.goalId} />
             // <div className={styles['todo-detail-wrapper']}>
             //     <div className={styles['todo-title-wrapper']}>
             //         <svg style={{marginRight: '6px', color: 'rgb(150, 150, 150)'}} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-hash" viewBox="0 0 16 16">

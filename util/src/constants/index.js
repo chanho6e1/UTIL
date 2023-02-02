@@ -1,6 +1,6 @@
-export const API_BASE_URL = "http://i8d210.p.ssafy.io:8081/api";
-export const OAUTH_API_BASE_URL = "http://i8d210.p.ssafy.io:8081/api";
-export const ACCESS_TOKEN = "accessToken";
+export const API_BASE_URL = 'http://i8d210.p.ssafy.io:8081/api';
+export const OAUTH_API_BASE_URL = 'http://i8d210.p.ssafy.io:8081/api';
+export const ACCESS_TOKEN = 'accessToken';
 
 export const TOKEN = () => {
   const token = localStorage.getItem("accessToken");

@@ -3,12 +3,16 @@ import { useRef } from 'react';
 // Toast 에디터
 import { Editor } from '@toast-ui/react-editor';
 import './ToastEditor.css';
+import styles from './ToastEditor.module.css'
 
 export default function ToastEditor() {
 
   return (
     <div className={'editor-wrapper'}>
-      <h3>### Editor Toast</h3>
+      <div className={styles['additional-info-wrapper']}>
+        <input type="text" className={styles['title-input']} placeholder="제목을 입력하세요." />
+
+      </div>
       <Editor
         placeholder="내용을 입력해주세요."
         previewStyle="vertical" // 미리보기 스타일 지정

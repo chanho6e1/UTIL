@@ -8,6 +8,7 @@ import FixedModal from "../UI/FixedModal/FixedModal";
 import Button from "../UI/Button/Button";
 import warning from "../../img/Warning.png"
 
+
 const PlanTodoListLeftItem = (props) => {
     const dispatch = useDispatch()
     const [isEditMode, setIsEditMode] = useState(false)
@@ -35,6 +36,8 @@ const PlanTodoListLeftItem = (props) => {
         .then((res) => {
             setIsEditMode(false)
         })
+        
+
         
     }
 
@@ -103,7 +106,7 @@ const PlanTodoListLeftItem = (props) => {
     )
 
     const titleEditInput = (
-            <input type="text" onBlur={cancelEditMode} onChange={inputChangeHandler} onKeyPress={inputSubmitHandler} value={titleValue} placeholder="일정을 입력해 주세요." autoFocus className={styles['edit-todo-input']} />
+            <input type="text" key={props.el.todoId} onBlur={cancelEditMode} onChange={inputChangeHandler} onKeyPress={inputSubmitHandler} value={titleValue} placeholder="일정을 입력해 주세요." autoFocus className={styles['edit-todo-input']} />
     )
 
     
