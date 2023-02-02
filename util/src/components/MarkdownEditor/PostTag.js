@@ -22,14 +22,16 @@ const PostTag = (props) => {
   const createLine = (idx) => {
     return (
       <div  className={styles[`line-wrapper`]}>
-        <div ref={el => (lineRef.current[idx] = el)}  id={idx} className={styles[`line`]} contentEditable="true" placeholder="태그를 입력하세요." onInput={inputToArray.bind(this, idx)} onKeyDown={(event) => {deleteLine(idx, event); pushLine(idx, event); preventSpace(idx, event)}} ></div>
+        <div ref={el => (lineRef.current[idx] = el)}  id={idx} className={styles[`line`]} contentEditable="true" placeholder="태그를 입력하세요." onInput={inputToArray.bind(this, idx)} onKeyDown={(event) => {deleteLine(idx, event); pushLine(idx, event); preventSpace(idx, event); checkValid(idx, event)}} ></div>
       </div>
     )
   }
 
   const inputToArray = (idx, event) => {
     frontData[idx] = event.target.textContent
-    setFrontData([...frontData])
+    setFrontData(() => [...frontData])
+    props.setTags(() => frontData )
+    
   }
 
   // 배열과 인풋 박스 내 글
@@ -37,6 +39,14 @@ const PostTag = (props) => {
     frontData.forEach((el, idx) => {
       lineRef.current[idx].innerText = frontData[idx]
     })
+  }
+
+  const checkValid = (line, event) => {
+    if (frontData[line].length >= 10 && event.key !== "Backspace") {
+      setAlertText('태그는 10자를 초과하여 작성할 수 없습니다.')
+      setAlertNotiState(true)
+      event.preventDefault()
+    }
   }
 
   const preventSpace = (line, event) => {
