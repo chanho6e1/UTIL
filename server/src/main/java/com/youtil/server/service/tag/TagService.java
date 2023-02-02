@@ -51,7 +51,7 @@ public class TagService {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         List<Long> list = new ArrayList<>();
         for(String tag : request.getSkill()){
-
+            tag = tag.toLowerCase().replace(" ", "");
             Tag findTags = tagRepository.findByTagName(tag);
 
             if(findTags == null){
@@ -86,7 +86,7 @@ public class TagService {
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
         List<Long> list = new ArrayList<>();
         for(String tag : request.getSkill()){
-
+            tag = tag.toLowerCase().replace(" ", "");
             Tag findTags = tagRepository.findByTagName(tag);
 
             if(findTags == null){
