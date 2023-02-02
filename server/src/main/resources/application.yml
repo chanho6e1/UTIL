@@ -45,7 +45,7 @@ spring:
           clientId: '913035013476-bebq70bsneh30vbjjd0ktsk0con4ofmr.apps.googleusercontent.com'
           clientSecret: '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'
 #          redirect-uri: 'https://i8d210.p.ssafy.io/oauth2/callback/google'
-          redirect-uri: 'https://i8d210.p.ssafy.io/oauth2/callback/kakao'
+          redirect-uri: 'https://i8d210.p.ssafy.io/oauth2/callback/kakao' 
           scope:
             - email
             - profile
