@@ -17,6 +17,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class GoalSaveRequest {
     @NotBlank(message = "목표 내용이 없습니다.")
+    @Length(max = 20, message = "20자 이하여야 합니다.")
     private String title;
     private String startDate;
     private String endDate;

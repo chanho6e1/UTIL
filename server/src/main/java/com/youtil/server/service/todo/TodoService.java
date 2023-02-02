@@ -39,7 +39,7 @@ public class TodoService {
         String[] arr = request.getDueDate().split("T");
         request.setDueDate(arr[0]);
 
-        todo = todoRepository.save(request.of(goal));
+        todo = todoRepository.save(request.of(goal)) ;
 
         return todo.getTodoId();
     }
@@ -70,13 +70,12 @@ public class TodoService {
     @Transactional
     public Long updateTodoDate(Long goalId, List<TodoUpdateDateRequest> request) {   // 투두 날짜 전체 이동
         Goal goal = goalRepository.findById(goalId).orElseThrow(() -> new ResourceNotFoundException("goal", "goalId", goalId));
-        Optional<List<Object>> list = todoRepository.checkTodoStateByGoal(goal); //.orElseThrow(() -> new ArgumentMismatchException("목표 내 todo의 state가 1개 이상 체크되어 있음", goalId));;
-        System.out.print("asdfadfafd"+list.get().isEmpty());
+        Optional<List<Object>> list = todoRepository.checkTodoStateByGoal(goal);
+
         if(!list.get().isEmpty()){
             System.out.println("여기 들어옴");
             throw new ArgumentMismatchException("목표 내 todo의 state가 1개 이상 체크되어 있음", goalId);
         }
-        //
         for(TodoUpdateDateRequest re : request){
             Todo todo = todoRepository.findById(re.getTodoId()).orElseThrow(() -> new ResourceNotFoundException("todo", "todoId", re.getTodoId()));
             todo.updateDate(re.getDueDate());
