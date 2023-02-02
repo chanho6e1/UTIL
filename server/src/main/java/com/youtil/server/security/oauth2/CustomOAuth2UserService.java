@@ -7,6 +7,8 @@ import com.youtil.server.repository.user.UserRepository;
 import com.youtil.server.security.UserPrincipal;
 import com.youtil.server.security.oauth2.user.OAuth2UserInfo;
 import com.youtil.server.security.oauth2.user.OAuth2UserInfoFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -25,6 +27,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Autowired
     private UserRepository userRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(CustomOAuth2UserService.class);
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
@@ -33,6 +36,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return processOAuth2User(oAuth2UserRequest, oAuth2User);
 
         } catch (AuthenticationException ex) {
+            logger.info("==========AuthenticationException: {}", ex);
             throw ex;
         } catch (Exception ex) {
             // Throwing an instance of AuthenticationException will trigger the OAuth2AuthenticationFailureHandler
