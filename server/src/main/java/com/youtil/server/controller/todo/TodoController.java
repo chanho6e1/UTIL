@@ -76,10 +76,17 @@ public class TodoController {
                 HttpStatus.OK, "날짜별 투두 조회 성공", todoService.getTodoByDate(dueDate)));
     }
 
-    @ApiOperation(value = "목표별 투두 최소, 최고 날짜 조회", notes = "사용자의 투두에서 최소, 최고 날짜를 조회한다.")
+    @ApiOperation(value = "전체 목표별 투두 최소, 최고 날짜 조회", notes = "사용자의 전체 목표에서 최소, 최고 날짜를 조회한다.")
     @GetMapping("/period")
     public ResponseEntity<CommonResponse> getTodoPeriod(@CurrentUser UserPrincipal userPrincipal){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "목표별 투두 min, max 조회 성공", todoService.getTodoPeriod(userPrincipal.getId())));
+    }
+
+    @ApiOperation(value = "단일 목표별 투두 최소, 최고 날짜 조회", notes = "목표 아이디를 보내면 사용자의 단일 목표에서 투두에서 최소, 최고 날짜를 조회한다.")
+    @GetMapping("/period/{goalId}")
+    public ResponseEntity<CommonResponse> getTodoPeriod(@PathVariable Long goalId){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "단일 목표별 투두 min, max 조회 성공", todoService.getTodoPeriodByGoal(goalId)));
     }
 }
