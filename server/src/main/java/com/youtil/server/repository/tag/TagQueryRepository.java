@@ -9,11 +9,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import static com.youtil.server.domain.post.QPost.post;
 import static com.youtil.server.domain.tag.QTagOfPost.tagOfPost;
 import static com.youtil.server.domain.user.QFollow.follow;
+import static com.youtil.server.domain.user.QUserOfTag.userOfTag;
 
 @RequiredArgsConstructor
 @Repository
@@ -22,7 +24,7 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
     private final JPAQueryFactory jpaQueryFactory;
 
     public List<Post> findPostListByTag(Long userId, Long tagId, String criteria, PageRequest pageRequest){
-        return jpaQueryFactory.select(tagOfPost.post).from(tagOfPost)
+        return jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
                 .innerJoin(tagOfPost.post)
                 .where(
                        tagOfPost.tag.tagId.eq(tagId)
@@ -34,6 +36,27 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
                 .fetch();
     }
 
+
+    public List<Post> findPostListByMyTag(Long userId, String criteria, PageRequest pageRequest) { //나의 관심 태그별 글 조회
+
+        return jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
+                .innerJoin(tagOfPost.post)
+                .where(
+
+                        tagOfPost.tag.in(
+                                JPAExpressions
+                                        .select(userOfTag.tag).from(userOfTag)
+                                        .where( userOfTag.user.userId.eq(userId)
+                                        ))
+                        ,isPrivate(userId)
+                )
+                .orderBy(findCriteria(criteria))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
+                .fetch();
+
+    }
+
     private BooleanExpression isPrivate(Long userId){ //or사용 / 공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
         return  tagOfPost.post.isPrivate.eq(2).or(
                 tagOfPost.post.user.userId.in(JPAExpressions
@@ -42,6 +65,9 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
                                 tagOfPost.post.isPrivate.eq(1)
                         )));
     }
+
+
+
 
     private OrderSpecifier<?> findCriteria(String criteria){ //정렬 조건
         if(criteria.contains("date")){
@@ -55,6 +81,8 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
         }
         return tagOfPost.post.createdDate.desc();
     }
+
+
 
 //    private BooleanExpression isPrivate(Long userId){ //or사용 / 공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
 //        return  post.isPrivate.eq(2).or(
