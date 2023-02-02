@@ -49,7 +49,7 @@ public class Todo extends BaseEntity {
         this.dueDate = request.getDueDate();
         this.description = request.getDescription();
         this.title = request.getTitle();
-
+        this.state = request.isState();
     }
     public void update(boolean state){
         this.state = state;
