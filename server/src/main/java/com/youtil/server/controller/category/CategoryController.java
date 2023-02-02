@@ -16,7 +16,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/categorys")
+@RequestMapping("/api/categorys")
 @Api(tags = {"카테고리 컨트롤러"})
 public class CategoryController {
 

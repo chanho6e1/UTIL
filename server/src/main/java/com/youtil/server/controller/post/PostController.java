@@ -24,7 +24,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/api/posts")
 @Api(tags = {"포스트 컨트롤러"})
 public class PostController {
 
