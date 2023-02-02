@@ -12,6 +12,8 @@ import com.youtil.server.repository.review.ReviewQueryRepository;
 import com.youtil.server.repository.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -36,14 +38,14 @@ public class ReviewService {
         return review.getReviewId();
     }
 
-    public List<ReviewResponse> getReviewList(Long goalId) {
+    public List<ReviewResponse> getReviewList(Long goalId, String criteria, int offset, int size) {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
 
-        System.out.println(reviewQueryRepository.findReviewListByGoal(goalId).stream().map((review) -> new ReviewResponse(review)).collect(Collectors.toList()));
+//        System.out.println(reviewQueryRepository.findReviewListByGoal(goalId, PageRequest.of(offset, size)).stream().map((review) -> new ReviewResponse(review)).collect(Collectors.toList()));
 
 //        return goalQueryRepository.findGoalListByUser(userId).stream().map((goal) -> new GoalResponse(goal)).collect(Collectors.toList());
 
-        return reviewQueryRepository.findReviewListByGoal(goalId).stream().map((review) -> new ReviewResponse(review)).collect(Collectors.toList());
+        return reviewQueryRepository.findReviewListByGoal(goalId, PageRequest.of(offset-1, size)).stream().map((review) -> new ReviewResponse(review)).collect(Collectors.toList());
     }
 
     public ReviewResponse getReview(Long reviewId){
