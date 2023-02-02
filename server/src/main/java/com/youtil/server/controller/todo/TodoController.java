@@ -89,4 +89,11 @@ public class TodoController {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "단일 목표별 투두 min, max 조회 성공", todoService.getTodoPeriodByGoal(goalId)));
     }
+
+    @ApiOperation(value = "목표별로 모든 투두가 완료 여부 확인", notes = "목표 아이디를 보내면 목표별로 모든 투두가 완료 되었는지 확인한다.")
+    @GetMapping("/goals/{goalId}/state")
+    public ResponseEntity<CommonResponse> getTodoStateForGoal(@PathVariable Long goalId){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "목표별 모든 투두 완료 조회 성공", todoService.getTodoStateForGoal(goalId)));
+    }
 }
