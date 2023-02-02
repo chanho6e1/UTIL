@@ -1,6 +1,7 @@
 .postcarditem {
   display: flex;
   justify-content: space-between;
+  text-align: start;
   height: 200px;
   outline: 2px solid #c9c9c9;
   border-radius: 20px;
@@ -19,7 +20,6 @@
 .title {
   font-size: 1.3rem;
   font-weight: 700;
-  line-height: 28px;
   text-overflow: clip;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -80,7 +80,7 @@
   font-weight: 300;
 }
 
-.username {
+.nickname {
   margin-right: 4px;
   text-overflow: clip;
 }
@@ -110,6 +110,7 @@
     justify-content: space-between;
     height: 180px;
   }
+
   .card-text {
     flex: 1;
     padding: 20px 14px 20px 14px;
@@ -119,14 +120,13 @@
     display: flex;
     align-items: center;
     width: 180px;
-    background-color: #c9c9c9;
+    outline: 2px solid #c9c9c9;
     border-radius: 0 20px 20px 0;
   }
 
   .title {
     font-size: 1.5rem;
     font-weight: 700;
-    line-height: 20px;
     text-overflow: clip;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -181,14 +181,13 @@
     display: flex;
     align-items: center;
     width: 180px;
-    background-color: #c9c9c9;
+    outline: 2px solid #c9c9c9;
     border-radius: 0 20px 20px 0;
   }
 
   .title {
     font-size: 1.5rem;
     font-weight: 700;
-    line-height: 20px;
     text-overflow: clip;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -236,14 +235,13 @@
     display: flex;
     align-items: center;
     width: 180px;
-    background-color: #c9c9c9;
+    outline: 2px solid #c9c9c9;
     border-radius: 0 20px 20px 0;
   }
 
   .title {
     font-size: 1.5rem;
     font-weight: 700;
-    line-height: 24px;
     text-overflow: clip;
     display: -webkit-box;
     -webkit-box-orient: vertical;

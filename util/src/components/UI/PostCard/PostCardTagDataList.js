@@ -7,6 +7,7 @@ const PostCardTagList = styled("li")(({ theme }) => ({
 }));
 
 const PostCardTagDataList = (props) => {
+  console.log(props);
   const TagDataItem = [];
 
   const maxIndex = (list) => {
@@ -25,14 +26,14 @@ const PostCardTagDataList = (props) => {
       <PostCardTagList key={i}>
         <Chip
           variant="outlined"
-          label={props.tagList[i]}
+          label={props.tagList[i].tagName}
           onClick={props.onClick}
           size="small"
           sx={{
             bgcolor: bgColorList[i],
             color: colorList[i],
           }}
-          value={props.tagList[i]}
+          value={props.tagList[i].tagId}
         />
       </PostCardTagList>
     );
