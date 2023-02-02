@@ -48,7 +48,7 @@ const DropDown = (props) => {
   const dropDownItems = props.dropDownItems.label.map((el,idx) => {
 
     return (
-      <div ref={el => (dropDownItemRef.current[idx] = el)} onClick={(event) => {event.stopPropagation(); props.dropDownItems.function[idx](); props.setDropDownState(false);}} className={styles['dropdown-item']} >
+      <div key={`drop-down-${idx}`} ref={el => (dropDownItemRef.current[idx] = el)} onClick={(event) => {event.stopPropagation(); props.dropDownItems.function[idx](); props.setDropDownState(false);}} className={styles['dropdown-item']} >
         {el}
       </div>
     )

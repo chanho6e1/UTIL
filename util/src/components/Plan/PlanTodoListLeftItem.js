@@ -1,8 +1,15 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import styles from './PlanTodoListLeftItem.module.css'
+import { editTodoAPI } from "../../api/Plan/editTodoAPI";
+import { modifyPlanSliceActions } from '../../redux/planSlice'
+import { useSelector, useDispatch } from 'react-redux'
+import { delTodoAPI } from "../../api/Plan/delTodoAPI";
+import FixedModal from "../UI/FixedModal/FixedModal";
+import Button from "../UI/Button/Button";
+import warning from "../../img/Warning.png"
 
 const PlanTodoListLeftItem = (props) => {
-
+    const dispatch = useDispatch()
     const [isEditMode, setIsEditMode] = useState(false)
     const [titleValue, setTitleValue] = useState(props.el.title)
 
@@ -11,12 +18,71 @@ const PlanTodoListLeftItem = (props) => {
     }
 
     const cancelEditMode = () => {
-        setIsEditMode(false)
+        const processing = {
+            title: titleValue,
+            description: props.el.description,
+            state: props.el.state,
+            dueDate: props.el.dueDate,
+        }
+        editTodoAPI(props.el.todoId, props.goalId, processing)
+        .then((res) => {
+            const processing = {
+                goalId: props.goalId,
+                data: res
+            }
+            dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
+        })
+        .then((res) => {
+            setIsEditMode(false)
+        })
+        
     }
 
     const inputChangeHandler = (event) => {
         setTitleValue(event.target.value)
     }
+
+    const inputSubmitHandler = (event) => {
+        if (event.key === 'Enter') {
+            cancelEditMode()
+        }
+    }
+
+    
+
+
+    const deleteTodo = () => {
+        delTodoAPI(props.el.todoId, props.goalId)
+        .then((res) => {
+            const proccessing = {
+                goalId: props.goalId,
+                data: res
+            }
+            dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
+        })
+    }
+
+
+
+
+    const [askDeleteState, setAskDeleteState] = useState(false)
+
+    const addBtn = [<Button className={styles['delete-button']} onClick={deleteTodo}>삭제</Button>,]
+    
+    const askDeleteForm = (
+      <div style={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
+        <img style={{width:'128px', height:'auto', marginBottom: '12px'}} src={warning} />
+        <div>
+          <p style={{lineHeight: '40%'}}>삭제 시 복구할 수 없습니다.</p>
+          <p style={{lineHeight: '40%'}}>정말로 삭제 하시겠습니까?</p>
+        </div>
+      </div>
+    )
+  
+    const askDelete = () => {
+      setAskDeleteState(true)
+    }
+  
 
 
     const titleReadMode = (
@@ -29,7 +95,7 @@ const PlanTodoListLeftItem = (props) => {
                         {props.el.title}
                     </span>
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className={styles['delete-icon']} viewBox="0 0 16 16">
+                <svg onClick={(event) => {event.stopPropagation(); askDelete()}} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className={styles['delete-icon']} viewBox="0 0 16 16">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                 </svg>
@@ -37,13 +103,14 @@ const PlanTodoListLeftItem = (props) => {
     )
 
     const titleEditInput = (
-            <input type="text" onBlur={cancelEditMode} onChange={inputChangeHandler} value={titleValue} placeholder="일정을 입력해 주세요." autoFocus className={styles['edit-todo-input']} />
+            <input type="text" onBlur={cancelEditMode} onChange={inputChangeHandler} onKeyPress={inputSubmitHandler} value={titleValue} placeholder="일정을 입력해 주세요." autoFocus className={styles['edit-todo-input']} />
     )
 
     
     
     return (
         <div className={styles['todo-detail-wrapper']}>
+            <FixedModal modalState={askDeleteState} stateHandler={setAskDeleteState} content={askDeleteForm} addBtn={addBtn} width={300} height={310} />
             {isEditMode ? titleEditInput : titleReadMode }
         </div>
         
