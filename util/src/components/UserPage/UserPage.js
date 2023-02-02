@@ -42,7 +42,7 @@ const UserPage = (props) => {
     getUserPosts(props.id).then((res) => {
       setPostList(() => res);
     });
-  });
+  }, []);
 
   return (
     <div className={classes[`postcard-container`]}>{<ul>{postCardItemList(postList)}</ul>}</div>

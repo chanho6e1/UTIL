@@ -1,6 +1,26 @@
+.editor-wrapper {
+    width:100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.header {
+    width: 100%;
+    display: flex;
+}
+
+.button {
+    height: 48px;
+    width: 128px;
+    font-size: 18px;
+    font-weight: 700;
+    color: rgb(70,70,70)
+}
+
 .additional-info-wrapper {
     width: 100%;
-    height: 100px;
     background-color: white;
     box-sizing: border-box;
     padding:24px;
@@ -12,6 +32,8 @@
     height: 52px;
     border: none;
     font-weight: 600;
+    margin-bottom:12px;
+    
 }
 
 .title-input:focus {

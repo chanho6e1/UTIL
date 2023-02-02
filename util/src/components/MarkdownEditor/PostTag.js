@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import styles from './PostTag.module.css'
 import ReactDOM from 'react-dom';
 import logo from '../../img/util-logo.png'
+import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
+import warning from "../../img/Warning.png"
 
 
 
@@ -20,7 +22,7 @@ const PostTag = (props) => {
   const createLine = (idx) => {
     return (
       <div  className={styles[`line-wrapper`]}>
-        <div ref={el => (lineRef.current[idx] = el)}  id={idx} className={styles[`line`]} contentEditable="true" onInput={inputToArray.bind(this, idx)} onKeyDown={(event) => {deleteLine(idx, event); pushLine(idx, event)}} ></div>
+        <div ref={el => (lineRef.current[idx] = el)}  id={idx} className={styles[`line`]} contentEditable="true" placeholder="태그를 입력하세요." onInput={inputToArray.bind(this, idx)} onKeyDown={(event) => {deleteLine(idx, event); pushLine(idx, event); preventSpace(idx, event)}} ></div>
       </div>
     )
   }
@@ -35,6 +37,12 @@ const PostTag = (props) => {
     frontData.forEach((el, idx) => {
       lineRef.current[idx].innerText = frontData[idx]
     })
+  }
+
+  const preventSpace = (line, event) => {
+    if (event.keyCode == 32) {
+      event.preventDefault()
+    }
   }
 
   const loadCursorLocation = async (line, leftContent="", rightContent="") => {
@@ -94,6 +102,21 @@ const PostTag = (props) => {
 
 
   const pushLine = (line, event) => {
+    if (frontData.length > 4) {
+      if (event.key == 'Enter') {
+        setAlertText('태그는 5개 이상 작성할 수 없습니다.')
+        setAlertNotiState(true)
+        event.preventDefault()
+      }
+      return
+    } else if (frontData[line] === '') {
+      if (event.key == 'Enter') {
+        setAlertText('생성된 태그에 내용을 입력해 주세요.')
+        setAlertNotiState(true)
+        event.preventDefault()
+      }
+      return
+    }
     if (event.key == 'Enter') {
       event.preventDefault()
 
@@ -107,6 +130,8 @@ const PostTag = (props) => {
 
     }
   }
+
+  
 
   const deleteLine = async (line, event) => {
     // selection.anchorOffset으로 커서 위치 감지
@@ -138,8 +163,20 @@ const PostTag = (props) => {
   }
 
 
+  const [alertText, setAlertText] = useState()
+  const [alertNotiState, setAlertNotiState] = useState(false)
 
-
+  const alert = (
+    <div style={{display:'flex', justifyContent:'space-evenly', alignItems:'center'}}>
+      <img style={{width:'40px', height:'40px', marginRight:'12px'}} src={warning} />
+      <div>
+        <p style={{lineHeight: '40%'}}>{alertText}</p>
+        {/* <p style={{lineHeight: '40%'}}>날짜 범위를 미만 & 초과할 수 없습니다.</p> */}
+      </div>
+      
+    </div>
+    
+  )
 
 
 
@@ -147,13 +184,10 @@ const PostTag = (props) => {
 
   return (
     <div>
+      {alertNotiState && <NotiDeliverer content={alert} stateHandler={setAlertNotiState} duration={5000} width={350} height={100} />}
       <div ref={editorWrapperRef} id="editor-wrapper" className={styles['editor-wrapper']}>
         {frontData.map((el, idx) => createLine(idx))}
-        
-        
       </div>
-      <button onClick={deleteLine}>delete</button>
-        {/* <button onClick={show}>show</button> */}
     </div>
     
   )
