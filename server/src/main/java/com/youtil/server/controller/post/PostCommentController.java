@@ -20,7 +20,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/api/comments")
 @Api(tags = {"포스트 댓글 컨트롤러"})
 public class PostCommentController {
 

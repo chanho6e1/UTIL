@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/todos")
+@RequestMapping("/api/todos")
 @Api(tags = {"투두 컨트롤러"})
 public class TodoController {
     @Autowired
