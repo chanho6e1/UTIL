@@ -147,7 +147,7 @@ const PlanCalendar = (props) => {
           <PlanCalendarDateSelector idx={idx} el={el} todos={props.todos} startDate={el.startDate} endDate={el.endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
           
         </div>
-        {props.todoFormVisibility[idx] && <PlanTodoListRight applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} goalId={plans[idx].goalId} todos={props.todos} scrollRef={scrollRef} containerRef={containerRef} newTodoIdx={props.newTodoIdx} />}
+        {props.todoFormVisibility[idx] && <PlanTodoListRight applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} plan={plans[idx]} goalId={plans[idx].goalId} todos={props.todos} scrollRef={scrollRef} containerRef={containerRef} newTodoIdx={props.newTodoIdx} />}
       </React.Fragment>
     )
   })

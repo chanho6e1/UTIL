@@ -6,7 +6,9 @@ import { editTodoAPI } from "../../api/Plan/editTodoAPI";
 import { chkTodoAPI } from "../../api/Plan/chkTodoAPI";
 import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 import { recvTodoPeriodAPI } from "../../api/Plan/recvTodoPeriodAPI";
-
+import { recvIsAllTodosDoneAPI } from "../../api/Plan/recvIsAllTodosDoneAPI";
+import FixedModal from "../UI/FixedModal/FixedModal";
+import complete from "../../img/Complete.png"
 import Button from "../UI/Button/Button";
 
 const PlanTodoListRightItem = (props) => {
@@ -85,13 +87,11 @@ const PlanTodoListRightItem = (props) => {
                 data: res
             }
             dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
-            
         })
         .then((res) => {
-            setIsDescriptionEditMode(false)
-            
-            
+            setIsDescriptionEditMode(false) 
         })
+
         
     }
 
@@ -118,19 +118,33 @@ const PlanTodoListRightItem = (props) => {
             
         })
         .then((res) => {
-            if (props.el.state === false) {
-                setDoneNotiState(true)
-            }
+            
+
+            recvIsAllTodosDoneAPI(props.goalId)
+            .then((res) => {
+                console.log('목표 투두 완료', res)
+                if (res === true) {
+                    const today = new Date()
+                    if (today > new Date(props.plan.endDate)) {
+                        setDoneModalState(true)
+                    } else {
+                        setNotiContent(message2)
+                        setDoneNotiState(true)
+                    }
+                    
+                } else {
+                    if (props.el.state === false) {
+                        setNotiContent(message1)
+                        setDoneNotiState(true)
+                    }
+                    
+                }
+            })
         })
-        // recvIsAllTodosDoneAPI(props.goalId)
-        // .then((res) => {
-        //     if (res === true) {
-        //         setNotiContent()
-        //     }
-        // })
+        
     }
 
-    const NotiContent = (
+    const message1 = (
         <div style={{height: '100px', display:'flex', flexDirection:'column', justifyContent:'space-around'}}>
             <div><b>{props.el.title}</b>을 완료하였습니다.</div>
             <div>회고록을 작성 하시겠습니까?</div>
@@ -138,20 +152,36 @@ const PlanTodoListRightItem = (props) => {
         </div>
     )
 
-    // const NotiContent = (
-    //     <div style={{height: '100px', display:'flex', flexDirection:'column', justifyContent:'space-around'}}>
-    //         <div>해당 목표의 TODO를 모두 완료하였습니다.</div>
-    //         <div>목표를 완료하거나 새 TODO를 작성하세요.</div>
-    //         <div >
-    //             <Button>TODO 작성</Button>
-    //             <Button>목표 완료</Button>
-    //         </div>
-            
-    //     </div>
-    // )
+    const message2 = (
+        <div style={{height: '100px', display:'flex', flexDirection:'column', justifyContent:'space-around'}}>
+            <div>해당 목표의 TODO를 모두 완료하였습니다.</div>
+            <div>목표를 완료하거나 새 TODO를 작성하세요.</div>
+            <div style={{display:'flex', justifyContent:'space-around', marginTop: '16px'}}>
+                <Button>TODO 작성</Button>
+                <Button>회고록 작성</Button>
+                <Button>목표 완료</Button>
+            </div>
+        </div>
+    )
 
+    const [doneModalState, setDoneModalState] = useState(false)
     const [doneNotiState, setDoneNotiState] = useState(false)
     const [notiContent, setNotiContent] = useState()
+
+    const doneModalForm = (
+        <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+
+            <img style={{width:'228px', height:'auto', marginBottom: '24px'}} src={complete} />
+
+            <div>
+                <p style={{lineHeight: '40%'}}>기간이 만료된 목표의 모든 TODO를 완료하였습니다.</p>
+                <p style={{lineHeight: '40%'}}>회고록을 작성하고 목표를 완료하세요.</p>
+            </div>  
+            
+        </div>
+    )
+
+    const addBtn = [<Button>회고록 작성</Button>,<Button>목표 완료</Button>]
 
     const isDoneTrue = (
         <div onClick={toggleIsDone} className={styles['is-done-true-wrapper']}>
@@ -187,7 +217,8 @@ const PlanTodoListRightItem = (props) => {
 
     return (
         <div className={styles['todo-space-wrapper']} style={{width: `${props.containerRef?.current?.scrollWidth}px`}}>
-            {doneNotiState && <NotiDeliverer content={NotiContent} stateHandler={setDoneNotiState} duration={5000} />}
+            <FixedModal modalState={doneModalState} stateHandler={setDoneModalState} content={doneModalForm} addBtn={addBtn} width={400} height={410} />
+            {doneNotiState && <NotiDeliverer content={notiContent} stateHandler={setDoneNotiState} duration={5000} />}
             <div className={styles['todo-space']} >
                 {props.el.state ? isDoneTrue : isDoneFalse}
                 {isDateEditMode ? dateEditInput : dateReadMode}
