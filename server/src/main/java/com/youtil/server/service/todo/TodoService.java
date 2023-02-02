@@ -144,4 +144,13 @@ public class TodoService {
 
         return map;
     }
+
+    // 목표별로 모든 투두가 완료인지 아닌지에 대해
+    public boolean getTodoStateForGoal(Long goalId) { // 목표별 투두 리스트 조회
+        Goal goal = goalRepository.findById(goalId).orElseThrow(() -> new ResourceNotFoundException("goal", "goalId", goalId));
+        if(todoRepository.getTodoStateForGoal(goal).get().isEmpty()){
+            return true;
+        };
+        return false;
+    }
 }
