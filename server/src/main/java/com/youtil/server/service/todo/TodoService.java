@@ -68,16 +68,20 @@ public class TodoService {
     }
 
     @Transactional
-    public Long updateTodoDate(List<TodoUpdateDateRequest> request) {   // 투두 날짜 전체 이동
-//        Todo t = todoRepository.findById(request.get(0).getTodoId()).orElseThrow(() -> new ResourceNotFoundException("todo", "todoId", request.get(0).getTodoId()));
-
-//        List<Map<String, Object>> mapList = todoRepository.findTodoPeriodByGoal(t.getGoal());
-        Todo todo = new Todo();
+    public Long updateTodoDate(Long goalId, List<TodoUpdateDateRequest> request) {   // 투두 날짜 전체 이동
+        Goal goal = goalRepository.findById(goalId).orElseThrow(() -> new ResourceNotFoundException("goal", "goalId", goalId));
+        Optional<List<Object>> list = todoRepository.checkTodoStateByGoal(goal); //.orElseThrow(() -> new ArgumentMismatchException("목표 내 todo의 state가 1개 이상 체크되어 있음", goalId));;
+        System.out.print("asdfadfafd"+list.get().isEmpty());
+        if(!list.get().isEmpty()){
+            System.out.println("여기 들어옴");
+            throw new ArgumentMismatchException("목표 내 todo의 state가 1개 이상 체크되어 있음", goalId);
+        }
+        //
         for(TodoUpdateDateRequest re : request){
-            todo = todoRepository.findById(re.getTodoId()).orElseThrow(() -> new ResourceNotFoundException("todo", "todoId", re.getTodoId()));
+            Todo todo = todoRepository.findById(re.getTodoId()).orElseThrow(() -> new ResourceNotFoundException("todo", "todoId", re.getTodoId()));
             todo.updateDate(re.getDueDate());
         }
-        return todo.getGoal().getGoalId();
+        return goalId;
     }
 
     @Transactional
