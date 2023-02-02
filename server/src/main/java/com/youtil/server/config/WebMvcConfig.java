@@ -25,22 +25,22 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .maxAge(1000);
     }
 
-    public Filter requestLoggingFilter() {
-        CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
-        loggingFilter.setIncludeClientInfo(true);
-        loggingFilter.setIncludeQueryString(true);
-        loggingFilter.setIncludePayload(true);
-        loggingFilter.setIncludeHeaders(true);
-        loggingFilter.setMaxPayloadLength(64000);
-        return loggingFilter;
-    }
-
-    @Bean
-    public FilterRegistrationBean loggingFilterRegistration() {
-        FilterRegistrationBean registration = new FilterRegistrationBean(requestLoggingFilter());
-        registration.addUrlPatterns("/api/*");
-        return registration;
-    }
+//    public Filter requestLoggingFilter() {
+//        CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
+//        loggingFilter.setIncludeClientInfo(true);
+//        loggingFilter.setIncludeQueryString(true);
+//        loggingFilter.setIncludePayload(true);
+//        loggingFilter.setIncludeHeaders(true);
+//        loggingFilter.setMaxPayloadLength(64000);
+//        return loggingFilter;
+//    }
+//
+//    @Bean
+//    public FilterRegistrationBean loggingFilterRegistration() {
+//        FilterRegistrationBean registration = new FilterRegistrationBean(requestLoggingFilter());
+//        registration.addUrlPatterns("/api/*");
+//        return registration;
+//    }
 
 
 
