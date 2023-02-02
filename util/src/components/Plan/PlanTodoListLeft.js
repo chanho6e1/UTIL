@@ -4,13 +4,12 @@ import PlanTodoListLeftItem from "./PlanTodoListLeftItem";
 
 const PlanTodoListLeft = (props) => {
     const todosLeftRef = useRef()
-    const newTodoInputRef = useRef()
     const [newTodo, setNewTodo] = useState(false)
 
 
     const todoTitles = props.todos[props.goalId]?.map((el, idx) => {
         return (
-            <PlanTodoListLeftItem el={el} />
+            <PlanTodoListLeftItem applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} el={el} goalId={props.goalId} />
             // <div className={styles['todo-detail-wrapper']}>
             //     <div className={styles['todo-title-wrapper']}>
             //         <svg style={{marginRight: '6px', color: 'rgb(150, 150, 150)'}} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-hash" viewBox="0 0 16 16">
@@ -22,6 +21,11 @@ const PlanTodoListLeft = (props) => {
         )
     })
 
+    const [newTodoTitleValue, setNewTodoTitleValue] = useState()
+
+    const newTodoInputHandler = (event) => {
+        setNewTodoTitleValue(event.target.value)
+    }
 
     const newTodoClickShow = () => {
         setNewTodo(true)
@@ -29,12 +33,29 @@ const PlanTodoListLeft = (props) => {
     }
 
     const newTodoClickHide = () => {
-        if (newTodoInputRef.current.value === '') {
+        if (newTodoTitleValue === '') {
             setNewTodo(false)
             props.getNewTodoIdx(-1)
         }   
         
     }
+
+
+
+    useEffect(() => {
+        props.getInputTodoData(newTodoTitleValue, null, null, props.goalId)
+    }, [newTodoTitleValue])
+
+    const onEnterNewPlanHandler = (event) => {
+        if (event.key === 'Enter') {
+            props.applyTodoData()
+        }
+    }
+
+    useEffect(() => {
+        setNewTodoTitleValue('')
+    }, [(props.newTodoIdx === props.goalId) && newTodo])
+
 
     const plusImg = (
         <svg xmlns="http://www.w3.org/2000/svg" style={{color:'rgb(100,100,100)', marginLeft:'-5px', marginRight:'7px'}} width="24" height="24" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
@@ -44,9 +65,11 @@ const PlanTodoListLeft = (props) => {
 
     const newTodoDummy = (
         <div onClick={newTodoClickShow} className={styles['new-todo-wrapper']}>
-            {(props.newTodoIdx === props.goalId) && newTodo ? <input type="text" ref={newTodoInputRef} onBlur={newTodoClickHide} placeholder="일정을 입력해 주세요." autoFocus className={styles['new-todo-input']} /> : <div className={styles['new-todo']}>{plusImg} TODO 작성</div> }
+            {(props.newTodoIdx === props.goalId) && newTodo ? <input type="text" value={newTodoTitleValue} onKeyPress={onEnterNewPlanHandler} onChange={newTodoInputHandler} onBlur={newTodoClickHide} placeholder="일정을 입력해 주세요." autoFocus className={styles['new-todo-input']} /> : <div className={styles['new-todo']}>{plusImg} TODO 작성</div> }
         </div>
     )
+
+
 
     return (
         <div ref={todosLeftRef} className={styles['todos-left']}>

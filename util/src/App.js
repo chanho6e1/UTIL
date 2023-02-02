@@ -11,6 +11,7 @@ import OAuthRedirectHandler from './components/UserAuth/OAuth/OAuthRedirectHandl
 import SocialLoginModule from './components/UserAuth/SocialLoginModule';
 import { ACCESS_TOKEN } from './constants';
 import SocialLogin from './components/UserAuth/SocialLogin';
+import StackNotification from './components/UI/StackNotification/StackNotification';
 
 import ToastEditor from './components/MarkdownEditor/ToastEditor';
 // import OAuth2RedirectHandler from './components/UserAuth/OAuth/OAuth2RedirectHandler';
@@ -42,6 +43,7 @@ const App = () => {
 
   return (
     <div className="App">
+      <StackNotification />
       <Routes>
         <Route path="/*" element={<Main />} />
         <Route path="/login" element={<SocialLogin />} />
