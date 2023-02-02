@@ -6,17 +6,20 @@ import com.youtil.server.domain.tag.Tag;
 import com.youtil.server.domain.tag.TagOfPost;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.domain.user.UserOfTag;
+import com.youtil.server.dto.post.PostResponse;
 import com.youtil.server.dto.tag.TagResponse;
 import com.youtil.server.dto.tag.TagSaveRequest;
 import com.youtil.server.dto.tag.TagUpdateRequest;
 import com.youtil.server.repository.post.PostRepository;
 import com.youtil.server.repository.tag.TagOfPostRepository;
+import com.youtil.server.repository.tag.TagQueryRepository;
 import com.youtil.server.repository.tag.TagRepository;
 import com.youtil.server.repository.tag.UserOfTagRepository;
 import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +42,8 @@ public class TagService {
     PostRepository postRepository;
     @Autowired
     TagOfPostRepository tagOfPostRepository;
+    @Autowired
+    TagQueryRepository tagQueryRepository;
 
     // 관심 테그
     @Transactional
@@ -132,5 +137,14 @@ public class TagService {
         Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag", "tagId", tagId));
         tag.update(request.getTagName());
         return tag.getTagId();
+    }
+
+    //태그별 게시물 조회
+    public List<PostResponse> findPostListByTag(Long userId, Long tagId, String criteria, int offset, int size) { // 테그로 포스트 조회
+        Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag", "tagId", tagId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+
+        return tagQueryRepository.findPostListByTag(userId, tagId, criteria, PageRequest.of(offset-1, size))
+                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 }
