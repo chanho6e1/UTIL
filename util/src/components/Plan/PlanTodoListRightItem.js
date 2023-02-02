@@ -122,6 +122,12 @@ const PlanTodoListRightItem = (props) => {
                 setDoneNotiState(true)
             }
         })
+        // recvIsAllTodosDoneAPI(props.goalId)
+        // .then((res) => {
+        //     if (res === true) {
+        //         setNotiContent()
+        //     }
+        // })
     }
 
     const NotiContent = (
@@ -132,8 +138,20 @@ const PlanTodoListRightItem = (props) => {
         </div>
     )
 
-    const [doneNotiState, setDoneNotiState] = useState(false)
+    // const NotiContent = (
+    //     <div style={{height: '100px', display:'flex', flexDirection:'column', justifyContent:'space-around'}}>
+    //         <div>해당 목표의 TODO를 모두 완료하였습니다.</div>
+    //         <div>목표를 완료하거나 새 TODO를 작성하세요.</div>
+    //         <div >
+    //             <Button>TODO 작성</Button>
+    //             <Button>목표 완료</Button>
+    //         </div>
+            
+    //     </div>
+    // )
 
+    const [doneNotiState, setDoneNotiState] = useState(false)
+    const [notiContent, setNotiContent] = useState()
 
     const isDoneTrue = (
         <div onClick={toggleIsDone} className={styles['is-done-true-wrapper']}>
