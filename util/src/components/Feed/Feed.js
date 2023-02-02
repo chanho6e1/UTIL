@@ -1,7 +1,7 @@
 import React from "react";
 import FeedCardItem from "../UI/FeedCard/FeedCardItem";
 import classes from "./Feed.module.css";
-import { getPosts } from "../../api/getPosts";
+import { getPosts } from "../../api/Post/getPosts";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
 import { useState } from "react";

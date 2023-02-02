@@ -7,6 +7,8 @@ import likeIconFlat from "../../../img/LikeIconFlat.svg";
 import likeIconFill from "../../../img/LikeIconFill.svg";
 import PhotoCameraIcon from "../../../img/photoCameraIcon.png";
 import { useNavigate } from "react-router";
+import { putLikeToggle } from "../../../api/Post/putLikeToggle";
+import { putBookmarkToggle } from "../../../api/Post/putBookmarkToggle";
 
 const avatarTheme = createTheme({
   components: {
@@ -25,7 +27,6 @@ const FeedCardItem = (props) => {
 
   const displayLikeStatusSize = (likeStatusSize) => {
     if (likeStatusSize > 1000) {
-      console.log((likeStatusSize / 1000).toFixed(2));
       return (likeStatusSize / 1000).toFixed(2) + "k";
     } else {
       return likeStatusSize;
@@ -37,16 +38,24 @@ const FeedCardItem = (props) => {
   };
 
   const bookmarkClickHandler = () => {
-    setIsBookmark((prevState) => !prevState);
+    putBookmarkToggle(props.id).then((res) => {
+      if (res === 200) {
+        setIsBookmark((prevState) => !prevState);
+      }
+    });
   };
 
   const likeClickHandler = () => {
-    if (isLike) {
-      setLikeStatusSize((prevState) => prevState - 1);
-    } else {
-      setLikeStatusSize((prevState) => prevState + 1);
-    }
-    setIsLike((prevState) => !prevState);
+    putLikeToggle(props.id).then((res) => {
+      if (res === 200) {
+        if (isLike) {
+          setLikeStatusSize((prevState) => prevState - 1);
+        } else {
+          setLikeStatusSize((prevState) => prevState + 1);
+        }
+        setIsLike((prevState) => !prevState);
+      }
+    });
   };
 
   return (

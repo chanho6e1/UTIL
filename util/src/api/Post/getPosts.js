@@ -1,4 +1,4 @@
-import { API_BASE_URL, TOKEN } from "../constants";
+import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
 export const getPosts = () => {
@@ -10,7 +10,7 @@ export const getPosts = () => {
     },
   })
     .then((res) => {
-      console.log(res.data.data);
+      console.log(res.data.status);
       console.log("게시물 목록 조회에 성공하였습니다.");
       return res.data.data;
     })
