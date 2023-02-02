@@ -1,6 +1,7 @@
 package com.youtil.server.dto.post;
 
 import com.youtil.server.domain.post.Post;
+import com.youtil.server.domain.post.PostFile;
 import com.youtil.server.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -34,6 +36,8 @@ public class PostSaveRequest {
     private Long categoryId;
 
     private Long goalId;
+
+    private List<String> postFileList;
 
 //    private String tag;
 
