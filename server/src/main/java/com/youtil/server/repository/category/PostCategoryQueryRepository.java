@@ -29,7 +29,7 @@ public class PostCategoryQueryRepository {
 
     public List<Post> getCategoryPosts(Long userId, Long categoryId, String criteria, PageRequest request){
 
-        return jpaQueryFactory.select(post)
+        return jpaQueryFactory.select(post).distinct()
                 .from(post)
                 .innerJoin(post.category).fetchJoin()
                 .where(post.category.categoryId.eq(categoryId),

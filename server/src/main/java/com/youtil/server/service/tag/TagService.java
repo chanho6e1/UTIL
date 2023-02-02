@@ -147,4 +147,12 @@ public class TagService {
         return tagQueryRepository.findPostListByTag(userId, tagId, criteria, PageRequest.of(offset-1, size))
                 .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
+
+    //나의 관심 태그별 게시글 조회
+    public List<PostResponse> findPostListByMyTag(Long userId, String criteria, int offset, int size) { // 나의 관심 테그로 포스트 조회
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+
+        return tagQueryRepository.findPostListByMyTag(userId, criteria, PageRequest.of(offset-1, size))
+                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+    }
 }
