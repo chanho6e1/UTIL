@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.text.ParseException;
 
 @RestController
-@RequestMapping("/goals")
+@RequestMapping("/api/goals")
 @Api(tags = {"goal 컨트롤러"})
 public class GoalController {
 
