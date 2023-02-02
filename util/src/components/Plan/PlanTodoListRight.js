@@ -33,7 +33,7 @@ const PlanTodoListRight = (props) => {
 
 
 
-    const todoContents = props.todos[props.goalId].map((el, idx) => {
+    const todoContents = props.todos[props.goalId]?.map((el, idx) => {
         return (
             <PlanTodoListRightItem key={`todos-${props.goalId}-${idx}-${el.dueDate}`} applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} toStringByFormatting={toStringByFormatting} el={el} scrollRef={props.scrollRef} containerRef={props.containerRef} time={new Date(el.dueDate)} goalId={props.goalId} />
         )
