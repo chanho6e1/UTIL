@@ -3,10 +3,12 @@ package com.youtil.server.controller.tag;
 import com.youtil.server.common.CommonResponse;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.dto.category.CategorySaveRequest;
+import com.youtil.server.dto.post.PostSearch;
 import com.youtil.server.dto.tag.TagSaveRequest;
 import com.youtil.server.dto.tag.TagUpdateRequest;
 import com.youtil.server.security.CurrentUser;
 import com.youtil.server.security.UserPrincipal;
+import com.youtil.server.service.post.PostService;
 import com.youtil.server.service.tag.TagService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +27,9 @@ import javax.validation.Valid;
 public class TagController {
     @Autowired
     TagService tagService;
+
+    @Autowired
+    PostService postService;
 
     // 관심 테그
     @ApiOperation(value = "관심 테그 등록", notes = "관심 테그를 등록한다")
@@ -104,5 +109,19 @@ public class TagController {
                                                     @RequestBody @Valid TagUpdateRequest request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "테그 수정 성공", tagService.updateTag(tagId, request)));
+    }
+
+    //////
+
+    @ApiOperation(value = "정렬 기준(선택)으로 태그별 게시물 리스트 조회", notes = "태그별로,정렬 기준(view/date/like)으로 게시물 목록물 목록을 조회한다.")
+    @GetMapping("/{tagId}/posts")
+    public ResponseEntity<CommonResponse> findBySubscribesPostList(@ApiIgnore @CurrentUser UserPrincipal user,
+                                                                   @PathVariable Long tagId,
+                                                                   @RequestParam(required=false, defaultValue = "date") String criteria,
+                                                                   @RequestParam(required=false, defaultValue = "1") int offset,
+                                                                   @RequestParam(value = "size", required = false, defaultValue = "10") int size){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "태그별 게시물 목록 조회 성공", tagService.findPostListByTag(user.getId(), tagId, criteria, offset, size))
+        );
     }
 }

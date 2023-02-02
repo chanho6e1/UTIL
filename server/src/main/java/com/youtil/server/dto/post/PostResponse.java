@@ -8,6 +8,9 @@ import com.youtil.server.dto.user.UserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -61,6 +64,11 @@ public class PostResponse {
         this.postId = post.getPostId();
         this.title = post.getTitle();
         this.content = post.getContent();
+
+        Document doc = Jsoup.parse(post.getContent());
+        Elements images = doc.getElementsByTag("img");
+
+
         this.createdDate = post.getCreatedDate().format(myFormatObj);
         if(post.getModifiedDate()!=null) {
             this.modifiedDate = post.getModifiedDate().format(myFormatObj);
