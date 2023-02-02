@@ -2,7 +2,6 @@ import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
 export const getPostTag = (postId) => {
-  console.log("postId: ", postId);
   return axios({
     method: "get",
     url: `${API_BASE_URL}/tags/posts/${postId}`,
