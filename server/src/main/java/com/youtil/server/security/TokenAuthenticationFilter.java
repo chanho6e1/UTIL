@@ -29,6 +29,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
+            logger.info("==============request: {}", request);
             String jwt = getJwtFromRequest(request);
 
             logger.info("==============jwt: {}", jwt);
@@ -54,6 +55,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            logger.info("==============bearerToken: {}", bearerToken);
             return bearerToken.substring(7, bearerToken.length());
         }
 
