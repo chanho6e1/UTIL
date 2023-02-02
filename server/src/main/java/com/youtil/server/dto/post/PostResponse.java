@@ -60,6 +60,7 @@ public class PostResponse {
         this.writerInfo = WriterInfo.from(post.getUser());
         this.postId = post.getPostId();
         this.title = post.getTitle();
+        this.content = post.getContent();
         this.createdDate = post.getCreatedDate().format(myFormatObj);
         if(post.getModifiedDate()!=null) {
             this.modifiedDate = post.getModifiedDate().format(myFormatObj);
