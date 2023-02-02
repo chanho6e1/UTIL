@@ -49,4 +49,10 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             "order by g.goal_id asc "
             ,nativeQuery = true)
     Map<String, Object> findTodoPeriodByGoal(@Param("goal") Goal goal);
+
+    @Query(value = "select t.todo_id " +
+            "from goal g join todo t on g.goal_id = t.goal_id " +
+            "where g.goal_id = :goal and t.state = false "
+            ,nativeQuery = true)
+    Optional<List<Object>> getTodoStateForGoal(@Param("goal") Goal goal);
 }
