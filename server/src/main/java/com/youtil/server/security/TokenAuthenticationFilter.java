@@ -29,7 +29,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            logger.info("==============request: {}", request);
+            logger.info("==============request: {}", request.getHeader("jwt"));
             String jwt = getJwtFromRequest(request);
 
             logger.info("==============jwt: {}", jwt);
