@@ -11,7 +11,7 @@
     background-repeat: no-repeat;
 }
 
-.heading:hover {
+.heading:not(:disabled):hover {
   background: url('../../img/Heading_focus.png');
   background-size: 48px;
   background-repeat: no-repeat;
@@ -23,7 +23,7 @@
   background-repeat: no-repeat;
 }
 
-.bold:hover {
+.bold:not(:disabled):hover {
 background: url('../../img/Bold_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
@@ -35,7 +35,7 @@ background-repeat: no-repeat;
   background-repeat: no-repeat;
 }
 
-.italic:hover {
+.italic:not(:disabled):hover {
 background: url('../../img/Italic_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
@@ -47,7 +47,7 @@ background-repeat: no-repeat;
   background-repeat: no-repeat;
 }
 
-.strike:hover {
+.strike:not(:disabled):hover {
 background: url('../../img/Strike_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
@@ -60,7 +60,7 @@ background-repeat: no-repeat;
   background-repeat: no-repeat;
 }
 
-.hrline:hover {
+.hrline:not(:disabled):hover {
 background: url('../../img/Underline_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
@@ -72,7 +72,7 @@ background-repeat: no-repeat;
   background-repeat: no-repeat;
 }
 
-.quote:hover {
+.quote:not(:disabled):hover {
 background: url('../../img/Blockquote_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
@@ -84,7 +84,7 @@ background-repeat: no-repeat;
   background-repeat: no-repeat;
 }
 
-.bullet-list:hover {
+.bullet-list:not(:disabled):hover {
 background: url('../../img/UnorderedList_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
@@ -96,7 +96,7 @@ background-repeat: no-repeat;
   background-repeat: no-repeat;
 }
 
-.ordered-list:hover {
+.ordered-list:not(:disabled):hover {
 background: url('../../img/OrderedList_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
@@ -108,7 +108,7 @@ background-repeat: no-repeat;
   background-repeat: no-repeat;
 }
 
-.task-list:hover {
+.task-list:not(:disabled):hover {
 background: url('../../img/Task_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
@@ -120,7 +120,7 @@ background-repeat: no-repeat;
   background-repeat: no-repeat;
 }
 
-.table:hover {
+.table:not(:disabled):hover {
 background: url('../../img/Table_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
@@ -132,7 +132,7 @@ background-repeat: no-repeat;
   background-repeat: no-repeat;
 }
 
-.image:hover {
+.image:not(:disabled):hover {
 background: url('../../img/Image_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
@@ -144,7 +144,7 @@ background-repeat: no-repeat;
   background-repeat: no-repeat;
 }
 
-.indent:hover {
+.indent:not(:disabled):hover {
 background: url('../../img/Indent_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
@@ -156,7 +156,7 @@ background-repeat: no-repeat;
   background-repeat: no-repeat;
 }
 
-.outdent:hover {
+.outdent:not(:disabled):hover {
 background: url('../../img/Outdent_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
@@ -168,7 +168,7 @@ background-repeat: no-repeat;
   background-repeat: no-repeat;
 }
 
-.link:hover {
+.link:not(:disabled):hover {
 background: url('../../img/Insert_link_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
@@ -180,7 +180,7 @@ background-repeat: no-repeat;
   background-repeat: no-repeat;
 }
 
-.code:hover {
+.code:not(:disabled):hover {
 background: url('../../img/Inline_code_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
@@ -192,11 +192,27 @@ background-repeat: no-repeat;
   background-repeat: no-repeat;
 }
 
-.codeblock:hover {
+.codeblock:not(:disabled):hover {
 background: url('../../img/Insert_code_block_focus.png');
 background-size: 48px;
 background-repeat: no-repeat;
 }
+
+.color {
+  background: url('../../img/Color.png') !important;
+  background-size: 48px !important;
+  background-repeat: no-repeat !important;
+  transition-property: background-color background !important;
+  transition-duration: 0.3s !important;
+}
+
+.color:not(:disabled):hover {
+background: url('../../img/Color_focus.png') !important;
+background-size: 48px !important;
+background-repeat: no-repeat !important;
+background-color: rgb(235, 236, 238) !important;
+}
+
 
 
 
@@ -218,6 +234,8 @@ background-repeat: no-repeat;
 .toastui-editor-toolbar {
     height: 48px;
     box-sizing: border-box;
+    z-index:10;
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
   }
 
 .toastui-editor-defaultUI-toolbar {
@@ -228,6 +246,7 @@ background-repeat: no-repeat;
     background-color: #ffffff;
     /* border-bottom: 1px solid #ebedf2;
     border-radius: 3px 3px 0 0; */
+    
   }
 
 .toastui-editor-toolbar-icons {
@@ -255,13 +274,14 @@ border-radius: 2px;
 background-color: white;
 }
 
+
 .toastui-editor-defaultUI-toolbar button:not(:disabled):hover {
     /* border: 1px solid #e4e7ee; */
     background-color: rgb(235, 236, 238);
   }
 
 .toastui-editor-defaultUI-toolbar button:not(:disabled) {
-    transition-property: background-color;
+    transition-property: background-color background;
     transition-duration: 0.3s;
 }
 
@@ -1162,7 +1182,8 @@ background-color: white;
     font-size: 13px;
     font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', 'Arial', '나눔바른고딕',
       'Nanum Barun Gothic', '맑은고딕', 'Malgun Gothic', sans-serif;
-    z-index: 20;
+  /* 문제 생기면 여기 */
+    z-index: 1;
   }
   
   .toastui-editor-contents *:not(table) {

@@ -117,7 +117,7 @@ const PlanCalendarDateSelector = (props) => {
 
 
   const transferMoveTodo = (distance, reverse) => {
-    const movedDates = recvTodosAPI(props.el.goalId)
+    recvTodosAPI(props.el.goalId)
     .then((todos) => {
       
       const todoDates = todos.map((el, idx) => {
@@ -464,7 +464,7 @@ const PlanCalendarDateSelector = (props) => {
   
   return (
     <React.Fragment>
-      {alertNotiState && <NotiDeliverer content={alert} stateHandler={setAlertNotiState} duration={5000} width={350} height={100} />}
+      {alertNotiState && <NotiDeliverer content={alert} stateHandler={setAlertNotiState} duration={5000} width={400} />}
       <div ref={dateSelectorBar} className={styles['date-selector-bar']} draggable='false'>
         <Swipe onSwipeStart={(event) => {event.stopPropagation();}} onSwipeEnd={onStartSwipeQuit} onSwipeMove={onStartSwipeMove} allowMouseEvents={true}>
           <div id="left" className={`${styles['resize-handler']} ${styles['left-resize']}`}>

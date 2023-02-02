@@ -10,6 +10,7 @@ import { recvIsAllTodosDoneAPI } from "../../api/Plan/recvIsAllTodosDoneAPI";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import complete from "../../img/Complete.png"
 import Button from "../UI/Button/Button";
+import warning from "../../img/Warning.png"
 
 const PlanTodoListRightItem = (props) => {
 
@@ -21,6 +22,7 @@ const PlanTodoListRightItem = (props) => {
     const [descriptionValue, setDescriptionValue] = useState(props.el.description)
     const [refresh, setRefresh] = useState(false)
 
+    
     
 
 
@@ -47,6 +49,13 @@ const PlanTodoListRightItem = (props) => {
         .then((res) => {
             setIsDateEditMode(false)
         })
+        .catch((err) => {
+            setNotiContent(errorMessage)
+            setDoneNotiState(true)
+        })
+
+
+
         recvTodoPeriodAPI(props.goalId)
         .then((res) => {
             const processing = {
@@ -56,6 +65,7 @@ const PlanTodoListRightItem = (props) => {
             console.log(res)
             dispatch(modifyPlanSliceActions.responseTodoPeriod(JSON.stringify(processing)))
         })
+        
         
     }
 
@@ -140,6 +150,7 @@ const PlanTodoListRightItem = (props) => {
                     
                 }
             })
+            
         })
         
     }
@@ -164,9 +175,23 @@ const PlanTodoListRightItem = (props) => {
         </div>
     )
 
+    const errorMessage = (
+            <div style={{display:'flex', justifyContent:'space-evenly', alignItems:'center'}}>
+                <img style={{width:'40px', height:'40px', marginRight:'12px'}} src={warning} />
+                <div>
+                    <p style={{lineHeight: '40%'}}>TODO의 날짜는 현재 작성중인 TODO 목표의</p>
+                    <p style={{lineHeight: '40%'}}>날짜 범위를 미만 & 초과할 수 없습니다.</p>
+                </div>
+            </div>
+    )
+    
+
+
+    
     const [doneModalState, setDoneModalState] = useState(false)
     const [doneNotiState, setDoneNotiState] = useState(false)
     const [notiContent, setNotiContent] = useState()
+
 
     const doneModalForm = (
         <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
@@ -218,7 +243,7 @@ const PlanTodoListRightItem = (props) => {
     return (
         <div className={styles['todo-space-wrapper']} style={{width: `${props.containerRef?.current?.scrollWidth}px`}}>
             <FixedModal modalState={doneModalState} stateHandler={setDoneModalState} content={doneModalForm} addBtn={addBtn} width={400} height={410} />
-            {doneNotiState && <NotiDeliverer content={notiContent} stateHandler={setDoneNotiState} duration={5000} />}
+            {doneNotiState && <NotiDeliverer content={notiContent} stateHandler={setDoneNotiState} duration={5000} width={400} />}
             <div className={styles['todo-space']} >
                 {props.el.state ? isDoneTrue : isDoneFalse}
                 {isDateEditMode ? dateEditInput : dateReadMode}

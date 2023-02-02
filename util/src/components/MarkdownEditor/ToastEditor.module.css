@@ -3,12 +3,14 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    text-align: left;
 
 }
 
 .header {
     width: 100%;
     display: flex;
+    margin-top: 20px;
 }
 
 .button {
@@ -24,6 +26,8 @@
     background-color: white;
     box-sizing: border-box;
     padding:24px;
+    z-index:11;
+    
 }
 
 .title-input {

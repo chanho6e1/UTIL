@@ -7,6 +7,7 @@ import { delTodoAPI } from "../../api/Plan/delTodoAPI";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import Button from "../UI/Button/Button";
 import warning from "../../img/Warning.png"
+import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 
 
 const PlanTodoListLeftItem = (props) => {
@@ -35,6 +36,10 @@ const PlanTodoListLeftItem = (props) => {
         })
         .then((res) => {
             setIsEditMode(false)
+        })
+        .catch((err) => {
+            setNotiContent(errorMessage)
+            setNotiState(true)
         })
         
 
@@ -66,6 +71,17 @@ const PlanTodoListLeftItem = (props) => {
     }
 
 
+    const [NotiState, setNotiState] = useState(false)
+    const [notiContent, setNotiContent] = useState()
+
+    const errorMessage = (
+        <div style={{display:'flex', justifyContent:'space-evenly', alignItems:'center'}}>
+            <img style={{width:'40px', height:'40px', marginRight:'12px'}} src={warning} />
+            <div>
+                <p style={{lineHeight: '40%'}}>TODO의 제목은 20자 이하로 작성해야 합니다.</p>
+            </div>
+        </div>
+    )   
 
 
     const [askDeleteState, setAskDeleteState] = useState(false)
@@ -113,6 +129,7 @@ const PlanTodoListLeftItem = (props) => {
     
     return (
         <div className={styles['todo-detail-wrapper']}>
+            {NotiState && <NotiDeliverer content={notiContent} stateHandler={setNotiState} duration={5000} width={400} />}
             <FixedModal modalState={askDeleteState} stateHandler={setAskDeleteState} content={askDeleteForm} addBtn={addBtn} width={300} height={310} />
             {isEditMode ? titleEditInput : titleReadMode }
         </div>
