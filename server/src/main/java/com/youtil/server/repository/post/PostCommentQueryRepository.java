@@ -21,7 +21,7 @@ public class PostCommentQueryRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     public List<PostComment> findPostList(Long postId, PageRequest pageRequest) {
-        return jpaQueryFactory.select(postComment).from(postComment).distinct()
+        return jpaQueryFactory.select(postComment).distinct().from(postComment)
                 .where(postComment.post.postId.eq(postId))
                 .orderBy(postComment.createdDate.desc())
                 .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())

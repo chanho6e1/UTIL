@@ -113,15 +113,26 @@ public class TagController {
 
     //////
 
-    @ApiOperation(value = "정렬 기준(선택)으로 태그별 게시물 리스트 조회", notes = "태그별로,정렬 기준(view/date/like)으로 게시물 목록물 목록을 조회한다.")
+    @ApiOperation(value = "정렬 기준(선택)으로 태그별 게시물 리스트 조회", notes = "태그별로,정렬 기준(view/date/like)으로 게시물 목록을 조회한다.")
     @GetMapping("/{tagId}/posts")
-    public ResponseEntity<CommonResponse> findBySubscribesPostList(@ApiIgnore @CurrentUser UserPrincipal user,
+    public ResponseEntity<CommonResponse> findByTagPostList(@ApiIgnore @CurrentUser UserPrincipal user,
                                                                    @PathVariable Long tagId,
                                                                    @RequestParam(required=false, defaultValue = "date") String criteria,
                                                                    @RequestParam(required=false, defaultValue = "1") int offset,
                                                                    @RequestParam(value = "size", required = false, defaultValue = "10") int size){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "태그별 게시물 목록 조회 성공", tagService.findPostListByTag(user.getId(), tagId, criteria, offset, size))
+        );
+    }
+
+    @ApiOperation(value = "정렬 기준(선택)으로 나의 관심 태그별 게시물 리스트 조회", notes = "나의 관심 태그별로,정렬 기준(view/date/like)으로 게시물 목록을 조회한다.")
+    @GetMapping("/mytags")
+    public ResponseEntity<CommonResponse> findByMyTagPostList(@ApiIgnore @CurrentUser UserPrincipal user,
+                                                                   @RequestParam(required=false, defaultValue = "date") String criteria,
+                                                                   @RequestParam(required=false, defaultValue = "1") int offset,
+                                                                   @RequestParam(value = "size", required = false, defaultValue = "10") int size){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "태그별 게시물 목록 조회 성공", tagService.findPostListByMyTag(user.getId(), criteria, offset, size))
         );
     }
 }

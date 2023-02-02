@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -150,7 +151,7 @@ public class PostController {
 
     @ApiOperation(value = "게시물 삭제", notes = "단일 게시물을 삭제한다")
     @DeleteMapping("/{postId}")
-    public ResponseEntity<CommonResponse> deletepost(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long postId) {
+    public ResponseEntity<CommonResponse> deletepost(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long postId) throws UnsupportedEncodingException {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.NO_CONTENT, "삭제 성공", postService.deletePost(user.getId(), postId)));
     }
