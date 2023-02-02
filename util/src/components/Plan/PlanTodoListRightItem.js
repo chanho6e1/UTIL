@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { editTodoAPI } from "../../api/Plan/editTodoAPI";
 import { chkTodoAPI } from "../../api/Plan/chkTodoAPI";
 import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
+import { recvTodoPeriodAPI } from "../../api/Plan/recvTodoPeriodAPI";
 
 import Button from "../UI/Button/Button";
 
@@ -26,6 +27,7 @@ const PlanTodoListRightItem = (props) => {
     }
 
     const cancelDateEditMode = () => {
+        
         const processing = {
             title: props.el.title,
             description: props.el.description,
@@ -42,6 +44,15 @@ const PlanTodoListRightItem = (props) => {
         })
         .then((res) => {
             setIsDateEditMode(false)
+        })
+        recvTodoPeriodAPI(props.goalId)
+        .then((res) => {
+            const processing = {
+                goalId: props.goalId,
+                data: res
+            }
+            console.log(res)
+            dispatch(modifyPlanSliceActions.responseTodoPeriod(JSON.stringify(processing)))
         })
         
     }
