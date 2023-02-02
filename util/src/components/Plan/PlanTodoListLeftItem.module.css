@@ -100,6 +100,16 @@
     color:rgb(0, 0, 0);
 }
 
+
+.delete-button {
+    background-color: rgba(255, 0, 0, 0.2);
+}
+
+.delete-button:hover {
+    background-color: rgba(255, 0, 0, 0.3);
+    color: rgba(160, 0, 0, 1);
+}
+
 .todo-title-wrapper:hover .delete-icon {
     /* display: block; */
     /* visibility: visible; */

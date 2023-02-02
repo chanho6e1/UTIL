@@ -170,7 +170,7 @@ background-color: white;
     margin: 0 !important;
   }
   
-  @charset "utf-8";
+  /* @charset "utf-8"; */
   /* height */
   .auto-height,
   .auto-height .toastui-editor-defaultUI {

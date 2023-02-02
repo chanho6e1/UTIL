@@ -5,6 +5,7 @@ import { modifyPlanSliceActions } from '../../redux/planSlice'
 import PlanCalendarDateSelector from "./PlanCalendarDateSelector";
 import Swipe from "react-easy-swipe";
 import { OverlayScrollbarsComponent, useOverlayScrollbars } from "overlayscrollbars-react";
+
 import PlanTodoListRight from "./PlanTodoListRight";
 
 
@@ -60,8 +61,9 @@ const PlanCalendar = (props) => {
 
   useEffect(() => {
     setMonthDistance(getMonthDistance(props.startRange, props.endRange) + 1)
-    if (props.columns) {
+    if (props.columns && dateRangeWrapperRef?.current?.style?.height) {
       dateRangeWrapperRef.current.style.height = (props.columns + 1) * (planGridRef[0].current[0].clientHeight + 2) + 'px'
+      
     }
     
   }, [props.startRange, props.endRange])
@@ -71,21 +73,29 @@ const PlanCalendar = (props) => {
     setMonthRange(Array(monthDistance).fill().map((arr, idx) => {
       return new Date(props.startRange.getFullYear(), props.startRange.getMonth() + idx + 1, 0)
     }))
+
   }, [monthDistance])
 
 
   useEffect(() => {
-    if (monthRange) {
+    if (monthRange && planGridRef[0]?.current[0]?.clientWidth) {
       getXPointLib(monthRange, planGridRef[0].current[0].clientWidth)
     }
-  }, [monthRange])
+  }, [monthRange, planGridRef[0]?.current[0]?.clientWidth])
 
 
-  useEffect(() => {
-    monthSpaceRef.current.style.width = containerRef.current.scrollWidth + 'px'
-    monthTitleWrapperRef.current.style.width = containerRef.current.scrollWidth + 'px'
-    // props.plansTitleWrapperRef.current.style.height = props.plansTitleInnerRef.current.clientHeight + 'px'
-  }, [monthRange, props.todoFormVisibility])
+
+  // useEffect(() => {
+  //   // if (containerRef?.current?.scrollWidth) {
+  //   //   monthSpaceRef.current.style.width = containerRef.current.scrollWidth + 'px'
+  //   //   monthTitleWrapperRef.current.style.width = containerRef.current.scrollWidth + 'px'
+  //   // }
+  //   monthSpaceRef.current.style.width = containerRef?.current?.scrollWidth + 'px'
+  //   monthTitleWrapperRef.current.style.width = containerRef?.current?.scrollWidth + 'px'
+  //   // props.plansTitleWrapperRef.current.style.height = props.plansTitleInnerRef.current.clientHeight + 'px'
+  // }, [monthRange, props.todoFormVisibility, ])
+
+  
 
 
 
@@ -131,15 +141,14 @@ const PlanCalendar = (props) => {
   const totalPlansGrid = plans.map((el, idx) => {
     const columns = gridPerPlans(idx)
     return (
-      <React.Fragment>
-        <div ref={containerRef} className={styles['month-bar-container']} key={`month-bar-container-${idx}`}>
+      <React.Fragment key={`month-bar-container-${el.goalId}`}>
+        <div ref={containerRef} className={styles['month-bar-container']} >
           {columns}
-          <PlanCalendarDateSelector idx={idx} period={plans[idx].period} startDate={plans[idx].startDate} endDate={plans[idx].endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
+          <PlanCalendarDateSelector idx={idx} el={el} todos={props.todos} startDate={el.startDate} endDate={el.endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
           
         </div>
-        {props.todoFormVisibility[idx] && <PlanTodoListRight goalId={plans[idx].goalId} todos={props.todos} scrollRef={scrollRef} containerRef={containerRef} newTodoIdx={props.newTodoIdx} />}
+        {props.todoFormVisibility[idx] && <PlanTodoListRight applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} goalId={plans[idx].goalId} todos={props.todos} scrollRef={scrollRef} containerRef={containerRef} newTodoIdx={props.newTodoIdx} />}
       </React.Fragment>
-      
     )
   })
 
@@ -168,8 +177,8 @@ const PlanCalendar = (props) => {
 
 
   return (
-      <div id="date-range" ref={dateRangeWrapperRef} onClick={() => console.log(dateRangeWrapperRef)}  className={styles['date-range-wrapper']}>
-        <div ref={monthTitleWrapperRef}  className={styles['month-title-container']}>
+      <div id="date-range" ref={dateRangeWrapperRef} onClick={() => console.log(planGridRef)} className={styles['date-range-wrapper']}>
+        <div ref={monthTitleWrapperRef}  className={styles['month-title-container']} style={{width: `${containerRef?.current?.scrollWidth}px`}}>
           {monthTitleGrid}
         </div>
 
@@ -177,7 +186,7 @@ const PlanCalendar = (props) => {
           <div ref={monthBarRef} className={styles['scroll-div']} >
             {totalPlansGrid}
             {props.columns? null : newPlanDummy}
-            <div ref={monthSpaceRef} className={styles['month-space']} />
+            <div ref={monthSpaceRef} className={styles['month-space']} style={{width: `${containerRef?.current?.scrollWidth}px`}} />
           </div>
         </div>
       </div>
