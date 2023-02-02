@@ -5,12 +5,14 @@ import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.post.PostLike;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.user.UserResponse;
+import com.youtil.server.repository.post.PostFileRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -55,19 +57,17 @@ public class PostResponse {
 
     private String modifiedDate;
 
-
     public PostResponse(Post post, User user) { //전체 조회
+
+
 
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         this.writerInfo = WriterInfo.from(post.getUser());
         this.postId = post.getPostId();
         this.title = post.getTitle();
-        this.content = post.getContent();
-
-        Document doc = Jsoup.parse(post.getContent());
-        Elements images = doc.getElementsByTag("img");
-
+//        this.content = post.getContent().substring(0,30).replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");;
+        this.content = post.getContent().replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");;
 
         this.createdDate = post.getCreatedDate().format(myFormatObj);
         if(post.getModifiedDate()!=null) {
@@ -75,6 +75,9 @@ public class PostResponse {
         }
         this.isPrivate = post.getIsPrivate();
         this.thumbnail = post.getThumbnail();
+//        if(post.getPostFileList().getPostFileList()!=null || !post.getPostFileList().getPostFileList().isEmpty()) {
+//            this.thumbnail = post.getPostFileList().getPostFileList().get(0).getPath();
+//        }
         this.likeStatus = post.getPostLikeList().getPostLikeList().parallelStream()
                 .anyMatch(l -> l.ownedBy(user.getUserId()));
         this.likeStatusSize = post.getTotalLikes();
