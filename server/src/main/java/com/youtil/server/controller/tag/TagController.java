@@ -20,7 +20,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/tags")
+@RequestMapping("/api/tags")
 @Api(tags = {"테그 컨트롤러"})
 public class TagController {
     @Autowired

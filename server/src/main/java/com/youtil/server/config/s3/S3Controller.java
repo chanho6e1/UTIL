@@ -16,31 +16,32 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api/upload")
 public class S3Controller {
 
     private final S3Uploader s3Uploader;
 
     @ApiOperation(value = "포스트에서 파일, 섬네일 업로드", notes="파일을 업로드하고 주소를 반환한다")
-    @PostMapping("/upload/posts")
+    @PostMapping("/posts")
     public String uploadPostFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
 
         return s3Uploader.upload(multipartFile, "static/post");
     }
 
     @ApiOperation(value = "회고록에서 파일 업로드", notes="파일을 업로드하고 주소를 반환한다")
-    @PostMapping("/upload/reviews")
+    @PostMapping("/reviews")
     public String uploadReviewFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         return s3Uploader.upload(multipartFile, "static/review");
     }
 
     @ApiOperation(value = "프로필 이미지 업로드", notes = "파일을 업로드하고 주소를 반환한다.")
-    @PostMapping("/upload/users")
+    @PostMapping("/users")
     public String uploadProfileFile(@RequestParam("file") MultipartFile multipartFile) throws IOException{
         return s3Uploader.upload(multipartFile, "static/user");
     }
 
     @ApiOperation(value = "파일 삭제", notes="풀주소를 주면 해당 파일을 삭제한다")
-    @DeleteMapping("/upload")
+    @DeleteMapping()
     public String deleteFile(@RequestParam("file") String path) throws UnsupportedEncodingException {
         String source = URLDecoder.decode(path.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/", "") , "UTF-8");
         s3Uploader.delete(source);

@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/follows")
+@RequestMapping("/api/follows")
 @Api(tags = {"팔로우 컨트롤러"})
 public class FollowController {
     @Autowired

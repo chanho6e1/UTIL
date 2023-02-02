@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/reviews")
+@RequestMapping("/api/reviews")
 @Api(tags = {"리뷰 컨트롤러"})
 public class ReviewController {
 
