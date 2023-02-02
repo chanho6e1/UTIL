@@ -31,7 +31,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         try {
             String jwt = getJwtFromRequest(request);
 
-            logger.info("==============jwt{}", jwt);
+            logger.info("==============jwt: {}", jwt);
 
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 Long userId = tokenProvider.getUserIdFromToken(jwt);
@@ -50,12 +50,14 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
+        logger.info("==============isSecure: {}", request.isSecure());
+
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7, bearerToken.length());
         }
 
-        logger.info("============bearerToken{}", bearerToken);
+        logger.info("============bearerToken: {}", bearerToken);
         return null;
     }
 }
