@@ -8,6 +8,7 @@ import com.youtil.server.domain.category.Category;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.post.PostBookmark;
+import com.youtil.server.domain.post.PostFile;
 import com.youtil.server.domain.post.PostLike;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.post.*;
@@ -55,6 +56,8 @@ public class PostService {
     private final GoalRepository goalRepository;
     @Autowired
     private final S3Uploader s3Uploader;
+    @Autowired
+    private final PostFileRepository postFileRepository;
 
     @Transactional
     public PostResponse findPost(Long postId, Long userId) { //단일 조회
@@ -152,6 +155,15 @@ public class PostService {
             post.setGoal(goal);
         }
 
+        if(request.getPostFileList()!=null || !request.getPostFileList().isEmpty()){
+            post.setThubmnail(request.getPostFileList().get(0));
+            for(String postFile: request.getPostFileList()){ //포스트 파일 등록하고(포스트 세팅하고) /postFilelist와 연결)
+                    PostFile postFile1 = postFileRepository.save(PostFile.builder().path(postFile).post(post).build());
+                    post.addPostFile(postFile1);
+            }
+        }
+
+
         return post.getPostId();
     }
 
@@ -162,6 +174,7 @@ public class PostService {
         post.clearUser();
         parseContextAndDeleteImages(post);
         postCommentRepository.deleteByPostId(postId);
+        postFileRepository.deleteByPostId(postId);
         postRepository.deleteById(postId);
         return postId;
     }
@@ -188,6 +201,17 @@ public class PostService {
             post.setGoal(goal);
         } else{
             post.resetGoal();
+        }
+
+        if(request.getPostFileList()!=null || !request.getPostFileList().isEmpty()){
+            post.resetPostFile();
+            post.setThubmnail(request.getPostFileList().get(0));
+            for(String postFile: request.getPostFileList()){ //포스트 파일 등록하고 /포스트 세팅하고/postFilelist와 연결)
+//              if(!postFileRepository.existsByPostFile(postFile).isPresent()){
+                    PostFile postFile1 = postFileRepository.save(PostFile.builder().path(postFile).post(post).build());
+                    post.addPostFile(postFile1);
+//              }
+            }
         }
 
         return post.getPostId();
@@ -230,6 +254,15 @@ public class PostService {
             }
         }
         return source;
+    }
+
+    public String getThumbnail(Long postId) { //섬네일 제공, 첫번째 등록한 것을 바로 섬네일로 준다
+
+        Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("post", "postId", postId));
+        String source = null;
+
+        PostFile postFile = postFileRepository.getByPostId(postId);
+        return postFile.getPath();
     }
 
     public void parseContextAndDeleteImages(Post post) { //post 삭제하면 안의 파일도 삭제

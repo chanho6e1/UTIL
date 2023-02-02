@@ -54,6 +54,9 @@ public class Post extends BaseEntity {
     @Embedded
     private final PostBookmarkList postBookmarkList = new PostBookmarkList();
 
+    @Embedded
+    private final PostFileList postFileList = new PostFileList();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
     private Category category;
@@ -114,6 +117,12 @@ public class Post extends BaseEntity {
         postComment.setPost(this);
     }
 
+    public void addPostFile(PostFile postFile){
+        this.postFileList.getPostFileList().add(postFile);
+        postFile.setPost(this);
+    }
+
+
     public boolean togglePostLike(PostLike postLike) {
 
         return postLikeList.togglePostLike(postLike);
@@ -139,4 +148,7 @@ public class Post extends BaseEntity {
         this.thumbnail = source;
     }
 
- }
+    public void resetPostFile() {
+        this.postFileList.getPostFileList().clear();
+    }
+}
