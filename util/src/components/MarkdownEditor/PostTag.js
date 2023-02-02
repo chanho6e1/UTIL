@@ -22,15 +22,40 @@ const PostTag = (props) => {
   const createLine = (idx) => {
     return (
       <div  className={styles[`line-wrapper`]}>
-        <div ref={el => (lineRef.current[idx] = el)}  id={idx} className={styles[`line`]} contentEditable="true" placeholder="태그를 입력하세요." onInput={inputToArray.bind(this, idx)} onKeyDown={(event) => {deleteLine(idx, event); pushLine(idx, event); preventSpace(idx, event); checkValid(idx, event)}} ></div>
+        <div ref={el => (lineRef.current[idx] = el)}  id={idx} className={styles[`line`]} contentEditable="true" placeholder="태그를 입력하세요." onInput={inputToArray.bind(this, idx)} onKeyDown={(event) => {deleteLine(idx, event); pushLine(idx, event); preventSpace(idx, event); }} ></div>
       </div>
     )
   }
 
+  const [alertDelay, setAlertDelay] = useState(false)
   const inputToArray = (idx, event) => {
-    frontData[idx] = event.target.textContent
-    setFrontData(() => [...frontData])
-    props.setTags(() => frontData )
+    if (event.target.textContent.length > 10) {
+  
+      const cursorPointer = document.getElementById(`${idx}`)
+      const selection = window.getSelection();
+      const newRange = document.createRange();
+      
+
+      lineRef.current[idx].textContent = frontData[idx]
+
+      if (alertNotiState === false && alertDelay === false) {
+        setAlertDelay(() => true)
+        setTimeout(function() { setAlertDelay(() => false) }, 3600);
+        setAlertText('태그는 10자를 초과하여 작성할 수 없습니다.')
+        setAlertNotiState(true)
+      }
+      
+
+      newRange.selectNodeContents(cursorPointer);
+      newRange.collapse(false);
+      selection?.removeAllRanges();
+      selection?.addRange(newRange);
+    } else {
+      frontData[idx] = event.target.textContent
+      setFrontData(() => [...frontData])
+      props.setTags(() => frontData )
+    }
+    
     
   }
 
@@ -41,13 +66,13 @@ const PostTag = (props) => {
     })
   }
 
-  const checkValid = (line, event) => {
-    if (frontData[line].length >= 10 && event.key !== "Backspace") {
-      setAlertText('태그는 10자를 초과하여 작성할 수 없습니다.')
-      setAlertNotiState(true)
-      event.preventDefault()
-    }
-  }
+  // const checkValid = (line, event) => {
+  //   if (frontData[line].length >= 10 && event.key !== "Backspace") {
+  //     setAlertText('태그는 10자를 초과하여 작성할 수 없습니다.')
+  //     setAlertNotiState(true)
+  //     event.preventDefault()
+  //   }
+  // }
 
   const preventSpace = (line, event) => {
     if (event.keyCode == 32) {
@@ -127,7 +152,7 @@ const PostTag = (props) => {
       }
       return
     }
-    if (event.key == 'Enter') {
+    if (event.key == 'Enter' || event.keyCode == 32) {
       event.preventDefault()
 
       const asyncTask = async () => {
@@ -194,7 +219,7 @@ const PostTag = (props) => {
 
   return (
     <div>
-      {alertNotiState && <NotiDeliverer content={alert} stateHandler={setAlertNotiState} duration={5000} width={350} height={100} />}
+      {alertNotiState && <NotiDeliverer content={alert} stateHandler={setAlertNotiState} duration={3000} width={350} height={100} />}
       <div ref={editorWrapperRef} id="editor-wrapper" className={styles['editor-wrapper']}>
         {frontData.map((el, idx) => createLine(idx))}
       </div>
