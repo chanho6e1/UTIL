@@ -153,8 +153,8 @@ const PlanCalendarDateSelector = (props) => {
   const onStartSwipeMove = (position = { x: null }) => {
 
     if (todosPeriod) {
-      if (positionx > 0) {
-        if (updatingStartDate > minDate) {
+      if (position.x > 0) {
+        if (updatingStartDate >= minDate) {
           return
         }
       }
@@ -166,6 +166,7 @@ const PlanCalendarDateSelector = (props) => {
 
     const isValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
     if (position.x < 0 && (isValid <= props.gridStart || initialStartDate <= props.gridStart)) {
+      setInitialStartDate(() => props.gridStart)
       return
     }
     if (position.x > 0 && (isValid >= initialEndDate || initialStartDate >= initialEndDate)) {
@@ -192,8 +193,8 @@ const PlanCalendarDateSelector = (props) => {
   const onEndSwipeMove = (position = { x: null }) => {
 
     if (todosPeriod) {
-      if (positionx < 0) {
-        if (updatingEndDate < maxDate) {
+      if (position.x < 0) {
+        if (updatingEndDate <= maxDate) {
           return
         }
       }
@@ -203,6 +204,7 @@ const PlanCalendarDateSelector = (props) => {
 
     const isValid = new Date(updatingEndDate.getFullYear(), updatingEndDate.getMonth(), updatingEndDate.getDate() + 1)
     if (position.x > 0 && (isValid >= props.gridEnd || initialEndDate >= props.gridEnd)) {
+      setInitialEndDate(() => props.gridEnd)
       return
     }
     if (position.x < 0 && (isValid <= initialStartDate || initialEndDate <= initialStartDate)) {
@@ -226,9 +228,20 @@ const PlanCalendarDateSelector = (props) => {
 
 
   const onTransferMove = (position = { x: null }) => {
+    // const isStartValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
+    // const isEndValid = new Date(updatingEndDate.getFullYear(), updatingEndDate.getMonth(), updatingEndDate.getDate() + 1)
+    // if ((position.x < 0 && (isStartValid <= props.gridStart || isStartValid <= props.gridStart)) || (position.x > 0 && (isEndValid >= props.gridEnd || isEndValid >= props.gridEnd))) {
+      
+    //   return
+    // }
+
+    const dayDistance = getDayDistance(updatingStartDate, updatingEndDate)
     const isStartValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
     const isEndValid = new Date(updatingEndDate.getFullYear(), updatingEndDate.getMonth(), updatingEndDate.getDate() + 1)
-    if ((position.x < 0 && (isStartValid <= props.gridStart || isStartValid <= props.gridStart)) || (position.x > 0 && (isEndValid >= props.gridEnd || isEndValid >= props.gridEnd))) {
+    
+    if (positionx < 0 && (isStartValid <= props.gridStart || isStartValid <= props.gridStart)) {
+      return
+    } else if (positionx > 0 && (isEndValid >= props.gridEnd || isEndValid >= props.gridEnd)) {
       return
     }
 
@@ -236,15 +249,13 @@ const PlanCalendarDateSelector = (props) => {
     // 드래그 제한 코드
     // 완료된 투두가 하나도 없어서 투두 날짜가 자동으로 바뀌는 경우 해당 목표의 투두 min, max값을 다시 받아와야만 한다.
     if (todosPeriod) {
-      if (positionx > 0) {
-        if (updatingStartDate > minDate) {
-          console.log('few')
+      if (position.x > 0) {
+        if (updatingStartDate >= minDate) {
           return
         }
       }
-      if (positionx < 0) {
-        if (updatingEndDate < maxDate) {
-          console.log(updatingEndDate, maxDate)
+      if (position.x < 0) {
+        if (updatingEndDate <= maxDate) {
           return
         }
       }
@@ -285,38 +296,38 @@ const PlanCalendarDateSelector = (props) => {
 
     if (todosPeriod) {
       if (positionx > 0) {
-        if (updatingStartDate > minDate) {
+        if (updatingStartDate >= minDate) {
           setInitialStartDate(() => minDate)
           setAlertNotiState(true)
-          setStartMoved(0)
-          setStartPeriod(0)
-          setPositionx(0)
-          return
+          setStartWidth()
         }
       }
     }
 
 
-
-    const isValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
-    if (positionx < 0 && (isValid <= props.gridStart || isValid <= props.gridStart)) {
-      props.extendStartRange(1)
-      setInitialStartDate(() => props.gridStart)
-    } else {
-      setInitialStartDate(() => updatingStartDate)
-    }
-    if (positionx > 0 && (isValid >= initialEndDate || initialStartDate >= initialEndDate)) {
-      const startDateCorrection = new Date(new Date(initialEndDate).setDate(initialEndDate.getDate() - 1))
-      setInitialStartDate(() => startDateCorrection)
-      setStartMonth(startDateCorrection.getMonth())
-      
-    } else {
-      setStartMonth(updatingStartDate.getMonth())
-      
-    }
-    setStartMoved(0)
-    setStartPeriod(0)
-    setPositionx(0)
+    
+      const isValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
+      if (positionx < 0 && (isValid <= props.gridStart || isValid <= props.gridStart)) {
+        props.extendStartRange(1)
+        setInitialStartDate(() => props.gridStart)
+      } else {
+        if (updatingStartDate < minDate || minDate == 'Invalid Date') {
+          setInitialStartDate(() => updatingStartDate)
+        }
+      }
+      if (positionx > 0 && (isValid >= initialEndDate || initialStartDate >= initialEndDate)) {
+        const startDateCorrection = new Date(new Date(initialEndDate).setDate(initialEndDate.getDate() - 1))
+        setInitialStartDate(() => startDateCorrection)
+        setStartMonth(startDateCorrection.getMonth())
+        
+      } else {
+        setStartMonth(updatingStartDate.getMonth())
+        
+      }
+      setStartMoved(0)
+      setStartPeriod(0)
+      setPositionx(0)
+  
   }
 
 
@@ -324,13 +335,10 @@ const PlanCalendarDateSelector = (props) => {
 
     if (todosPeriod) {
       if (positionx < 0) {
-        if (updatingEndDate < maxDate) {
+        if (updatingEndDate <= maxDate) {
           setInitialEndDate(() => maxDate)
           setAlertNotiState(true)
-          setEndMoved(0)
-          setEndPeriod(0)
-          setPositionx(0)
-          return
+          setStartWidth()
         }
       }
     }
@@ -340,7 +348,9 @@ const PlanCalendarDateSelector = (props) => {
       props.extendEndRange(1)
       setInitialEndDate(() => props.gridEnd)
     } else {
-      setInitialEndDate(() => updatingEndDate)
+      if (updatingEndDate > maxDate || maxDate == 'Invalid Date') {
+        setInitialEndDate(() => updatingEndDate)
+      }
     }
     if (positionx < 0 && (isValid <= initialStartDate || initialEndDate <= initialStartDate)) {
       const endDateCorrection = new Date(new Date(initialStartDate).setDate(initialStartDate.getDate() + 1))
@@ -361,36 +371,22 @@ const PlanCalendarDateSelector = (props) => {
     // 완료된 투두가 하나도 없어서 투두 날짜가 자동으로 바뀌는 경우 해당 목표의 투두 min, max값을 다시 받아와야만 한다.
     if (todosPeriod) {
       if (positionx > 0) {
-        if (updatingStartDate > minDate) {
+        if (updatingStartDate >= minDate) {
           const endDateCorrection = new Date(new Date(minDate).setDate(minDate.getDate() + dayDistance))
           setInitialStartDate(() => minDate)
           setInitialEndDate(() => endDateCorrection)
           setAlertNotiState(true)
-          setStartMoved(0)
-          setEndMoved(0)
-          setStartPeriod(0)
-          setEndPeriod(0)
-          setStartMonth(updatingStartDate.getMonth())
-          setEndMonth(updatingEndDate.getMonth())
-          setPositionx(0)
-          return
-          
+          setStartWidth()
+
         }
       }
       if (positionx < 0) {
-        if (updatingEndDate < maxDate) {
+        if (updatingEndDate <= maxDate) {
           const startDateCorrection = new Date(new Date(maxDate).setDate(maxDate.getDate() - dayDistance))
           setInitialStartDate(() => startDateCorrection)
           setInitialEndDate(() => maxDate)
           setAlertNotiState(true)
-          setStartMoved(0)
-          setEndMoved(0)
-          setStartPeriod(0)
-          setEndPeriod(0)
-          setStartMonth(updatingStartDate.getMonth())
-          setEndMonth(updatingEndDate.getMonth())
-          setPositionx(0)
-          return
+          setStartWidth()
           
         }
       }
