@@ -73,7 +73,8 @@ public class PostQueryRepository {
 
         String criteria = postSearch.getCriteria();
 
-        return jpaQueryFactory.selectFrom(post)
+        return jpaQueryFactory.select(post)
+                .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(post.title.contains(postSearch.getTitle()),
                         isPrivate(userId)
@@ -88,7 +89,8 @@ public class PostQueryRepository {
 
         String criteria = postSearch.getCriteria();
 
-        return jpaQueryFactory.selectFrom(post)
+        return jpaQueryFactory.select(post)
+                .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(
                         post.user.in(
@@ -108,7 +110,8 @@ public class PostQueryRepository {
 
     public List<Post> findByLikePostList(String criteria, User user, PageRequest pageRequest) {
 
-        return jpaQueryFactory.selectFrom(post)
+        return jpaQueryFactory.select(post)
+                .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(
                         post.in(
@@ -127,7 +130,8 @@ public class PostQueryRepository {
 
     public  List<Post> findByBookmarkPostList(String criteria, User user, PageRequest pageRequest) {
 
-        return jpaQueryFactory.selectFrom(post)
+        return jpaQueryFactory.select(post)
+                .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(
                         post.in(

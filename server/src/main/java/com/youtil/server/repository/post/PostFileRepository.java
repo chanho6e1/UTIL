@@ -9,12 +9,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 @Repository
 public interface PostFileRepository extends JpaRepository<PostFile, Long> {
 
     @Query("select f from PostFile f where f.path = :path")
     Optional<PostFile> existsByPostFile(@Param("path")String path);
+
+    @Query("select f from PostFile f where f.post.postId = :postId")
+    List<PostFile> findByPostId(@Param("postId")Long postId);
 
     @Transactional
     @Modifying(clearAutomatically = true) // 영속성 컨텍스트 초기화
