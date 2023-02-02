@@ -118,3 +118,6 @@ cloud:
       auto: false
 server:
   port: 8081
+  tomcat:
+    remoteip:
+      protocol-header: x-forwarded-proto
