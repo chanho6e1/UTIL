@@ -20,7 +20,7 @@ public class GoalQueryRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     public List<Goal> findGoalListByUser(Long userId){
-        return jpaQueryFactory.select(goal)
+        return jpaQueryFactory.select(goal).distinct()
                 .from(goal)
                 .where(goal.user.userId.eq(userId))
                 .orderBy(goal.goalId.asc())
@@ -28,7 +28,7 @@ public class GoalQueryRepository {
     }
 
     public List<Post> findPostListByGoalId(Long goalId, PageRequest pageRequest){
-        return jpaQueryFactory.select(post)
+        return jpaQueryFactory.select(post).distinct()
                 .from(post)
                 .where(post.goal.goalId.eq(goalId))
                 .orderBy(post.goal.goalId.asc())

@@ -168,15 +168,26 @@ public class PostService {
     }
 
     @Transactional
-    public Long deletePost(Long userId, Long postId) {
+    public Long deletePost(Long userId, Long postId) throws UnsupportedEncodingException {
         Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
         validPostUser(userId, post.getUser().getUserId());
         post.clearUser();
-        parseContextAndDeleteImages(post);
+        parseContextAndDeleteImages(post); //1) 내용을 긁어서 가져와서 s3삭제
+//        deletePostFile(postId);  //2) 포스트별 저장하고 있는 포스트 파일 읽어와서 s3삭제
         postCommentRepository.deleteByPostId(postId);
         postFileRepository.deleteByPostId(postId);
         postRepository.deleteById(postId);
         return postId;
+    }
+
+    private void deletePostFile(Long postId) throws UnsupportedEncodingException {
+        Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
+
+        List<PostFile> postFileList = postFileRepository.findByPostId(postId);
+        for(PostFile postFile:postFileList){
+            String source = URLDecoder.decode(postFile.getPath().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/", "") , "UTF-8");
+            s3Uploader.delete(source);
+        }
     }
 
     @Transactional
