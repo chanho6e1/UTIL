@@ -82,11 +82,11 @@ public class PostService {
 
 
     public List<PostResponse> findPostListBySpecUser(Long userId, int offset, int size, String criteria, Long myId) {
-        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-        User me = userRepository.findUser(myId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", myId));
+        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId)); //내가 조회할 유저
+        User me = userRepository.findUser(myId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", myId)); //접속 중인 나
 
         return postQueryRepository.findPostListBySpecUser(userId, criteria, PageRequest.of(offset - 1, size), me)
-                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+                .stream().map((post)-> new PostResponse(post, me)).collect(Collectors.toList());
     }
 
 
