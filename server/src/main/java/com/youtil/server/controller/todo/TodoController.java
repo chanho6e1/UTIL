@@ -46,10 +46,10 @@ public class TodoController {
                 HttpStatus.CREATED, "투두 상태 수정 성공", todoService.setTodoState(todoId)));
     }
     @ApiOperation(value = "전체 투두 날짜 수정", notes = "전체 투두 날짜를 수정한다")
-    @PutMapping("/dates")
-    public ResponseEntity<CommonResponse> updateTodoDate(@RequestBody @Valid List<TodoUpdateDateRequest> request) throws Exception {
+    @PutMapping("/dates/{goalId}")
+    public ResponseEntity<CommonResponse> updateTodoDate(@PathVariable Long goalId, @RequestBody @Valid List<TodoUpdateDateRequest> request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.CREATED, "전체 투두 날짜 수정 성공", todoService.updateTodoDate(request)));
+                HttpStatus.CREATED, "전체 투두 날짜 수정 성공", todoService.updateTodoDate(goalId, request)));
 
 
     }
