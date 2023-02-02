@@ -76,6 +76,7 @@ public class TodoService {
             System.out.println("여기 들어옴");
             throw new ArgumentMismatchException("목표 내 todo의 state가 1개 이상 체크되어 있음", goalId);
         }
+        //
         for(TodoUpdateDateRequest re : request){
             Todo todo = todoRepository.findById(re.getTodoId()).orElseThrow(() -> new ResourceNotFoundException("todo", "todoId", re.getTodoId()));
             todo.updateDate(re.getDueDate());
