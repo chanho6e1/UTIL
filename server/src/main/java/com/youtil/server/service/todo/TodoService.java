@@ -62,13 +62,14 @@ public class TodoService {
         String[] arr = request.getDueDate().split("T");
         request.setDueDate(arr[0]);
 
-        todoRepository.checkTodoPeriod(todo.getGoal(), request.getDueDate()).orElseThrow(() -> new ArgumentMismatchException("todo 날짜가 목표 범위 벗어남", todoId));
+        Todo temp = todoRepository.checkTodoPeriod(todo.getGoal(), request.getDueDate(), todoId).orElseThrow(() -> new ArgumentMismatchException("todo 날짜가 목표 범위 벗어남", todo.getGoal().getStartDate() + "~" + todo.getGoal().getEndDate()));
         todo.update(request);
         return todo.getTodoId();
     }
 
     @Transactional
-    public Long updateTodoDate(List<TodoUpdateDateRequest> request) {
+    public Long updateTodoDate(List<TodoUpdateDateRequest> request) {   // 투두 날짜 전체 이동
+        // List<Todo> todos = goalRepository.checkTodoState().orElseThrow(() -> new ArgumentMismatchException("todo", todo.getGoal().getStartDate() + "~" + todo.getGoal().getEndDate()));
         Todo todo = new Todo();
         for(TodoUpdateDateRequest re : request){
             todo = todoRepository.findById(re.getTodoId()).orElseThrow(() -> new ResourceNotFoundException("todo", "todoId", re.getTodoId()));
@@ -95,6 +96,39 @@ public class TodoService {
     public List<Map<String, TodoPeriodResponse>> getTodoPeriod(Long userId) {
 
         List<Map<String, Object>> mapList = todoRepository.findTodoPeriod(userId);
+//        List<TodoPeriodResponse> result = new ArrayList<>();
+
+        List<Map<String, TodoPeriodResponse>> result = new ArrayList<>();
+        Map<String, TodoPeriodResponse> maps = new HashMap<>();
+
+        for(Map<String, Object> map : mapList){
+            String goalId = map.get("goalId").toString();
+            String minDate = map.get("minDate").toString();
+            String maxDate = map.get("maxDate").toString();
+
+            TodoPeriodResponse todoPeriodResponse = new TodoPeriodResponse(minDate, maxDate);
+//            result.add(new TodoPeriodResponse(goalId, minDate, maxDate));
+
+//            Map<String, TodoPeriodResponse> maps = new HashMap<>();
+//            Map<String, String> date = new HashMap<>();
+//            date.put("minDate", minDate);
+//            date.put("maxDate", maxDate);
+
+            maps.put(goalId, todoPeriodResponse);
+//            result.add(maps);
+        }
+        result.add(maps);
+
+//        Map<String, String> map = todoRepository.findTodoPeriod(userId);
+//        String minDate = map.get("minDate");
+//        String maxDate = map.get("maxDate");
+
+        return result;
+    }
+
+    public List<Map<String, TodoPeriodResponse>> getTodoPeriodByGoal(Long goalid) {
+        Goal goal = goalRepository.findById(goalid).orElseThrow(() -> new ResourceNotFoundException("goal", "goalId", goalid));
+        List<Map<String, Object>> mapList = todoRepository.findTodoPeriodByGoal(goal);
 //        List<TodoPeriodResponse> result = new ArrayList<>();
 
         List<Map<String, TodoPeriodResponse>> result = new ArrayList<>();
