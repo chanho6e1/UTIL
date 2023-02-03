@@ -71,15 +71,7 @@ public class GoalService {
 
         return new GoalResponse(goal);
     }
-    public void validGoalUser(Long currentUser, Long goalUser) {
 
-        if (currentUser == goalUser || currentUser.equals(goalUser)) {
-            return;
-        }
-        else {
-            throw new ResourceForbiddenException("본인이 작성한 글이 아닙니다");
-        }
-    }
     @Transactional
     public Long updateGoal(Long userId, Long goalId, GoalUpdateRequest request) {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
@@ -117,28 +109,26 @@ public class GoalService {
     @Transactional
     public Object toggleGoalState(Long id, Long goalId) {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
-
+//        validGoalUser(id, goal.getUser().getUserId());
         goal.toggleState();
 
         return goal.isState();
     }
 
-    public List<PostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-        return goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size))
-                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
-    }
-
-//    public Map<Long, GoalPostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
+//    public List<PostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
 //        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-//
-//        Map<Long, GoalPostResponse> resultMap = new HashMap<>();
-//        System.out.println(goalId);
-//        goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size))
-//                .stream().map((post)-> resultMap.put(post.getPostId(), new GoalPostResponse(post)));
-//        System.out.println(resultMap.get(83));
-//        return resultMap;
+//        return goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size))
+//                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
 //    }
+
+    public Map<Long, GoalPostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+
+        Map<Long, GoalPostResponse> resultMap = new HashMap<>();
+        goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size))
+                .stream().map((post)-> resultMap.put(post.getPostId(), new GoalPostResponse(post))).collect(Collectors.toList());
+        return resultMap;
+    }
 
 //    public List<GoalResponse> getDoingGoal(Long userId) {
 //        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
@@ -155,4 +145,14 @@ public class GoalService {
 
         return responseMap;
     }//
+
+    public void validGoalUser(Long currentUser, Long goalUser) {
+
+        if (currentUser == goalUser || currentUser.equals(goalUser)) {
+            return;
+        }
+        else {
+            throw new ResourceForbiddenException("본인이 작성한 글이 아닙니다");
+        }
+    }
 }
