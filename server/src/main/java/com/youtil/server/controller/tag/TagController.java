@@ -43,7 +43,14 @@ public class TagController {
     @GetMapping("/likes")
     public ResponseEntity<CommonResponse> getTagLike(@CurrentUser UserPrincipal user){
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "관심 테그 조회 성공", tagService.getTagLike(user.getId())));
+                HttpStatus.OK, "나의 관심 테그 조회 성공", tagService.getTagLike(user.getId())));
+    }
+
+    @ApiOperation(value = "유저별 관심 테그 조회", notes = "유저별 관심 테그를 조회한다")
+    @GetMapping("/likes/{userId}")
+    public ResponseEntity<CommonResponse> getUserTagLike(@PathVariable Long userId){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "유저별 관심 테그 조회 성공", tagService.getUserTagLike(userId)));
     }
 
     @ApiOperation(value = "관심 테그 삭제", notes = "관심 테그를 삭제한다")

@@ -68,6 +68,13 @@ public class TagService {
                 .stream().map(TagResponse::new).collect(Collectors.toList());
     }
 
+    //유저별 관심 태그 조회
+    public Object getUserTagLike(Long specUserId) { //유져별 관심 태그 조회
+        User user = userRepository.findById(specUserId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", specUserId));
+        return userOfTagRepository.findBySpecUser(user)
+                .stream().map(TagResponse::new).collect(Collectors.toList());
+    }
+
     @Transactional
     public Long updateTagLike(Long userId, TagSaveRequest request) {
         deleteTagLike(userId);
@@ -155,4 +162,6 @@ public class TagService {
         return tagQueryRepository.findPostListByMyTag(userId, criteria, PageRequest.of(offset-1, size))
                 .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
+
+
 }
