@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import static com.youtil.server.domain.goal.QGoal.goal;
@@ -37,4 +38,12 @@ public class GoalQueryRepository {
                 .fetch();
     }
 
+    public List<Goal> getDoingGoal(Long userId) { //진행중인 목표만 제공
+        return jpaQueryFactory.select(goal).distinct()
+                .from(goal)
+                .where(goal.user.userId.eq(userId),
+                        goal.state.eq(true))
+                .orderBy(goal.goalId.asc())
+                .fetch();
+    }
 }
