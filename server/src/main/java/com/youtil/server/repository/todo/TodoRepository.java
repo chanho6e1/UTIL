@@ -66,5 +66,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             "from goal g join todo t on t.goal_id = g.goal_id " +
             "where g.goal_id = :goal and t.state = true"
             ,nativeQuery = true)
-    Optional<List<Object>> checkTodoStateByGoal(@Param("goal") Goal goal);
+    Optional<List<Object>> checkTodoStateAllTrueByGoal(@Param("goal") Goal goal);
+
+
 }
