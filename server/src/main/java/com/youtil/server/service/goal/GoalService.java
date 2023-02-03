@@ -24,11 +24,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.Calendar;
 
 @Service
 @RequiredArgsConstructor
@@ -126,22 +123,36 @@ public class GoalService {
         return goal.isState();
     }
 
-//    public List<PostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
-//        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-//        return goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size))
-//                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
-//    }
-
-    public List<GoalPostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
+    public List<PostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         return goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size))
-                .stream().map((post)-> new GoalPostResponse(post, user)).collect(Collectors.toList());
+                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 
-    public List<GoalResponse> getDoingGoal(Long userId) {
+//    public Map<Long, GoalPostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
+//        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+//
+//        Map<Long, GoalPostResponse> resultMap = new HashMap<>();
+//        System.out.println(goalId);
+//        goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size))
+//                .stream().map((post)-> resultMap.put(post.getPostId(), new GoalPostResponse(post)));
+//        System.out.println(resultMap.get(83));
+//        return resultMap;
+//    }
+
+//    public List<GoalResponse> getDoingGoal(Long userId) {
+//        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+//
+//        return goalQueryRepository.getDoingGoal(userId).stream()
+//                .map((goal) -> new GoalResponse(goal)).collect(Collectors.toList());
+//    }
+
+    public Map<Long, GoalResponse> getDoingGoal(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        Map<Long, GoalResponse> responseMap = new HashMap<>();
+        goalQueryRepository.getDoingGoal(userId).stream()
+                .map((goal) -> responseMap.put(goal.getGoalId(), new GoalResponse(goal))).collect(Collectors.toList());
 
-        return goalQueryRepository.getDoingGoal(userId).stream()
-                .map((goal) -> new GoalResponse(goal)).collect(Collectors.toList());
-    }
+        return responseMap;
+    }//
 }
