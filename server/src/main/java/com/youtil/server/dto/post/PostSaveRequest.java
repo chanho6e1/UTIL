@@ -2,7 +2,6 @@ package com.youtil.server.dto.post;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.youtil.server.domain.post.Post;
-import com.youtil.server.domain.post.PostFile;
 import com.youtil.server.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
