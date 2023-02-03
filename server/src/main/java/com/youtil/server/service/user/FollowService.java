@@ -1,5 +1,6 @@
 package com.youtil.server.service.user;
 
+import com.youtil.server.common.exception.ArgumentMismatchException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.user.Follow;
 import com.youtil.server.domain.user.User;
@@ -32,6 +33,10 @@ public class FollowService {
     public Long follow(Long userId, Long toUserId){
         User toUser = userRepository.findById(toUserId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", toUserId));
         User fromUser = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+
+        if(followRepository.getUser(fromUser, toUser).isPresent()){
+            throw new ArgumentMismatchException("이미 팔로우된 유저", toUser.getUserId());
+        }
 
         Follow follow = new Follow();
         follow.setFromUser(fromUser);
