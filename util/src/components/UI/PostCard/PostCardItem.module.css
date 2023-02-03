@@ -26,6 +26,7 @@
   -webkit-line-clamp: 1;
   overflow: hidden;
   margin-bottom: 6px;
+  cursor: pointer;
 }
 
 .contents {
@@ -37,6 +38,7 @@
   font-size: 1rem;
   font-weight: 300;
   margin-bottom: 6px;
+  cursor: pointer;
 }
 
 .tags {
@@ -95,6 +97,7 @@
   width: 200px;
   outline: 2px solid #c9c9c9;
   border-radius: 0 20px 20px 0;
+  cursor: pointer;
 }
 
 .card-image img {

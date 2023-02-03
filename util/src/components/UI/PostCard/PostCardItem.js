@@ -54,15 +54,25 @@ const PostCardItem = (props) => {
   };
 
   const tagOnClickHandler = (event) => {
-    console.log(event.currentTarget.innerText);
+    // 태그 클릭시 검색 페이지로 이동
+    console.log(event.currentTarget.id);
+  };
+
+  const postClickHandler = () => {
+    // props.id로 해당 글로 이동
+    console.log("clicked", props.id);
   };
 
   return (
     <li>
       <div className={classes.postcarditem}>
         <div className={classes[`card-text`]}>
-          <div className={classes.title}>{props.title}</div>
-          <div className={classes.contents}>{props.content}</div>
+          <div className={classes.title} onClick={postClickHandler}>
+            {props.title}
+          </div>
+          <div className={classes.contents} onClick={postClickHandler}>
+            {props.content}
+          </div>
           <div className={classes.tags}>
             <TagDataList tagList={tagList} onClick={tagOnClickHandler} />
           </div>
@@ -110,7 +120,7 @@ const PostCardItem = (props) => {
             </div>
           </div>
         </div>
-        <div className={classes[`card-image`]}>
+        <div className={classes[`card-image`]} onClick={postClickHandler}>
           <img src={props.thumbnail} onError={imgErrorHandler} />
         </div>
       </div>
