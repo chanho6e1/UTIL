@@ -74,17 +74,27 @@ public class TodoService {
     @Transactional
     public Long updateTodoDate(Long goalId, List<TodoUpdateDateRequest> request) {   // 투두 날짜 전체 이동
         Goal goal = goalRepository.findById(goalId).orElseThrow(() -> new ResourceNotFoundException("goal", "goalId", goalId));
-        Optional<List<Object>> list = todoRepository.checkTodoStateByGoal(goal);
+        Optional<List<Object>> list = todoRepository.checkTodoStateAllTrueByGoal(goal); // 참이라면 추가됨
 
-        if(!list.get().isEmpty()){
+        if(!list.get().isEmpty()){ // 참이 하나라도 있다면
             System.out.println("여기 들어옴");
             throw new ArgumentMismatchException("목표 내 todo의 state가 1개 이상 체크되어 있음", goalId);
         }
         for(TodoUpdateDateRequest re : request){
+            System.out.println("todo id" + re.getTodoId());
             Todo todo = todoRepository.findById(re.getTodoId()).orElseThrow(() -> new ResourceNotFoundException("todo", "todoId", re.getTodoId()));
             todo.updateDate(re.getDueDate());
         }
         return goalId;
+    }
+
+    public boolean getTodoState(Long goalId) { // 목표에 대한 투두가 모두 미완료(false)인가?
+        Goal goal = goalRepository.findById(goalId).orElseThrow(() -> new ResourceNotFoundException("goal", "goalId", goalId));
+        Optional<List<Object>> list = todoRepository.checkTodoStateAllTrueByGoal(goal); // 하나라도 참이라면 추가됨
+        if(!list.get().isEmpty()){ // 참이 하나라도 있다면
+            return false;
+        }
+        return true;
     }
 
     @Transactional
@@ -105,7 +115,6 @@ public class TodoService {
     public List<Map<String, TodoPeriodResponse>> getTodoPeriod(Long userId) {
 
         List<Map<String, Object>> mapList = todoRepository.findTodoPeriod(userId);
-//        List<TodoPeriodResponse> result = new ArrayList<>();
 
         List<Map<String, TodoPeriodResponse>> result = new ArrayList<>();
         Map<String, TodoPeriodResponse> maps = new HashMap<>();
@@ -116,21 +125,9 @@ public class TodoService {
             String maxDate = map.get("maxDate").toString();
 
             TodoPeriodResponse todoPeriodResponse = new TodoPeriodResponse(minDate, maxDate);
-//            result.add(new TodoPeriodResponse(goalId, minDate, maxDate));
-
-//            Map<String, TodoPeriodResponse> maps = new HashMap<>();
-//            Map<String, String> date = new HashMap<>();
-//            date.put("minDate", minDate);
-//            date.put("maxDate", maxDate);
-
             maps.put(goalId, todoPeriodResponse);
-//            result.add(maps);
         }
         result.add(maps);
-
-//        Map<String, String> map = todoRepository.findTodoPeriod(userId);
-//        String minDate = map.get("minDate");
-//        String maxDate = map.get("maxDate");
 
         return result;
     }
