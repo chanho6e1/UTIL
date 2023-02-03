@@ -2,6 +2,7 @@ package com.youtil.server.repository.goal;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.youtil.server.domain.goal.Goal;
+import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.goal.GoalPeriodResponse;
 import com.youtil.server.dto.goal.GoalResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,9 @@ import java.util.Optional;
 @Repository
 public interface GoalRepository extends JpaRepository<Goal, Long> {
 //    Goal findGoalById(Long goalId);
+    @Query("select g from Goal g where g.goalId = :goalId and g.user = :user")
+    Optional<Goal> findGoalByGoalAndUserId(@Param("user") User user, @Param("goalId")Long goalId);
     Optional<Goal> findGoalByGoalId(Long goalId);
-
     @Query("select min(g.startDate) from Goal g where g.user.userId = :userId")
     String findMinGoal(@Param("userId")Long userId);
 
