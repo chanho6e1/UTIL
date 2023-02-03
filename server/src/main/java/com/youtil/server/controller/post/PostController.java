@@ -182,7 +182,7 @@ public class PostController {
                                                           @RequestParam(required=false, defaultValue = "1") int offset,
                                                           @RequestParam(value = "size", required = false, defaultValue = "10") int size){
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.CREATED, "좋아요한 유저 리스트 반환 성공", postService.PostLikesPeople(postId, offset, size)));
+                HttpStatus.OK, "좋아요한 유저 리스트 반환 성공", postService.PostLikesPeople(postId, offset, size)));
     }
 
     ////////////////
@@ -191,6 +191,6 @@ public class PostController {
     @GetMapping("/thumbnail")
     public ResponseEntity<CommonResponse> getThumbnailCandidate(@RequestBody @Valid PostContentRequest request){
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.CREATED, "섬네일 후보 반환 성공", postService.getThumbnailCandidate(request)));
+                HttpStatus.OK, "섬네일 후보 반환 성공", postService.getThumbnailCandidate(request)));
     }
 }
