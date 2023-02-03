@@ -14,6 +14,9 @@ export const delPlanAPI = (idx) => {
     .then((res) => {
         return recvPlansAPI()
     })
+    .catch((err) => {
+        throw err
+    })
 }
 
 

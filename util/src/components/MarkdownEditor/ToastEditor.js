@@ -7,7 +7,8 @@ import NotiDeliverer from '../UI/StackNotification/NotiDeliverer';
 import warning from "../../img/Warning.png"
 import { uploadPost } from '../../api/Post/uploadPost';
 import { uploadReview } from '../../api/Post/uploadReview';
-import { useNavigate, useMatch, useLocation, Routes, Route } from "react-router-dom";
+import { useNavigate, useMatch, useLocation, Routes, Route, useSearchParams } from "react-router-dom";
+import { recvPlanAPI } from '../../api/Plan/recvPlanAPI';
 
 // Toast 에디터
 import { Editor } from '@toast-ui/react-editor';
@@ -32,7 +33,7 @@ import 'prismjs/themes/prism.css';
 
 export default function ToastEditor(props) {
   const editorRef = useRef()
-
+  const [searchParams, setSearchParams] = useSearchParams();
   const today = new Date()
   const dateString = `${today.getFullYear()}년 ${today.getMonth()}월 ${today.getDate()}일 회고록`
   const [images, setImages] = useState([])
@@ -41,33 +42,24 @@ export default function ToastEditor(props) {
   const [content, setContent] = useState(null)
   const [modalState, setModalState] = useState(false)
   const [scope, setScope] = useState()
-  const [bindedGoal, setBindedGoal] = useState()
+  const [bindedGoal, setBindedGoal] = useState(searchParams.get('goal_id') ? searchParams.get('goal_id') : null)
+  const [queryString, setQueryString] = useState({})
 
   const navigate = useNavigate()
 
 
+  useEffect(() => {
+    const goalId = searchParams.get('goal_id')
+    const takeStep = searchParams.get('step')
+    const askDone = searchParams.get('ask_done')
+    if (goalId) {
+      recvPlanAPI(goalId)
+      .then((res) => {
+        setQueryString((prev) => {return {...prev, goal:res, takeStep, askDone}})
+      })
+    }
+  }, [])
 
-  // useEffect(() => {
-  //   if (submit === true) {
-  //     console.log(images)
-  //     uploadPost({
-  //       title: title,
-  //       content: content,
-  //       postFileList: images,
-  //       isPrivate: scope,
-  //       goalId: bindedGoal,
-  //     }, {skill: tags})
-  //     .then((res) => {
-
-  //       navigate('/index', { replace: true });
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //       setSubmit(false)
-  //     })
-      
-  //   }
-  // }, [])
 
 
   const postSubmitHandler = (selectedScope, selectedGoalId) => {
@@ -155,11 +147,14 @@ export default function ToastEditor(props) {
   return (
     <div className={styles['editor-wrapper']}>
       {alertNotiState && <NotiDeliverer content={alert} stateHandler={setAlertNotiState} duration={5000} width={350} height={100} />}
-      <FixedModal modalState={modalState} stateHandler={setModalState} content={<BlogPostForm postSubmitHandler={postSubmitHandler} reviewSubmitHandler={reviewSubmitHandler} forReview={props.forReview} />} noBtn={true} width={400} height={170} />
+      <FixedModal queryString={queryString} modalState={modalState} stateHandler={setModalState} content={<BlogPostForm postSubmitHandler={postSubmitHandler} reviewSubmitHandler={reviewSubmitHandler} forReview={props.forReview} />} noBtn={true} width={400} height={170} />
       <div className={styles['additional-info-wrapper']}>
         <div className={styles['header']}>
           {props.forReview ? dateRender : titleInput}
-          <Button onClick={clickSubmitHandler} className={styles['button']}>글 작성</Button>
+          {queryString.takeStep && <Button className={`${styles['button']} ${styles['skip-button']}`} >건너뛰기</Button>}
+          {queryString.takeStep && <Button className={`${styles['button']}`} >다음</Button>}
+          {!queryString.takeStep && <Button onClick={clickSubmitHandler} className={`${styles['button']}`}>글 작성</Button>}
+          
         </div>
         
         {!props.forReview && <PostTag setTags={setTags} />}

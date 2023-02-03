@@ -81,9 +81,10 @@ const PlanTodoListRight = (props) => {
         </div>
     )
 
+    
+
     return (
         <div ref={todosRightRef} className={styles['todos-right']} style={{width: `${props.containerRef?.current?.scrollWidth}px`}}>
-            
             {newTodo}
             {props.todos[props.goalId] && todoContents}
         </div>

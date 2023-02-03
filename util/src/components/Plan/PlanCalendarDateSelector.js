@@ -10,6 +10,7 @@ import { editTodosAPI } from "../../api/Plan/editTodosAPI";
 import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 import warning from "../../img/Warning.png"
 import { recvTodoPeriodAPI } from "../../api/Plan/recvTodoPeriodAPI";
+import { recvIsAllTodosNotDoneAPI } from "../../api/Plan/recvIsAllTodosNotDoneAPI";
 
 
 
@@ -262,7 +263,7 @@ const PlanCalendarDateSelector = (props) => {
 
     // 드래그 제한 코드
     // 완료된 투두가 하나도 없어서 투두 날짜가 자동으로 바뀌는 경우 해당 목표의 투두 min, max값을 다시 받아와야만 한다.
-    if (todosPeriod) {
+    if (todosPeriod && !isAllTodosNotDone) {
       if (position.x > 0) {
         if (updatingStartDate >= minDate) {
           return
@@ -378,12 +379,24 @@ const PlanCalendarDateSelector = (props) => {
     setPositionx(0)
   }
 
+  const [isAllTodosNotDone, setIsAllTodosNotDone] = useState(false)
+  const checkAllTodosNotDone = () => {
+    recvIsAllTodosNotDoneAPI(props.el.goalId)
+    .then((res) => {
+      setIsAllTodosNotDone(res)
+    })
+    .catch((err) => {
+      console.log('PlanCalendarDateSelector : recvIsAllTodosNotDoneAPI => ', err)
+    })
+  }
+
+
   const onTransferSwipeQuit = () => {
     const dayDistance = getDayDistance(updatingStartDate, updatingEndDate)
 
     // 드래그 제한 코드
     // 완료된 투두가 하나도 없어서 투두 날짜가 자동으로 바뀌는 경우 해당 목표의 투두 min, max값을 다시 받아와야만 한다.
-    if (todosPeriod) {
+    if (todosPeriod && !isAllTodosNotDone) {
       if (positionx > 0) {
         if (updatingStartDate >= minDate) {
           const endDateCorrection = new Date(new Date(minDate).setDate(minDate.getDate() + dayDistance))
@@ -414,21 +427,21 @@ const PlanCalendarDateSelector = (props) => {
     const isEndValid = new Date(updatingEndDate.getFullYear(), updatingEndDate.getMonth(), updatingEndDate.getDate() + 1)
     
     if (positionx < 0 && (isStartValid <= props.gridStart || isStartValid <= props.gridStart)) {
-      if ((updatingEndDate > maxDate || maxDate == 'Invalid Date') || (updatingStartDate < minDate || minDate == 'Invalid Date')) {
+      if ((updatingEndDate > maxDate || maxDate == 'Invalid Date' || isAllTodosNotDone) || (updatingStartDate < minDate || minDate == 'Invalid Date' || isAllTodosNotDone)) {
         props.extendStartRange(1)
         const endDateCorrection = new Date(new Date(props.gridStart).setDate(props.gridStart.getDate() + dayDistance))
         setInitialStartDate(() => props.gridStart)
         setInitialEndDate(() => endDateCorrection)
       }
     } else if (positionx > 0 && (isEndValid >= props.gridEnd || isEndValid >= props.gridEnd)) {
-      if ((updatingEndDate > maxDate || maxDate == 'Invalid Date') || (updatingStartDate < minDate || minDate == 'Invalid Date')) {
+      if ((updatingEndDate > maxDate || maxDate == 'Invalid Date' || isAllTodosNotDone) || (updatingStartDate < minDate || minDate == 'Invalid Date' || isAllTodosNotDone)) {
         props.extendEndRange(1)
         const startDateCorrection = new Date(new Date(props.gridEnd).setDate(props.gridEnd.getDate() - dayDistance))
         setInitialStartDate(() => startDateCorrection)
         setInitialEndDate(() => props.gridEnd)
       }
     } else {
-      if ((updatingEndDate > maxDate || maxDate == 'Invalid Date') && (updatingStartDate < minDate || minDate == 'Invalid Date')) {
+      if ((updatingEndDate > maxDate || maxDate == 'Invalid Date' || isAllTodosNotDone) && (updatingStartDate < minDate || minDate == 'Invalid Date' || isAllTodosNotDone)) {
         setInitialStartDate(() => updatingStartDate)
         setInitialEndDate(() => updatingEndDate)
       }
@@ -474,7 +487,7 @@ const PlanCalendarDateSelector = (props) => {
             </div>
           </div>
         </Swipe>
-        <Swipe className={styles['center-swiper']} onSwipeStart={(event) => {event.stopPropagation();}} onSwipeEnd={onTransferSwipeQuit} onSwipeMove={onTransferMove} allowMouseEvents={true}>
+        <Swipe className={styles['center-swiper']} onSwipeStart={(event) => {event.stopPropagation(); checkAllTodosNotDone()}} onSwipeEnd={onTransferSwipeQuit} onSwipeMove={onTransferMove} allowMouseEvents={true}>
         <div className={styles['center-move-handler']}>
         </div>
         </Swipe>
