@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import classes from "./PostCardItem.module.css";
-import PostCardTagDataList from "./PostCardTagDataList";
+import TagDataList from "../Tag/TagDataList";
 import { IconButton, createTheme, ThemeProvider, Avatar } from "@mui/material";
 import bookmarkIconFlat from "../../../img/BookmarkIconFlat.svg";
 import bookmarkIconFill from "../../../img/BookmarkIconFill.svg";
@@ -64,7 +64,7 @@ const PostCardItem = (props) => {
           <div className={classes.title}>{props.title}</div>
           <div className={classes.contents}>{props.content}</div>
           <div className={classes.tags}>
-            <PostCardTagDataList tagList={tagList} onClick={tagOnClickHandler} />
+            <TagDataList tagList={tagList} onClick={tagOnClickHandler} />
           </div>
           <div className={classes[`icon-user`]}>
             <div className={classes.iconbutton}>
