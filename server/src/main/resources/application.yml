@@ -62,8 +62,8 @@ spring:
             - account_email
           clientName: Kakao
         naver:
-          client-id: ZAnoJt_6zzAuxdYrpGHU
-          client-secret: VoSJrzsmw5
+          client-id: yjk6wLNyoP0bX589pjS5
+          client-secret: xpoe2ASB5s
 #          redirect-uri: 'http://localhost:8081/api/oauth2/callback/naver'
           redirect-uri: 'https://i8d210.p.ssafy.io/api/oauth2/callback/naver'
           authorization-grant-type: authorization_code
