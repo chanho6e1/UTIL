@@ -121,4 +121,11 @@ public class GoalService {
         return goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size))
                 .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
+
+    public List<GoalResponse> getDoingGoal(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+
+        return goalQueryRepository.getDoingGoal(userId).stream()
+                .map((goal) -> new GoalResponse(goal)).collect(Collectors.toList());
+    }
 }
