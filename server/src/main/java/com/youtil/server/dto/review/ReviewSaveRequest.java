@@ -16,9 +16,8 @@ public class ReviewSaveRequest {
     private String title;
     @NotBlank(message = "회고록 내용이 없습니다.")
     private String content;
-    private Long isPrivate; //공개2, 팔로워1, 비공개0
 
     public Review of(Goal goal){
-        return Review.builder().goal(goal).title(title).content(content).isPrivate(isPrivate).build();
+        return Review.builder().goal(goal).title(title).content(content).build();
     }
 }
