@@ -1,6 +1,7 @@
 .DetailItem {
   height: auto;
   padding: 30px 60px 30px 60px;
+  /* overflow:scroll; */
 }
 
 /* .Detail-text-contents {
@@ -65,6 +66,8 @@
 } */
 
 .user-picture {
+  height: 32px;
+  width: 32px;
   padding: 0 8px 0 8px;
 }
 

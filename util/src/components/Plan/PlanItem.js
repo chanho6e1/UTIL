@@ -5,11 +5,12 @@ import PlanTodoListLeft from "./PlanTodoListLeft";
 import { delPlanAPI } from "../../api/Plan/delPlanAPI";
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 import { useSelector, useDispatch } from 'react-redux'
-import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate, useMatch, useLocation } from "react-router-dom";
+import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate, useMatch, useLocation, } from "react-router-dom";
 import { editPlanAPI } from "../../api/Plan/editPlanAPI";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import Button from "../UI/Button/Button";
-import warning from "../../img/Warning.png"
+import warning from "../../img/Warning.png";
+
 
 const PlanItem = (props) => {
   const dispatch = useDispatch()
@@ -57,7 +58,9 @@ const PlanItem = (props) => {
 
   }
   
-
+  // const goDetailPlan = () => {
+  //   navigate(<GoalDetail />)
+  // }
 
   const [askDeleteState, setAskDeleteState] = useState(false)
 
@@ -100,7 +103,7 @@ const PlanItem = (props) => {
         
     </div>
   )
-
+  
   return (
     <React.Fragment>
       <FixedModal modalState={askDeleteState} stateHandler={setAskDeleteState} content={askDeleteForm} addBtn={addBtn} width={300} height={310} />
@@ -108,11 +111,15 @@ const PlanItem = (props) => {
           <div onClick={props.todoFormToggleHandler.bind(this, props.idx, props.el.goalId)} className={styles['plan-title-bar-icon-wrapper']}>
               <img className={styles['arrow-icon']} src={arrow} style={{transform: props.todoFormVisibility[props.idx] ? 'rotate(90deg)' : 'none', marginLeft:'13px', width: '12px', height: 'auto'}}/>
           </div>
-
           {isEditMode ? titleEditInput : titleReadMode }
+          <div>
+            <Link to={`/goal/${props.el.goalId}`}>
+              <button>go</button>
+            </Link>
+          </div>
       </div>
       {props.todoFormVisibility[props.idx] && <PlanTodoListLeft applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} goalId={props.plans[props.idx].goalId} todos={props.todos} getNewTodoIdx={props.getNewTodoIdx} newTodoIdx={props.newTodoIdx} />}
-  </React.Fragment>
+    </React.Fragment>
   )
 }
 
