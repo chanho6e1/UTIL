@@ -1,5 +1,6 @@
 package com.youtil.server.dto.post;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.user.User;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class PostUpdateRequest {
     @NotBlank(message = "제목이 없습니다.")
     @Length(max = 45, message = "45자 이하여야 합니다.")
