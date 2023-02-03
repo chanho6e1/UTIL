@@ -72,7 +72,12 @@ export default function ToastEditor(props) {
       goalId: selectedGoalId,
     }, {skill: tags})
     .then((res) => {
-      navigate('/index', { replace: true });
+      if (queryString.takeStep) {
+        navigate(`/create/review?goal_id=${queryString.goal.goalId}${queryString.askDone ? '&ask_done=true' : ''}`);
+        window.location.reload()
+      } else {
+        navigate('/index', { replace: true });
+      }
     })
     .catch((err) => {
       console.log(err)
@@ -86,7 +91,12 @@ export default function ToastEditor(props) {
       content: content,
     })
     .then((res) => {
-      navigate('/index', { replace: true });
+      if (queryString.askDone) {
+        
+      } else {
+        navigate('/index', { replace: true });
+      }
+      
     })
     .catch((err) => {
       console.log(err)

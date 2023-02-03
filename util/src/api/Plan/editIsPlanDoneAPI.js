@@ -1,22 +1,16 @@
 import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
-
 import { recvIngPlanAPI } from "./recvIngPlanAPI";
 
-export const newPlanAPI = (startDate, endDate, title) => {
-    return axios({
-    method: 'post',
-    url: `${API_BASE_URL}/goals`,
-    headers: {
-        Authorization: TOKEN(),
-    },
-    data: {
 
-        startDate: startDate,
-        endDate: endDate,
-        title: title,
-    },
+export const editIsPlanDoneAPI = (goalId, data) => {
+    return axios({
+      method: 'put',
+      url: `${API_BASE_URL}/goals/${goalId}/state`,
+      headers: {
+          Authorization: TOKEN(),
+      },
     })
     .then((res) => {
         return recvIngPlanAPI()
@@ -25,4 +19,6 @@ export const newPlanAPI = (startDate, endDate, title) => {
         throw err
     })
 }
+
+
 

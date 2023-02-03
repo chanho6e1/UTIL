@@ -21,14 +21,14 @@ import { recvTodoPeriodAPI } from "../../api/Plan/recvTodoPeriodAPI";
 
 import warning from "../../img/Warning.png"
 import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
-
+import { recvIngPlanAPI } from "../../api/Plan/recvIngPlanAPI";
 
 const Plan = (props) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     useEffect(() => {
-        recvPlansAPI()
+        recvIngPlanAPI()
         .catch((err) => {
             navigate('/login');
         })
