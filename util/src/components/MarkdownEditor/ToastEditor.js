@@ -43,7 +43,7 @@ export default function ToastEditor(props) {
   const [modalState, setModalState] = useState(false)
   const [scope, setScope] = useState()
   const [bindedGoal, setBindedGoal] = useState(searchParams.get('goal_id') ? searchParams.get('goal_id') : null)
-  const [queryString, setQueryString] = useState({})
+  const [queryString, setQueryString] = useState({goal:null, takeStep:null, askDone:null})
 
   const navigate = useNavigate()
 
@@ -117,6 +117,13 @@ export default function ToastEditor(props) {
     
   }
 
+  const skipHandler = () => {
+    setQueryString((prev) => { return {...prev, takeStep: null}})
+    
+    navigate(`/create/review?goal_id=${queryString.goal.goalId}${queryString.askDone ? '&ask_done=true' : ''}`);
+    window.location.reload()
+  }
+
   const [alertText, setAlertText] = useState()
   const [alertNotiState, setAlertNotiState] = useState(false)
 
@@ -151,8 +158,8 @@ export default function ToastEditor(props) {
       <div className={styles['additional-info-wrapper']}>
         <div className={styles['header']}>
           {props.forReview ? dateRender : titleInput}
-          {queryString.takeStep && <Button className={`${styles['button']} ${styles['skip-button']}`} >건너뛰기</Button>}
-          {queryString.takeStep && <Button className={`${styles['button']}`} >다음</Button>}
+          {queryString.takeStep && <Button onClick={skipHandler} className={`${styles['button']} ${styles['skip-button']}`}>건너뛰기</Button>}
+          {queryString.takeStep && <Button onClick={clickSubmitHandler} className={`${styles['button']}`}>다음</Button>}
           {!queryString.takeStep && <Button onClick={clickSubmitHandler} className={`${styles['button']}`}>글 작성</Button>}
           
         </div>

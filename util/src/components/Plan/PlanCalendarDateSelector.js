@@ -102,6 +102,11 @@ const PlanCalendarDateSelector = (props) => {
     setStartWidth()
   }, [props.xPointLib, initialStartDate, initialEndDate])
 
+  useEffect(() => {
+    setInitialStartDate(new Date(props.el.startDate))
+    setInitialEndDate(new Date(props.el.endDate))
+  }, [props.el.startDate, props.el.endDate])
+
 
   useDidMountEffect(() => {
     const processing = {
@@ -113,6 +118,7 @@ const PlanCalendarDateSelector = (props) => {
     .then((res) => {
         dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
     })
+
 
   }, [initialStartDate, initialEndDate])
 
@@ -323,7 +329,7 @@ const PlanCalendarDateSelector = (props) => {
     
       const isValid = new Date(updatingStartDate.getFullYear(), updatingStartDate.getMonth(), updatingStartDate.getDate())
       if (positionx < 0 && (isValid <= props.gridStart || isValid <= props.gridStart)) {
-        props.extendStartRange(1)
+        props.extendStartRange(2)
         setInitialStartDate(() => props.gridStart)
       } else {
         if (updatingStartDate < minDate || minDate == 'Invalid Date') {
@@ -360,7 +366,7 @@ const PlanCalendarDateSelector = (props) => {
 
     const isValid = new Date(updatingEndDate.getFullYear(), updatingEndDate.getMonth(), updatingEndDate.getDate() + 1)
     if (positionx > 0 && (isValid >= props.gridEnd || isValid >= props.gridEnd)) {
-      props.extendEndRange(1)
+      props.extendEndRange(2)
       setInitialEndDate(() => props.gridEnd)
     } else {
       if (updatingEndDate > maxDate || maxDate == 'Invalid Date') {
@@ -428,14 +434,14 @@ const PlanCalendarDateSelector = (props) => {
     
     if (positionx < 0 && (isStartValid <= props.gridStart || isStartValid <= props.gridStart)) {
       if ((updatingEndDate > maxDate || maxDate == 'Invalid Date' || isAllTodosNotDone) || (updatingStartDate < minDate || minDate == 'Invalid Date' || isAllTodosNotDone)) {
-        props.extendStartRange(1)
+        props.extendStartRange(2)
         const endDateCorrection = new Date(new Date(props.gridStart).setDate(props.gridStart.getDate() + dayDistance))
         setInitialStartDate(() => props.gridStart)
         setInitialEndDate(() => endDateCorrection)
       }
     } else if (positionx > 0 && (isEndValid >= props.gridEnd || isEndValid >= props.gridEnd)) {
       if ((updatingEndDate > maxDate || maxDate == 'Invalid Date' || isAllTodosNotDone) || (updatingStartDate < minDate || minDate == 'Invalid Date' || isAllTodosNotDone)) {
-        props.extendEndRange(1)
+        props.extendEndRange(2)
         const startDateCorrection = new Date(new Date(props.gridEnd).setDate(props.gridEnd.getDate() - dayDistance))
         setInitialStartDate(() => startDateCorrection)
         setInitialEndDate(() => props.gridEnd)
