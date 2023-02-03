@@ -37,14 +37,14 @@ public class FollowService {
         follow.setFromUser(fromUser);
         follow.setToUser(toUser);
         Follow savedFollow = followRepository.save(follow);
-        return savedFollow.getId();
+        return toUserId;
     }
     @Transactional
     public Long deleteByFollowingIdAndFollowerId(Long fromUserId, Long toUserId) { // 언팔로우
         User toUser = userRepository.findById(toUserId).orElseThrow(() -> new ResourceNotFoundException("User", "toUserId", toUserId));
         User fromUser = userRepository.findById(fromUserId).orElseThrow(() -> new ResourceNotFoundException("User", "fromUserId", fromUserId));
         followRepository.deleteByToUserAndFromUser(toUser, fromUser);
-        return fromUserId;
+        return toUserId;
     }
 
 
