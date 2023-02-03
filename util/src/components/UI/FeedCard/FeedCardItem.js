@@ -5,8 +5,7 @@ import bookmarkIconFlat from "../../../img/BookmarkIconFlat.svg";
 import bookmarkIconFill from "../../../img/BookmarkIconFill.svg";
 import likeIconFlat from "../../../img/LikeIconFlat.svg";
 import likeIconFill from "../../../img/LikeIconFill.svg";
-import PhotoCameraIcon from "../../../img/photoCameraIcon.png";
-import { useNavigate } from "react-router";
+import PhotoCameraIcon from "../../../img/photoCameraIcon_gray.png";
 import { putLikeToggle } from "../../../api/Post/putLikeToggle";
 import { putBookmarkToggle } from "../../../api/Post/putBookmarkToggle";
 
