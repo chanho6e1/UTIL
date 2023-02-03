@@ -44,7 +44,8 @@ spring:
         google:
           clientId: '913035013476-bebq70bsneh30vbjjd0ktsk0con4ofmr.apps.googleusercontent.com'
           clientSecret: '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'
-          redirect-uri: 'https://i8d210.p.ssafy.io/oauth2/callback/google'
+#          redirect-uri: 'https://i8d210.p.ssafy.io/oauth2/callback/google'
+          redirect-uri: 'http://localhost:8081/oauth2/callback/google'
           scope:
             - email
             - profile
@@ -54,8 +55,10 @@ spring:
           clientAuthenticationMethod: post
           authorizationGrantType: authorization_code
 #          redirectUri: 'http://localhost:8081/api/oauth2/callback/kakao'
-          redirectUri: 'http://i8d210.p.ssafy.io:8081/oauth2/callback/kakao' # 서버용
+#          redirectUri: 'http://i8d210.p.ssafy.io:8081/oauth2/callback/kakao' # 서버용
+#          redirectUri: 'https://i8d210.p.ssafy.io/api/oauth2/callback/kakao'
 #          redirectUri: 'https://i8d210.p.ssafy.io/oauth2/callback/kakao'
+          redirectUri: 'http://localhost:8081/oauth2/callback/kakao'
           scope:
             - profile_nickname
             - profile_image
@@ -65,7 +68,8 @@ spring:
           client-id: yjk6wLNyoP0bX589pjS5
           client-secret: xpoe2ASB5s
 #          redirect-uri: 'http://localhost:8081/api/oauth2/callback/naver'
-          redirect-uri: 'https://i8d210.p.ssafy.io/api/oauth2/callback/naver'
+#          redirect-uri: 'https://i8d210.p.ssafy.io/api/oauth2/callback/naver'
+          redirect-uri: 'http://localhost:8081/oauth2/callback/naver'
           authorization-grant-type: authorization_code
           scope: name, email, profile_image
           client-name: Naver
