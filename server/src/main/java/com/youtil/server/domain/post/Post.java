@@ -1,5 +1,7 @@
 package com.youtil.server.domain.post;
 
+import com.nimbusds.jose.shaded.json.JSONArray;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import com.youtil.server.domain.BaseEntity;
 import com.youtil.server.domain.category.Category;
 import com.youtil.server.domain.goal.Goal;
@@ -11,16 +13,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @DynamicUpdate
-//@Table(name = "posts")
-public class Post extends BaseEntity {
+
+@TypeDef(name = "json", typeClass = JsonStringType.class)
+public class Post extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,8 +63,9 @@ public class Post extends BaseEntity {
     @Embedded
     private final PostBookmarkList postBookmarkList = new PostBookmarkList();
 
-    @Embedded
-    private final PostFileList postFileList = new PostFileList();
+    @Type(type = "json")
+    @Column(name = "post_files", columnDefinition = "json")
+    private Map<Integer, String> postFileMap = new HashMap<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
@@ -116,11 +126,6 @@ public class Post extends BaseEntity {
         postComment.setPost(this);
     }
 
-    public void addPostFile(PostFile postFile){
-        this.postFileList.getPostFileList().add(postFile);
-        postFile.setPost(this);
-    }
-
 
     public boolean togglePostLike(PostLike postLike) {
 
@@ -147,7 +152,8 @@ public class Post extends BaseEntity {
         this.thumbnail = source;
     }
 
-    public void resetPostFile() {
-        this.postFileList.getPostFileList().clear();
+    public void addPostFile(int idx, String source) {
+        System.out.println("idx: "+idx+"source: "+source);
+        postFileMap.put(idx, source);
     }
 }

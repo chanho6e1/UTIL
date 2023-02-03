@@ -4,12 +4,8 @@ import com.youtil.server.common.exception.ArgumentMismatchException;
 import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.config.s3.S3Uploader;
-import com.youtil.server.domain.category.Category;
 import com.youtil.server.domain.goal.Goal;
-import com.youtil.server.domain.post.Post;
-import com.youtil.server.domain.post.PostBookmark;
-import com.youtil.server.domain.post.PostFile;
-import com.youtil.server.domain.post.PostLike;
+import com.youtil.server.domain.post.*;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.post.*;
 import com.youtil.server.repository.category.PostCategoryRepository;
@@ -29,7 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -49,15 +47,11 @@ public class PostService {
     @Autowired
     private final UserRepository userRepository;
     @Autowired
-    private final PostCategoryRepository postCategoryRepository;
-    @Autowired
     private final PostBookmarkRepository postBookmarkRepository;
     @Autowired
     private final GoalRepository goalRepository;
     @Autowired
     private final S3Uploader s3Uploader;
-    @Autowired
-    private final PostFileRepository postFileRepository;
 
     @Transactional
     public PostResponse findPost(Long postId, Long userId) { //단일 조회
@@ -149,14 +143,12 @@ public class PostService {
                     .orElseThrow(()-> new ResourceNotFoundException("goal" , "goalId", request.getGoalId()));
             post.setGoal(goal);
         }
-
-//        if(request.getPostFileList()!=null || !request.getPostFileList().isEmpty()){
-            if(!request.getPostFileList().isEmpty()){
-
-                post.setThubmnail(request.getPostFileList().get(0)); //첫번째 사진 섬네일 등록
-            for(String postFile: request.getPostFileList()){ //포스트 파일 등록하고(포스트 세팅하고) /postFilelist와 연결)
-                    PostFile postFile1 = postFileRepository.save(PostFile.builder().path(postFile).post(post).build());
-                    post.addPostFile(postFile1);
+         if(!request.getPostFileList().isEmpty()){
+             Map<Integer, String> map =  post.getPostFileMap();
+             post.setThubmnail(request.getPostFileList().get(0).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","")); //첫번째 사진 섬네일 등록
+            for(int idx=0; idx<request.getPostFileList().size(); idx++){ //포스트 파일 등록하고(포스트 세팅하고) /postFilelist와 연결)
+                String source = request.getPostFileList().get(idx).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","");
+                post.addPostFile(idx, source);
             }
         }
         return post.getPostId();
@@ -168,9 +160,8 @@ public class PostService {
         validPostUser(userId, post.getUser().getUserId());
         post.clearUser();
 //        parseContextAndDeleteImages(post); //1) 내용을 긁어서 가져와서 s3삭제 : 사용안함
-//        deletePostFile(postId);  //2) 포스트별 저장하고 있는 포스트 파일 읽어와서 s3삭제  : 사용할것임!!!! 지금은 테스트 중이라 주석처리
+        deletePostFile(postId);  //2) 포스트별 저장하고 있는 포스트 파일 읽어와서 s3삭제  : 사용할것임!!!! 지금은 테스트 중이라 주석처리
         postCommentRepository.deleteByPostId(postId);
-        postFileRepository.deleteByPostId(postId);
         postRepository.deleteById(postId);
         return postId;
     }
@@ -179,10 +170,9 @@ public class PostService {
     private void deletePostFile(Long postId) throws UnsupportedEncodingException {
         Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
 
-        List<PostFile> postFileList = postFileRepository.findByPostId(postId);
-        for(PostFile postFile:postFileList){
-            String source = URLDecoder.decode(postFile.getPath().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/", "") , "UTF-8");
-            s3Uploader.delete(source);
+          for(int idx=0; idx< post.getPostFileMap().size(); idx++){
+              String source = URLDecoder.decode("static/post/"+post.getPostFileMap().get(idx), "UTF-8");
+              s3Uploader.delete(source);
         }
     }
 
@@ -202,10 +192,12 @@ public class PostService {
         }
 
         if(!request.getPostFileList().isEmpty()){
-//            post.setThubmnail(request.getPostFileList().get(0));
-            for(String postFile: request.getPostFileList()){//포스트 파일 등록하고 /포스트 세팅하고/postFilelist와 연결)
-                    PostFile postFile1 = postFileRepository.save(PostFile.builder().path(postFile).post(post).build());
-                    post.addPostFile(postFile1);
+            Map<Integer, String> map =  post.getPostFileMap();
+            int size = map.size();
+            post.setThubmnail(request.getPostFileList().get(0).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","")); //첫번째 사진 섬네일 등록
+            for(int idx=0; idx<request.getPostFileList().size(); idx++){
+                String source = request.getPostFileList().get(idx).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","");
+                post.addPostFile(size++, source);
             }
         }
         return post.getPostId();
@@ -249,16 +241,6 @@ public class PostService {
             }
         }
         return source;
-    }
-
-    //섬네일 제공, 첫번째 등록한 것을 바로 섬네일로 준다 : 사용 안함
-    public String getThumbnail(Long postId) {
-
-        Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("post", "postId", postId));
-        String source = null;
-
-        PostFile postFile = postFileRepository.getByPostId(postId);
-        return postFile.getPath();
     }
 
     //post 삭제하면 안의 파일도 삭제 : 사용 안함
