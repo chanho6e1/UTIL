@@ -5,7 +5,6 @@ import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.post.PostLike;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.user.UserResponse;
-import com.youtil.server.repository.post.PostFileRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -74,7 +73,7 @@ public class PostResponse {
             this.modifiedDate = post.getModifiedDate().format(myFormatObj);
         }
         this.isPrivate = post.getIsPrivate();
-        this.thumbnail = post.getThumbnail();
+        this.thumbnail = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/"+ post.getThumbnail();
         this.likeStatus = post.getPostLikeList().getPostLikeList().parallelStream()
                 .anyMatch(l -> l.ownedBy(user.getUserId()));
         this.likeStatusSize = post.getTotalLikes();
@@ -96,7 +95,7 @@ public class PostResponse {
             this.modifiedDate = post.getModifiedDate().format(myFormatObj);
         }
         this.isPrivate = post.getIsPrivate();
-        this.thumbnail = post.getThumbnail();
+        this.thumbnail = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/"+ post.getThumbnail();
         this.likeStatus = likeStatus;
         this.totalCommentSize = post.getTotalComments(); //댓글 수
         this.likeStatusSize = post.getTotalLikes(); //좋아요 수
