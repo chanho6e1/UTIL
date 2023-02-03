@@ -11,6 +11,7 @@ import { getUserFollower } from "../../api/Post/getUserFollower";
 import { getUserFollowing } from "../../api/Post/getUserFollowing";
 import { deleteFollow } from "../../api/Post/deleteUnfollow";
 import { postFollow } from "../../api/Post/postFollow";
+import { getUserTag } from "../../api/Post/getUserTag";
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -40,20 +41,23 @@ const UserPage = (props) => {
   const [followerListCnt, setFollowerListCnt] = useState(null);
   const [followingList, setFollowingList] = useState(null);
   const [followingListCnt, setFollowingListCnt] = useState(null);
+  const [userTagList, setUserTagList] = useState([]);
 
+  // Post API
   useEffect(() => {
     getUserPosts(props.id).then((res) => {
       setPostList(() => res);
     });
   }, []);
 
+  // User Data API
   useEffect(() => {
     getUserData(props.id).then((res) => {
       setUserData(() => res);
     });
-    console.log(userData);
   }, []);
 
+  // Follow Data API
   useEffect(() => {
     getIsFollowing(props.id).then((res) => {
       setIsFollowing(() => res);
@@ -68,9 +72,18 @@ const UserPage = (props) => {
     });
   }, [isFollowing]);
 
-  useEffect(() => {});
+  // Tag Data API
+  useEffect(() => {
+    getUserTag(props.id).then((res) => {
+      setUserTagList(() => res);
+    });
+  }, []);
 
-  const followBtnHnadler = () => {
+  const tagOnClickHandler = (event) => {
+    console.log(event.currentTarget.id);
+  };
+
+  const followBtnHandler = () => {
     // 현재 팔로우 중이면 언팔
     if (isFollowing) {
       deleteFollow(props.id).then((res) => {
@@ -87,16 +100,17 @@ const UserPage = (props) => {
     }
   };
 
+  // isFollowing State에 맞게 팔로우 버튼 다르게 렌더링
   const followBtn = (isFollowing) => {
     if (isFollowing) {
       return (
-        <Button className={classes[`follow-btn-true`]} onClick={followBtnHnadler}>
+        <Button className={classes[`follow-btn-true`]} onClick={followBtnHandler}>
           팔로잉
         </Button>
       );
     } else {
       return (
-        <Button className={classes[`follow-btn-false`]} onClick={followBtnHnadler}>
+        <Button className={classes[`follow-btn-false`]} onClick={followBtnHandler}>
           팔로우
         </Button>
       );
@@ -141,15 +155,7 @@ const UserPage = (props) => {
               <div className={classes[`department-data`]}>{userData.email}</div>
             </div>
             <div className={classes.tags}>
-              <TagDataList
-                tagList={[
-                  { tagName: "python", tagId: 0 },
-                  { tagName: "kotlin", tagId: 1 },
-                  { tagName: "javascript", tagId: 2 },
-                  { tagName: "java", tagId: 3 },
-                  { tagName: "android", tagId: 4 },
-                ]}
-              />
+              <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
             </div>
           </div>
         </div>
