@@ -75,9 +75,6 @@ public class PostResponse {
         }
         this.isPrivate = post.getIsPrivate();
         this.thumbnail = post.getThumbnail();
-//        if(post.getPostFileList().getPostFileList()!=null || !post.getPostFileList().getPostFileList().isEmpty()) {
-//            this.thumbnail = post.getPostFileList().getPostFileList().get(0).getPath();
-//        }
         this.likeStatus = post.getPostLikeList().getPostLikeList().parallelStream()
                 .anyMatch(l -> l.ownedBy(user.getUserId()));
         this.likeStatusSize = post.getTotalLikes();
