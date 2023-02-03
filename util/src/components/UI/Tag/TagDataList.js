@@ -2,11 +2,11 @@ import Chip from "@mui/material/Chip";
 import { styled } from "@mui/material/styles";
 import { Fragment } from "react";
 
-const PostCardTagList = styled("li")(({ theme }) => ({
+const TagList = styled("li")(({ theme }) => ({
   margin: theme.spacing(0, 0.5, 0, 0),
 }));
 
-const PostCardTagDataList = (props) => {
+const TagDataList = (props) => {
   const TagDataItem = [];
 
   const maxIndex = (list) => {
@@ -22,7 +22,7 @@ const PostCardTagDataList = (props) => {
 
   for (var i = 0; i < maxIndex(props.tagList); i++) {
     TagDataItem.push(
-      <PostCardTagList key={i}>
+      <TagList key={i}>
         <Chip
           variant="outlined"
           label={props.tagList[i].tagName}
@@ -34,7 +34,7 @@ const PostCardTagDataList = (props) => {
           }}
           value={props.tagList[i].tagId}
         />
-      </PostCardTagList>
+      </TagList>
     );
   }
 
@@ -45,4 +45,4 @@ const PostCardTagDataList = (props) => {
   );
 };
 
-export default PostCardTagDataList;
+export default TagDataList;
