@@ -1,5 +1,6 @@
 package com.youtil.server.service.user;
 
+import com.youtil.server.common.exception.ArgumentMismatchException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.user.Follow;
 import com.youtil.server.domain.user.User;
@@ -33,18 +34,23 @@ public class FollowService {
         User toUser = userRepository.findById(toUserId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", toUserId));
         User fromUser = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
+        if(followRepository.getUser(fromUser, toUser).isPresent()){
+            throw new ArgumentMismatchException("이미 팔로우된 유저", toUser.getUserId());
+        }
+
         Follow follow = new Follow();
         follow.setFromUser(fromUser);
         follow.setToUser(toUser);
         Follow savedFollow = followRepository.save(follow);
-        return savedFollow.getId();
+        return toUserId;
+        ////
     }
     @Transactional
     public Long deleteByFollowingIdAndFollowerId(Long fromUserId, Long toUserId) { // 언팔로우
         User toUser = userRepository.findById(toUserId).orElseThrow(() -> new ResourceNotFoundException("User", "toUserId", toUserId));
         User fromUser = userRepository.findById(fromUserId).orElseThrow(() -> new ResourceNotFoundException("User", "fromUserId", fromUserId));
         followRepository.deleteByToUserAndFromUser(toUser, fromUser);
-        return fromUserId;
+        return toUserId;
     }
 
 
