@@ -26,7 +26,7 @@ const feedCardItemList = (postList) => {
   });
 };
 
-const Feed = (props) => {
+const Feed = () => {
   const [feedList, setFeedList] = useState(null);
 
   useEffect(() => {

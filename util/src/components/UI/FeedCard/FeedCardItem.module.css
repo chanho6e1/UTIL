@@ -1,31 +1,33 @@
 .feedcarditem {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 320px;
   height: 380px;
   border: 1px solid #c9c9c9;
   border-radius: 20px;
   font-family: Inter;
   margin: 10px;
+  overflow: hidden;
 }
 
 .feedcard-image {
   width: auto;
-  height: 140px;
+  height: 160px;
   border-bottom: 1px solid #c9c9c9;
   border-radius: 20px 20px 0 0;
-  padding: 8px;
+  cursor: pointer;
 }
 
 .feedcard-image img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .feedcard-text-contents {
   padding: 14px 10px 0px 10px;
+  cursor: pointer;
 }
 
 .title {
@@ -94,6 +96,7 @@
 .profile-img-nickname {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .nickname {
