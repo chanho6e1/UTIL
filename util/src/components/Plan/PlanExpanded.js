@@ -5,6 +5,7 @@ import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useN
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 import { recvPlansAPI } from "../../api/Plan/recvPlansAPI";
+import { recvIngPlanAPI } from "../../api/Plan/recvIngPlanAPI";
 import { recvPlansPeriodAPI } from "../../api/Plan/recvPlansPeriodAPI";
 import { recvTodosPeriodAPI } from "../../api/Plan/recvTodosPeriodAPI";
 import PlanLoading from "./PlanLoading";
@@ -48,7 +49,7 @@ const PlanExpanded = (props) => {
   }, [])
 
   useEffect(() => {
-      recvPlansAPI()
+    recvIngPlanAPI()
       .catch((err) => {
           navigate('/login');
       })
