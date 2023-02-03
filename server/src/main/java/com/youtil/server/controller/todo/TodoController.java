@@ -50,8 +50,6 @@ public class TodoController {
     public ResponseEntity<CommonResponse> updateTodoDate(@PathVariable Long goalId, @RequestBody @Valid List<TodoUpdateDateRequest> request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "전체 투두 날짜 수정 성공", todoService.updateTodoDate(goalId, request)));
-
-
     }
 
     @ApiOperation(value = "투두 삭제", notes = "투두를 삭제한다")
@@ -67,7 +65,13 @@ public class TodoController {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "목표별 투두 조회 성공", todoService.getTodoByGoal(goalId)));
 
+    }
 
+    @ApiOperation(value = "목표별 투두 전체 미완료 여부", notes = "목표id를 보냈을 때 목표별 투두가 전체 미완료라면 true를 리턴")
+    @GetMapping("/goals/{goalId}/true")
+    public ResponseEntity<CommonResponse> getTodoStateAllTrueByGoal(@PathVariable Long goalId){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "목표별 투두 전체 미완료 여부 조회 성공", todoService.getTodoState(goalId)));
     }
     @ApiOperation(value = "날짜별 투두 조회", notes = "날짜별 투두를 조회한다")
     @GetMapping("/today/{dueDate}")
