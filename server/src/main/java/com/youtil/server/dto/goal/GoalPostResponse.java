@@ -25,7 +25,7 @@ public class GoalPostResponse {
 
     private String clickAction;
 
-    public GoalPostResponse(Post post, User user) { //간단 글 정보만...
+    public GoalPostResponse(Post post) { //간단 글 정보만...
 
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
