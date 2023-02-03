@@ -88,4 +88,14 @@ public class GoalController {
                 HttpStatus.CREATED, "수정 성공", goalService.toggleGoalState(userPrincipal.getId(), goalId)
         ));
     }
+
+    //진행중인 목표만 제공
+    @ApiOperation(value = "나의 진행중인 목표만 제공", notes = "나의 진행중인 목표만 제공(정렬: 옛날꺼부터)")
+    @GetMapping("/ing")
+    public ResponseEntity<CommonResponse> getDoingGoal(@CurrentUser UserPrincipal userPrincipal){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "진행중인 목표 조회 성공", goalService.getDoingGoal(userPrincipal.getId())
+        ));
+    }
+
 }
