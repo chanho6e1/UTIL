@@ -42,7 +42,7 @@ public class GoalQueryRepository {
         return jpaQueryFactory.select(goal).distinct()
                 .from(goal)
                 .where(goal.user.userId.eq(userId),
-                        goal.state.eq(true))
+                        goal.state.eq(false))
                 .orderBy(goal.goalId.asc())
                 .fetch();
     }
