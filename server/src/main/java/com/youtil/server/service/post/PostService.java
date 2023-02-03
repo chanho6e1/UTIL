@@ -150,8 +150,10 @@ public class PostService {
             post.setGoal(goal);
         }
 
-        if(request.getPostFileList()!=null || !request.getPostFileList().isEmpty()){
-            post.setThubmnail(request.getPostFileList().get(0)); //첫번째 사진 섬네일 등록
+//        if(request.getPostFileList()!=null || !request.getPostFileList().isEmpty()){
+            if(!request.getPostFileList().isEmpty()){
+
+                post.setThubmnail(request.getPostFileList().get(0)); //첫번째 사진 섬네일 등록
             for(String postFile: request.getPostFileList()){ //포스트 파일 등록하고(포스트 세팅하고) /postFilelist와 연결)
                     PostFile postFile1 = postFileRepository.save(PostFile.builder().path(postFile).post(post).build());
                     post.addPostFile(postFile1);
@@ -199,7 +201,7 @@ public class PostService {
             post.resetGoal();
         }
 
-        if(request.getPostFileList()!=null || !request.getPostFileList().isEmpty()){
+        if(!request.getPostFileList().isEmpty()){
 //            post.setThubmnail(request.getPostFileList().get(0));
             for(String postFile: request.getPostFileList()){//포스트 파일 등록하고 /포스트 세팅하고/postFilelist와 연결)
                     PostFile postFile1 = postFileRepository.save(PostFile.builder().path(postFile).post(post).build());
