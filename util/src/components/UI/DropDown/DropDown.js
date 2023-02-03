@@ -49,7 +49,18 @@ const DropDown = (props) => {
 
     return (
       <div key={`drop-down-${idx}`} ref={el => (dropDownItemRef.current[idx] = el)} onClick={(event) => {event.stopPropagation(); props.dropDownItems.function[idx](); props.setDropDownState(false);}} className={styles['dropdown-item']} >
-        {el}
+        <li className={styles['li-tag']} />
+        <div className={styles['text-wrapper']}>
+
+          <div className={styles['item-label']}>
+              {el}
+          </div>
+
+          <div className={styles['item-description']}>
+              {props.dropDownItems.description ? props.dropDownItems.description[idx] : null}
+          </div>
+        </div>
+        
       </div>
     )
   })

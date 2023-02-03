@@ -17,6 +17,7 @@ import { newTodoAPI } from "../../api/Plan/newTodoAPI";
 import { recvTodosAPI } from "../../api/Plan/recvTodosAPI";
 import { editTodoAPI } from "../../api/Plan/editTodoAPI";
 import { recvTotalPeriodAPI } from "../../api/Plan/recvPlansPeriodAPI";
+import { recvTodoPeriodAPI } from "../../api/Plan/recvTodoPeriodAPI";
 
 const Plan = (props) => {
     const dispatch = useDispatch()
@@ -145,13 +146,27 @@ const Plan = (props) => {
                 data: res
             }
             dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
-            setNewTodoIdx(-1)
+            
             setInputTodoData({
                 title: "",
                 dueDate: "",
                 description: "",
                 state: false,
                 goalId: null,
+            })
+        })
+        .then((res) => {
+            recvTodoPeriodAPI(props.goalId)
+            .then((res) => {
+                const processing = {
+                    goalId: newTodoIdx,
+                    data: res
+                }
+                console.log(res)
+                dispatch(modifyPlanSliceActions.responseTodoPeriod(JSON.stringify(processing)))
+            })
+            .then((res) => {
+                setNewTodoIdx(-1)
             })
         })
 

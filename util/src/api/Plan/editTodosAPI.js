@@ -6,7 +6,7 @@ import { recvTodosAPI } from "./recvTodosAPI";
 export const editTodosAPI = (goalId, data) => {
     return axios({
     method: 'put',
-    url: `${API_BASE_URL}/todos/dates`,
+    url: `${API_BASE_URL}/todos/dates/${goalId}`,
     headers: {
         Authorization: TOKEN()
     },
