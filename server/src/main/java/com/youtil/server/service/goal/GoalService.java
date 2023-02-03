@@ -1,6 +1,7 @@
 package com.youtil.server.service.goal;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.user.User;
@@ -69,15 +70,26 @@ public class GoalService {
     }
 
     public GoalResponse getGoal(Long userId, Long goalId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
+        validGoalUser(userId, goal.getUser().getUserId());
+//        goalRepository.findGoalByGoalAndUserId(user, goalId).orElseThrow(() -> new ResourceNotFoundException("본인 목표가 아닙니다."));
 
         return new GoalResponse(goal);
     }
+    public void validGoalUser(Long currentUser, Long goalUser) {
 
+        if (currentUser == goalUser || currentUser.equals(goalUser)) {
+            return;
+        }
+        else {
+            throw new ResourceForbiddenException("본인이 작성한 글이 아닙니다");
+        }
+    }
     @Transactional
     public Long updateGoal(Long userId, Long goalId, GoalUpdateRequest request) {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
-
+        validGoalUser(userId, goal.getUser().getUserId());
         String[] arr = request.getStartDate().split("T");
 //        System.out.println(arr[0]);
         request.setStartDate(arr[0]);
@@ -90,7 +102,8 @@ public class GoalService {
 
     @Transactional
     public Long deleteGoal(Long userId, Long goalId) {
-//        Goal goal = goalRepository.findGoalById(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
+        Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
+        validGoalUser(userId, goal.getUser().getUserId());
         reviewRepository.deleteByGoalId(goalId);
         todoRepository.deleteByGoalId(goalId);
         goalRepository.deleteById(goalId);
