@@ -5,10 +5,7 @@ import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.user.User;
-import com.youtil.server.dto.goal.GoalPeriodResponse;
-import com.youtil.server.dto.goal.GoalResponse;
-import com.youtil.server.dto.goal.GoalSaveRequest;
-import com.youtil.server.dto.goal.GoalUpdateRequest;
+import com.youtil.server.dto.goal.*;
 import com.youtil.server.dto.post.PostResponse;
 import com.youtil.server.repository.goal.GoalQueryRepository;
 import com.youtil.server.repository.goal.GoalRepository;
@@ -129,10 +126,16 @@ public class GoalService {
         return goal.isState();
     }
 
-    public List<PostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
+//    public List<PostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
+//        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+//        return goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size))
+//                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+//    }
+
+    public List<GoalPostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         return goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size))
-                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+                .stream().map((post)-> new GoalPostResponse(post, user)).collect(Collectors.toList());
     }
 
     public List<GoalResponse> getDoingGoal(Long userId) {

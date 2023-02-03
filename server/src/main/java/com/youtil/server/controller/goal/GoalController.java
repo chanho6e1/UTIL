@@ -61,7 +61,18 @@ public class GoalController {
     }
     
     //목표별 글보기
-    @ApiOperation(value = "목표별 글 조회", notes = "목표에 해당하는 글 목록을 조회한다.")
+//    @ApiOperation(value = "목표별 글 조회", notes = "목표에 해당하는 글 목록을 조회한다.")
+//    @GetMapping("/{goalId}/posts")
+//    public ResponseEntity<CommonResponse> getGoalPost(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId,
+//                                                      @RequestParam(required=false, defaultValue = "1") int offset,
+//                                                      @RequestParam(value = "size", required = false, defaultValue = "10") int size){
+//        return ResponseEntity.ok().body(CommonResponse.of(
+//                HttpStatus.OK, "조회 성공", goalService.getGoalPost(userPrincipal.getId(), goalId, offset, size)
+//        ));
+//    }
+
+    // 목표별 간단 글 정보 보기
+    @ApiOperation(value = "목표별 간단 요약된 글 조회", notes = "목표에 해당하는 간단한 글 목록을 조회한다.")
     @GetMapping("/{goalId}/posts")
     public ResponseEntity<CommonResponse> getGoalPost(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId,
                                                       @RequestParam(required=false, defaultValue = "1") int offset,
