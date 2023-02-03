@@ -1,6 +1,7 @@
 package com.youtil.server.dto.post;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.post.PostComment;
 import com.youtil.server.domain.user.User;
@@ -15,6 +16,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class PostCommentSaveRequest {
 
     private Long parentId; //대댓글이 달릴 댓글
