@@ -17,7 +17,7 @@ public class ReviewResponse {
     private Long reviewId;
     private String title;
     private String content;
-    private Long isPrivate;
+//    private Long isPrivate;
     private String createdDate;
     private String modifiedDate;
 
@@ -28,7 +28,6 @@ public class ReviewResponse {
         this.reviewId = review.getReviewId();
         this.title = review.getTitle();
         this.content = review.getContent();
-        this.isPrivate = review.getIsPrivate();
         this.createdDate = review.getCreatedDate().format(myFormatObj);
         if(review.getModifiedDate()!=null){
             this.modifiedDate = review.getModifiedDate().format(myFormatObj);
