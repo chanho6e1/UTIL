@@ -144,11 +144,6 @@ public class PostService {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Post post = postRepository.save(request.of(user));
 
-        if(request.getCategoryId() != null){
-            Category category = postCategoryRepository.findById(request.getCategoryId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Category", "catogoryId", request.getCategoryId()));
-            post.setCategory(category);
-        }
         if(request.getGoalId()!=null){
             Goal goal = goalRepository.findGoalByGoalId(request.getGoalId())
                     .orElseThrow(()-> new ResourceNotFoundException("goal" , "goalId", request.getGoalId()));
@@ -156,14 +151,12 @@ public class PostService {
         }
 
         if(request.getPostFileList()!=null || !request.getPostFileList().isEmpty()){
-            post.setThubmnail(request.getPostFileList().get(0));
+            post.setThubmnail(request.getPostFileList().get(0)); //첫번째 사진 섬네일 등록
             for(String postFile: request.getPostFileList()){ //포스트 파일 등록하고(포스트 세팅하고) /postFilelist와 연결)
                     PostFile postFile1 = postFileRepository.save(PostFile.builder().path(postFile).post(post).build());
                     post.addPostFile(postFile1);
             }
         }
-
-
         return post.getPostId();
     }
 
@@ -172,14 +165,15 @@ public class PostService {
         Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
         validPostUser(userId, post.getUser().getUserId());
         post.clearUser();
-        parseContextAndDeleteImages(post); //1) 내용을 긁어서 가져와서 s3삭제
-//        deletePostFile(postId);  //2) 포스트별 저장하고 있는 포스트 파일 읽어와서 s3삭제
+//        parseContextAndDeleteImages(post); //1) 내용을 긁어서 가져와서 s3삭제 : 사용안함
+//        deletePostFile(postId);  //2) 포스트별 저장하고 있는 포스트 파일 읽어와서 s3삭제  : 사용할것임!!!! 지금은 테스트 중이라 주석처리
         postCommentRepository.deleteByPostId(postId);
         postFileRepository.deleteByPostId(postId);
         postRepository.deleteById(postId);
         return postId;
     }
 
+    //사용할 것임!!
     private void deletePostFile(Long postId) throws UnsupportedEncodingException {
         Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
 
@@ -197,16 +191,7 @@ public class PostService {
         validPostUser(userId, post.getUser().getUserId());
         post.update(request);
 
-        if(request.getCategoryId() != null){
-            Category category = postCategoryRepository.findById(request.getCategoryId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Category", "catogoryId", request.getCategoryId()));
-            post.setCategory(category);
-        }
-        else{ //이 과정 필요할까..?
-            post.resetCategory();
-        }
-
-        if(request.getGoalId()!=null){
+         if(request.getGoalId()!=null){
             Goal goal = goalRepository.findGoalByGoalId(request.getGoalId())
                     .orElseThrow(()-> new ResourceNotFoundException("goal" , "goalId", request.getGoalId()));
             post.setGoal(goal);
@@ -215,16 +200,12 @@ public class PostService {
         }
 
         if(request.getPostFileList()!=null || !request.getPostFileList().isEmpty()){
-            post.resetPostFile();
-            post.setThubmnail(request.getPostFileList().get(0));
-            for(String postFile: request.getPostFileList()){ //포스트 파일 등록하고 /포스트 세팅하고/postFilelist와 연결)
-//              if(!postFileRepository.existsByPostFile(postFile).isPresent()){
+//            post.setThubmnail(request.getPostFileList().get(0));
+            for(String postFile: request.getPostFileList()){//포스트 파일 등록하고 /포스트 세팅하고/postFilelist와 연결)
                     PostFile postFile1 = postFileRepository.save(PostFile.builder().path(postFile).post(post).build());
                     post.addPostFile(postFile1);
-//              }
             }
         }
-
         return post.getPostId();
     }
 
@@ -254,7 +235,8 @@ public class PostService {
         return post.togglePostBookmark(postBookmark);
     }
 
-    public String getThumbnailCandidate(PostContentRequest request) { //섬네일 후보 제공
+    //섬네일 후보 제공 : 사용안함
+    public String getThumbnailCandidate(PostContentRequest request) {
         Document doc = Jsoup.parse(request.getContent());
         Elements images = doc.getElementsByTag("img");
         String source = null;
@@ -267,7 +249,8 @@ public class PostService {
         return source;
     }
 
-    public String getThumbnail(Long postId) { //섬네일 제공, 첫번째 등록한 것을 바로 섬네일로 준다
+    //섬네일 제공, 첫번째 등록한 것을 바로 섬네일로 준다 : 사용 안함
+    public String getThumbnail(Long postId) {
 
         Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("post", "postId", postId));
         String source = null;
@@ -276,7 +259,8 @@ public class PostService {
         return postFile.getPath();
     }
 
-    public void parseContextAndDeleteImages(Post post) { //post 삭제하면 안의 파일도 삭제
+    //post 삭제하면 안의 파일도 삭제 : 사용 안함
+    public void parseContextAndDeleteImages(Post post) {
         Document doc = Jsoup.parse(post.getContent());
         Elements images = doc.getElementsByTag("img");
         String source = "";

@@ -26,22 +26,20 @@ public class PostSaveRequest {
     @NotBlank(message = "내용이 없습니다.")
     private String content;
 
-    private String thumbnail;
+//    private String thumbnail;
 
     @NotNull(message = "공개여부를 입력하세요(//공개2, 팔로워1, 비공개0)")
     @Min(0)
     @Max(2)
     private Integer isPrivate;
 
-    private Long categoryId;
+//    private Long categoryId;
 
     private Long goalId;
 
     private List<String> postFileList;
 
-//    private String tag;
-
     public Post of(User user) {
-        return Post.builder().user(user).title(title).content(content).thumbnail(thumbnail).isPrivate(isPrivate).build();
+        return Post.builder().user(user).title(title).content(content).isPrivate(isPrivate).build();
     }
 }
