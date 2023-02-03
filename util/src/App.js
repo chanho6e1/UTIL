@@ -16,6 +16,7 @@ import StackNotification from './components/UI/StackNotification/StackNotificati
 import ToastEditor from './components/MarkdownEditor/ToastEditor';
 // import OAuth2RedirectHandler from './components/UserAuth/OAuth/OAuth2RedirectHandler';
 
+
 const App = () => {
 
   useEffect(() => {
@@ -42,15 +43,18 @@ const App = () => {
   }
 
   return (
-    <div className="App">
+    <div className="App" id="overlay-root">
+      {/* <div id="overlay-root" style={{zIndex: '9999'}}></div> */}
       <StackNotification />
       <Routes>
         <Route path="/*" element={<Main />} />
         <Route path="/login" element={<SocialLogin />} />
         <Route path="/oauth2/redirect" element={<OAuthRedirectHandler />} /> 
 
-        <Route path="/post" element={<ToastEditor />} />
+        <Route path="/create/review" element={<ToastEditor forReview={true} />} />
+        <Route path="/create/post" element={<ToastEditor />} />
       </Routes>
+    
     </div>
     
 
