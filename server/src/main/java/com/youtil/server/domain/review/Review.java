@@ -30,22 +30,19 @@ public class Review extends BaseEntity {
     private String title;
     private String content;
 
-    private Long isPrivate; //공개2, 팔로워1, 비공개0
+//    private Long isPrivate; //공개2, 팔로워1, 비공개0
 
 
     @Builder
-    public Review(Goal goal, String title, String content, Long isPrivate){
+    public Review(Goal goal, String title, String content){
         this.goal = goal;
         this.title = title;
         this.content = content;
-        this.isPrivate = isPrivate;
     }
 
     public Review update(ReviewUpdateRequest review){
         this.title = review.getTitle();
         this.content = review.getContent();
-        this.isPrivate = review.getIsPrivate();
-
         return this;
     }
 }

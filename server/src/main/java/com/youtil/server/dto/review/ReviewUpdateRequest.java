@@ -8,5 +8,4 @@ import lombok.NoArgsConstructor;
 public class ReviewUpdateRequest {
     private String title;
     private String content;
-    private Long isPrivate;
 }
