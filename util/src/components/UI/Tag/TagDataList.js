@@ -32,7 +32,7 @@ const TagDataList = (props) => {
             bgcolor: bgColorList[i],
             color: colorList[i],
           }}
-          value={props.tagList[i].tagId}
+          id={props.tagList[i].tagId}
         />
       </TagList>
     );
