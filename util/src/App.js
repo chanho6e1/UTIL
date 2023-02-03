@@ -12,9 +12,12 @@ import SocialLoginModule from './components/UserAuth/SocialLoginModule';
 import { ACCESS_TOKEN } from './constants';
 import SocialLogin from './components/UserAuth/SocialLogin';
 import StackNotification from './components/UI/StackNotification/StackNotification';
+import GoalDetail from "./components/Goal/GoalDetail";
+import DetailItem from './components/Detail/DetailItem';
 
 import ToastEditor from './components/MarkdownEditor/ToastEditor';
 // import OAuth2RedirectHandler from './components/UserAuth/OAuth/OAuth2RedirectHandler';
+
 
 const App = () => {
 
@@ -48,6 +51,8 @@ const App = () => {
         <Route path="/*" element={<Main />} />
         <Route path="/login" element={<SocialLogin />} />
         <Route path="/oauth2/redirect" element={<OAuthRedirectHandler />} /> 
+        <Route path="/goal/:id" element={<GoalDetail />} /> 
+        <Route path="/post/:id" element={<DetailItem />} /> 
 
         <Route path="/post" element={<ToastEditor />} />
       </Routes>
