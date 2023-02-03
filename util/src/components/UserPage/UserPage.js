@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import classes from "./UserPage.module.css";
+import PostCardItem from "../UI/PostCard/PostCardItem";
+import TagDataList from "../UI/Tag/TagDataList";
+import { Avatar } from "@mui/material";
+import Button from "../UI/Button/Button";
 import { getUserPosts } from "../../api/Post/getUserPosts";
 import { getUserData } from "../../api/Post/getUserData";
-import PostCardItem from "../UI/PostCard/PostCardItem";
-import { Avatar, Button } from "@mui/material";
+import { getIsFollowing } from "../../api/Post/getIsFollowing";
+import { getUserFollower } from "../../api/Post/getUserFollower";
+import { getUserFollowing } from "../../api/Post/getUserFollowing";
+import { deleteFollow } from "../../api/Post/deleteUnfollow";
+import { postFollow } from "../../api/Post/postFollow";
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -27,25 +34,81 @@ const postCardItemList = (postList) => {
 
 const UserPage = (props) => {
   const [postList, setPostList] = useState(null);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState([]);
+  const [isFollowing, setIsFollowing] = useState(null);
+  const [followerList, setFollowerList] = useState(null);
+  const [followerListCnt, setFollowerListCnt] = useState(null);
+  const [followingList, setFollowingList] = useState(null);
+  const [followingListCnt, setFollowingListCnt] = useState(null);
+
   useEffect(() => {
     getUserPosts(props.id).then((res) => {
       setPostList(() => res);
     });
   }, []);
 
-  // useEffect(() => {
-  //   getUserData(props.id).then((res) => {
-  //     setUserData(() => res);
-  //   });
-  // }, []);
+  useEffect(() => {
+    getUserData(props.id).then((res) => {
+      setUserData(() => res);
+    });
+    console.log(userData);
+  }, []);
+
+  useEffect(() => {
+    getIsFollowing(props.id).then((res) => {
+      setIsFollowing(() => res);
+    });
+    getUserFollower(props.id).then((res) => {
+      setFollowerList(() => res);
+      setFollowerListCnt(() => res.length);
+    });
+    getUserFollowing(props.id).then((res) => {
+      setFollowingList(() => res);
+      setFollowingListCnt(() => res.length);
+    });
+  }, [isFollowing]);
+
+  useEffect(() => {});
+
+  const followBtnHnadler = () => {
+    // 현재 팔로우 중이면 언팔
+    if (isFollowing) {
+      deleteFollow(props.id).then((res) => {
+        if (res === 200) {
+          setIsFollowing((prevState) => !prevState);
+        }
+      });
+    } else {
+      postFollow(props.id).then((res) => {
+        if (res === 200) {
+          setIsFollowing((prevState) => !prevState);
+        }
+      });
+    }
+  };
+
+  const followBtn = (isFollowing) => {
+    if (isFollowing) {
+      return (
+        <Button className={classes[`follow-btn-true`]} onClick={followBtnHnadler}>
+          팔로잉
+        </Button>
+      );
+    } else {
+      return (
+        <Button className={classes[`follow-btn-false`]} onClick={followBtnHnadler}>
+          팔로우
+        </Button>
+      );
+    }
+  };
 
   return (
     <div className={classes[`user-page`]}>
       <div className={classes[`user-page-upper`]}>
         <div className={classes[`avatar-username`]}>
           <Avatar
-            src={props.profileImg}
+            src={userData.imageUrl}
             sx={{
               width: 128,
               height: 128,
@@ -53,27 +116,42 @@ const UserPage = (props) => {
               objectFit: "scale-down",
             }}
           />
-          <div className={classes.nickname}>ten_letter</div>
+          <div className={classes.nickname}>{userData.nickname}</div>
         </div>
         <div className={classes[`follow-userdata`]}>
           <div className={classes.follow}>
             <div className={classes.follower}>
               <div className={classes[`follow-text`]}>팔로워</div>
-              <div className={classes[`follow-number`]}>30명</div>
+              <div className={classes[`follow-number`]}>{followerListCnt}명</div>
             </div>
             <div className={classes.follower}>
               <div className={classes[`follow-text`]}>팔로우</div>
-              <div className={classes[`follow-number`]}>50명</div>
+              <div className={classes[`follow-number`]}>{followingListCnt}명</div>
             </div>
-            <Button variant="contained">Follow</Button>
+            {followBtn(isFollowing)}
           </div>
-          <div className={classes[`username-department`]}>
-            <div className={classes.username}>송기훈</div>
-            <div className={classes[`department-text`]}>소속</div>
-            <div className={classes[`department-data`]}>SSAFY</div>
+          <div className={classes[`userdata`]}>
+            <div className={classes[`username-department`]}>
+              <div className={classes.username}>{userData.userName}</div>
+              <div className={classes[`department-text`]}>소속</div>
+              <div className={classes[`department-data`]}>{userData.department}</div>
+            </div>
+            <div className={classes[`username-department`]}>
+              <div className={classes[`department-text`]}>email</div>
+              <div className={classes[`department-data`]}>{userData.email}</div>
+            </div>
+            <div className={classes.tags}>
+              <TagDataList
+                tagList={[
+                  { tagName: "python", tagId: 0 },
+                  { tagName: "kotlin", tagId: 1 },
+                  { tagName: "javascript", tagId: 2 },
+                  { tagName: "java", tagId: 3 },
+                  { tagName: "android", tagId: 4 },
+                ]}
+              />
+            </div>
           </div>
-          <div className={classes.email}>kihunbuzz@naver.com</div>
-          <div className={classes.tags}>python kotlin android</div>
         </div>
       </div>
       <div className={classes[`postcard-container`]}>{<ul>{postCardItemList(postList)}</ul>}</div>
