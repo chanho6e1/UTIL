@@ -1,5 +1,6 @@
 package com.youtil.server.dto.post;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.post.PostFile;
 import com.youtil.server.domain.user.User;
@@ -17,6 +18,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class PostSaveRequest {
 
     @NotBlank(message = "제목이 없습니다.")
