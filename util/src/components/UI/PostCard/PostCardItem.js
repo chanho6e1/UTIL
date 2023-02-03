@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import classes from "./PostCardItem.module.css";
-import PostCardTagDataList from "./PostCardTagDataList";
+import TagDataList from "../Tag/TagDataList";
 import { IconButton, createTheme, ThemeProvider, Avatar } from "@mui/material";
 import bookmarkIconFlat from "../../../img/BookmarkIconFlat.svg";
 import bookmarkIconFill from "../../../img/BookmarkIconFill.svg";
 import likeIconFlat from "../../../img/LikeIconFlat.svg";
 import likeIconFill from "../../../img/LikeIconFill.svg";
-import PhotoCameraIcon from "../../../img/photoCameraIcon.png";
-import { useEffect } from "react";
-import { getUserPosts } from "../../../api/Post/getUserPosts";
+import PhotoCameraIcon from "../../../img/photoCameraIcon_gray.png";
+import { getPostTag } from "../../../api/Post/getPostTag";
+import { putLikeToggle } from "../../../api/Post/putLikeToggle";
+import { putBookmarkToggle } from "../../../api/Post/putBookmarkToggle";
 
 const avatarTheme = createTheme({
   components: {
@@ -22,51 +23,58 @@ const avatarTheme = createTheme({
 
 const PostCardItem = (props) => {
   const [tagList, setTagList] = useState(null);
-  const [isBookmark, setIsBookmark] = useState(false);
-  const [isLike, setIsLike] = useState(false);
+  const [isBookmark, setIsBookmark] = useState(props.bookmarkStatus);
+  const [isLike, setIsLike] = useState(props.likeStatus);
 
   useEffect(() => {
-    getUserPosts().then((res) => {
+    getPostTag(props.id).then((res) => {
       setTagList(() => res);
     });
   }, []);
 
-  const thumbnail = () => {
-    if (props.thumbnail === "") {
-      return (
-        <div className={classes[`card-image`]} style={{ backgroundColor: "#c9c9c9" }}>
-          <img src={PhotoCameraIcon} />
-        </div>
-      );
-    } else {
-      return (
-        <div className={classes[`card-image`]} style={{ backgroundColor: "#fff" }}>
-          <img src={props.thumbnail} />
-        </div>
-      );
-    }
+  const imgErrorHandler = (event) => {
+    event.target.src = PhotoCameraIcon;
   };
 
   const bookmarkClickHandler = () => {
-    setIsBookmark((prevState) => !prevState);
+    putBookmarkToggle(props.id).then((res) => {
+      if (res === 200) {
+        setIsBookmark((prevState) => !prevState);
+      }
+    });
   };
 
   const likeClickHandler = () => {
-    setIsLike((prevState) => !prevState);
+    // 지금 유저 아이디가 아니라 포스트 아이디를 넣어줘야 함
+    putLikeToggle(props.id).then((res) => {
+      if (res === 200) {
+        setIsLike((prevState) => !prevState);
+      }
+    });
   };
 
   const tagOnClickHandler = (event) => {
-    console.log(event.currentTarget.innerText);
+    // 태그 클릭시 검색 페이지로 이동
+    console.log(event.currentTarget.id);
+  };
+
+  const postClickHandler = () => {
+    // props.id로 해당 글로 이동
+    console.log("clicked", props.id);
   };
 
   return (
     <li>
       <div className={classes.postcarditem}>
         <div className={classes[`card-text`]}>
-          <div className={classes.title}>{props.title}</div>
-          <div className={classes.contents}>{props.contents}</div>
+          <div className={classes.title} onClick={postClickHandler}>
+            {props.title}
+          </div>
+          <div className={classes.contents} onClick={postClickHandler}>
+            {props.content}
+          </div>
           <div className={classes.tags}>
-            <PostCardTagDataList tagList={tagList} onClick={tagOnClickHandler} />
+            <TagDataList tagList={tagList} onClick={tagOnClickHandler} />
           </div>
           <div className={classes[`icon-user`]}>
             <div className={classes.iconbutton}>
@@ -98,7 +106,7 @@ const PostCardItem = (props) => {
             <div className={classes.user}>
               <ThemeProvider theme={avatarTheme}>
                 <Avatar
-                  src={props.userpicture}
+                  src={props.profileImg}
                   sx={{
                     width: 24,
                     height: 24,
@@ -107,12 +115,14 @@ const PostCardItem = (props) => {
                   }}
                 />
               </ThemeProvider>
-              <div className={classes.username}>{props.username}</div>
-              <div className={classes.date}>{props.date}</div>
+              <div className={classes.nickname}>{props.nickname}</div>
+              <div className={classes.date}>{props.createdDate}</div>
             </div>
           </div>
         </div>
-        {thumbnail()}
+        <div className={classes[`card-image`]} onClick={postClickHandler}>
+          <img src={props.thumbnail} onError={imgErrorHandler} />
+        </div>
       </div>
     </li>
   );

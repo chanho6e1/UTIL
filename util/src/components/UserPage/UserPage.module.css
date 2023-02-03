@@ -1,7 +1,119 @@
+.user-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 55%;
+  margin: 30px auto 20px auto;
+}
+
+.user-page-upper {
+  display: flex;
+  align-items: flex-end;
+  width: 70%;
+  margin: 0 auto;
+  justify-content: space-evenly;
+}
+
+.avatar-username {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 40px;
+}
+
+.nickname {
+  margin-top: 12px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.follow-userdata {
+}
+
+.userdata {
+  display: flex;
+  flex-direction: column;
+}
+
+.follow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.follower {
+  display: flex;
+  align-items: baseline;
+}
+
+.follow-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+.follow-number {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-right: 20px;
+}
+
+.follow-btn-true {
+  background-color: #fbfbfb;
+  font-weight: 500;
+  font-size: 14px;
+  border: 3px solid #e0d3f5;
+  margin-left: 10px;
+}
+
+.follow-btn-false {
+  background-color: #e8def8;
+  font-weight: 500;
+  font-size: 14px;
+  border: 3px solid #e0d3f5;
+  margin-left: 10px;
+}
+
+.username-department {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.username {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-right: 20px;
+}
+
+.department-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+.department-data {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.tags {
+  display: flex;
+  align-items: center;
+  padding-bottom: 4px;
+}
+
+.tags ul {
+  list-style: none;
+  display: flex;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+}
+
 .postcard-container {
-  width: 50%;
-  background-color: #fff;
-  margin: 100px auto 100px auto;
+  width: 100%;
 }
 
 .postcard-container ul {
@@ -10,28 +122,127 @@
 }
 
 @media screen and (max-width: 768px) {
-  .postcard-container {
+  .user-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     width: 80%;
-    background-color: #fff;
-    list-style: none;
-    margin: 100px auto 100px auto;
+    margin: 0 auto;
+  }
+
+  .user-page-upper {
+    display: flex;
+    align-items: flex-end;
+    width: 90%;
+    margin: 0 auto;
+    justify-content: center;
+  }
+
+  .follow-text {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-right: 8px;
+  }
+
+  .follow-number {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-right: 18px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .user-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 80%;
+    margin: 0 auto;
+    margin: 30px auto 20px auto;
+  }
+
+  .user-page-upper {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    margin: 0 auto;
+    justify-content: space-evenly;
+  }
+
+  .follow-text {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+
+  .follow-number {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-right: 10px;
   }
 }
 
 @media screen and (min-width: 769px) and (max-width: 972px) {
-  .postcard-container {
+  .user-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     width: 70%;
-    background-color: #fff;
-    list-style: none;
-    margin: 100px auto 100px auto;
+    margin: 0 auto;
+    margin: 30px auto 20px auto;
+  }
+
+  .user-page-upper {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    margin: 0 auto;
+    justify-content: space-evenly;
+  }
+
+  .follow-text {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-right: 8px;
+  }
+
+  .follow-number {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-right: 10px;
   }
 }
 
-@media screen and (min-width: 973px) and (max-width: 1200px) {
-  .postcard-container {
+@media screen and (min-width: 973px) and (max-width: 1500px) {
+  .user-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     width: 60%;
-    background-color: #fff;
-    list-style: none;
-    margin: 100px auto 100px auto;
+    margin: 0 auto;
+    margin: 30px auto 20px auto;
+  }
+
+  .user-page-upper {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    margin: 0 auto;
+    justify-content: space-evenly;
+  }
+  .follow-text {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-right: 8px;
+  }
+
+  .follow-number {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-right: 18px;
   }
 }
