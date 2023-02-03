@@ -11,10 +11,12 @@ import FixedModal from "../UI/FixedModal/FixedModal";
 import complete from "../../img/Complete.png"
 import Button from "../UI/Button/Button";
 import warning from "../../img/Warning.png"
+import { useNavigate } from "react-router-dom";
 
 const PlanTodoListRightItem = (props) => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const todos = useSelector(state => state.planSlice.todos)
     const [isDateEditMode, setIsDateEditMode] = useState(false)
     const [dateValue, setDateValue] = useState(props.toStringByFormatting(new Date(props.el.dueDate)))
@@ -155,11 +157,19 @@ const PlanTodoListRightItem = (props) => {
         
     }
 
+    const redirectToPost = (isPlanDone) => {
+        const url = `/create/post?goal_id=${props.goalId}${isPlanDone ? '&ask_done=true' : ''}&step=true`
+        navigate(url)
+    }
+
     const message1 = (
-        <div style={{height: '100px', display:'flex', flexDirection:'column', justifyContent:'space-around'}}>
+        <div style={{width:'100%', height: '100px', display:'flex', flexDirection:'column', justifyContent:'space-around', alignItems:'center'}}>
             <div><b>{props.el.title}</b>을 완료하였습니다.</div>
-            <div>회고록을 작성 하시겠습니까?</div>
-            <Button>작성하기</Button>
+            <div>관련 글을 작성 하시겠습니까?</div>
+            <div style={{width: '100%', display:'flex', justifyContent:'space-around', marginTop: '16px'}}>
+                <Button className={styles['noti-button']} onClick={() => {redirectToPost(false)}}>글 작성</Button>
+            </div>
+            
         </div>
     )
 
@@ -167,10 +177,9 @@ const PlanTodoListRightItem = (props) => {
         <div style={{height: '100px', display:'flex', flexDirection:'column', justifyContent:'space-around'}}>
             <div>해당 목표의 TODO를 모두 완료하였습니다.</div>
             <div>목표를 완료하거나 새 TODO를 작성하세요.</div>
-            <div style={{display:'flex', justifyContent:'space-around', marginTop: '16px'}}>
-                <Button>TODO 작성</Button>
-                <Button>회고록 작성</Button>
-                <Button>목표 완료</Button>
+            <div style={{width: '100%', display:'flex', justifyContent:'space-around', marginTop: '16px'}}>
+                <Button className={styles['noti-button']} onClick={() => {redirectToPost(true)}}>글 작성</Button>
+                <Button className={styles['noti-button']} >목표 완료</Button>
             </div>
         </div>
     )
@@ -196,17 +205,17 @@ const PlanTodoListRightItem = (props) => {
     const doneModalForm = (
         <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
 
-            <img style={{width:'228px', height:'auto', marginBottom: '24px'}} src={complete} />
+            <img style={{width:'250px', height:'auto', marginTop:'12px', marginBottom: '24px'}} src={complete} />
 
             <div>
-                <p style={{lineHeight: '40%'}}>기간이 만료된 목표의 모든 TODO를 완료하였습니다.</p>
-                <p style={{lineHeight: '40%'}}>회고록을 작성하고 목표를 완료하세요.</p>
+                <p style={{lineHeight: '40%'}}>목표의 모든 TODO를 완료하였습니다.</p>
+                <p style={{lineHeight: '40%'}}>관련 글을 작성하고 목표를 완료하세요.</p>
             </div>  
             
         </div>
     )
 
-    const addBtn = [<Button>회고록 작성</Button>,<Button>목표 완료</Button>]
+    const addBtn = [<Button onClick={() => {redirectToPost(true)}}>글 작성</Button>, <Button>목표 완료</Button>]
 
     const isDoneTrue = (
         <div onClick={toggleIsDone} className={styles['is-done-true-wrapper']}>
@@ -242,7 +251,7 @@ const PlanTodoListRightItem = (props) => {
 
     return (
         <div className={styles['todo-space-wrapper']} style={{width: `${props.containerRef?.current?.scrollWidth}px`}}>
-            <FixedModal modalState={doneModalState} stateHandler={setDoneModalState} content={doneModalForm} addBtn={addBtn} width={400} height={410} />
+            <FixedModal modalState={doneModalState} stateHandler={setDoneModalState} content={doneModalForm} addBtn={addBtn} width={380} height={450} />
             {doneNotiState && <NotiDeliverer content={notiContent} stateHandler={setDoneNotiState} duration={5000} width={400} />}
             <div className={styles['todo-space']} >
                 {props.el.state ? isDoneTrue : isDoneFalse}

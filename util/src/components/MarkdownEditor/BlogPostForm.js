@@ -9,7 +9,7 @@ const BlogPostForm = (props) => {
     const [plans, setPlans] = useState([])
     const [showPlansPicker, setShowPlansPicker] = useState(props.forReview ? true : false)
     const [showScopePicker, setShowScopePicker] = useState(true)
-    const [selectedPlan, setSelectedPlan] = useState(null)
+    const [selectedPlan, setSelectedPlan] = useState(props.queryString.goal ? props.queryString.goal : null)
     const [selectedScope, setSelectedScope] = useState(2)
 
     useEffect(() => {
@@ -57,7 +57,7 @@ const BlogPostForm = (props) => {
         const endDate = new Date(el.endDate)
         if (el.state === false) {
             return (
-                <div onClick={() => {selectPlan(el); planPickerHandler() }} className={styles['item']} style={{backgroundColor: el === selectedPlan ? 'rgb(235, 236, 239)' : '', }}>
+                <div onClick={() => {selectPlan(el); planPickerHandler() }} className={styles['item']} style={{backgroundColor: el.goalId === selectedPlan.goalId ? 'rgb(235, 236, 239)' : '', }}>
                     <b>{el.title}</b>
                     <div className={styles['small-text']}>
                         {startDate.getFullYear()}년 {startDate.getMonth()}월 {startDate.getDate()}일 ~ {endDate.getFullYear()}년 {endDate.getMonth()}월 {endDate.getDate()}일

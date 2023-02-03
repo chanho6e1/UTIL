@@ -21,5 +21,8 @@ export const editPlanAPI = (goalId, data) => {
     .then((res) => {
         return recvPlansAPI()
     })
+    .catch((err) => {
+        throw err
+    })
 }
 

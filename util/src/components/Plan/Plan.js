@@ -19,6 +19,10 @@ import { editTodoAPI } from "../../api/Plan/editTodoAPI";
 import { recvTotalPeriodAPI } from "../../api/Plan/recvPlansPeriodAPI";
 import { recvTodoPeriodAPI } from "../../api/Plan/recvTodoPeriodAPI";
 
+import warning from "../../img/Warning.png"
+import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
+
+
 const Plan = (props) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -146,7 +150,7 @@ const Plan = (props) => {
                 data: res
             }
             dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
-            
+            setNewTodoIdx(-1)
             setInputTodoData({
                 title: "",
                 dueDate: "",
@@ -156,7 +160,8 @@ const Plan = (props) => {
             })
         })
         .then((res) => {
-            recvTodoPeriodAPI(props.goalId)
+            
+            recvTodoPeriodAPI(newTodoIdx)
             .then((res) => {
                 const processing = {
                     goalId: newTodoIdx,
@@ -165,9 +170,18 @@ const Plan = (props) => {
                 console.log(res)
                 dispatch(modifyPlanSliceActions.responseTodoPeriod(JSON.stringify(processing)))
             })
-            .then((res) => {
-                setNewTodoIdx(-1)
+            .catch((err) => {
+                console.log('Plan : recvTodoPeriodAPI => ', err)
             })
+
+        })
+        .catch((err) => {
+            console.log('Plan : newTodoAPI => ', err)
+
+            if (err.response.data.message == "todo 날짜가 목표 범위 벗어남") {
+                setNotiState(true)
+            }
+            
         })
 
 
@@ -228,7 +242,11 @@ const Plan = (props) => {
           
             newPlanAPI(new Date(), endDate, newPlanValue)
             .catch((err) => {
-                navigate('/login');
+                // navigate('/login');
+                console.log('Plan : newPlanAPI => ', err)
+                if (err.response.data[0].message == "목표 내용이 없습니다.") {
+                    setNewPlan(false)
+                }
             })
             .then((res) => {
                 dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
@@ -249,9 +267,23 @@ const Plan = (props) => {
     const planCalender = <PlanCalendar applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} todoFormVisibility={todoFormVisibility} todos={todos} newTodoIdx={newTodoIdx} />
     
 
+    const errorMessage = (
+        <div style={{display:'flex', justifyContent:'space-evenly', alignItems:'center'}}>
+            <img style={{width:'40px', height:'40px', marginRight:'12px'}} src={warning} />
+            <div>
+                <p style={{lineHeight: '40%'}}>TODO의 날짜는 현재 작성중인 TODO 목표의</p>
+                <p style={{lineHeight: '40%'}}>날짜 범위를 미만 & 초과할 수 없습니다.</p>
+            </div>
+        </div>
+    )
+
+
+    const [notiState, setNotiState] = useState(false)
+
 
     return (
         <div className={styles['plans-wrapper']}>
+            {notiState && <NotiDeliverer content={errorMessage} stateHandler={setNotiState} duration={5000} width={400} />}
             <div className={styles['plans-title-wrapper']} > 
                 <div className={styles['plan-title-bar-space']} />
                 <div className={styles['plans-titles']} ref={plansTitleWrapperRef}>

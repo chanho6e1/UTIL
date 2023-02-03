@@ -35,6 +35,13 @@ const PlanItem = (props) => {
     .then((res) => {
       setIsEditMode(false)
     })
+    .catch((err) => {
+      console.log('PlanItem : editPlanAPI => ', err)
+      if (err.response.data[0].message == "목표 내용이 없습니다.") {
+        setTitleValue(props.plans[props.idx].title)
+        setIsEditMode(false)
+      }
+    })
       
   }
 
@@ -53,6 +60,9 @@ const PlanItem = (props) => {
     delPlanAPI(props.plans[props.idx].goalId)
     .then((res) => {
       dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+    })
+    .catch((err) => {
+      console.log('PlanItem : delPlanAPI => ', err)
     })
 
   }

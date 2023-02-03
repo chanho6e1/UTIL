@@ -21,6 +21,6 @@ export const editTodoAPI = (todoId, goalId, data) => {
         return recvTodosAPI(goalId)
     })
     .catch((err) => {
-        throw err.response.data.message
+        throw err
     })
 }

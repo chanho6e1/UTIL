@@ -38,8 +38,17 @@ const PlanTodoListLeftItem = (props) => {
             setIsEditMode(false)
         })
         .catch((err) => {
-            setNotiContent(errorMessage)
-            setNotiState(true)
+            console.log('PlanTodoListLeftItem : editTodoAPI => ', err)
+            console.log()
+            if (err.response.data[0].message == "제목이 없습니다." ) {
+                setTitleValue(props.el.title)
+                setIsEditMode(false)
+            }
+            if (err.response.data[0].message == "25자 이하여야 합니다.") {
+                setNotiContent(errorMessage)
+                setNotiState(true)
+            }
+            
         })
         
 
@@ -74,11 +83,13 @@ const PlanTodoListLeftItem = (props) => {
     const [NotiState, setNotiState] = useState(false)
     const [notiContent, setNotiContent] = useState()
 
+
+
     const errorMessage = (
         <div style={{display:'flex', justifyContent:'space-evenly', alignItems:'center'}}>
             <img style={{width:'40px', height:'40px', marginRight:'12px'}} src={warning} />
             <div>
-                <p style={{lineHeight: '40%'}}>TODO의 제목은 20자 이하로 작성해야 합니다.</p>
+                <p style={{lineHeight: '40%'}}>TODO의 제목은 25자 이하로 작성해야 합니다.</p>
             </div>
         </div>
     )   

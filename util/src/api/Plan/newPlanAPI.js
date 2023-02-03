@@ -21,5 +21,8 @@ export const newPlanAPI = (startDate, endDate, title) => {
     .then((res) => {
         return recvPlansAPI()
     })
+    .catch((err) => {
+        throw err
+    })
 }
 
