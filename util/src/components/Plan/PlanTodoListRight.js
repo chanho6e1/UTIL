@@ -27,9 +27,7 @@ const PlanTodoListRight = (props) => {
     const todoSpaceRef = useRef([])
     const todosRightRef = useRef()
 
-    useEffect(() => {
-        console.log(props.todos)
-    }, [props.todos])
+
 
 
 

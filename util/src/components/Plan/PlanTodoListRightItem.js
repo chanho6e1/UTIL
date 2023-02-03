@@ -50,6 +50,15 @@ const PlanTodoListRightItem = (props) => {
         })
         .then((res) => {
             setIsDateEditMode(false)
+            recvTodoPeriodAPI(props.goalId)
+            .then((res) => {
+                const processing = {
+                    goalId: props.goalId,
+                    data: res
+                }
+                console.log(res)
+                dispatch(modifyPlanSliceActions.responseTodoPeriod(JSON.stringify(processing)))
+            })
         })
         .catch((err) => {
             setNotiContent(errorMessage)
@@ -58,15 +67,7 @@ const PlanTodoListRightItem = (props) => {
 
 
 
-        recvTodoPeriodAPI(props.goalId)
-        .then((res) => {
-            const processing = {
-                goalId: props.goalId,
-                data: res
-            }
-            console.log(res)
-            dispatch(modifyPlanSliceActions.responseTodoPeriod(JSON.stringify(processing)))
-        })
+        
         
         
     }
@@ -102,6 +103,9 @@ const PlanTodoListRightItem = (props) => {
         })
         .then((res) => {
             setIsDescriptionEditMode(false) 
+        })
+        .catch((err) => {
+            console.log('PlanTodoListRightItem : editTodoAPI => ', err)
         })
 
         
@@ -167,7 +171,7 @@ const PlanTodoListRightItem = (props) => {
             <div><b>{props.el.title}</b>을 완료하였습니다.</div>
             <div>관련 글을 작성 하시겠습니까?</div>
             <div style={{width: '100%', display:'flex', justifyContent:'space-around', marginTop: '16px'}}>
-                <Button className={styles['noti-button']} onClick={() => {redirectToPost(false)}}>글 작성</Button>
+                <Button className={styles['noti-button']} onClick={() => {redirectToPost(false);}}>글 작성</Button>
             </div>
             
         </div>
