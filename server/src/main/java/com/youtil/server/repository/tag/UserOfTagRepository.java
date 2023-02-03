@@ -22,4 +22,7 @@ public interface UserOfTagRepository extends JpaRepository<UserOfTag, Long> {
     @Modifying
     @Query("DELETE FROM UserOfTag u WHERE u.user = :user")
     void deleteByUser(@Param("user") User user);
+
+    @Query("SELECT u FROM UserOfTag u WHERE u.user = :user")
+    List<UserOfTag> findBySpecUser(@Param("user") User user);
 }
