@@ -1,5 +1,6 @@
 package com.youtil.server.controller.user;
 
+import com.youtil.server.common.CommonResponse;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.common.exception.BadRequestException;
 import com.youtil.server.payload.ApiResponse;
@@ -8,23 +9,24 @@ import com.youtil.server.payload.LoginRequest;
 import com.youtil.server.payload.SignUpRequest;
 import com.youtil.server.repository.user.UserRepository;
 import com.youtil.server.security.TokenProvider;
+import com.youtil.server.service.user.AuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
@@ -66,4 +68,15 @@ public class AuthController {
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "User registered successfully@"));
     }
+
+//    @Autowired
+//    private final AuthService authService;
+//
+//    @PostMapping("/login/{provider}")
+//    public ResponseEntity<CommonResponse> login(@PathVariable String provider, @RequestParam("code") String code) {
+//        return ResponseEntity.ok().body(CommonResponse.of(
+//                HttpStatus.CREATED, "SUCCESS_POST_LOGIN", authService.login(provider, code)));
+//    }
+
+
 }
