@@ -83,7 +83,6 @@ public class Post extends BaseEntity {
     public void update(PostUpdateRequest request){
         this.title = request.getTitle();
         this.content = request.getContent();
-        this.thumbnail = request.getThumbnail();
         this.isPrivate = request.getIsPrivate();
     }
 
