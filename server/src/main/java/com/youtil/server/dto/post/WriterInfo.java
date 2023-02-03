@@ -18,7 +18,7 @@ public class WriterInfo {
 
 
     public static WriterInfo from(User user) {
-        return new WriterInfo(user.getUserId(), user.getNickName(), user.getDepartment());
+        return new WriterInfo(user.getUserId(), user.getUserName(), user.getImageUrl());
     }
 
     public void setNickname(String nickname) {
