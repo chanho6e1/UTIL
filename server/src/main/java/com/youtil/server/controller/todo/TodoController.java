@@ -64,7 +64,15 @@ public class TodoController {
     public ResponseEntity<CommonResponse> getTodoByGoal(@PathVariable Long goalId){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "목표별 투두 조회 성공", todoService.getTodoByGoal(goalId)));
+    }
 
+    @ApiOperation(value = "목표별 투두 조회(페이지네이션)", notes = "목표별 투두를 조회한다")
+    @GetMapping("/goals/{goalId}/page")
+    public ResponseEntity<CommonResponse> getTodoByGoalPageNation(@PathVariable Long goalId,
+                                                                  @RequestParam(required=false, defaultValue = "1") int offset,
+                                                                  @RequestParam(value = "size", required = false, defaultValue = "10") int size){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "목표별 투두 조회 성공", todoService.getTodoByGoalPage(goalId, offset, size)));
     }
 
     @ApiOperation(value = "목표별 투두 전체 미완료 여부", notes = "목표id를 보냈을 때 목표별 투두가 전체 미완료라면 true를 리턴")
