@@ -1,147 +1,3 @@
-#spring:
-#  mvc:
-#    pathmatch:
-#      matching-strategy: ANT_PATH_MATCHER
-#  profiles.active: local
-#  # ??? ?? ??
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    #    url: jdbc:mysql://i8d210.p.ssafy.io:3306/youtil?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
-#    url: jdbc:mysql://i8d210.p.ssafy.io:3306/youtil?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
-#    username: ssafy
-#    password: ssafy
-#    hikari:
-#      pool-name: jpa-hikari-pool
-#      maximum-pool-size: 5
-#      jdbc-url: ${spring.datasource.url}
-#      username: ${spring.datasource.username}
-#      password: ${spring.datasource.password}
-#      driver-class-name: ${spring.datasource.driver-class-name}
-#      data-source-properties:
-#        rewriteBatchedStatements: true
-#  # JPA ??
-#  jpa:
-#    generate-ddl: true
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        jdbc:
-#          time_zone: Asia/Seoul
-#        dialect: org.hibernate.dialect.MySQL8Dialect
-#        hbm2ddl.import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
-#        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
-#        default_batch_fetch_size: ${chunkSize:100}
-#        jdbc.batch_size: 20
-#        order_inserts: true
-#        order_updates: true
-#        format_sql: true
-#  # Security OAuth
-#  security:
-#    oauth2.client:
-#      registration:
-#        google:
-#          clientId: '913035013476-bebq70bsneh30vbjjd0ktsk0con4ofmr.apps.googleusercontent.com'
-#          clientSecret: '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'
-#          redirect-uri: 'https://i8d210.p.ssafy.io/oauth2/callback/google'
-##          redirect-uri: 'http://localhost:8081/oauth2/callback/google'
-#          scope:
-#            - email
-#            - profile
-#        kakao:
-#          clientId: '5ccc0d6303d193e2fc171cde4c9a8cf9'
-#          clientSecret: 'PAZgffRuTr5fh89fBMJ0Gxd6DInXqYVt'
-#          clientAuthenticationMethod: post
-#          authorizationGrantType: authorization_code
-##          redirectUri: 'http://localhost:8081/api/oauth2/callback/kakao'
-##          redirectUri: 'http://i8d210.p.ssafy.io:8081/oauth2/callback/kakao' # 서버용
-##          redirectUri: 'https://i8d210.p.ssafy.io/api/oauth2/callback/kakao'
-##          redirectUri: 'https://i8d210.p.ssafy.io/oauth2/callback/kakao'
-#          redirectUri: 'http://localhost:8081/oauth2/callback/kakao'
-#          scope:
-#            - profile_nickname
-#            - profile_image
-#            - account_email
-#          clientName: Kakao
-#        naver:
-#          client-id: yjk6wLNyoP0bX589pjS5
-#          client-secret: xpoe2ASB5s
-##          redirect-uri: 'http://localhost:8081/api/oauth2/callback/naver'
-##          redirect-uri: 'https://i8d210.p.ssafy.io/api/oauth2/callback/naver'
-#          redirect-uri: 'http://localhost:8081/oauth2/callback/naver'
-#          authorization-grant-type: authorization_code
-#          scope: name, email, profile_image
-#          client-name: Naver
-#
-#      # Provider ??
-#      provider:
-#        kakao:
-#          authorizationUri: https://kauth.kakao.com/oauth/authorize
-#          tokenUri: https://kauth.kakao.com/oauth/token
-#          userInfoUri: https://kapi.kakao.com/v2/user/me
-#          userNameAttribute: id
-#        naver:
-#          authorization_uri: https://nid.naver.com/oauth2.0/authorize
-#          token_uri: https://nid.naver.com/oauth2.0/token
-#          user-info-uri: https://openapi.naver.com/v1/nid/me
-#          user_name_attribute: response
-#
-## cors ??
-#cors:
-#  allowed-origins: 'http://localhost:'
-#  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
-#  allowed-headers: '*'
-#  max-age: 3600
-#
-## jwt secret key ??
-#jwt:
-#  header: Authorization
-#  secret: 23kljgljewlfjldjsfklj3lkjklegjkdjkqjljslfjdkfjdkajgk3ejhkgdxaj3ljljelkdjl3hleflkajdfkljhadfasdfadsfasg4ehegfdddjkljeljldjfldjlc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
-#  token-validity-in-seconds: 86400
-#  access:
-#    expire-length: 864000
-#  refresh:
-#    expire-length: 864000
-#  token:
-#    secret-key: 23kljgljewlfjldjsfklj3lkjklegjkdjkqjljslfjdkfjdkajgk3ejhkgdxaj3ljljelkdjl3hleflkajdfkljhadfasdfadsfasg4ehegfdddjkljeljldjfldjlc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
-#
-## ?? ?? secret Key ? RedirectUri ??
-#app:
-#  auth:
-#    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC23kljgljewlfjldjsfklj3lkjklegjkdjkqjljslfjdkfjdkajgk3ejhkgdxaj3ljljelkdjl3hleflkajdfkljhadfasdfadsfasg4ehegfdddjkljeljldjfldjlc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
-#    tokenExpirationMsec: 864000000
-#  oauth2:
-#    authorizedRedirectUris:
-#      - http://i8d210.p.ssafy.io:8081/oauth/token
-#      - https://i8d210.p.ssafy.io/oauth/token
-#      - http://localhost:3000/oauth/redirect
-#      - https://i8d210.p.ssafy.io/oauth2/redirect
-#      - http://localhost:3000/oauth2/redirect
-#      - http://i8d210.p.ssafy.io:3000/oauth2/redirect
-#      - https://i8d210.p.ssafy.io/oauth2/redirect
-#      - myandroidapp://oauth2/redirect
-#      - myiosapp://oauth2/redirect
-#  cors:
-#    allowedOrigins: http://localhost:3000, https://i8d210.p.ssafy.io, http://localhost:8080, http://i8d210.p.ssafy.io:8081
-#
-#cloud:
-#  aws:
-#    credentials:
-#      access-key: AKIAX5N4A3A664JIM6GP
-#      secret-key: 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
-#    s3:
-#      bucket: utilbucket
-#    region:
-#      static: ap-northeast-2
-#    stack:
-#      auto: false
-#server:
-#  port: 8081
-#  tomcat:
-#    remoteip:
-#      protocol-header: x-forwarded-proto
-
 spring:
   mvc:
     pathmatch:
@@ -185,17 +41,9 @@ spring:
   security:
     oauth2.client:
       registration:
-        naver:
-          clientId: 'nukqI0KFqZ_oFS6Rf0EA'
-          clientSecret: 'wsBrfKn6eU'
-          redirect-uri: 'https://i8d210.p.ssafy.io/login/oauth2/code/naver'
-          scope:
-            - email
-            - profile
-          clientName: Naver
         google:
-          clientId: '564001897632-vuvck13s0fimubr1t86sslnv8smrc453.apps.googleusercontent.com'
-          clientSecret: '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'
+          clientId: '913035013476-bebq70bsneh30vbjjd0ktsk0con4ofmr.apps.googleusercontent.com'
+          clientSecret: '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'
           redirect-uri: 'https://i8d210.p.ssafy.io/oauth2/callback/google'
           scope:
             - email
@@ -220,11 +68,6 @@ spring:
           tokenUri: https://kauth.kakao.com/oauth/token
           userInfoUri: https://kapi.kakao.com/v2/user/me
           userNameAttribute: id
-        naver:
-          authorization-uri: https://nid.naver.com/oauth2.0/authorize
-          token-uri: https://nid.naver.com/oauth2.0/token
-          user-info-uri: https://openapi.naver.com/v1/nid/me
-          user-name-attribute: response
 
 # cors ??
 cors:
