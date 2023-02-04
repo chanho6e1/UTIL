@@ -12,6 +12,7 @@ import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +47,12 @@ public class TodoService {
         todo = todoRepository.save(request.of(goal)) ;
 
         return todo.getTodoId();
+    }
+
+    public List<TodoResponse> getTodoByGoalPage(Long goalId, int offset, int size) { // 목표별 투두 리스트 조회(페이징)
+        Goal goal = goalRepository.findById(goalId).orElseThrow(() -> new ResourceNotFoundException("goal", "goalId", goalId));
+        return todoRepository.findByGoalIdPage(goalId, PageRequest.of(offset-1, size))
+                .stream().map(TodoResponse::new).collect(Collectors.toList());
     }
 
     public List<TodoResponse> getTodoByGoal(Long goalId) { // 목표별 투두 리스트 조회
