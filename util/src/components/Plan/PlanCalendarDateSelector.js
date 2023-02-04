@@ -22,8 +22,8 @@ const PlanCalendarDateSelector = (props) => {
 
   const columnIdx = props.idx
   const dateSelectorBar = useRef()
-  const [initialStartDate, setInitialStartDate] = useState(new Date(props.el.startDate))
-  const [initialEndDate, setInitialEndDate] = useState(new Date(props.el.endDate))
+  const [initialStartDate, setInitialStartDate] = useState(new Date(props.plan.startDate))
+  const [initialEndDate, setInitialEndDate] = useState(new Date(props.plan.endDate))
   const [initialLeft, setInitialLeft] = useState()
   const [initialRight, setInitialRight] = useState()
   const [updatingStartDate, setUpdatingStartDate] = useState(initialStartDate)
@@ -31,7 +31,7 @@ const PlanCalendarDateSelector = (props) => {
 
 
   // 만약 투두 갱신후 투두의 min, max값이 바뀌지 않는다면 아래 코드 체크해볼 것.
-  const todosPeriod = useSelector(state => state.planSlice?.todosPeriod[props.el.goalId])
+  const todosPeriod = useSelector(state => state.planSlice?.todosPeriod[props.plan.goalId])
   const [minDate, setMinDate] = useState(new Date(todosPeriod?.minDate))
   const [maxDate, setMaxDate] = useState(new Date(todosPeriod?.maxDate))
 
@@ -103,20 +103,23 @@ const PlanCalendarDateSelector = (props) => {
   }, [props.xPointLib, initialStartDate, initialEndDate])
 
   useEffect(() => {
-    setInitialStartDate(new Date(props.el.startDate))
-    setInitialEndDate(new Date(props.el.endDate))
-  }, [props.el.startDate, props.el.endDate])
+    setInitialStartDate(new Date(props.plan.startDate))
+    setInitialEndDate(new Date(props.plan.endDate))
+  }, [props.plan.startDate, props.plan.endDate])
 
 
   useDidMountEffect(() => {
     const processing = {
-      title: props.el.title,
+      title: props.plan.title,
       startDate: initialStartDate,
       endDate: initialEndDate
     }
-    editPlanAPI(props.el.goalId, processing)
+    editPlanAPI(props.plan.goalId, processing)
     .then((res) => {
         dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+    })
+    .catch((err) => {
+      console.log('PlanCalendarDateSelector : editPlanAPI => ', err)
     })
 
 
@@ -124,7 +127,7 @@ const PlanCalendarDateSelector = (props) => {
 
 
   const transferMoveTodo = (distance, reverse) => {
-    recvTodosAPI(props.el.goalId)
+    recvTodosAPI(props.plan.goalId)
     .then((todos) => {
       
       const todoDates = todos.map((el, idx) => {
@@ -136,28 +139,40 @@ const PlanCalendarDateSelector = (props) => {
         }
         return processing
       })
-      editTodosAPI(props.el.goalId, todoDates)
+      editTodosAPI(props.plan.goalId, todoDates)
       .then ((res) => {
         const processing = {
-          goalId: props.el.goalId,
+          goalId: props.plan.goalId,
           data: res
         }
         dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
       })
       .then((res) => {
 
-        recvTodoPeriodAPI(props.el.goalId)
+        recvTodoPeriodAPI(props.plan.goalId)
         .then((res) => {
             const processing = {
-                goalId: props.el.goalId,
+                goalId: props.plan.goalId,
                 data: res
             }
             console.log(res)
             dispatch(modifyPlanSliceActions.responseTodoPeriod(JSON.stringify(processing)))
         })
+        .catch((err) => {
+          console.log('PlanCalendarDateSelector : recvTodoPeriodAPI => ', err)
+          throw err
+        })
 
       })
+      .catch((err) => {
+        console.log('PlanCalendarDateSelector : editTodosAPI => ', err)
+        throw err
+      })
       
+    })
+    .catch((err) => {
+      console.log('PlanCalendarDateSelector : recvTodosAPI => ', err)
+      throw err
     })
   }
   
@@ -387,7 +402,7 @@ const PlanCalendarDateSelector = (props) => {
 
   const [isAllTodosNotDone, setIsAllTodosNotDone] = useState(false)
   const checkAllTodosNotDone = () => {
-    recvIsAllTodosNotDoneAPI(props.el.goalId)
+    recvIsAllTodosNotDoneAPI(props.plan.goalId)
     .then((res) => {
       setIsAllTodosNotDone(res)
     })

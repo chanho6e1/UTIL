@@ -190,7 +190,7 @@ const Plan = (props) => {
     }
     
 
-    const planTitleGrid = plans.map((el, idx) => {
+    const planTitleGrid = Object.keys(plans).map((el, idx) => {
         return (
             // <React.Fragment>
             //     <div  id={`${plans[idx].goalId}`} className={`${styles['plan-title-bar']} ${idx % 2 ? styles['title-odd'] : styles['title-even']}`} key={`month-title-bar-${idx}`}>
@@ -207,7 +207,7 @@ const Plan = (props) => {
             //     </div>
             //     {todoFormVisibility[idx] && <PlanTodoListLeft goalId={plans[idx].goalId} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoIdx={newTodoIdx} />}
             // </React.Fragment>
-            <PlanItem plans={plans} el={el} idx={idx} key={`month-title-bar-${idx}`} applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} todoFormToggleHandler={todoFormToggleHandler} todoFormVisibility={todoFormVisibility} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoIdx={newTodoIdx}/>
+            <PlanItem plans={plans} plan={plans[el]} idx={idx} key={`month-title-bar-${idx}`} applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} todoFormToggleHandler={todoFormToggleHandler} todoFormVisibility={todoFormVisibility} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoIdx={newTodoIdx}/>
         )
     })
 
