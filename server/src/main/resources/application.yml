@@ -192,7 +192,7 @@ spring:
           scope:
             - email
             - profile
-          client-name: Naver
+          clientName: Naver
         google:
           clientId: '564001897632-vuvck13s0fimubr1t86sslnv8smrc453.apps.googleusercontent.com'
           clientSecret: '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'
