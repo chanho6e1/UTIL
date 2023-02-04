@@ -7,9 +7,9 @@ const PlanTodoListLeft = (props) => {
     const [newTodo, setNewTodo] = useState(false)
 
 
-    const todoTitles = props.todos[props.goalId]?.map((el, idx) => {
+    const todoTitles = props.todos[props.plan.goalId]?.map((el, idx) => {
         return (
-            <PlanTodoListLeftItem key={`todo-titles-${el.todoId}-${idx}`} applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} el={el} goalId={props.goalId} />
+            <PlanTodoListLeftItem key={`todo-titles-${el.todoId}-${idx}`} applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} todo={el} plan={props.plan} />
             // <div className={styles['todo-detail-wrapper']}>
             //     <div className={styles['todo-title-wrapper']}>
             //         <svg style={{marginRight: '6px', color: 'rgb(150, 150, 150)'}} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-hash" viewBox="0 0 16 16">
@@ -29,7 +29,7 @@ const PlanTodoListLeft = (props) => {
 
     const newTodoClickShow = () => {
         setNewTodo(true)
-        props.getNewTodoIdx(props.goalId)
+        props.getNewTodoIdx(props.plan.goalId)
     }
 
     const newTodoClickHide = () => {
@@ -43,7 +43,7 @@ const PlanTodoListLeft = (props) => {
 
 
     useEffect(() => {
-        props.getInputTodoData(newTodoTitleValue, null, null, props.goalId)
+        props.getInputTodoData(newTodoTitleValue, null, null, props.plan.goalId)
     }, [newTodoTitleValue])
 
     const onEnterNewPlanHandler = (event) => {
@@ -54,7 +54,7 @@ const PlanTodoListLeft = (props) => {
 
     useEffect(() => {
         setNewTodoTitleValue('')
-    }, [(props.newTodoIdx === props.goalId) && newTodo])
+    }, [(props.newTodoIdx === props.plan.goalId) && newTodo])
 
 
     const plusImg = (
@@ -65,7 +65,7 @@ const PlanTodoListLeft = (props) => {
 
     const newTodoDummy = (
         <div onClick={newTodoClickShow} className={styles['new-todo-wrapper']}>
-            {(props.newTodoIdx === props.goalId) && newTodo ? <input type="text" value={newTodoTitleValue} onKeyPress={onEnterNewPlanHandler} onChange={newTodoInputHandler} onBlur={newTodoClickHide} placeholder="일정을 입력해 주세요." autoFocus className={styles['new-todo-input']} /> : <div className={styles['new-todo']}>{plusImg} TODO 작성</div> }
+            {(props.newTodoIdx === props.plan.goalId) && newTodo ? <input type="text" value={newTodoTitleValue} onKeyPress={onEnterNewPlanHandler} onChange={newTodoInputHandler} onBlur={newTodoClickHide} placeholder="일정을 입력해 주세요." autoFocus className={styles['new-todo-input']} /> : <div className={styles['new-todo']}>{plusImg} TODO 작성</div> }
         </div>
     )
 
@@ -74,7 +74,7 @@ const PlanTodoListLeft = (props) => {
     return (
         <div ref={todosLeftRef} className={styles['todos-left']}>
             {newTodoDummy}
-            {props.todos[props.goalId] && todoTitles}
+            {props.todos[props.plan.goalId] && todoTitles}
         </div>
     )
 }

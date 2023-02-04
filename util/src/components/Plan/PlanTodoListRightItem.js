@@ -19,9 +19,9 @@ const PlanTodoListRightItem = (props) => {
     const navigate = useNavigate()
     const todos = useSelector(state => state.planSlice.todos)
     const [isDateEditMode, setIsDateEditMode] = useState(false)
-    const [dateValue, setDateValue] = useState(props.toStringByFormatting(new Date(props.el.dueDate)))
+    const [dateValue, setDateValue] = useState(props.toStringByFormatting(new Date(props.todo.dueDate)))
     const [isDescriptionEditMode, setIsDescriptionEditMode] = useState(false)
-    const [descriptionValue, setDescriptionValue] = useState(props.el.description)
+    const [descriptionValue, setDescriptionValue] = useState(props.todo.description)
     const [refresh, setRefresh] = useState(false)
 
     
@@ -35,25 +35,25 @@ const PlanTodoListRightItem = (props) => {
     const cancelDateEditMode = () => {
         
         const processing = {
-            title: props.el.title,
-            description: props.el.description,
-            state: props.el.state,
+            title: props.todo.title,
+            description: props.todo.description,
+            state: props.todo.state,
             dueDate: dateValue,
         }
-        editTodoAPI(props.el.todoId, props.goalId, processing)
+        editTodoAPI(props.todo.todoId, props.plan.goalId, processing)
         .then((res) => {
             const processing = {
-                goalId: props.goalId,
+                goalId: props.plan.goalId,
                 data: res
             }
             dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
         })
         .then((res) => {
             setIsDateEditMode(false)
-            recvTodoPeriodAPI(props.goalId)
+            recvTodoPeriodAPI(props.plan.goalId)
             .then((res) => {
                 const processing = {
-                    goalId: props.goalId,
+                    goalId: props.plan.goalId,
                     data: res
                 }
                 console.log(res)
@@ -88,15 +88,15 @@ const PlanTodoListRightItem = (props) => {
 
     const cancelDescriptionEditMode = () => {
         const processing = {
-            title: props.el.title,
+            title: props.todo.title,
             description: descriptionValue,
-            state: props.el.state,
-            dueDate: props.el.dueDate,
+            state: props.todo.state,
+            dueDate: props.todo.dueDate,
         }
-        editTodoAPI(props.el.todoId, props.goalId, processing)
+        editTodoAPI(props.todo.todoId, props.plan.goalId, processing)
         .then((res) => {
             const proccessing = {
-                goalId: props.goalId,
+                goalId: props.plan.goalId,
                 data: res
             }
             dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
@@ -123,10 +123,10 @@ const PlanTodoListRightItem = (props) => {
 
 
     const toggleIsDone = () => {
-        chkTodoAPI(props.el.todoId, props.goalId)
+        chkTodoAPI(props.todo.todoId, props.plan.goalId)
         .then((res) => {
             const proccessing = {
-                goalId: props.goalId,
+                goalId: props.plan.goalId,
                 data: res
             }
             dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
@@ -136,7 +136,7 @@ const PlanTodoListRightItem = (props) => {
         .then((res) => {
             
 
-            recvIsAllTodosDoneAPI(props.goalId)
+            recvIsAllTodosDoneAPI(props.plan.goalId)
             .then((res) => {
                 console.log('목표 투두 완료', res)
                 if (res === true) {
@@ -149,7 +149,7 @@ const PlanTodoListRightItem = (props) => {
                     }
                     
                 } else {
-                    if (props.el.state === false) {
+                    if (props.todo.state === false) {
                         setNotiContent(message1)
                         setDoneNotiState(true)
                     }
@@ -162,13 +162,13 @@ const PlanTodoListRightItem = (props) => {
     }
 
     const redirectToPost = (isPlanDone) => {
-        const url = `/create/post?goal_id=${props.goalId}${isPlanDone ? '&ask_done=true' : ''}&step=true`
+        const url = `/create/post?goal_id=${props.plan.goalId}${isPlanDone ? '&ask_done=true' : ''}&step=true`
         navigate(url)
     }
 
     const message1 = (
         <div style={{width:'100%', height: '100px', display:'flex', flexDirection:'column', justifyContent:'space-around', alignItems:'center'}}>
-            <div><b>{props.el.title}</b>을 완료하였습니다.</div>
+            <div><b>{props.todo.title}</b>을 완료하였습니다.</div>
             <div>관련 글을 작성 하시겠습니까?</div>
             <div style={{width: '100%', display:'flex', justifyContent:'space-around', marginTop: '16px'}}>
                 <Button className={styles['noti-button']} onClick={() => {redirectToPost(false);}}>글 작성</Button>
@@ -241,7 +241,7 @@ const PlanTodoListRightItem = (props) => {
 
     const descriptionReadMode = (
         <div onClick={enterDescriptionEditMode} className={styles['todo-description-wrapper']}>
-            {props.el.description}
+            {props.todo.description}
         </div>
     )
 
@@ -258,7 +258,7 @@ const PlanTodoListRightItem = (props) => {
             <FixedModal modalState={doneModalState} stateHandler={setDoneModalState} content={doneModalForm} addBtn={addBtn} width={380} height={450} />
             {doneNotiState && <NotiDeliverer content={notiContent} stateHandler={setDoneNotiState} duration={5000} width={400} />}
             <div className={styles['todo-space']} >
-                {props.el.state ? isDoneTrue : isDoneFalse}
+                {props.todo.state ? isDoneTrue : isDoneFalse}
                 {isDateEditMode ? dateEditInput : dateReadMode}
                 {isDescriptionEditMode ? descriptionEditInput : descriptionReadMode}
                 
