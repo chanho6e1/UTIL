@@ -2,6 +2,8 @@ package com.youtil.server.repository.todo;
 
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.todo.Todo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -69,4 +71,6 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     Optional<List<Object>> checkTodoStateAllTrueByGoal(@Param("goal") Goal goal);
 
 
+    @Query("select t from Todo t where t.goal.goalId = :goal")
+    Page<Todo> findByGoalIdPage(@Param("goal")Long goal, PageRequest of);
 }
