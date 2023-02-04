@@ -10,8 +10,6 @@ export const getPosts = () => {
     },
   })
     .then((res) => {
-      console.log(res.data.data);
-      console.log("게시물 목록 조회에 성공하였습니다.");
       return res.data.data;
     })
     .catch((err) => {

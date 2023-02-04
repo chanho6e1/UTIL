@@ -10,8 +10,6 @@ export const getUserFollower = (userId) => {
     },
   })
     .then((res) => {
-      console.log(res.data.data);
-      console.log("팔로워 목록 조회에 성공하였습니다.");
       return res.data.data;
     })
     .catch((err) => {

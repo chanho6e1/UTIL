@@ -11,8 +11,6 @@ export const deleteFollow = (toUserId) => {
     },
   })
     .then((res) => {
-      console.log("언팔로우 성공");
-      console.log(res);
       return res.status;
     })
     .catch((err) => {
