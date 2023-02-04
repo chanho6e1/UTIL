@@ -188,7 +188,7 @@ spring:
         google:
           clientId: '564001897632-vuvck13s0fimubr1t86sslnv8smrc453.apps.googleusercontent.com'
           clientSecret: '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'
-          redirect-uri: 'https://i8d210.p.ssafy.io/api/oauth2/callback/google'
+          redirect-uri: 'https://i8d210.p.ssafy.io/oauth2/callback/google'
           scope:
             - email
             - profile
