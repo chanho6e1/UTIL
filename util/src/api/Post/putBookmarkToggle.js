@@ -11,8 +11,6 @@ export const putBookmarkToggle = (postId) => {
     },
   })
     .then((res) => {
-      console.log(res);
-      console.log("북마크 성공");
       return res.status;
     })
     .catch((err) => {
