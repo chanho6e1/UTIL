@@ -208,9 +208,9 @@ spring:
         naver:
           client-id: ZAnoJt_6zzAuxdYrpGHU
           client-secret: VoSJrzsmw5
-          #   redirect-uri: 'http://localhost:8081/api/oauth2/callback/naver'
-          #   redirect-uri: 'https://i8d210.p.ssafy.io/api/oauth2/callback/naver'
-          redirect-uri: 'http://localhost:8081/oauth2/callback/naver'
+#          redirect-uri: 'http://localhost:8081/api/oauth2/callback/naver'
+          redirect-uri: 'https://i8d210.p.ssafy.io/oauth2/callback/naver'
+#          redirect-uri: 'http://localhost:8081/oauth2/callback/naver'
           authorization-grant-type: authorization_code
           scope: name, email, profile_image
           client-name: Naver
