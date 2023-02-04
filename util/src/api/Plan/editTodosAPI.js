@@ -15,4 +15,7 @@ export const editTodosAPI = (goalId, data) => {
     .then((res) => {
         return recvTodosAPI(goalId)
     })
+    .catch((err) => {
+        throw err
+    })
 }
