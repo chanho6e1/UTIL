@@ -143,7 +143,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         logger.info("===============success token: {}", token);
 
-        Cookie cookie = new Cookie("accessToken", targetUrl);
+        Cookie cookie = new Cookie("accessToken", token);
         response.addCookie(cookie);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
