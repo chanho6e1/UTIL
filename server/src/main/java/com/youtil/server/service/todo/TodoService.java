@@ -54,8 +54,8 @@ public class TodoService {
                 .stream().map(TodoResponse::new).collect(Collectors.toList());
     }
 
-    public List<TodoResponse> getTodoByDate(String dueDate) { // 날짜별 투두 리스트 조회
-        return todoRepository.findByDate(dueDate)
+    public List<TodoResponse> getTodoByDate(Long userId, String dueDate) { // 날짜별 투두 리스트 조회
+        return todoRepository.findByDate(userId, dueDate)
                 .stream().map(TodoResponse::new).collect(Collectors.toList());
     }
 
