@@ -19,6 +19,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -43,6 +45,7 @@ public class GoalService {
     @Autowired
     private final GoalQueryRepository goalQueryRepository;
 
+    @Transactional
     public Long createGoal(Long userId, GoalSaveRequest request){
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Goal goal = null;
@@ -55,6 +58,15 @@ public class GoalService {
 
         goal = goalRepository.save(request.of(user));
 
+        String path = request.getImageUrl();
+        String baseImg = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/ea6ee1e9-319e-4591-89ce-d2df2056044etor.jpg";
+
+        if(path==null){
+            System.out.println(baseImg);
+            goal.setImageUrl(baseImg.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/",""));
+        }else{
+            goal.setImageUrl(path.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/",""));
+        }
         return goal.getGoalId();
     }
 
@@ -73,7 +85,7 @@ public class GoalService {
     }
 
     @Transactional
-    public Long updateGoal(Long userId, Long goalId, GoalUpdateRequest request) {
+    public Long updateGoal(Long userId, Long goalId, GoalUpdateRequest request) throws UnsupportedEncodingException {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
         validGoalUser(userId, goal.getUser().getUserId());
         String[] arr = request.getStartDate().split("T");
@@ -81,6 +93,18 @@ public class GoalService {
         request.setStartDate(arr[0]);
         arr = request.getEndDate().split("T");
         request.setEndDate(arr[0]);
+        String path = request.getImageUrl();
+        String baseImg = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/ea6ee1e9-319e-4591-89ce-d2df2056044etor.jpg";
+
+        if(path==null){
+            goal.setImageUrl(baseImg.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/",""));
+        }else{
+            goal.setImageUrl(request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/",""));
+            if(!path.equals(baseImg)) { // 카카오톡 기본 이미지 받아오지 않고 이처리 추가해야함(지금은 테스트중이라 주석)
+                String source = URLDecoder.decode("static/goal/"+path, "UTF-8");
+//            s3Uploader.delete(source);
+            }
+        }
 
         goal.update(request);
         return goal.getGoalId();
@@ -90,6 +114,9 @@ public class GoalService {
     public Long deleteGoal(Long userId, Long goalId) {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
         validGoalUser(userId, goal.getUser().getUserId());
+        String path = goal.getImageUrl();
+//        String source = URLDecoder.decode("static/goal/"+path, "UTF-8");
+//            s3Uploader.delete(source);
         reviewRepository.deleteByGoalId(goalId);
         todoRepository.deleteByGoalId(goalId);
         goalRepository.deleteById(goalId);

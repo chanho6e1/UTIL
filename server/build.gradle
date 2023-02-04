@@ -70,7 +70,9 @@ dependencies {
 
     implementation 'com.vladmihalcea:hibernate-types-55:2.20.0'
 
-    implementation 'com.google.firebase:firebase-admin:6.8.1'
+//    implementation 'com.google.firebase:firebase-admin:6.8.1'
+
+    implementation 'com.google.firebase:firebase-admin:7.1.1'
 }
 
 tasks.named('test') {

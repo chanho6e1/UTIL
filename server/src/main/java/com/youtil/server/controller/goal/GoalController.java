@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 
 @RestController
@@ -48,7 +49,7 @@ public class GoalController {
     // input 2023-01-31T06:24:59.000Z
     @ApiOperation(value = "목표 수정", notes = "내가 작성한 목표를 수정한다.")
     @PutMapping("/{goalId}")
-    public ResponseEntity<CommonResponse> updateGoal(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId, @RequestBody @Valid GoalUpdateRequest request){
+    public ResponseEntity<CommonResponse> updateGoal(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId, @RequestBody @Valid GoalUpdateRequest request) throws UnsupportedEncodingException {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "수정 성공", goalService.updateGoal(userPrincipal.getId(), goalId, request)));
     }

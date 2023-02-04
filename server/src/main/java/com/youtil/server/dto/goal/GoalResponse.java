@@ -18,6 +18,7 @@ public class GoalResponse {
     private String startDate;
     private String endDate;
     private boolean state;
+    private String imageUrl;
 
     public GoalResponse(Goal goal){
         this.goalId = goal.getGoalId();
@@ -25,6 +26,7 @@ public class GoalResponse {
         this.startDate = goal.getStartDate();
         this.endDate = goal.getEndDate();
         this.state = goal.isState();
+        this.imageUrl = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/"+goal.getImageUrl();
     }
 
 
