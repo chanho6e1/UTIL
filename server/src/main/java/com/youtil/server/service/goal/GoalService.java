@@ -115,8 +115,11 @@ public class GoalService {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
         validGoalUser(userId, goal.getUser().getUserId());
         String path = goal.getImageUrl();
+        String baseImg = "ea6ee1e9-319e-4591-89ce-d2df2056044etor.jpg";
+        if(!path.equals(baseImg)) { // 카카오톡 기본 이미지 받아오지 않고 이처리 추가해야함(지금은 테스트중이라 주석)
 //        String source = URLDecoder.decode("static/goal/"+path, "UTF-8");
 //            s3Uploader.delete(source);
+        }
         reviewRepository.deleteByGoalId(goalId);
         todoRepository.deleteByGoalId(goalId);
         goalRepository.deleteById(goalId);
