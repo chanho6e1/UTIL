@@ -30,9 +30,14 @@ public class UserService {
 
         String baseImg = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/ab578efc-b859-4285-b32f-b1cba56fa51b122.jpg";
 
-        if(!path.equals(baseImg)) {
-            String source = URLDecoder.decode(path.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/", ""), "UTF-8");
+        if(path==null){
+            originUser.setUserProfile(baseImg);
+        }else{
+            originUser.setUserProfile(path);
+            if(!path.equals(baseImg)) { // 카카오톡 기본 이미지 받아오지 않고 이처리 추가해야함(지금은 테스트중이라 주석)
+                String source = URLDecoder.decode(path.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/", ""), "UTF-8");
 //            s3Uploader.delete(source);
+            }
         }
 
         originUser.update(request);
