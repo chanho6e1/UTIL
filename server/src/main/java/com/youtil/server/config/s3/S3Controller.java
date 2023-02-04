@@ -40,6 +40,12 @@ public class S3Controller {
         return s3Uploader.upload(multipartFile, "static/user");
     }
 
+    @ApiOperation(value = "목표 이미지 업로드", notes = "파일을 업로드하고 주소를 반환한다.")
+    @PostMapping("/goals")
+    public String uploadGoalFile(@RequestParam("file") MultipartFile multipartFile) throws IOException{
+        return s3Uploader.upload(multipartFile, "static/goal");
+    }
+
     @ApiOperation(value = "파일 삭제", notes="풀주소를 주면 해당 파일을 삭제한다")
     @DeleteMapping()
     public String deleteFile(@RequestParam("file") String path) throws UnsupportedEncodingException {
