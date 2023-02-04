@@ -10,8 +10,6 @@ export const getUserTag = (userId) => {
     },
   })
     .then((res) => {
-      console.log(res.data.status);
-      console.log("태그 조회에 성공하였습니다.");
       return res.data.data;
     })
     .catch((err) => {

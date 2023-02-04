@@ -11,8 +11,6 @@ export const postFollow = (toUserId) => {
     },
   })
     .then((res) => {
-      console.log("팔로우 성공");
-      console.log(res);
       return res.status;
     })
     .catch((err) => {
