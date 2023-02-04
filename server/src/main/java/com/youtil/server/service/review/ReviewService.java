@@ -18,7 +18,10 @@ import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +42,7 @@ public class ReviewService {
         return review.getReviewId();
     }
 
-    public List<ReviewResponse> getReviewList(Long goalId, String criteria, int offset, int size, Long userId) {
+    public List<ReviewResponse> getReviewList기존(Long goalId, String criteria, int offset, int size, Long userId) {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
 
 //        System.out.println(reviewQueryRepository.findReviewListByGoal(goalId, PageRequest.of(offset, size)).stream().map((review) -> new ReviewResponse(review)).collect(Collectors.toList()));
@@ -48,7 +51,21 @@ public class ReviewService {
 
         validGoalUser(userId, goal.getUser().getUserId()); //나의 목표가 아니다
 
-        return reviewQueryRepository.findReviewListByGoal(goalId, PageRequest.of(offset-1, size)).stream().map((review) -> new ReviewResponse(review)).collect(Collectors.toList());
+        return reviewQueryRepository.findReviewListByGoal기존(goalId, PageRequest.of(offset-1, size)).stream().map((review) -> new ReviewResponse(review)).collect(Collectors.toList());
+    }
+
+    public Map<Long, ReviewResponse> getReviewList(Long goalId, String criteria, int offset, int size, Long userId) {
+        Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
+
+        validGoalUser(userId, goal.getUser().getUserId()); //나의 목표가 아니다
+
+        Map<Long, ReviewResponse> responseMap = new LinkedHashMap<>();
+        reviewQueryRepository.findReviewListByGoal(goalId, PageRequest.of(offset-1, size), criteria).stream()
+                .map((review) -> responseMap.put(review.getReviewId(), new ReviewResponse(review))).collect(Collectors.toList());
+
+        return responseMap;
+
+
     }
 
     public ReviewResponse getReview(Long reviewId, Long userId){
