@@ -1,5 +1,6 @@
 package com.youtil.server.dto.user;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class UserUpdateRequest {
 
     @NotBlank(message = "빈문자열을 허용하지 않습니다.")
