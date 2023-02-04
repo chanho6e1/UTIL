@@ -32,7 +32,7 @@ public class UserService {
 
         if(!path.equals(baseImg)) {
             String source = URLDecoder.decode(path.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/", ""), "UTF-8");
-            s3Uploader.delete(source);
+//            s3Uploader.delete(source);
         }
 
         originUser.update(request);
