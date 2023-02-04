@@ -186,8 +186,8 @@ spring:
     oauth2.client:
       registration:
         google:
-          clientId: '913035013476-bebq70bsneh30vbjjd0ktsk0con4ofmr.apps.googleusercontent.com'
-          clientSecret: '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'
+          clientId: '564001897632-vuvck13s0fimubr1t86sslnv8smrc453.apps.googleusercontent.com'
+          clientSecret: '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'
           redirect-uri: 'https://i8d210.p.ssafy.io/api/oauth2/callback/google'
           scope:
             - email
