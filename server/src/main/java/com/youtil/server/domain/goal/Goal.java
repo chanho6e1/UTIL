@@ -30,6 +30,8 @@ public class Goal extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private String ImageUrl;
+
     @Embedded
     private final GoalOfPostList goalOfPostList = new GoalOfPostList();
 
@@ -63,4 +65,7 @@ public class Goal extends BaseEntity {
         this.state = !this.state;
     }
 
+    public void setImageUrl(String url) {
+        this.ImageUrl = url;
+    }
 }
