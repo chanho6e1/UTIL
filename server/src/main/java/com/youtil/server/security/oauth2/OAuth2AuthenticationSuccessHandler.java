@@ -8,6 +8,8 @@ import com.youtil.server.dto.user.UserResponse;
 import com.youtil.server.repository.user.UserRepository;
 import com.youtil.server.security.TokenProvider;
 import com.youtil.server.util.CookieUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -27,6 +29,8 @@ import static com.youtil.server.security.oauth2.HttpCookieOAuth2AuthorizationReq
 
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(OAuth2AuthenticationSuccessHandler.class);
 
     private TokenProvider tokenProvider;
 
@@ -131,6 +135,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
         String token = tokenProvider.createToken(authentication);
+
+        logger.info("===============success token: {}", token);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)
