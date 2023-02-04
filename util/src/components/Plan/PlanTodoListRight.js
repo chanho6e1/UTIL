@@ -61,7 +61,7 @@ const PlanTodoListRight = (props) => {
     useEffect(() => {
         setNewTodoDateValue(today)
         setNewTodoDescValue('')
-    }, [(props.newTodoIdx === props.plan.goalId)])
+    }, [(props.newTodoGoalId === props.plan.goalId)])
 
     const newTodoEl = (
         <React.Fragment>
@@ -74,7 +74,7 @@ const PlanTodoListRight = (props) => {
     const newTodo = (
         <div className={styles['new-todo-wrapper']} style={{width: `${props.containerRef?.current?.scrollWidth}px`}}>
             <div className={styles['todo-space']} >
-                {(props.newTodoIdx === props.plan.goalId) ? newTodoEl : null}
+                {(props.newTodoGoalId === props.plan.goalId) ? newTodoEl : null}
             </div>
         </div>
     )

@@ -9,13 +9,15 @@ import { uploadPost } from '../../api/Post/uploadPost';
 import { uploadReview } from '../../api/Post/uploadReview';
 import { useNavigate, useMatch, useLocation, Routes, Route, useSearchParams } from "react-router-dom";
 import { recvPlanAPI } from '../../api/Plan/recvPlanAPI';
+import { chkPlanAPI } from '../../api/Plan/chkPlanAPI';
+import useDidMountEffect from '../../hooks/useDidMountEffect';
 
 // Toast 에디터
 import { Editor } from '@toast-ui/react-editor';
 import './ToastEditor.css';
 import styles from './ToastEditor.module.css'
 import { uploadPhoto } from '../../api/Post/uploadPhoto';
-
+import complete from "../../img/Complete.png"
 
 
 import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
@@ -48,6 +50,8 @@ export default function ToastEditor(props) {
   const navigate = useNavigate()
 
 
+
+
   useEffect(() => {
     const goalId = searchParams.get('goal_id')
     const takeStep = searchParams.get('step')
@@ -58,7 +62,10 @@ export default function ToastEditor(props) {
         setQueryString((prev) => {return {...prev, goal:res, takeStep, askDone}})
       })
     }
-  }, [])
+
+  })
+
+  
 
 
 
@@ -73,8 +80,7 @@ export default function ToastEditor(props) {
     }, {skill: tags})
     .then((res) => {
       if (queryString.takeStep) {
-        navigate(`/create/review?goal_id=${queryString.goal.goalId}${queryString.askDone ? '&ask_done=true' : ''}`);
-        window.location.reload()
+        navigate(`/create/review?goal_id=${queryString.goal.goalId}${queryString.askDone ? '&ask_done=true' : ''}`, { replace: true });
       } else {
         navigate('/index', { replace: true });
       }
@@ -92,7 +98,21 @@ export default function ToastEditor(props) {
     })
     .then((res) => {
       if (queryString.askDone) {
-        
+        chkPlanAPI(queryString.goal.goalId,true)
+        .then((res) => {
+          setDoneNotiState(true)
+          
+        })
+        .then((res) => {
+          setTimeout(function() {
+            navigate('/index', { replace: true });
+            
+          }, 1000);
+          
+
+          
+        })
+
       } else {
         navigate('/index', { replace: true });
       }
@@ -136,13 +156,23 @@ export default function ToastEditor(props) {
 
   const [alertText, setAlertText] = useState()
   const [alertNotiState, setAlertNotiState] = useState(false)
+  const [doneNotiState, setDoneNotiState] = useState(false)
 
   const alert = (
     <div style={{display:'flex', justifyContent:'space-evenly', alignItems:'center'}}>
       <img style={{width:'40px', height:'40px', marginRight:'12px'}} src={warning} />
       <div>
         <p style={{lineHeight: '40%'}}>{alertText}</p>
-        {/* <p style={{lineHeight: '40%'}}>날짜 범위를 미만 & 초과할 수 없습니다.</p> */}
+      </div>
+    </div>
+  )
+
+  const message1 = (
+    <div style={{display:'flex', justifyContent:'space-evenly', alignItems:'center'}}>
+      <img style={{width:'40px', height:'40px', marginRight:'12px'}} src={complete} />
+      <div>
+        <p style={{lineHeight: '40%'}}>축하드립니다!</p>
+        <p style={{lineHeight: '40%'}}>목표를 완료하였습니다!</p>
       </div>
     </div>
   )
@@ -161,8 +191,12 @@ export default function ToastEditor(props) {
     
   )
 
+
+
   return (
-    <div className={styles['editor-wrapper']}>
+
+    <div className={styles['editor-wrapper']} onClick={() => console.log(editorRef.current)}>
+      {doneNotiState && <NotiDeliverer content={message1} stateHandler={setDoneNotiState} duration={5000} width={350} height={100} />}
       {alertNotiState && <NotiDeliverer content={alert} stateHandler={setAlertNotiState} duration={5000} width={350} height={100} />}
       <FixedModal queryString={queryString} modalState={modalState} stateHandler={setModalState} content={<BlogPostForm postSubmitHandler={postSubmitHandler} reviewSubmitHandler={reviewSubmitHandler} forReview={props.forReview} />} noBtn={true} width={400} height={170} />
       <div className={styles['additional-info-wrapper']}>

@@ -16,14 +16,19 @@ import StackNotification from './components/UI/StackNotification/StackNotificati
 import ToastEditor from './components/MarkdownEditor/ToastEditor';
 // import OAuth2RedirectHandler from './components/UserAuth/OAuth/OAuth2RedirectHandler';
 
+import { modifyPlanSliceActions } from './redux/planSlice';
+import { recvIngPlanAPI } from './api/Plan/recvIngPlanAPI';
+
 
 
 
 
 const App = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const { pathname } = useLocation();
   const wrapRef = useRef(null);
+  const plans = useSelector(state => state.planSlice.plans)
 
   const movePage = (url) =>{
     if(pathname !== `/${url}` ){
@@ -40,18 +45,11 @@ const App = () => {
     movePage(pathname)
   }, [pathname])
 
-
-
-
-
-
-
-
   useEffect(() => {
     loadCurrentlyLoggedInUser()
   })
 
-  const dispatch = useDispatch()
+  
 
   const loadCurrentlyLoggedInUser = () => {
     getCurrentUser()
@@ -64,11 +62,18 @@ const App = () => {
     });    
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem(ACCESS_TOKEN);
-    dispatch(userAuthSliceActions.changeAuthenticated('false'))
-    dispatch(userAuthSliceActions.changeCurrentUser(null))
-  }
+
+  useEffect(() => {
+    recvIngPlanAPI()
+      .catch((err) => {
+          navigate('/login');
+      })
+      .then((res) => {
+          dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+      })
+  }, [])
+
+
 
   return (
     <div className="App" id="overlay-root">
@@ -77,12 +82,12 @@ const App = () => {
       <div ref={wrapRef} className="wrap loaded">
 
         <Routes>
-          <Route path="/*" element={<Main />} />
+          <Route path="/*" element={plans && <Main />} />
           <Route path="/login" element={<SocialLogin />} />
           <Route path="/oauth2/redirect" element={<OAuthRedirectHandler />} /> 
           <Route path="/create" >
-            <Route path="review" element={<ToastEditor forReview={true} />} />
-            <Route path="post" element={<ToastEditor />} />
+            <Route path="review" element={<ToastEditor key={'review'} forReview={true}/>} />
+            <Route path="post" element={<ToastEditor key={'post'} />} />
           </ Route>
         </Routes>
       </div>
