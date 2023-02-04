@@ -56,7 +56,7 @@ public class TodoController {
     @DeleteMapping("/{todoId}")
     public ResponseEntity<CommonResponse> deleteTodo(@PathVariable Long todoId) {
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.NO_CONTENT, "카테고리 삭제 성공", todoService.deleteTodo(todoId)));
+                HttpStatus.NO_CONTENT, "투두 삭제 성공", todoService.deleteTodo(todoId)));
     }
 
     @ApiOperation(value = "목표별 투두 조회", notes = "목표별 투두를 조회한다")
@@ -75,9 +75,9 @@ public class TodoController {
     }
     @ApiOperation(value = "날짜별 투두 조회", notes = "날짜별 투두를 조회한다")
     @GetMapping("/today/{dueDate}")
-    public ResponseEntity<CommonResponse> getTodoByGoal(@PathVariable String dueDate){
+    public ResponseEntity<CommonResponse> getTodoByGoal(@CurrentUser UserPrincipal userPrincipal, @PathVariable String dueDate){
         return ResponseEntity.ok().body(CommonResponse.of(
-                HttpStatus.OK, "날짜별 투두 조회 성공", todoService.getTodoByDate(dueDate)));
+                HttpStatus.OK, "날짜별 투두 조회 성공", todoService.getTodoByDate(userPrincipal.getId(), dueDate)));
     }
 
     @ApiOperation(value = "전체 목표별 투두 최소, 최고 날짜 조회", notes = "사용자의 전체 목표에서 최소, 최고 날짜를 조회한다.")
