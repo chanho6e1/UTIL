@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.CookieTheftException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -82,18 +83,22 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 //        response.setHeader();
 
 //        writer.print(json); //json화
-
+        String code = "";
         if(user.getNickname() != null){
             response.setStatus(200);
             response.setHeader("code", "200");
             targetUrl += "&code=200";
+            code = "200";
         }else{
             response.setStatus(201); //회원가입
             response.setHeader("code", "201");
             targetUrl += "&code=201";
+            code = "201";
         }
 
         clearAuthenticationAttributes(request, response);
+        Cookie cookie = new Cookie("code", code);
+        response.addCookie(cookie);
 
 //        targetUrl = "http://localhost:3000";
         System.out.println(response.getHeader("code"));
@@ -138,10 +143,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         logger.info("===============success token: {}", token);
 
+        Cookie cookie = new Cookie("accessToken", targetUrl);
+        response.addCookie(cookie);
+
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)
                 .build().toUriString();
-//        return UriComponentsBuilder.fromUriString(targetUrl).toUriString();
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
