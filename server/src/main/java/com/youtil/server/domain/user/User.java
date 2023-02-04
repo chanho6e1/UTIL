@@ -88,7 +88,7 @@ public class User extends BaseEntity {
 
     public User update(UserUpdateRequest user){
         this.nickName = user.getNickName();
-        this.imageUrl = user.getImageUrl();
+//        this.imageUrl = user.getImageUrl();
         this.department = user.getDepartment();
         this.discription = user.getDiscription();
 
@@ -102,5 +102,8 @@ public class User extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
+    public void setUserProfile(String baseImg) {
+        this.imageUrl = baseImg;
+    }
 }
 
