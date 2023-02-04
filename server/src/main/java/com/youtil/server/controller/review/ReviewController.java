@@ -31,17 +31,30 @@ public class ReviewController {
     }
 
     //pagenation 구현하기
-    @ApiOperation(value = "회고록 리스트 조회", notes = "목표에 해당하는 회고록 리스트를 반환한다.")
+    @ApiOperation(value = "회고록 리스트 조회(기존), 예전거부터 정렬", notes = "목표에 해당하는 회고록 리스트를 반환한다.")
     @GetMapping("/{goalId}/goals")
-    public ResponseEntity<CommonResponse> getReviewList(@PathVariable Long goalId,
+    public ResponseEntity<CommonResponse> getReviewList기존(@PathVariable Long goalId,
                                                         @RequestParam(required=false, defaultValue = "date") String criteria,
                                                         @RequestParam(required=false, defaultValue = "1") int offset,
                                                         @RequestParam(value = "size", required = false, defaultValue = "10") int size,
                                                         @CurrentUser UserPrincipal user
                                                         ){
         return ResponseEntity.ok().body(CommonResponse.of(
-           HttpStatus.OK, "회고록 조회 성공", reviewService.getReviewList(goalId, criteria, offset, size, user.getId())));
+           HttpStatus.OK, "회고록 조회 성공", reviewService.getReviewList기존(goalId, criteria, offset, size, user.getId())));
     }
+
+    @ApiOperation(value = "최신 날짜(new)/예전 날짜(old, 디폴트) 기준으로 회고록 리스트 조회(맵형식)", notes = "목표에 해당하는 회고록 리스트를 반환한다.")
+    @GetMapping("/{goalId}/goals/test")
+    public ResponseEntity<CommonResponse> getReviewList(@PathVariable Long goalId,
+                                                        @RequestParam(required=false, defaultValue = "old") String criteria,
+                                                        @RequestParam(required=false, defaultValue = "1") int offset,
+                                                        @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+                                                        @CurrentUser UserPrincipal user
+    ){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "회고록 조회 성공", reviewService.getReviewList(goalId, criteria, offset, size, user.getId())));
+    }
+
 
     @ApiOperation(value = "회고록 상세 조회", notes = "회고록 상세 정보를 반환한다.")
     @GetMapping("/{reviewId}")

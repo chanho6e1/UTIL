@@ -69,6 +69,8 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.11.3'
 
     implementation 'com.vladmihalcea:hibernate-types-55:2.20.0'
+
+    implementation 'com.google.firebase:firebase-admin:6.8.1'
 }
 
 tasks.named('test') {
