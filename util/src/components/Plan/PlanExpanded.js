@@ -48,15 +48,15 @@ const PlanExpanded = (props) => {
     })
   }, [])
 
-  useEffect(() => {
-    recvIngPlanAPI()
-      .catch((err) => {
-          navigate('/login');
-      })
-      .then((res) => {
-          dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
-      })
-  }, [])
+  // useEffect(() => {
+  //   recvIngPlanAPI()
+  //     .catch((err) => {
+  //         navigate('/login');
+  //     })
+  //     .then((res) => {
+  //         dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+  //     })
+  // }, [])
 
   const plans = useSelector(state => state.planSlice.plans)
 

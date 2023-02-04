@@ -27,15 +27,15 @@ const Plan = (props) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    useEffect(() => {
-        recvIngPlanAPI()
-        .catch((err) => {
-            navigate('/login');
-        })
-        .then((res) => {
-            dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
-        })
-    }, [])
+    // useEffect(() => {
+    //     recvIngPlanAPI()
+    //     .catch((err) => {
+    //         navigate('/login');
+    //     })
+    //     .then((res) => {
+    //         dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+    //     })
+    // }, [])
 
 
     const plans = useSelector(state => state.planSlice.plans)
@@ -62,12 +62,12 @@ const Plan = (props) => {
         if (copyArr[idx] === false) {
             recvTodosAPI(goalId)
             .then((res) => {
-                const proccessing = {
+                const processing = {
                     goalId: goalId,
                     data: res
                 }
                 
-                dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
+                dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
                 
             })
             .then((res) => {
@@ -96,9 +96,9 @@ const Plan = (props) => {
     }
 
 
-    const [newTodoIdx, setNewTodoIdx] = useState()
+    const [newTodoGoalId, setNewTodoGoalId] = useState()
     const getNewTodoIdx = (received) => {
-        setNewTodoIdx(received)
+        setNewTodoGoalId(received)
     }
 
     const [inputTodoData, setInputTodoData] = useState({
@@ -143,14 +143,14 @@ const Plan = (props) => {
             return
         }
 
-        newTodoAPI(newTodoIdx, inputTodoData)
+        newTodoAPI(newTodoGoalId, inputTodoData)
         .then((res) => {
             const proccessing = {
-                goalId: newTodoIdx,
+                goalId: newTodoGoalId,
                 data: res
             }
             dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
-            setNewTodoIdx(-1)
+            setNewTodoGoalId(-1)
             setInputTodoData({
                 title: "",
                 dueDate: "",
@@ -161,10 +161,10 @@ const Plan = (props) => {
         })
         .then((res) => {
             
-            recvTodoPeriodAPI(newTodoIdx)
+            recvTodoPeriodAPI(newTodoGoalId)
             .then((res) => {
                 const processing = {
-                    goalId: newTodoIdx,
+                    goalId: newTodoGoalId,
                     data: res
                 }
                 console.log(res)
@@ -205,9 +205,9 @@ const Plan = (props) => {
             //             </svg>
             //         </div>
             //     </div>
-            //     {todoFormVisibility[idx] && <PlanTodoListLeft goalId={plans[idx].goalId} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoIdx={newTodoIdx} />}
+            //     {todoFormVisibility[idx] && <PlanTodoListLeft goalId={plans[idx].goalId} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoGoalId={newTodoGoalId} />}
             // </React.Fragment>
-            <PlanItem plans={plans} plan={plans[el]} idx={idx} key={`month-title-bar-${idx}`} applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} todoFormToggleHandler={todoFormToggleHandler} todoFormVisibility={todoFormVisibility} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoIdx={newTodoIdx}/>
+            <PlanItem plans={plans} plan={plans[el]} idx={idx} key={`month-title-bar-${idx}`} applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} todoFormToggleHandler={todoFormToggleHandler} todoFormVisibility={todoFormVisibility} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoGoalId={newTodoGoalId}/>
         )
     })
 
@@ -264,7 +264,7 @@ const Plan = (props) => {
         </div>
     )
     
-    const planCalender = <PlanCalendar applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} todoFormVisibility={todoFormVisibility} todos={todos} newTodoIdx={newTodoIdx} />
+    const planCalender = <PlanCalendar applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} todoFormVisibility={todoFormVisibility} todos={todos} newTodoGoalId={newTodoGoalId} />
     
 
     const errorMessage = (
@@ -282,7 +282,7 @@ const Plan = (props) => {
 
 
     return (
-        <div className={styles['plans-wrapper']}>
+        <div className={styles['plans-wrapper']} onMouseMove={console.log(todos)}>
             {notiState && <NotiDeliverer content={errorMessage} stateHandler={setNotiState} duration={5000} width={400} />}
             <div className={styles['plans-title-wrapper']} > 
                 <div className={styles['plan-title-bar-space']} />

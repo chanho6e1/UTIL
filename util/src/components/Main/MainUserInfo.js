@@ -85,7 +85,7 @@ export const UserDockWrapper = (props) => {
 
   const dropDownItems = {
     label: ['로그아웃', '마이프로필'],
-    description: ['현재 로그인된 계정에서 로그아웃합니다.', '마이프로필로 이동합니다.'],
+
     function: [handleLogout, null],
   }
 

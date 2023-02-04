@@ -54,7 +54,7 @@ const PlanTodoListLeft = (props) => {
 
     useEffect(() => {
         setNewTodoTitleValue('')
-    }, [(props.newTodoIdx === props.plan.goalId) && newTodo])
+    }, [(props.newTodoGoalId === props.plan.goalId) && newTodo])
 
 
     const plusImg = (
@@ -65,7 +65,7 @@ const PlanTodoListLeft = (props) => {
 
     const newTodoDummy = (
         <div onClick={newTodoClickShow} className={styles['new-todo-wrapper']}>
-            {(props.newTodoIdx === props.plan.goalId) && newTodo ? <input type="text" value={newTodoTitleValue} onKeyPress={onEnterNewPlanHandler} onChange={newTodoInputHandler} onBlur={newTodoClickHide} placeholder="일정을 입력해 주세요." autoFocus className={styles['new-todo-input']} /> : <div className={styles['new-todo']}>{plusImg} TODO 작성</div> }
+            {(props.newTodoGoalId === props.plan.goalId) && newTodo ? <input type="text" value={newTodoTitleValue} onKeyPress={onEnterNewPlanHandler} onChange={newTodoInputHandler} onBlur={newTodoClickHide} placeholder="일정을 입력해 주세요." autoFocus className={styles['new-todo-input']} /> : <div className={styles['new-todo']}>{plusImg} TODO 작성</div> }
         </div>
     )
 
