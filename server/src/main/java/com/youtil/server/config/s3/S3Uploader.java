@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,11 +41,12 @@ public class S3Uploader {
         return upload(uploadFile, dirName);
     }
 
-    private String upload(File uploadFile, String dirName){
+    private String upload(File uploadFile, String dirName) {
 
         String name = uploadFile.getName().substring(uploadFile.getName().length()-7);
         String fileName = dirName+"/"+ UUID.randomUUID()+ name;
         String uploadImageUrl = puts3(uploadFile, fileName);
+
         removeNewFile(uploadFile); //임시 파일 삭제
         return uploadImageUrl;
     }
