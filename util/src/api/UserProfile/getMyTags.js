@@ -1,10 +1,10 @@
 import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
-export const getPosts = () => {
+export const getMyTags = () => {
   return axios({
     method: "get",
-    url: `${API_BASE_URL}/posts/lists`,
+    url: `${API_BASE_URL}/tags/likes`,
     headers: {
       Authorization: TOKEN(),
     },
@@ -15,6 +15,6 @@ export const getPosts = () => {
     .catch((err) => {
       console.log(err);
       console.log(TOKEN());
-      console.log("게시물 목록 조회에 실패하였습니다.");
+      console.log("나의 태그 조회에 실패하였습니다.");
     });
 };

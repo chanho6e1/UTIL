@@ -1,20 +1,23 @@
 import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
-export const getPosts = () => {
+export const deleteFollow = (toUserId) => {
+  console.log("unfollow", toUserId);
   return axios({
-    method: "get",
-    url: `${API_BASE_URL}/posts/lists`,
+    method: "delete",
+    url: `${API_BASE_URL}/follows/${toUserId}`,
     headers: {
       Authorization: TOKEN(),
     },
   })
     .then((res) => {
-      return res.data.data;
+      return res.status;
     })
     .catch((err) => {
       console.log(err);
       console.log(TOKEN());
-      console.log("게시물 목록 조회에 실패하였습니다.");
+      console.log("언팔로우 실패");
     });
 };
+
+// /api/follows/{toUserId}

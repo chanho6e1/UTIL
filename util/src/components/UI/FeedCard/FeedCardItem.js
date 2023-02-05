@@ -5,8 +5,7 @@ import bookmarkIconFlat from "../../../img/BookmarkIconFlat.svg";
 import bookmarkIconFill from "../../../img/BookmarkIconFill.svg";
 import likeIconFlat from "../../../img/LikeIconFlat.svg";
 import likeIconFill from "../../../img/LikeIconFill.svg";
-import PhotoCameraIcon from "../../../img/photoCameraIcon.png";
-import { useNavigate } from "react-router";
+import PhotoCameraIcon from "../../../img/photoCameraIcon_gray.png";
 import { putLikeToggle } from "../../../api/Post/putLikeToggle";
 import { putBookmarkToggle } from "../../../api/Post/putBookmarkToggle";
 
@@ -58,15 +57,26 @@ const FeedCardItem = (props) => {
     });
   };
 
+  const nicknameClickHandler = () => {
+    // 닉네임 클릭 시 유저 페이지로 이동
+    console.log(props.id);
+  };
+
+  const postClickHandler = () => {
+    console.log("post click");
+  };
+
   return (
     <li>
       <div className={classes.feedcarditem}>
-        <div className={classes[`feedcard-image`]}>
+        <div className={classes[`feedcard-image`]} onClick={postClickHandler}>
           <img src={props.thumbnail} onError={imgErrorHandler} />
         </div>
         <div className={classes[`feedcard-text-contents`]}>
-          <div className={classes.title}>{props.title}</div>
-          <div className={classes.contents}>{props.contents}</div>
+          <div className={classes[`text-contents`]} onClick={postClickHandler}>
+            <div className={classes.title}>{props.title}</div>
+            <div className={classes.contents}>{props.contents}</div>
+          </div>
           <div className={classes[`icons-div`]}>
             <IconButton
               onClick={bookmarkClickHandler}
@@ -97,7 +107,7 @@ const FeedCardItem = (props) => {
           </div>
         </div>
         <div className={classes["feedcard-lower-contents"]}>
-          <div className={classes[`profile-img-nickname`]}>
+          <div className={classes[`profile-img-nickname`]} onClick={nicknameClickHandler}>
             <ThemeProvider theme={avatarTheme}>
               <Avatar
                 src={props.profileImg}

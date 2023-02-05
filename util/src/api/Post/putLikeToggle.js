@@ -2,6 +2,7 @@ import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
 export const putLikeToggle = (postId) => {
+  console.log("likeToggle", postId);
   return axios({
     method: "put",
     url: `${API_BASE_URL}/posts/${postId}/likes`,
@@ -10,8 +11,6 @@ export const putLikeToggle = (postId) => {
     },
   })
     .then((res) => {
-      console.log(res);
-      console.log("좋아요 성공");
       return res.status;
     })
     .catch((err) => {
