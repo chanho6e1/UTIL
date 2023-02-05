@@ -1,19 +1,17 @@
 package com.youtil.server.service.goal;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.config.s3.S3Uploader;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.goal.*;
-import com.youtil.server.dto.post.PostResponse;
 import com.youtil.server.repository.goal.GoalQueryRepository;
 import com.youtil.server.repository.goal.GoalRepository;
 import com.youtil.server.repository.review.ReviewRepository;
 import com.youtil.server.repository.todo.TodoRepository;
 import com.youtil.server.repository.user.UserRepository;
-import com.youtil.server.security.UserPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -22,11 +20,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,13 +40,14 @@ public class GoalService {
     @Autowired
     private final S3Uploader s3Uploader;
 
+    private final String baseImg = "f18b354f-b630-4025-98f7-a7ed74f7ba40ogo.png";
+
     @Transactional
     public Long createGoal(Long userId, GoalSaveRequest request){
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Goal goal = null;
 
         String[] arr = request.getStartDate().split("T");
-//        System.out.println(arr[0]);
         request.setStartDate(arr[0]);
         arr = request.getEndDate().split("T");
         request.setEndDate(arr[0]);
@@ -65,10 +59,7 @@ public class GoalService {
             path = request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/","");
         }
 
-        String baseImg = "f18b354f-b630-4025-98f7-a7ed74f7ba40ogo.png";
-
         if(path==null){
-//            System.out.println(baseImg);
             goal.setImageUrl(baseImg);
         }else{
             goal.setImageUrl(path);
@@ -85,7 +76,6 @@ public class GoalService {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
         validGoalUser(userId, goal.getUser().getUserId());
-//        goalRepository.findGoalByGoalAndUserId(user, goalId).orElseThrow(() -> new ResourceNotFoundException("본인 목표가 아닙니다."));
 
         return new GoalResponse(goal);
     }
@@ -103,19 +93,14 @@ public class GoalService {
             path = request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/","");
         }
 
-        String baseImg = "f18b354f-b630-4025-98f7-a7ed74f7ba40ogo.png";
         String originImg = goal.getImageUrl();
 
         if(path==null){
             goal.setImageUrl(baseImg);
         }else{
             goal.setImageUrl(path);
-            if(!originImg.equals(baseImg)) {
-                String source = URLDecoder.decode("static/goal/"+path, "UTF-8");
-                s3Uploader.delete(source);
-            }
-        }
-
+            deleteS3Image(originImg, baseImg);
+       }
         goal.update(request);
         return goal.getGoalId();
     }
@@ -125,15 +110,24 @@ public class GoalService {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
         validGoalUser(userId, goal.getUser().getUserId());
         String path = goal.getImageUrl();
-        String baseImg = "f18b354f-b630-4025-98f7-a7ed74f7ba40ogo.png";
-        if(!path.equals(baseImg)) { // 카카오톡 기본 이미지 받아오지 않고 이처리 추가해야함(지금은 테스트중이라 주석)
-            String source = URLDecoder.decode("static/goal/"+path, "UTF-8");
-            s3Uploader.delete(source);
-        }
+        
+        deleteS3Image(path, baseImg);
         reviewRepository.deleteByGoalId(goalId);
         todoRepository.deleteByGoalId(goalId);
         goalRepository.deleteById(goalId);
         return goalId;
+    }
+
+    private void deleteS3Image(String path, String baseImg) throws UnsupportedEncodingException {
+
+        if(!path.equals(baseImg)) {
+            String source = URLDecoder.decode("static/goal/" + path, "UTF-8");
+            try {
+                s3Uploader.delete(source);
+            } catch (AmazonS3Exception e) {
+                throw new ResourceNotFoundException("삭제할 파일이 서버에 존재하지 않습니다");
+            }
+        }
     }
 
     public GoalPeriodResponse getGoalPeriod(Long userId) {
