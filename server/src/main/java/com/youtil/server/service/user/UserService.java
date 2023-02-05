@@ -19,7 +19,10 @@ public class UserService {
     private final S3Uploader s3Uploader;
 
     public UserResponse getCurrentUser(Long userId) {
-        return UserResponse.from(userRepository.findByUserId(userId));
+        UserResponse user = UserResponse.from(userRepository.findByUserId(userId));
+        String ImgUrl = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/" + user.getImageUrl();
+        user.setImageUrl(ImgUrl);
+        return user;
     }
     @Transactional
     public Long updateUser(Long userId, UserUpdateRequest request) throws UnsupportedEncodingException {
@@ -28,7 +31,7 @@ public class UserService {
         String path = originUser.getImageUrl();
         deleteImg(path);
 
-        String baseImg = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/ab578efc-b859-4285-b32f-b1cba56fa51b122.jpg";
+        String baseImg = "3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg";
 
         if(path==null){
             originUser.setUserProfile(baseImg.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/",""));
@@ -39,6 +42,9 @@ public class UserService {
 //            s3Uploader.delete(source);
             }
         }
+
+        String newImg = URLDecoder.decode(request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/", ""), "UTF-8");
+        request.setImageUrl(newImg);
 
         originUser.update(request);
         return userId;
