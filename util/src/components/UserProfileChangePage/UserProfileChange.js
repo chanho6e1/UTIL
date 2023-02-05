@@ -4,6 +4,7 @@ import UserProfileChangeCard from "../UI/UserProfileChangeCard/UserProfileChange
 import { getMyData } from "../../api/UserProfile/getMyData";
 import { getMyTags } from "../../api/UserProfile/getMyTags";
 import defautUserProfilePic from "../../img/defaultUserProfilePic.svg";
+import { postUserProfilePicUpload } from "../../api/UserProfile/postUserProfilePicUpload";
 
 const UserProfileChange = (props) => {
   const [userData, setUserData] = useState("");
@@ -16,38 +17,19 @@ const UserProfileChange = (props) => {
     });
   }, []);
 
-  const submitUserProfileHandler = (userData) => {
-    console.log("submithandler", userData);
+  const submitUserProfileHandler = (newUserData) => {
+    console.log("submithandler", newUserData);
     // 프사 업로드 axios
+    if (newUserData.uploadImage !== null) {
+      const formData = new FormData();
+      formData.append("files", newUserData.uploadImage);
+      postUserProfilePicUpload(formData).then((res) => {
+        console.log("res", res);
+      });
+    } else {
+      console.log("same");
+    }
   };
-
-  // {
-  //   "status": 200,
-  //   "message": "유저 정보 조회 성공",
-  //   "data": {
-  //     "userId": 4,
-  //     "nickname": "kihunSONG",
-  //     "email": "kihunbuzz@naver.com",
-  //     "userName": "송기훈",
-  //     "imageUrl": "http://k.kakaocdn.net/dn/buIL20/btrWzWtdtbm/ZDcQAE4bkLbBGFXOflr63k/img_110x110.jpg",
-  //     "department": "string",
-  //   }
-  // }
-
-  // {
-  //   "status": 200,
-  //   "message": "나의 관심 테그 조회 성공",
-  //   "data": [
-  //     {
-  //       "tagId": 10,
-  //       "tagName": "aa"
-  //     },
-  //     {
-  //       "tagId": 11,
-  //       "tagName": "bb"
-  //     }
-  //   ]
-  // }
 
   return (
     <div>
