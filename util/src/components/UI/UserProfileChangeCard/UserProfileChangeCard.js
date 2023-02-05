@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import classes from "./UserProfileChangeCard.module.css";
 import { Avatar, Button, TextField, FormControl, IconButton } from "@mui/material";
 import AutoCompleteMultipleTagInput from "../Tag/AutoCompleteMultipleTagInput";
-import PhotoCameraIcon from "../../../img/photoCameraIcon.png";
+import PhotoCameraIconCircle from "../../../img/photoCameraIcon_circle.png";
 import { nicknameDuplicateCheck } from "../../../api/UserProfile/nicknameDuplicateCheck";
 import { getAllTags } from "../../../api/UserProfile/getAllTags";
 
@@ -106,7 +106,7 @@ const UserProfileChangeCard = (props) => {
     return () => {
       clearTimeout(identifier);
     };
-  }, [nickname, nicknameIsDuplicated, nicknameIsOverTenChars, nicknameIsUnderTwoChars]);
+  }, [nickname, nicknameIsDuplicated, nicknameIsOverTenChars, nicknameIsUnderTwoChars, myTagList]);
 
   const descriptionOnChangeHandler = (event) => {
     setDescription(event.target.value);
@@ -176,7 +176,7 @@ const UserProfileChangeCard = (props) => {
             sx={{ width: 100, height: 100 }}
             className={classes[`avatar-img`]}
           />
-          {isHover && <img src={PhotoCameraIcon} className={classes.camera} />}
+          {isHover && <img src={PhotoCameraIconCircle} className={classes.camera} />}
           <input
             style={{ display: "none" }}
             type="file"
