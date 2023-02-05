@@ -54,7 +54,7 @@ const PlanCalendar = (props) => {
   const [monthRange, setMonthRange] = useState(Array(monthDistance).fill().map((arr, idx) => {
     return new Date(props.startRange.getFullYear(), props.startRange.getMonth() + idx + 1, 0)
   }))
-  const planGridRef = Array(plans.length).fill(useRef([]), 0, plans.length)
+  const planGridRef = Array(Object.keys(plans).length).fill(useRef([]), 0, Object.keys(plans).length)
   const containerRef = useRef()
   const [xPointLib, setXPointLib] = useState({})
 
@@ -138,16 +138,16 @@ const PlanCalendar = (props) => {
 
 
   // 목표의 개수에 따른 열 반복
-  const totalPlansGrid = plans.map((el, idx) => {
+  const totalPlansGrid = Object.keys(plans).map((el, idx) => {
     const columns = gridPerPlans(idx)
     return (
-      <React.Fragment key={`month-bar-container-${el.goalId}`}>
+      <React.Fragment key={`month-bar-container-${plans[el].goalId}`}>
         <div ref={containerRef} className={styles['month-bar-container']} >
           {columns}
-          <PlanCalendarDateSelector idx={idx} el={el} todos={props.todos} startDate={el.startDate} endDate={el.endDate} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
+          <PlanCalendarDateSelector idx={idx} plan={plans[el]} todos={props.todos} planGridRef={planGridRef} xPointLib={xPointLib} monthRange={monthRange} gridStart={props.startRange} gridEnd={props.endRange} extendStartRange={props.extendStartRange} extendEndRange={props.extendEndRange} />
           
         </div>
-        {props.todoFormVisibility[idx] && <PlanTodoListRight applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} goalId={plans[idx].goalId} todos={props.todos} scrollRef={scrollRef} containerRef={containerRef} newTodoIdx={props.newTodoIdx} />}
+        {props.todoFormVisibility[idx] && <PlanTodoListRight applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} plan={plans[el]} todos={props.todos} scrollRef={scrollRef} containerRef={containerRef} newTodoGoalId={props.newTodoGoalId} />}
       </React.Fragment>
     )
   })

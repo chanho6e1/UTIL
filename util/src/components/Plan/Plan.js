@@ -17,20 +17,25 @@ import { newTodoAPI } from "../../api/Plan/newTodoAPI";
 import { recvTodosAPI } from "../../api/Plan/recvTodosAPI";
 import { editTodoAPI } from "../../api/Plan/editTodoAPI";
 import { recvTotalPeriodAPI } from "../../api/Plan/recvPlansPeriodAPI";
+import { recvTodoPeriodAPI } from "../../api/Plan/recvTodoPeriodAPI";
+
+import warning from "../../img/Warning.png"
+import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
+import { recvIngPlanAPI } from "../../api/Plan/recvIngPlanAPI";
 
 const Plan = (props) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    useEffect(() => {
-        recvPlansAPI()
-        .catch((err) => {
-            navigate('/login');
-        })
-        .then((res) => {
-            dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
-        })
-    }, [])
+    // useEffect(() => {
+    //     recvIngPlanAPI()
+    //     .catch((err) => {
+    //         navigate('/login');
+    //     })
+    //     .then((res) => {
+    //         dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+    //     })
+    // }, [])
 
 
     const plans = useSelector(state => state.planSlice.plans)
@@ -57,12 +62,12 @@ const Plan = (props) => {
         if (copyArr[idx] === false) {
             recvTodosAPI(goalId)
             .then((res) => {
-                const proccessing = {
+                const processing = {
                     goalId: goalId,
                     data: res
                 }
                 
-                dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
+                dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
                 
             })
             .then((res) => {
@@ -91,9 +96,9 @@ const Plan = (props) => {
     }
 
 
-    const [newTodoIdx, setNewTodoIdx] = useState()
+    const [newTodoGoalId, setNewTodoGoalId] = useState()
     const getNewTodoIdx = (received) => {
-        setNewTodoIdx(received)
+        setNewTodoGoalId(received)
     }
 
     const [inputTodoData, setInputTodoData] = useState({
@@ -138,14 +143,14 @@ const Plan = (props) => {
             return
         }
 
-        newTodoAPI(newTodoIdx, inputTodoData)
+        newTodoAPI(newTodoGoalId, inputTodoData)
         .then((res) => {
             const proccessing = {
-                goalId: newTodoIdx,
+                goalId: newTodoGoalId,
                 data: res
             }
             dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
-            setNewTodoIdx(-1)
+            setNewTodoGoalId(-1)
             setInputTodoData({
                 title: "",
                 dueDate: "",
@@ -154,6 +159,30 @@ const Plan = (props) => {
                 goalId: null,
             })
         })
+        .then((res) => {
+            
+            recvTodoPeriodAPI(newTodoGoalId)
+            .then((res) => {
+                const processing = {
+                    goalId: newTodoGoalId,
+                    data: res
+                }
+                console.log(res)
+                dispatch(modifyPlanSliceActions.responseTodoPeriod(JSON.stringify(processing)))
+            })
+            .catch((err) => {
+                console.log('Plan : recvTodoPeriodAPI => ', err)
+            })
+
+        })
+        .catch((err) => {
+            console.log('Plan : newTodoAPI => ', err)
+
+            if (err.response.data.message == "todo 날짜가 목표 범위 벗어남") {
+                setNotiState(true)
+            }
+            
+        })
 
 
     
@@ -161,7 +190,7 @@ const Plan = (props) => {
     }
     
 
-    const planTitleGrid = plans.map((el, idx) => {
+    const planTitleGrid = Object.keys(plans).map((el, idx) => {
         return (
             // <React.Fragment>
             //     <div  id={`${plans[idx].goalId}`} className={`${styles['plan-title-bar']} ${idx % 2 ? styles['title-odd'] : styles['title-even']}`} key={`month-title-bar-${idx}`}>
@@ -176,9 +205,9 @@ const Plan = (props) => {
             //             </svg>
             //         </div>
             //     </div>
-            //     {todoFormVisibility[idx] && <PlanTodoListLeft goalId={plans[idx].goalId} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoIdx={newTodoIdx} />}
+            //     {todoFormVisibility[idx] && <PlanTodoListLeft goalId={plans[idx].goalId} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoGoalId={newTodoGoalId} />}
             // </React.Fragment>
-            <PlanItem plans={plans} el={el} idx={idx} key={`month-title-bar-${idx}`} applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} todoFormToggleHandler={todoFormToggleHandler} todoFormVisibility={todoFormVisibility} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoIdx={newTodoIdx}/>
+            <PlanItem plans={plans} plan={plans[el]} idx={idx} key={`month-title-bar-${idx}`} applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} todoFormToggleHandler={todoFormToggleHandler} todoFormVisibility={todoFormVisibility} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoGoalId={newTodoGoalId}/>
         )
     })
 
@@ -213,7 +242,11 @@ const Plan = (props) => {
           
             newPlanAPI(new Date(), endDate, newPlanValue)
             .catch((err) => {
-                navigate('/login');
+                // navigate('/login');
+                console.log('Plan : newPlanAPI => ', err)
+                if (err.response.data[0].message == "목표 내용이 없습니다.") {
+                    setNewPlan(false)
+                }
             })
             .then((res) => {
                 dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
@@ -231,12 +264,26 @@ const Plan = (props) => {
         </div>
     )
     
-    const planCalender = <PlanCalendar applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} todoFormVisibility={todoFormVisibility} todos={todos} newTodoIdx={newTodoIdx} />
+    const planCalender = <PlanCalendar applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} todoFormVisibility={todoFormVisibility} todos={todos} newTodoGoalId={newTodoGoalId} />
     
+
+    const errorMessage = (
+        <div style={{display:'flex', justifyContent:'space-evenly', alignItems:'center'}}>
+            <img style={{width:'40px', height:'40px', marginRight:'12px'}} src={warning} />
+            <div>
+                <p style={{lineHeight: '40%'}}>TODO의 날짜는 현재 작성중인 TODO 목표의</p>
+                <p style={{lineHeight: '40%'}}>날짜 범위를 미만 & 초과할 수 없습니다.</p>
+            </div>
+        </div>
+    )
+
+
+    const [notiState, setNotiState] = useState(false)
 
 
     return (
-        <div className={styles['plans-wrapper']}>
+        <div className={styles['plans-wrapper']} onMouseMove={console.log(todos)}>
+            {notiState && <NotiDeliverer content={errorMessage} stateHandler={setNotiState} duration={5000} width={400} />}
             <div className={styles['plans-title-wrapper']} > 
                 <div className={styles['plan-title-bar-space']} />
                 <div className={styles['plans-titles']} ref={plansTitleWrapperRef}>

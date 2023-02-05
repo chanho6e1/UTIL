@@ -20,5 +20,8 @@ export const newTodoAPI = (goalId, data) => {
     .then((res) => {
         return recvTodosAPI(goalId)
     })
+    .catch((err) => {
+        throw err
+    })
 }
 
