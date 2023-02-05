@@ -13,13 +13,14 @@ import Plan from "../Plan/Plan";
 import MyUtil from "../MyUtil/MyUtil";
 import Feed from "../Feed/Feed";
 import UserPage from "../UserPage/UserPage";
+import UserProfileChange from "../UserProfileChangePage/UserProfileChange";
 
 const Main = (props) => {
   const parentRef = useRef();
   const userAuth = useSelector((state) => state.userAuthSlice.userAuth);
 
   const postData = {
-    content: [<MyUtil />, <Feed />, <UserPage id={2} />, <div>test1</div>, <div>test1</div>],
+    content: [<MyUtil />, <Feed />, <UserPage id={2} />, <UserProfileChange />, <div>test1</div>],
     dock: {
       logoContracted: (
         <img className={styles["logo-icon"]} src={logo} style={{ width: "96px", height: "auto" }} />
