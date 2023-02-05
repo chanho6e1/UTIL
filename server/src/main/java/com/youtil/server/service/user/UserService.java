@@ -39,7 +39,7 @@ public class UserService {
         logger.info("=============path : {}", path);
         String baseImg = "3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg";
 
-        if(path==null){
+        if(request.getImageUrl()==null){
             originUser.setUserProfile(baseImg.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/",""));
         }else{
             originUser.setUserProfile(path.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/",""));
