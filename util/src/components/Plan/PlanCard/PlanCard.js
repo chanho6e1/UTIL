@@ -1,46 +1,24 @@
-import React, {useEffect} from "react";
-import Card from "../../UI/Card/Card";
-import { recvTodosAPI } from "../../../api/Plan/recvTodosAPI";
-import { modifyPlanSliceActions } from '../../../redux/planSlice'
+import React from "react";
+import PlanCardItem from "./PlanCardItem";
+import { notificationSliceActions } from "../../redux/notificationSlice";
 import { useSelector, useDispatch } from 'react-redux'
-import PlanCardTodo from "./PlanCardTodo";
+
+import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 
 const PlanCard = (props) => {
   const dispatch = useDispatch()
-  const todos = useSelector(state => state.planSlice.todos[props.plan.goalId])
+  const plans = useSelector(state => state.planSlice.plans)
 
-  useEffect(() => {
-    recvTodosAPI(props.plan.goalId)
-    .then((res) => {
-      const processing = {
-        goalId: props.plan.goalId,
-        data: res
-      }
-      dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
-    })
-    .catch((err) => {
-      console.log('PlanIndividual : recvTodosAPI => ', err)
-    })
-  }, [])
-
-  const todoList = todos && todos.map((todo, idx) => {
+  const plansRender = Object.keys(plans).map((id, arrIdx) => {
     return (
-      <PlanCardTodo todo={todo} />
+      <PlanCardItem plan={plans[id]} />
     )
   })
 
-  
-
-
   return (
-    <Card>
-      <header>
-        {props.plan.title}
-      </header>
-      <body>
-        {todoList}
-      </body>
-    </Card>
+    <div className={styles['plan-card-wrapper']}>
+      {plansRender}
+    </div>
   )
 }
 

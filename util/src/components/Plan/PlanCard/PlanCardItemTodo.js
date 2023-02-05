@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const PlanCardTodo = (props) => {
+const PlanCardItemTodo = (props) => {
 
   const dueDate = new Date(props.todo.dueDate)
   const dueDateString = `${dueDate.getFullYear()}년 ${dueDate.getMonth()}월 ${dueDate.getDate()}일`
@@ -13,4 +13,4 @@ const PlanCardTodo = (props) => {
   )
 }
 
-export default PlanCardTodo
+export default PlanCardItemTodo
