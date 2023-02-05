@@ -37,6 +37,12 @@ spring:
         order_inserts: true
         order_updates: true
         format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
+      enabled: true
+
   # Security OAuth
   security:
     oauth2.client:
