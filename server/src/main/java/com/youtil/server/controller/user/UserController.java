@@ -31,10 +31,6 @@ public class UserController {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "유저 정보 조회 성공", userService.getCurrentUser(userPrincipal.getId())));
     }
-    //    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-//        return (User) userRepository.findById(userPrincipal.getId())
-//                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-//    }
 
     @PutMapping
     @ApiOperation(value = "유저 정보 업데이트", notes = "현재 로그인한 유저 정보를 업데이트한다.")
