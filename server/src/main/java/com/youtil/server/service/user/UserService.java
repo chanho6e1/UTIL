@@ -5,7 +5,10 @@ import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.user.UserResponse;
 import com.youtil.server.dto.user.UserUpdateRequest;
 import com.youtil.server.repository.user.UserRepository;
+import com.youtil.server.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +18,8 @@ import java.net.URLDecoder;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final S3Uploader s3Uploader;
 
@@ -43,10 +48,10 @@ public class UserService {
             }
         }
 
-        String newImg = URLDecoder.decode(request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/", ""), "UTF-8");
+        String newImg = request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/", "");
         request.setImageUrl(newImg);
 
-        System.out.println(request.getImageUrl());
+        logger.info("=============newImg : {}", request.getImageUrl());
 
         originUser.update(request);
         return userId;
