@@ -13,4 +13,7 @@ export const recvTodoPeriodAPI = (goalId) => {
     .then((res) => {
         return res.data.data
     })
+    .catch((err) => {
+        throw err
+    })
 }

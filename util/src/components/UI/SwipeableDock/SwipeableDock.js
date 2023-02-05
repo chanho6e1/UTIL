@@ -2,6 +2,7 @@ import React, {useState, useRef, useEffect} from "react";
 import Swipe from "react-easy-swipe";
 import styles from './SwipeableDock.module.css'
 import { useNavigate, useMatch, useLocation, Routes, Route } from "react-router-dom";
+import useDidMountEffect from "../../../hooks/useDidMountEffect";
 
 
 
@@ -17,6 +18,19 @@ const SwipeableDock = (props) => {
   const navigate = useNavigate()
   const [width, setWidth] = useState(null)
   const [height, setHeight] = useState(null)
+  const [urlLib, setUrlLib] = useState({})
+  const location = useLocation();
+
+  useEffect(() => {
+    setUrlLib({})
+    postData.url.map((el,idx) => {
+      setUrlLib((prev) => {return {...prev, [el]: idx + 1}})
+    })
+  }, [])
+
+  useEffect(() => {
+    setContentCount(urlLib[location.pathname])
+  }, [urlLib, location.pathname])
 
 
 
@@ -33,10 +47,12 @@ const SwipeableDock = (props) => {
         movingDiv.current.style.transform = `translateX(${-props.parentRef.current.clientWidth * (contentCount - 1)}px)`
       }
     }
+    
     window.addEventListener(`resize`, resize);
     return () => {
       window.removeEventListener(`resize`, resize);
     }
+    
   }, [contentCount])
 
   
@@ -77,6 +93,8 @@ const SwipeableDock = (props) => {
     setPositionx(() => 0)
     setEndSwipe(true)
   }
+
+
   const clickDockHandler = async (idx) => {
     setContentCount(() => idx + 1)
   }
