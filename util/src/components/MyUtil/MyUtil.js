@@ -9,25 +9,20 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 
-import PlanCard from "../Plan/PlanCard/PlanCard";
+import PlanCard from "../Plan/PlanCard/PlanCardItem";
 
 
 const MyUtil = (props) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const plans = useSelector(state => state.planSlice.plans)
 
-
-  const plansRender = Object.keys(plans).map((id, arrIdx) => {
-    return (
-      <PlanCard plan={plans[id]} />
-    )
-  })
 
 
   return (
     <div className={styles['my-util']}>
-      {plansRender}
+
+
+        
 
     </div>
   )

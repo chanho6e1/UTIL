@@ -1,0 +1,24 @@
+.plan-card {
+
+
+
+
+}
+
+
+
+@media all and (max-width: 480px) {
+    .plan-card {
+        width: 90vw;
+        height: 70vh;
+    }
+    
+}
+
+@media all and (min-width: 480px) {
+    .plan-card {
+        width: 400px;
+        height: 70%;
+    }
+    
+}
