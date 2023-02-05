@@ -1,0 +1,15 @@
+@media all and (max-width: 480px) {
+    .plan-card {
+        width: 100vw;
+        height: 100vh;
+    }
+    
+}
+
+@media all and (min-width: 480px) {
+    .plan-card {
+        width: 400px;
+        height: 100vh;
+    }
+    
+}

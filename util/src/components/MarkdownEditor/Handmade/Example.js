@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from './Example.module.css'
 import ReactDOM from 'react-dom';
-import Code from "../MarkdownRenderer/Prism/Code";
+import Code from "../../MarkdownRenderer/Prism/Code";
 
 
 import {unified} from 'unified';

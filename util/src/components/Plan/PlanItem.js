@@ -16,7 +16,7 @@ const PlanItem = (props) => {
   const navigate = useNavigate()
 
   const [isEditMode, setIsEditMode] = useState(false)
-  const [titleValue, setTitleValue] = useState(props.plans[props.idx].title)
+  const [titleValue, setTitleValue] = useState(props.plan.title)
 
   const enterEditMode = () => {
       setIsEditMode(true)
@@ -25,15 +25,22 @@ const PlanItem = (props) => {
   const cancelEditMode = () => {
     const processing = {
       title: titleValue,
-      startDate: props.plans[props.idx].startDate,
-      endDate: props.plans[props.idx].endDate
+      startDate: props.plan.startDate,
+      endDate: props.plan.endDate
     }
-    editPlanAPI(props.plans[props.idx].goalId, processing)
+    editPlanAPI(props.plan.goalId, processing)
     .then((res) => {
         dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
     })
     .then((res) => {
       setIsEditMode(false)
+    })
+    .catch((err) => {
+      console.log('PlanItem : editPlanAPI => ', err)
+      if (err.response.data[0].message == "목표 내용이 없습니다.") {
+        setTitleValue(props.plan.title)
+        setIsEditMode(false)
+      }
     })
       
   }
@@ -50,9 +57,12 @@ const PlanItem = (props) => {
 
 
   const deletePlan = () => {
-    delPlanAPI(props.plans[props.idx].goalId)
+    delPlanAPI(props.plan.goalId)
     .then((res) => {
       dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+    })
+    .catch((err) => {
+      console.log('PlanItem : delPlanAPI => ', err)
     })
 
   }
@@ -87,7 +97,7 @@ const PlanItem = (props) => {
   const titleReadMode = (
     <div onClick={enterEditMode} className={styles['plan-title-bar-button']}> 
         <div className={styles['plan-title']}>
-          {props.plans[props.idx].title}
+          {props.plan.title}
         </div>
         
 
@@ -104,14 +114,14 @@ const PlanItem = (props) => {
   return (
     <React.Fragment>
       <FixedModal modalState={askDeleteState} stateHandler={setAskDeleteState} content={askDeleteForm} addBtn={addBtn} width={300} height={310} />
-      <div  id={`${props.plans[props.idx].goalId}`} className={`${styles['plan-title-bar']} ${props.idx % 2 ? styles['title-odd'] : styles['title-even']}`}>
-          <div onClick={props.todoFormToggleHandler.bind(this, props.idx, props.el.goalId)} className={styles['plan-title-bar-icon-wrapper']}>
+      <div  id={`${props.plan.goalId}`} className={`${styles['plan-title-bar']} ${props.idx % 2 ? styles['title-odd'] : styles['title-even']}`}>
+          <div onClick={props.todoFormToggleHandler.bind(this, props.idx, props.plan.goalId)} className={styles['plan-title-bar-icon-wrapper']}>
               <img className={styles['arrow-icon']} src={arrow} style={{transform: props.todoFormVisibility[props.idx] ? 'rotate(90deg)' : 'none', marginLeft:'13px', width: '12px', height: 'auto'}}/>
           </div>
 
           {isEditMode ? titleEditInput : titleReadMode }
       </div>
-      {props.todoFormVisibility[props.idx] && <PlanTodoListLeft applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} goalId={props.plans[props.idx].goalId} todos={props.todos} getNewTodoIdx={props.getNewTodoIdx} newTodoIdx={props.newTodoIdx} />}
+      {props.todoFormVisibility[props.idx] && <PlanTodoListLeft applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} plan={props.plan} todos={props.todos} getNewTodoIdx={props.getNewTodoIdx} newTodoGoalId={props.newTodoGoalId} />}
   </React.Fragment>
   )
 }

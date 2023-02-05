@@ -5,6 +5,7 @@ import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useN
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
 import { recvPlansAPI } from "../../api/Plan/recvPlansAPI";
+import { recvIngPlanAPI } from "../../api/Plan/recvIngPlanAPI";
 import { recvPlansPeriodAPI } from "../../api/Plan/recvPlansPeriodAPI";
 import { recvTodosPeriodAPI } from "../../api/Plan/recvTodosPeriodAPI";
 import PlanLoading from "./PlanLoading";
@@ -47,15 +48,15 @@ const PlanExpanded = (props) => {
     })
   }, [])
 
-  useEffect(() => {
-      recvPlansAPI()
-      .catch((err) => {
-          navigate('/login');
-      })
-      .then((res) => {
-          dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
-      })
-  }, [])
+  // useEffect(() => {
+  //   recvIngPlanAPI()
+  //     .catch((err) => {
+  //         navigate('/login');
+  //     })
+  //     .then((res) => {
+  //         dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+  //     })
+  // }, [])
 
   const plans = useSelector(state => state.planSlice.plans)
 
