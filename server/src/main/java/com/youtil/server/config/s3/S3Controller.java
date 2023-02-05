@@ -1,17 +1,14 @@
 package com.youtil.server.config.s3;
 
-import com.youtil.server.security.CurrentUser;
-import com.youtil.server.security.UserPrincipal;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,7 +22,13 @@ public class S3Controller {
     @PostMapping("/posts")
     public String uploadPostFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
 
-        return s3Uploader.upload(multipartFile, "static/post");
+        String source = null;
+        try {
+            source = s3Uploader.upload(multipartFile, "static/post");
+        }catch (SizeLimitExceededException e){
+            throw new ArithmeticException("파일 용량이 너무 큽니다");
+        }
+        return source;
     }
 
     @ApiOperation(value = "회고록에서 파일 업로드", notes="파일을 업로드하고 주소를 반환한다")
