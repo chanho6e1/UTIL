@@ -39,18 +39,20 @@ public class UserService {
         logger.info("=============path : {}", path);
         String baseImg = "3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg";
 
+        String newImg = null;
+
         if(request.getImageUrl()==null){
-            request.setImageUrl("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg");
+            newImg = baseImg;
+//            request.setImageUrl("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg");
 //            originUser.setUserProfile(baseImg.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/",""));
         }else{
             originUser.setUserProfile(path.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/",""));
             if(!path.equals(baseImg)) { // 카카오톡 기본 이미지 받아오지 않고 이처리 추가해야함(지금은 테스트중이라 주석)
                 String source = URLDecoder.decode("static/user/"+path, "UTF-8");
-//            s3Uploader.delete(source);
+                s3Uploader.delete(source);
             }
+            newImg = request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/", "");
         }
-
-        String newImg = request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/", "");
         request.setImageUrl(newImg);
 
         logger.info("=============newImg : {}", request.getImageUrl());
