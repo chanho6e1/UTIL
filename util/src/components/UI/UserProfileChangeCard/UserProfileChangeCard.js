@@ -14,9 +14,14 @@ const UserProfileChangeCard = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
   const [isInit, setIsInit] = useState(true);
 
+  // 신규 유저 체크
+  const [isNewUser, setIsNewUser] = useState(props.nickname === null ? true : false);
+
   // 프로필 사진
   const [imageUrl, setImageUrl] = useState(props.imageUrl);
+  const [uploadImage, setUploadImage] = useState(null);
   const [isHover, setIsHover] = useState(false);
+
   // 프로필 사진 업로드
   const fileInput = useRef(null);
   const fileChangeHandler = (event) => {
@@ -24,14 +29,15 @@ const UserProfileChangeCard = (props) => {
       return;
     }
 
+    const uploadFile = event.target.files[0];
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        console.log(reader.result);
         setImageUrl(reader.result);
       }
     };
-    reader.readAsDataURL(event.target.files[0]);
+    reader.readAsDataURL(uploadFile);
+    setUploadImage(uploadFile);
   };
 
   const avatarOnMouseToggleHandler = () => {
@@ -134,12 +140,6 @@ const UserProfileChangeCard = (props) => {
     const enteredDescription = descriptionInputRef.current.value;
     const enteredDepartment = departmentInputRef.current.value;
 
-    console.log(enteredNickname);
-    console.log(enteredDescription);
-    console.log(enteredDepartment);
-    console.log(myTagList);
-    console.log(imageUrl);
-
     // Form 유효성 확인 한번 더 체크
     const enteredFormIsValid =
       !nicknameIsUnderTwoChars &&
@@ -157,6 +157,8 @@ const UserProfileChangeCard = (props) => {
       department: enteredDepartment,
       tagList: myTagList,
       imageUrl: imageUrl,
+      isNewUser: isNewUser,
+      uploadImage: uploadImage,
     });
   };
 
@@ -250,7 +252,7 @@ const UserProfileChangeCard = (props) => {
         </div>
         <div className={classes.button}>
           {/* 신규유저라면 취소버튼을 숨긴다 */}
-          {props.nickname && (
+          {!isNewUser && (
             <Button type="button" variant="contained" sx={{ mr: 2 }} onClick={onCancelClicked}>
               취소
             </Button>
