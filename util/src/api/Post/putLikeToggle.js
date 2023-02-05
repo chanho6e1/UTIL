@@ -11,8 +11,6 @@ export const putLikeToggle = (postId) => {
     },
   })
     .then((res) => {
-      console.log(res);
-      console.log("좋아요 성공");
       return res.status;
     })
     .catch((err) => {

@@ -10,9 +10,6 @@ export const getUserData = (userId) => {
     },
   })
     .then((res) => {
-      console.log("user data");
-      console.log(res.data.data);
-      console.log("유저 정보 조회에 성공하였습니다.");
       return res.data.data;
     })
     .catch((err) => {
