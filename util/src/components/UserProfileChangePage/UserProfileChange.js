@@ -35,7 +35,7 @@ const UserProfileChange = (props) => {
     <div>
       {userData && userTagList && (
         <UserProfileChangeCard
-          imageUrl={userData.imageUrl || defautUserProfilePic}
+          imageUrl={userData.imageUrl}
           userName={userData.userName}
           nickname={userData.nickname}
           description={userData.description}
