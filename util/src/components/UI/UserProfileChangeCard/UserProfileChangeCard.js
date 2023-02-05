@@ -1,32 +1,18 @@
 import { useState, useRef, useEffect } from "react";
 import classes from "./UserProfileChangeCard.module.css";
 import { Avatar, Button, TextField, FormControl, IconButton } from "@mui/material";
-import axios from "axios";
-import AutoCompleteTagInput from "./AutoCompleteTagInput";
-import PhotoCameraIcon from "../../../img/photoCameraIcon_gray.png";
+import AutoCompleteMultipleTagInput from "../Tag/AutoCompleteMultipleTagInput";
+import PhotoCameraIcon from "../../../img/photoCameraIcon.png";
+import { nicknameDuplicateCheck } from "../../../api/UserProfile/nicknameDuplicateCheck";
+import { getAllTags } from "../../../api/UserProfile/getAllTags";
 
-const isUnderTwoChars = (value) => value.trim().length < 2;
-const isOverTenChars = (value) => value.trim().length > 10;
-const isDuplicated = (value) => {
-  const userInput = value.trim();
-  const url = "http://i8d210.p.ssafy.io:8081/user/nickname/" + userInput;
-  console.log(url);
-
-  const data = axios
-    .get(url)
-    .then((response) => response.json())
-    .catch((error) => {
-      console.log(error);
-      return { data: false };
-    });
-  const result = data.data;
-
-  return result;
-};
+const isUnderTwoChars = (value) => (typeof value === "string" ? value.trim().length < 2 : false);
+const isOverTenChars = (value) => (typeof value === "string" ? value.trim().length > 10 : false);
+const isTagOverFive = (value) => value.length > 5;
 
 const UserProfileChangeCard = (props) => {
-  console.log(props);
-  const [formIsValid, setFormIsValid] = useState(true);
+  const [formIsValid, setFormIsValid] = useState(false);
+  const [isInit, setIsInit] = useState(true);
 
   // 프로필 사진
   const [imageUrl, setImageUrl] = useState(props.imageUrl);
@@ -53,7 +39,8 @@ const UserProfileChangeCard = (props) => {
   };
 
   // 닉네임
-  const [nickname, setNickname] = useState(props.nickname);
+  const originalNickname = props.nickname ? props.nickname : "";
+  const [nickname, setNickname] = useState(originalNickname);
   const [nicknameIsUnderTwoChars, setNicknameIsUnderTwoChars] = useState(false);
   const [nicknameIsOverTenChars, setNicknameIsOverTenChars] = useState(false);
   const [nicknameIsDuplicated, setNicknameIsDuplicated] = useState(false);
@@ -63,32 +50,60 @@ const UserProfileChangeCard = (props) => {
   const [count, setCount] = useState(props.description ? props.description.length : 0);
 
   // 소속
-  const [myDepartment, setMyDepartment] = useState(props.department);
+  const [myDepartment, setMyDepartment] = useState(props.department ? props.department : "");
 
-  // 관심 기술
-  const mySkillObj = [...props.skill];
-  const mySkillList = mySkillObj.map((skill) => skill.name);
-  const [mySkill, setMySkill] = useState(mySkillList);
+  // 관심 태그
+  const [myTagList, setMyTagList] = useState(props.myTagList ? props.myTagList : []);
+  const [myTagOverFive, setMyTagOverFive] = useState(isTagOverFive(myTagList.length));
+  const [allTagList, setAllTagList] = useState([]);
+
+  useEffect(() => {
+    getAllTags().then((res) => {
+      setAllTagList(() => res.map((t) => t.tagName));
+    });
+  }, []);
 
   const nicknameInputRef = useRef();
   const descriptionInputRef = useRef();
+  const departmentInputRef = useRef();
 
   const nicknameOnChangeHandler = (event) => {
     setNickname(event.target.value);
     setNicknameIsUnderTwoChars(isUnderTwoChars(event.target.value));
     setNicknameIsOverTenChars(isOverTenChars(event.target.value));
+    if (isInit) {
+      setIsInit(false);
+    }
   };
 
+  // Form 유효성 검사 with timeout
   useEffect(() => {
     const identifier = setTimeout(() => {
-      setNicknameIsDuplicated(isDuplicated(nicknameInputRef.current.value));
-
-      setFormIsValid(!nicknameIsUnderTwoChars && !nicknameIsOverTenChars && !nicknameIsDuplicated);
-      console.log("validation check");
+      if (isInit && originalNickname === "") {
+        setFormIsValid(false);
+      } else {
+        if (originalNickname.toLowerCase() === nickname.toLowerCase()) {
+          setNicknameIsDuplicated(false);
+          setFormIsValid(
+            !nicknameIsDuplicated &&
+              !nicknameIsUnderTwoChars &&
+              !nicknameIsOverTenChars &&
+              !myTagOverFive
+          );
+        } else {
+          nicknameDuplicateCheck(nickname).then((res) => {
+            setNicknameIsDuplicated(() => res);
+            setFormIsValid(
+              !nicknameIsDuplicated &&
+                !nicknameIsUnderTwoChars &&
+                !nicknameIsOverTenChars &&
+                !myTagOverFive
+            );
+          });
+        }
+      }
     }, 300);
-
     return () => {
-      console.log("CLEAN UP");
       clearTimeout(identifier);
     };
   }, [nickname, nicknameIsDuplicated, nicknameIsOverTenChars, nicknameIsUnderTwoChars]);
@@ -99,11 +114,12 @@ const UserProfileChangeCard = (props) => {
   };
 
   const departmentOnChangeHandler = (value) => {
-    setMyDepartment([...value]);
+    setMyDepartment(value);
   };
 
-  const skillOnChangeHandler = (value) => {
-    setMySkill([...value]);
+  const myTagListChangeHandler = (value) => {
+    setMyTagList(() => [...value]);
+    setMyTagOverFive(() => isTagOverFive(value));
   };
 
   const onCancelClicked = () => {
@@ -116,49 +132,33 @@ const UserProfileChangeCard = (props) => {
 
     const enteredNickname = nicknameInputRef.current.value;
     const enteredDescription = descriptionInputRef.current.value;
+    const enteredDepartment = departmentInputRef.current.value;
 
     console.log(enteredNickname);
     console.log(enteredDescription);
-    console.log(myDepartment);
-    console.log(mySkill);
+    console.log(enteredDepartment);
+    console.log(myTagList);
     console.log(imageUrl);
 
-    const enteredNicknameIsValid = !nicknameIsUnderTwoChars || !nicknameIsOverTenChars;
+    // Form 유효성 확인 한번 더 체크
+    const enteredFormIsValid =
+      !nicknameIsUnderTwoChars &&
+      !nicknameIsOverTenChars &&
+      !nicknameIsDuplicated &&
+      !myTagOverFive;
 
-    if (!enteredNicknameIsValid) {
+    if (!enteredFormIsValid) {
       return;
     }
 
     props.onConfirm({
-      nickname: nickname,
-      description: description,
-      department: myDepartment,
-      skill: mySkill,
+      nickname: enteredNickname,
+      description: enteredDescription,
+      department: enteredDepartment,
+      tagList: myTagList,
       imageUrl: imageUrl,
     });
   };
-
-  const skillTagList = [
-    { name: "Python", id: 0 },
-    { name: "Java", id: 1 },
-    { name: "C++", id: 2 },
-    { name: "C", id: 3 },
-    { name: "JavaScript", id: 4 },
-    { name: "React", id: 5 },
-  ];
-
-  const skillTagNameList = skillTagList.map((tag) => tag.name);
-
-  const departmentTagList = [
-    { name: "SSAFY", id: 0 },
-    { name: "삼성", id: 1 },
-    { name: "네이버", id: 2 },
-    { name: "카카오", id: 3 },
-    { name: "구글", id: 4 },
-    { name: "애플", id: 5 },
-  ];
-
-  const departmentTagNameList = departmentTagList.map((tag) => tag.name);
 
   return (
     <form className={classes.userprofile} onSubmit={confirmHandler}>
@@ -172,7 +172,7 @@ const UserProfileChangeCard = (props) => {
           className={classes.iconbutton}
         >
           <Avatar
-            src={imageUrl || "../../assets/defualtUserProfilePic.svg"}
+            src={imageUrl}
             sx={{ width: 100, height: 100 }}
             className={classes[`avatar-img`]}
           />
@@ -192,10 +192,12 @@ const UserProfileChangeCard = (props) => {
           <FormControl sx={{ width: "100%" }}>
             <TextField
               id="filled-basic"
-              error={nicknameIsUnderTwoChars || nicknameIsOverTenChars}
+              error={nicknameIsUnderTwoChars || nicknameIsOverTenChars || nicknameIsDuplicated}
               helperText={
                 nicknameIsUnderTwoChars || nicknameIsOverTenChars
                   ? "닉네임은 2자 이상 10자 이하입니다."
+                  : nicknameIsDuplicated
+                  ? "중복된 닉네임입니다."
                   : ""
               }
               label="Nickname"
@@ -211,10 +213,10 @@ const UserProfileChangeCard = (props) => {
             <TextField
               id="filled-multiline-static"
               label="자기소개"
+              variant="filled"
               multiline
               rows={5}
               defaultValue={description}
-              variant="filled"
               inputProps={{ maxLength: 150 }}
               helperText={`${count}/150`}
               inputRef={descriptionInputRef}
@@ -224,28 +226,35 @@ const UserProfileChangeCard = (props) => {
         </div>
         <div className={classes.skill}>
           <FormControl sx={{ width: "100%" }}>
-            <AutoCompleteTagInput
-              tagList={departmentTagNameList}
-              label={"소속"}
+            <TextField
+              id="filled-basic"
+              label="소속"
+              variant="outlined"
+              defaultValue={myDepartment}
+              inputRef={departmentInputRef}
               onChange={departmentOnChangeHandler}
-              value={myDepartment}
             />
           </FormControl>
         </div>
         <div className={classes.skill}>
           <FormControl sx={{ width: "100%" }}>
-            <AutoCompleteTagInput
-              tagList={skillTagNameList}
-              label={"관심 기술"}
-              onChange={skillOnChangeHandler}
-              value={mySkill}
+            <AutoCompleteMultipleTagInput
+              value={myTagList}
+              tagList={allTagList}
+              label={"관심 태그"}
+              onChange={myTagListChangeHandler}
+              error={myTagOverFive}
+              helperText={myTagOverFive ? "관심 태그는 5개까지 등록 가능합니다." : ""}
             />
           </FormControl>
         </div>
         <div className={classes.button}>
-          <Button type="button" variant="contained" sx={{ mr: 2 }} onClick={onCancelClicked}>
-            취소
-          </Button>
+          {/* 신규유저라면 취소버튼을 숨긴다 */}
+          {props.nickname && (
+            <Button type="button" variant="contained" sx={{ mr: 2 }} onClick={onCancelClicked}>
+              취소
+            </Button>
+          )}
           <Button type="submit" variant="contained" disabled={!formIsValid}>
             저장
           </Button>
