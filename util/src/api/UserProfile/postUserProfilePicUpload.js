@@ -1,20 +1,21 @@
 import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
-export const getPosts = () => {
+export const postUserProfilePicUpload = (formData) => {
   return axios({
-    method: "get",
-    url: `${API_BASE_URL}/posts/lists`,
+    method: "post",
+    url: `${API_BASE_URL}/upload/users`,
+    data: formData,
     headers: {
       Authorization: TOKEN(),
     },
   })
     .then((res) => {
-      return res.data.data;
+      return res;
     })
     .catch((err) => {
       console.log(err);
       console.log(TOKEN());
-      console.log("게시물 목록 조회에 실패하였습니다.");
+      console.log("이미지 업로드 실패하였습니다.");
     });
 };
