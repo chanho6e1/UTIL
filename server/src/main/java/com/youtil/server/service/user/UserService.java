@@ -34,9 +34,9 @@ public class UserService {
         User originUser = userRepository.findByUserId(userId);
 
         String path = originUser.getImageUrl();
-        deleteImg(path);
+//        deleteImg(path);
 
-        String baseImg = "3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg";
+        String baseImg = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg";
 
         if(!path.equals(baseImg)) {
             String source = URLDecoder.decode(path.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/", ""), "UTF-8");
