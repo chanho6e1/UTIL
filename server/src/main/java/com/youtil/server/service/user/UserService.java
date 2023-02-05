@@ -46,6 +46,8 @@ public class UserService {
         String newImg = URLDecoder.decode(request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/", ""), "UTF-8");
         request.setImageUrl(newImg);
 
+        System.out.println(request.getImageUrl());
+
         originUser.update(request);
         return userId;
     }
