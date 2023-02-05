@@ -56,7 +56,7 @@ public class GoalController {
 
     @ApiOperation(value = "목표 삭제", notes = "내가 작성한 목표를 삭제한다.")
     @DeleteMapping("/{goalId}")
-    public ResponseEntity<CommonResponse> deleteGoal(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId){
+    public ResponseEntity<CommonResponse> deleteGoal(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId) throws UnsupportedEncodingException {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.NO_CONTENT, "삭제 성공", goalService.deleteGoal(userPrincipal.getId(), goalId)));
     }
