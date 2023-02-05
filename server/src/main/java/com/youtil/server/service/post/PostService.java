@@ -143,14 +143,19 @@ public class PostService {
                     .orElseThrow(()-> new ResourceNotFoundException("goal" , "goalId", request.getGoalId()));
             post.setGoal(goal);
         }
+
+        String baseImg = "21ef9957-c12f-4bd8-a098-e0c75fe2b7c3ogo.png";
+
          if(!request.getPostFileList().isEmpty()){
              Map<Integer, String> map =  post.getPostFileMap();
              post.setThubmnail(request.getPostFileList().get(0).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","")); //첫번째 사진 섬네일 등록
-            for(int idx=0; idx<request.getPostFileList().size(); idx++){ //포스트 파일 등록하고(포스트 세팅하고) /postFilelist와 연결)
+            for(int idx=0; idx<request.getPostFileList().size(); idx++){
                 String source = request.getPostFileList().get(idx).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","");
                 post.addPostFile(idx, source);
             }
-        }
+        }else{
+             post.setThubmnail(baseImg);
+         }
         return post.getPostId();
     }
 
@@ -191,15 +196,25 @@ public class PostService {
             post.resetGoal();
         }
 
+        String baseImg = "21ef9957-c12f-4bd8-a098-e0c75fe2b7c3ogo.png";
+
         if(!request.getPostFileList().isEmpty()){
             Map<Integer, String> map =  post.getPostFileMap();
             int size = map.size();
-            post.setThubmnail(request.getPostFileList().get(0).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","")); //첫번째 사진 섬네일 등록
             for(int idx=0; idx<request.getPostFileList().size(); idx++){
                 String source = request.getPostFileList().get(idx).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","");
                 post.addPostFile(size++, source);
             }
         }
+
+        String source = parseContextAndUpdateTumbnail(post);
+
+        if(source==null){
+            post.setThubmnail(baseImg);
+        }else{
+            post.setThubmnail(source);
+        }
+
         return post.getPostId();
     }
 
@@ -242,6 +257,23 @@ public class PostService {
         }
         return source;
     }
+
+
+    //수정할때 섬네일 반영
+    public String parseContextAndUpdateTumbnail(Post post) {
+        Document doc = Jsoup.parse(post.getContent());
+        Elements images = doc.getElementsByTag("img");
+        String source = null;
+
+        if (images.size() > 0) {
+            for (Element image : images) {
+                source = image.attr("src").replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post", "");
+                return source;
+            }
+        }
+        return source;
+    }
+
 
     //post 삭제하면 안의 파일도 삭제 : 사용 안함
     public void parseContextAndDeleteImages(Post post) {

@@ -153,7 +153,7 @@ public class Post extends BaseEntity implements Serializable {
     }
 
     public void addPostFile(int idx, String source) {
-        System.out.println("idx: "+idx+"source: "+source);
+//        System.out.println("idx: "+idx+"source: "+source);
         postFileMap.put(idx, source);
     }
 }
