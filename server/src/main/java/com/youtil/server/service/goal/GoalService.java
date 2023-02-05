@@ -3,6 +3,7 @@ package com.youtil.server.service.goal;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
+import com.youtil.server.config.s3.S3Uploader;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.goal.*;
@@ -41,9 +42,10 @@ public class GoalService {
     private final ReviewRepository reviewRepository;
     @Autowired
     private final TodoRepository todoRepository;
-
     @Autowired
     private final GoalQueryRepository goalQueryRepository;
+    @Autowired
+    private final S3Uploader s3Uploader;
 
     @Transactional
     public Long createGoal(Long userId, GoalSaveRequest request){
@@ -58,14 +60,14 @@ public class GoalService {
 
         goal = goalRepository.save(request.of(user));
 
-        String path = request.getImageUrl();
-        String baseImg = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/ea6ee1e9-319e-4591-89ce-d2df2056044etor.jpg";
+        String path = request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/","");
+        String baseImg = "f18b354f-b630-4025-98f7-a7ed74f7ba40ogo.png";
 
         if(path==null){
-            System.out.println(baseImg);
-            goal.setImageUrl(baseImg.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/",""));
+//            System.out.println(baseImg);
+            goal.setImageUrl(baseImg);
         }else{
-            goal.setImageUrl(path.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/",""));
+            goal.setImageUrl(path);
         }
         return goal.getGoalId();
     }
@@ -89,20 +91,20 @@ public class GoalService {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
         validGoalUser(userId, goal.getUser().getUserId());
         String[] arr = request.getStartDate().split("T");
-//        System.out.println(arr[0]);
         request.setStartDate(arr[0]);
         arr = request.getEndDate().split("T");
         request.setEndDate(arr[0]);
-        String path = request.getImageUrl();
-        String baseImg = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/ea6ee1e9-319e-4591-89ce-d2df2056044etor.jpg";
+        String path = request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/","");
+        String baseImg = "f18b354f-b630-4025-98f7-a7ed74f7ba40ogo.png";
+        String originImg = goal.getImageUrl();
 
         if(path==null){
-            goal.setImageUrl(baseImg.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/",""));
+            goal.setImageUrl(baseImg);
         }else{
-            goal.setImageUrl(request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/",""));
-            if(!path.equals(baseImg)) { // 카카오톡 기본 이미지 받아오지 않고 이처리 추가해야함(지금은 테스트중이라 주석)
+            goal.setImageUrl(path);
+            if(!originImg.equals(baseImg)) {
                 String source = URLDecoder.decode("static/goal/"+path, "UTF-8");
-//            s3Uploader.delete(source);
+                s3Uploader.delete(source);
             }
         }
 
@@ -111,14 +113,14 @@ public class GoalService {
     }
 
     @Transactional
-    public Long deleteGoal(Long userId, Long goalId) {
+    public Long deleteGoal(Long userId, Long goalId) throws UnsupportedEncodingException {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
         validGoalUser(userId, goal.getUser().getUserId());
         String path = goal.getImageUrl();
-        String baseImg = "ea6ee1e9-319e-4591-89ce-d2df2056044etor.jpg";
+        String baseImg = "f18b354f-b630-4025-98f7-a7ed74f7ba40ogo.png";
         if(!path.equals(baseImg)) { // 카카오톡 기본 이미지 받아오지 않고 이처리 추가해야함(지금은 테스트중이라 주석)
-//        String source = URLDecoder.decode("static/goal/"+path, "UTF-8");
-//            s3Uploader.delete(source);
+            String source = URLDecoder.decode("static/goal/"+path, "UTF-8");
+            s3Uploader.delete(source);
         }
         reviewRepository.deleteByGoalId(goalId);
         todoRepository.deleteByGoalId(goalId);
