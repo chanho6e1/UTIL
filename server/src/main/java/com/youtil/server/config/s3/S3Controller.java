@@ -1,6 +1,5 @@
 package com.youtil.server.config.s3;
 
-import com.youtil.server.common.exception.ArgumentMismatchException;
 import com.youtil.server.security.CurrentUser;
 import com.youtil.server.security.UserPrincipal;
 import io.swagger.annotations.ApiOperation;
@@ -38,17 +37,7 @@ public class S3Controller {
     @ApiOperation(value = "프로필 이미지 업로드", notes = "파일을 업로드하고 주소를 반환한다.")
     @PostMapping("/users")
     public String uploadProfileFile(@RequestParam("file") MultipartFile multipartFile) throws IOException{
-//        return s3Uploader.upload(multipartFile, "static/user");
-        String source = null;
-
-        try{
-            source = s3Uploader.upload(multipartFile, "static/user");
-        }
-        catch (IOException e){
-            throw new ArgumentMismatchException("파일 용량이 너무 큽니다");
-        }
-
-        return source;
+        return s3Uploader.upload(multipartFile, "static/user");
     }
 
     @ApiOperation(value = "목표 이미지 업로드", notes = "파일을 업로드하고 주소를 반환한다.")
