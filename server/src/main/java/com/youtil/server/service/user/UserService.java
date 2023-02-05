@@ -36,7 +36,8 @@ public class UserService {
         String path = originUser.getImageUrl();
 //        deleteImg(path);
 
-        String baseImg = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg";
+        logger.info("=============path : {}", path);
+        String baseImg = "3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg";
 
         if(!path.equals(baseImg)) {
             String source = URLDecoder.decode(path.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/", ""), "UTF-8");
@@ -49,6 +50,7 @@ public class UserService {
         logger.info("=============newImg : {}", request.getImageUrl());
 
         originUser.update(request);
+        logger.info("=============originUserImg : {}", originUser.getImageUrl());
         return userId;
     }
 
