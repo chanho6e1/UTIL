@@ -3,6 +3,7 @@ import classes from "./UserProfileChange.module.css";
 import UserProfileChangeCard from "../UI/UserProfileChangeCard/UserProfileChangeCard";
 import { getMyData } from "../../api/UserProfile/getMyData";
 import { getMyTags } from "../../api/UserProfile/getMyTags";
+import defautUserProfilePic from "../../img/defaultUserProfilePic.svg";
 
 const UserProfileChange = (props) => {
   const [userData, setUserData] = useState("");
@@ -52,7 +53,7 @@ const UserProfileChange = (props) => {
     <div>
       {userData && userTagList && (
         <UserProfileChangeCard
-          imageUrl={userData.imageUrl}
+          imageUrl={userData.imageUrl || defautUserProfilePic}
           userName={userData.userName}
           nickname={userData.nickname}
           description={userData.description}
