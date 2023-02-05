@@ -60,7 +60,11 @@ public class GoalService {
 
         goal = goalRepository.save(request.of(user));
 
-        String path = request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/","");
+        String path = null;
+        if(request.getImageUrl()!=null){
+            path = request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/","");
+        }
+
         String baseImg = "f18b354f-b630-4025-98f7-a7ed74f7ba40ogo.png";
 
         if(path==null){
@@ -94,7 +98,11 @@ public class GoalService {
         request.setStartDate(arr[0]);
         arr = request.getEndDate().split("T");
         request.setEndDate(arr[0]);
-        String path = request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/","");
+        String path = null;
+        if(request.getImageUrl()!=null){
+            path = request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/goal/","");
+        }
+
         String baseImg = "f18b354f-b630-4025-98f7-a7ed74f7ba40ogo.png";
         String originImg = goal.getImageUrl();
 
