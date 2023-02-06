@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from "react";
 import classes from "./PostCardContainerLoading.module.css";
 
-const PostCardLoadingItem = () => {
+const PostCardLoadingItem = (key) => {
   return (
-    <li>
+    <li key={key}>
       <div className={classes.item}>
         <div className={classes[`text-area`]}> </div>
         <div className={classes[`thumbnail-area`]}> </div>
@@ -16,20 +16,22 @@ const PostCardLoadingList = (count) => {
   const loadingList = [];
 
   for (let i = 0; i < count; i++) {
-    loadingList.push(PostCardLoadingItem());
+    loadingList.push(PostCardLoadingItem(i));
   }
 
   return loadingList;
 };
 
 const PostCardContainerLoading = (props) => {
-  const aniWrapperRef = useRef();
+  const aniWrapperRef = useRef(null);
 
   useEffect(() => {
     setTimeout(() => {
-      aniWrapperRef.current.style.opacity = "255";
+      if (aniWrapperRef.current !== null) {
+        aniWrapperRef.current.style.opacity = "255";
+      }
     }, 100);
-  }, []);
+  }, [aniWrapperRef]);
 
   return (
     <div className={classes["ani-wrapper"]} ref={aniWrapperRef}>
