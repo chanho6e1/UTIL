@@ -4,6 +4,15 @@
   flex-wrap: wrap;
   text-align: start;
   margin: 0px auto;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.loading {
+  display: block;
+  justify-content: center;
 }
 
 .feed ul {
@@ -12,16 +21,15 @@
   justify-content: space-around;
   grid-template-columns: repeat(4, 1fr);
   padding: 0px;
+  overflow: hidden;
+}
+
+.feed li {
+  align-items: center;
+  padding: 0 0 0 0;
 }
 
 @media screen and (max-width: 768px) {
-  .feed {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 0px auto;
-  }
-
   .feed ul {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
@@ -30,13 +38,6 @@
 }
 
 @media screen and (min-width: 769px) and (max-width: 1200px) {
-  .feed {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 0px auto;
-  }
-
   .feed ul {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -45,13 +46,6 @@
 }
 
 @media screen and (min-width: 1201px) and (max-width: 1500px) {
-  .feed {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 0px auto;
-  }
-
   .feed ul {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
