@@ -215,7 +215,7 @@ const UserProfileChangeCard = (props) => {
             <TextField
               id="filled-multiline-static"
               label="자기소개"
-              variant="outlined"
+              variant="filled"
               multiline
               rows={5}
               defaultValue={description}
