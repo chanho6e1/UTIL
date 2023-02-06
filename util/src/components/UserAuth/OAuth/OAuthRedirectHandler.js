@@ -1,31 +1,38 @@
 import React, {useEffect} from "react";
 import { ACCESS_TOKEN } from '../../../constants';
-import { Navigate, useLocation } from 'react-router-dom'
+import { Navigate, useLocation, useSearchParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { userAuthSliceActions } from '../../../redux/userAuthSlice'
 
 const OAuthRedirectHandler = (props) => {
   const location = useLocation()
   const dispatch = useDispatch()
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const getUrlParameter = (name) => {
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-
-    var results = regex.exec(location.search);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-  }
-
-  const token = getUrlParameter('token');
-  const error = getUrlParameter('error');
+  const token = searchParams.get('token');
+  const error = searchParams.get('error');
+  const code = searchParams.get('code');
 
   if(token) {
     // 성공
     localStorage.setItem(ACCESS_TOKEN, token);
     dispatch(userAuthSliceActions.changeToken(token))
-    return <Navigate to={{
+
+    if (code === '201') {
+      // 회원가입 시
+      return <Navigate to={{
         pathname: "/",
         state: { from: location }
-    }}/>; 
+      }}/>; 
+    } else if (code === '200') {
+      // 기존 유저 로그인 시
+      return <Navigate to={{
+        pathname: "/create/post",
+        state: { from: location }
+      }}/>; 
+    }
+
+    
   } else {
     // 실패
       return <Navigate to={{

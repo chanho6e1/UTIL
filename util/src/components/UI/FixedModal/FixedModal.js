@@ -43,28 +43,32 @@ const ModalOverlay = (props) => {
   )
 
   const addBtn = props.addBtn?.map((el,idx) => {
-      const content = React.cloneElement(el, {className:el.props.className + ` ${styles['button']}`, onClick: () => {el.props.onClick(); modalHandler()}});
+      const btn = React.cloneElement(el, {className:el.props.className + ` ${styles['button']}`, onClick: () => {el.props.onClick(); modalHandler()}});
       return (
-        content
+        btn
       )
   })
   
+  const footer = (
+    <div className={styles['footer']}>
+      {hideButton}
+      {addBtn}
+    </div>
+  )
   
+  const content = React.cloneElement(props.content, {...props, modalHandler: modalHandler});
+
   return (
     <div ref={backdropRef} className={styles.backdrop}>
       <div ref={modalRef} className={`${styles.modal}`}>
         <div ref={cardRef} className={`${styles.card}`}>
           
-          <div class={styles['back']}>
+          <div className={styles['back']}>
             <div className={styles['content']}>
-              {props.content}
+              {content}
             </div>
-            <div className={styles['footer']}>
-              
-              {hideButton}
-              {addBtn}
-              
-            </div>
+
+            {props.noBtn === true ? null : footer}
           </div>
           
         </div>

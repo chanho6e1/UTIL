@@ -41,22 +41,25 @@ const Notification = (props) => {
             popUpRef.current.style.height = '0px'
         }, props.duration + 600);
         setTimeout(function() {
-
-            // const copy = props.state
-            // console.log(props.id)
-            // delete copy[props.id]
-            // props.stateHandler(() => {return {...copy}})
-            // console.log(props.state)
             dispatch(notificationSliceActions.delete(JSON.stringify(props.id)))
 
         }, props.duration + 900);
     }, [])
 
+    const notiHandler = () => {
+        popUpRef.current.style.right = `-${props.width + 20}px`
+        setTimeout(function() {
+            popUpRef.current.style.height = '0px'
+        }, 300);
+        setTimeout(function() {
+            dispatch(notificationSliceActions.delete(JSON.stringify(props.id)))
+        }, 600);
+    }
 
 
     return (
 
-        <div ref={popUpRef} onClick={() => console.log(props.state)} className={styles['pop-up']}>
+        <div ref={popUpRef} onClick={() => notiHandler()} className={styles['pop-up']}>
             <div ref={contentWrapperRef} className={styles['content-wrapper']}>
                 <div className={styles['content']}>
                     {props.content}

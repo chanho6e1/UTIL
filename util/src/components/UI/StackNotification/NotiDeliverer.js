@@ -8,11 +8,11 @@ const NotiDeliverer = (props) => {
   const dispatch = useDispatch()
   const stack = useSelector(state => state.notificationSlice.stack)
 
-  const randNum = Math.floor(Math.random() * 100)
+  // const randNum = Math.floor(Math.random() * 100)
   useEffect(() => {
 
-    
-    const key = (Object.keys(stack).length * 100) + randNum
+    const key = Object.keys(stack)[Object.keys(stack).length - 1] + 1
+    // const key = (Object.keys(stack).length * 100) + randNum
 
     const data = {
       key: key,
