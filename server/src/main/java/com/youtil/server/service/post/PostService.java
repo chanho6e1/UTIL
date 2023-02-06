@@ -1,6 +1,7 @@
 package com.youtil.server.service.post;
 
 import com.amazonaws.services.s3.model.AmazonS3Exception;
+import com.youtil.server.common.PagedResponse;
 import com.youtil.server.common.exception.ArgumentMismatchException;
 import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
@@ -19,6 +20,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,13 +74,11 @@ public class PostService {
     }
 
 
-    public List<PostResponse> findPostListByUser(Long userId, int offset, int size, String criteria) {//내가 쓴 글 조회/오프셋
+    public PagedResponse<PostResponse> findPostListByUser(Long userId, int offset, int size, String criteria) {//내가 쓴 글 조회/오프셋
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-
-        return postQueryRepository.findPostListByUser(userId, criteria, PageRequest.of(offset - 1, size))
-                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
-    }
-
+        Page<Post> page =  postQueryRepository.findPostListByUser(userId, criteria, PageRequest.of(offset - 1, size));
+        return new PagedResponse<>(page.getNumber()+1, page.getSize(), page.getTotalElements(),
+                page.getTotalPages(), page.isLast());    }
 
     public List<PostResponse> findPostListBySpecUser(Long userId, int offset, int size, String criteria, Long myId) {
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId)); //내가 조회할 유저
