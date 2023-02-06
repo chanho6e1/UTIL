@@ -1,0 +1,19 @@
+.form-wrapper {
+    padding:24px;
+}
+
+.title-wrapper {
+    padding-bottom: 24px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button {
+    width: 48%;
+}
