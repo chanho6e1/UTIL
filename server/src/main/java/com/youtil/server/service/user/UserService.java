@@ -11,6 +11,7 @@ import com.youtil.server.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import java.net.URLDecoder;
 public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+    @Autowired
     private final UserRepository userRepository;
     private final S3Uploader s3Uploader;
     private final String baseImg = "cef3494f-5acf-4d8b-95d7-a9d710722788Pic.jpg";
