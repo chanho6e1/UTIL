@@ -26,14 +26,14 @@ public class PagedResponse<T> {
         this.last = last;
     }
 
-    public PagedResponse(int page, int size, long totalElements, int totalPages, boolean last) {
-//        setContent(content);
-        this.page = page; // ban
-        this.size = size;
-        this.totalElements = totalElements;
-        this.totalPages = totalPages; // ban
-        this.last = last;
-    }
+//    public PagedResponse(int page, int size, long totalElements, int totalPages, boolean last) {
+////        setContent(content);
+//        this.page = page; // ban
+//        this.size = size;
+//        this.totalElements = totalElements;
+//        this.totalPages = totalPages; // ban
+//        this.last = last;
+//    }
 
     public List<T> getContent() {
         return content == null ? null : new ArrayList<>(content);
