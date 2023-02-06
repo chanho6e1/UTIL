@@ -26,7 +26,7 @@ const PlanCardItem = (props) => {
 
   const todoList = todos && todos.map((todo, idx) => {
     return (
-      <PlanCardItemTodo todo={todo} className={idx % 2 ? 'odd' : 'even'} />
+      <PlanCardItemTodo todo={todo} plan={props.plan} className={idx % 2 ? 'odd' : 'even'} />
     )
   })
 
@@ -40,9 +40,9 @@ const PlanCardItem = (props) => {
           {props.plan.title}
         </div>
       </header>
-      <body>
+      <div>
         {todoList}
-      </body>
+      </div>
     </Card>
   )
 }
