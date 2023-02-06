@@ -14,6 +14,7 @@ import { createSlice, configureStore } from '@reduxjs/toolkit'
 import planSliceReducer from './planSlice'
 import userAuthReducer from './userAuthSlice'
 import notificationSliceReducer from './notificationSlice'
+import postDetailSliceReducer from './postDetailSlice'
 // import exampleSlice2Reducer from './exampleSlice2(toolkit)'
 // -------------------------------------------------------------------------------------------------------
 
@@ -28,6 +29,7 @@ const store = configureStore({
     planSlice: planSliceReducer,
     userAuthSlice: userAuthReducer,
     notificationSlice: notificationSliceReducer,
+    postDetailSlice: postDetailSliceReducer,
   }
 
 
