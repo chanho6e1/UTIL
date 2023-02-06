@@ -97,17 +97,23 @@ const PlanTodoListLeftItem = (props) => {
 
     const [askDeleteState, setAskDeleteState] = useState(false)
 
-    const addBtn = [<Button className={styles['delete-button']} onClick={deleteTodo}>삭제</Button>,]
-    
-    const askDeleteForm = (
-      <div style={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
-        <img style={{width:'128px', height:'auto', marginBottom: '12px'}} src={warning} />
-        <div>
-          <p style={{lineHeight: '40%'}}>삭제 시 복구할 수 없습니다.</p>
-          <p style={{lineHeight: '40%'}}>정말로 삭제 하시겠습니까?</p>
-        </div>
-      </div>
-    )
+
+
+    const AskDeleteForm = (props) => {
+        return (
+          <div style={{width:'100%', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
+            <img style={{width:'140px', height:'auto', marginBottom: '12px'}} src={warning} />
+            <div>
+              <p style={{lineHeight: '40%'}}>삭제 시 복구할 수 없습니다.</p>
+              <p style={{lineHeight: '40%'}}>정말로 삭제 하시겠습니까?</p>
+            </div>
+            <div style={{width:'100%', display:'flex', justifyContent:'space-evenly', marginTop:'12px'}}>
+              <Button className={styles['button']} onClick={props.modalHandler}>취소</Button>
+              <Button className={`${styles['button']} ${styles['delete-button']}`} onClick={() => {deleteTodo(); props.modalHandler()}}>삭제</Button>
+            </div>
+          </div>
+        )
+      }
   
     const askDelete = () => {
       setAskDeleteState(true)
@@ -141,7 +147,8 @@ const PlanTodoListLeftItem = (props) => {
     return (
         <div className={styles['todo-detail-wrapper']}>
             {NotiState && <NotiDeliverer content={notiContent} stateHandler={setNotiState} duration={5000} width={400} />}
-            <FixedModal modalState={askDeleteState} stateHandler={setAskDeleteState} content={askDeleteForm} addBtn={addBtn} width={300} height={310} />
+            <FixedModal modalState={askDeleteState} stateHandler={setAskDeleteState} content={<AskDeleteForm />} width={'300px'} height={'310px'} />
+
             {isEditMode ? titleEditInput : titleReadMode }
         </div>
         

@@ -36,7 +36,14 @@
     position: relative;
     transition: .4s;
     transform-style: preserve-3d;
-    
+    transform: rotateX(30deg);
+    background: white; 
+
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
   }	
 
   .back {
@@ -47,7 +54,7 @@
     height: 100%;
     backface-visibility: hidden;
     background: white; 
-    transform: rotateX(90deg);
+    /* transform: rotateX(90deg); */
     box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
@@ -79,4 +86,8 @@
    .button {
     width: 96px;
     height: 36px;
+   }
+
+   .footer {
+    margin-bottom: 24px;;
    }
