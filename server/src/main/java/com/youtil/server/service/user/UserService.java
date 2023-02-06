@@ -63,7 +63,7 @@ public class UserService {
         return userId;
     }
 
-
+//
     private void deleteS3Image(String path, String baseImg) throws UnsupportedEncodingException {
 
         if(!path.equals(baseImg)) {
