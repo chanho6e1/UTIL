@@ -77,15 +77,18 @@ public class PostService {
     public PagedResponse<PostResponse> findPostListByUser(Long userId, int offset, int size, String criteria) {//내가 쓴 글 조회/오프셋
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Page<Post> page =  postQueryRepository.findPostListByUser(userId, criteria, PageRequest.of(offset - 1, size));
-        return new PagedResponse<>(page.getNumber()+1, page.getSize(), page.getTotalElements(),
-                page.getTotalPages(), page.isLast());    }
+
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
+                page.getTotalPages(), page.isLast());
+    }
 
     public List<PostResponse> findPostListBySpecUser(Long userId, int offset, int size, String criteria, Long myId) {
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId)); //내가 조회할 유저
         User me = userRepository.findUser(myId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", myId)); //접속 중인 나
 
         return postQueryRepository.findPostListBySpecUser(userId, criteria, PageRequest.of(offset - 1, size), me)
-                .stream().map((post)-> new PostResponse(post, me)).collect(Collectors.toList()); //오류 
+                .stream().map((post)-> new PostResponse(post, me)).collect(Collectors.toList()); //오류
     }
 
 
