@@ -24,6 +24,7 @@
     "react-catalyst": "^0.3.1",
     "react-dom": "^18.2.0",
     "react-easy-swipe": "^0.0.22",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-markdown": "^8.0.4",
     "react-redux": "^8.0.5",
     "react-remark": "^2.1.0",
