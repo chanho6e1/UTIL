@@ -44,8 +44,8 @@ public class PostQueryRepository {
         return new PageImpl<>(content, pageRequest, content.size());
     }
 
-    public List<Post> findPostListBySpecUser(Long userId, String criteria, PageRequest pageRequest, User user) { //유저별 글
-        return jpaQueryFactory.select(post)
+    public  Page<Post> findPostListBySpecUser(Long userId, String criteria, PageRequest pageRequest, User user) { //유저별 글
+        List<Post> content = jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(post.user.userId.eq(userId)
@@ -55,11 +55,14 @@ public class PostQueryRepository {
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
+
+        return new PageImpl<>(content, pageRequest, content.size());
+
     }
 
-    public List<Post> findPostList(Long userId, String criteria, PageRequest pageRequest){ //정렬
+    public Page<Post> findPostList(Long userId, String criteria, PageRequest pageRequest){ //정렬
 
-        return jpaQueryFactory.select(post)
+        List<Post> content = jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(
@@ -72,13 +75,15 @@ public class PostQueryRepository {
                 .limit(pageRequest.getPageSize())
                 .fetch();
 
+        return new PageImpl<>(content, pageRequest, content.size());
+
     }
 
-    public List<Post> findByTitleContaining(Long userId, PostSearch postSearch, PageRequest pageRequest){ //제목으로 검색, 정렬도 지정
+    public Page<Post> findByTitleContaining(Long userId, PostSearch postSearch, PageRequest pageRequest){ //제목으로 검색, 정렬도 지정
 
         String criteria = postSearch.getCriteria();
 
-        return jpaQueryFactory.select(post)
+        List<Post> content = jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(post.title.contains(postSearch.getTitle()),
@@ -88,13 +93,16 @@ public class PostQueryRepository {
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
+
+        return new PageImpl<>(content, pageRequest, content.size());
+
     }
 
-    public List<Post> findByPostSubscribes(PostSearch postSearch, User user, PageRequest pageRequest) {
+    public Page<Post> findByPostSubscribes(PostSearch postSearch, User user, PageRequest pageRequest) {
 
         String criteria = postSearch.getCriteria();
 
-        return jpaQueryFactory.select(post)
+        List<Post> content =  jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(
@@ -111,11 +119,14 @@ public class PostQueryRepository {
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
+
+        return new PageImpl<>(content, pageRequest, content.size());
+
     }
 
-    public List<Post> findByLikePostList(String criteria, User user, PageRequest pageRequest) {
+    public Page<Post> findByLikePostList(String criteria, User user, PageRequest pageRequest) {
 
-        return jpaQueryFactory.select(post)
+        List<Post> content =  jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(
@@ -130,12 +141,15 @@ public class PostQueryRepository {
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
+
+        return new PageImpl<>(content, pageRequest, content.size());
+
     }
 
 
-    public  List<Post> findByBookmarkPostList(String criteria, User user, PageRequest pageRequest) {
+    public Page<Post> findByBookmarkPostList(String criteria, User user, PageRequest pageRequest) {
 
-        return jpaQueryFactory.select(post)
+        List<Post> content = jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(
@@ -150,16 +164,22 @@ public class PostQueryRepository {
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
+
+        return new PageImpl<>(content, pageRequest, content.size());
+
     }
 
 
-    public List<PostLike> PostLikesPeople(Long postId, PageRequest pageRequest) {//해당글 좋아요한 사람들
-        return jpaQueryFactory.select(postLike).from(postLike).distinct()
+    public Page<PostLike> PostLikesPeople(Long postId, PageRequest pageRequest) {//해당글 좋아요한 사람들
+        List<PostLike> content = jpaQueryFactory.select(postLike).from(postLike).distinct()
                 .innerJoin(postLike.post).fetchJoin()
                 .where(postLike.post.postId.eq(postId))
                 .orderBy(postLike.createdDate.desc())
                 .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())
                 .fetch();
+
+        return new PageImpl<>(content, pageRequest, content.size());
+
     }
 
     private BooleanExpression isPrivate1(Long userId){ //공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
