@@ -36,7 +36,7 @@ const Feed = (props) => {
 
   useEffect(() => {
     setIsLoading(true);
-    getPosts(criteria[0], offset, size).then((res) => {
+    props.api(criteria[0], offset, size).then((res) => {
       setFeedList(() => res.content);
       setIsLoading(false);
     });
@@ -44,7 +44,7 @@ const Feed = (props) => {
 
   const fetchMoreData = () => {
     setIsLoading(true);
-    getPosts(criteria[0], offset + 1, size).then((res) => {
+    props.api(criteria[0], offset + 1, size).then((res) => {
       setFeedList((prevState) => [...prevState, ...res.content]);
       setOffset((prevState) => prevState + 1);
       setIsLoading(false);
