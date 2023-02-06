@@ -2,6 +2,7 @@ import React, {useState, useRef, useEffect} from "react";
 import Swipe from "react-easy-swipe";
 import styles from './SwipeableDock.module.css'
 import { useNavigate, useMatch, useLocation, Routes, Route } from "react-router-dom";
+import useDidMountEffect from "../../../hooks/useDidMountEffect";
 
 
 
@@ -17,6 +18,20 @@ const SwipeableDock = (props) => {
   const navigate = useNavigate()
   const [width, setWidth] = useState(null)
   const [height, setHeight] = useState(null)
+  const [urlLib, setUrlLib] = useState({})
+  const location = useLocation();
+  const contentRef = useRef([])
+
+  useEffect(() => {
+    setUrlLib({})
+    postData.url.map((el,idx) => {
+      setUrlLib((prev) => {return {...prev, [el]: idx + 1}})
+    })
+  }, [])
+
+  useEffect(() => {
+    setContentCount(urlLib[location.pathname])
+  }, [urlLib, location.pathname])
 
 
 
@@ -33,10 +48,12 @@ const SwipeableDock = (props) => {
         movingDiv.current.style.transform = `translateX(${-props.parentRef.current.clientWidth * (contentCount - 1)}px)`
       }
     }
+    
     window.addEventListener(`resize`, resize);
     return () => {
       window.removeEventListener(`resize`, resize);
     }
+    
   }, [contentCount])
 
   
@@ -77,6 +94,8 @@ const SwipeableDock = (props) => {
     setPositionx(() => 0)
     setEndSwipe(true)
   }
+
+
   const clickDockHandler = async (idx) => {
     setContentCount(() => idx + 1)
   }
@@ -111,8 +130,9 @@ const SwipeableDock = (props) => {
           <div className={styles.wrapper}>
             <div className={styles.moveable} ref={movingDiv}>
               {postData.content.map((el, idx) => {
+                  const content = React.cloneElement(el, {...props, contentRef: contentRef[idx]});
                   // return <div className={styles.content} style={{width: width + 'px', height: height + 'px'}}><Routes><Route path={`${postData.url[idx]}/*`} element={el} /></Routes></div>
-                  return <div key={`dock-content-${idx}`} className={styles.content} style={{width: width + 'px', height: height + 'px'}}>{el}</div>
+                  return <div key={`dock-content-${idx}`} ref={el => (contentRef.current[idx] = el)} className={styles.content} style={{width: width + 'px', height: height + 'px'}}>{content}</div>
               })}
             </div>
           </div>

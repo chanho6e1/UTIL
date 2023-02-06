@@ -13,5 +13,8 @@ export const recvTodosAPI = (goalId) => {
     .then((res) => {
         return res.data.data
     })
+    .catch((err) => {
+        throw err
+    })
 }
 

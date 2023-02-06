@@ -1,8 +1,8 @@
 import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
-import { recvPlansAPI } from "./recvPlansAPI";
 
+import { recvIngPlanAPI } from "./recvIngPlanAPI";
 
 export const newPlanAPI = (startDate, endDate, title) => {
     return axios({
@@ -19,7 +19,10 @@ export const newPlanAPI = (startDate, endDate, title) => {
     },
     })
     .then((res) => {
-        return recvPlansAPI()
+        return recvIngPlanAPI()
+    })
+    .catch((err) => {
+        throw err
     })
 }
 

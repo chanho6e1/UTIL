@@ -27,15 +27,13 @@ const PlanTodoListRight = (props) => {
     const todoSpaceRef = useRef([])
     const todosRightRef = useRef()
 
-    useEffect(() => {
-        console.log(props.todos)
-    }, [props.todos])
 
 
 
-    const todoContents = props.todos[props.goalId].map((el, idx) => {
+
+    const todoContents = props.todos[props.plan.goalId]?.map((el, idx) => {
         return (
-            <PlanTodoListRightItem key={`todos-${props.goalId}-${idx}-${el.dueDate}`} applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} toStringByFormatting={toStringByFormatting} el={el} scrollRef={props.scrollRef} containerRef={props.containerRef} time={new Date(el.dueDate)} goalId={props.goalId} />
+            <PlanTodoListRightItem key={`todos-${props.plan.goalId}-${idx}-${el.dueDate}`} plan={props.plan} applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} toStringByFormatting={toStringByFormatting} todo={el} scrollRef={props.scrollRef} containerRef={props.containerRef} time={new Date(el.dueDate)} goalId={props.plan.goalId} />
         )
     })
 
@@ -51,7 +49,7 @@ const PlanTodoListRight = (props) => {
     }
 
     useEffect(() => {
-        props.getInputTodoData(null, newTodoDateValue, newTodoDescValue, props.goalId)
+        props.getInputTodoData(null, newTodoDateValue, newTodoDescValue, props.plan.goalId)
     }, [newTodoDateValue, newTodoDescValue])
 
     const onEnterNewPlanHandler = (event) => {
@@ -63,7 +61,7 @@ const PlanTodoListRight = (props) => {
     useEffect(() => {
         setNewTodoDateValue(today)
         setNewTodoDescValue('')
-    }, [(props.newTodoIdx === props.goalId)])
+    }, [(props.newTodoGoalId === props.plan.goalId)])
 
     const newTodoEl = (
         <React.Fragment>
@@ -76,16 +74,17 @@ const PlanTodoListRight = (props) => {
     const newTodo = (
         <div className={styles['new-todo-wrapper']} style={{width: `${props.containerRef?.current?.scrollWidth}px`}}>
             <div className={styles['todo-space']} >
-                {(props.newTodoIdx === props.goalId) ? newTodoEl : null}
+                {(props.newTodoGoalId === props.plan.goalId) ? newTodoEl : null}
             </div>
         </div>
     )
 
+    
+
     return (
         <div ref={todosRightRef} className={styles['todos-right']} style={{width: `${props.containerRef?.current?.scrollWidth}px`}}>
-            
             {newTodo}
-            {props.todos[props.goalId] && todoContents}
+            {props.todos[props.plan.goalId] && todoContents}
         </div>
     )
 }
