@@ -37,7 +37,7 @@ public class User extends BaseEntity {
     @Size(max = 100)
     private String userName;
 
-    @Column(name = "EMAIL", length = 512, unique = true)
+    @Column(name = "EMAIL", length = 512, unique = false)
     @Nullable
     @Size(max = 512)
     private String email;
