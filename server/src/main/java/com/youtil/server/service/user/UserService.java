@@ -37,7 +37,8 @@ public class UserService {
 //        deleteImg(path);
 
         logger.info("=============path : {}", path);
-        String baseImg = "3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg";
+//        String baseImg = "3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg";
+        String baseImg = "cef3494f-5acf-4d8b-95d7-a9d710722788Pic.jpg";
 
         String newImg = null;
 
