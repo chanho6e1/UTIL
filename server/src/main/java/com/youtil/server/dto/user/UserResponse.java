@@ -28,7 +28,8 @@ public class UserResponse {
     private String discription;
 
     public static UserResponse from(User user) {
-        return new UserResponse(user.getUserId(), user.getNickName(), user.getEmail(), user.getUserName(), user.getImageUrl(), user.getDepartment(), user.getDiscription());
+        String imgUrl = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/" + user.getImageUrl();
+        return new UserResponse(user.getUserId(), user.getNickName(), user.getEmail(), user.getUserName(), imgUrl, user.getDepartment(), user.getDiscription());
     }
 
     public void setNickname(String nickname) {
