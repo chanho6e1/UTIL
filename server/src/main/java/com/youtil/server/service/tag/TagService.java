@@ -1,5 +1,6 @@
 package com.youtil.server.service.tag;
 
+import com.youtil.server.common.PagedResponse;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.tag.Tag;
@@ -19,6 +20,7 @@ import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -147,20 +149,29 @@ public class TagService {
     }
 
     //태그별 게시물 조회
-    public List<PostResponse> findPostListByTag(Long userId, Long tagId, String criteria, int offset, int size) { // 테그로 포스트 조회
+    public PagedResponse<PostResponse> findPostListByTag(Long userId, Long tagId, String criteria, int offset, int size) { // 테그로 포스트 조회
         Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag", "tagId", tagId));
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        return tagQueryRepository.findPostListByTag(userId, tagId, criteria, PageRequest.of(offset-1, size))
-                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+//        return tagQueryRepository.findPostListByTag(userId, tagId, criteria, PageRequest.of(offset-1, size))
+//                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        Page<Post> page =tagQueryRepository.findPostListByTag(userId, tagId, criteria, PageRequest.of(offset-1, size));
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
+                page.getTotalPages(), page.isLast());
+
     }
 
     //나의 관심 태그별 게시글 조회
-    public List<PostResponse> findPostListByMyTag(Long userId, String criteria, int offset, int size) { // 나의 관심 테그로 포스트 조회
+    public PagedResponse<PostResponse> findPostListByMyTag(Long userId, String criteria, int offset, int size) { // 나의 관심 테그로 포스트 조회
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        return tagQueryRepository.findPostListByMyTag(userId, criteria, PageRequest.of(offset-1, size))
-                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+//        return tagQueryRepository.findPostListByMyTag(userId, criteria, PageRequest.of(offset-1, size))
+//                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        Page<Post> page = tagQueryRepository.findPostListByMyTag(userId, criteria, PageRequest.of(offset-1, size));
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
+                page.getTotalPages(), page.isLast());
     }
 
 
