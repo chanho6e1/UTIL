@@ -73,7 +73,6 @@ public class PostService {
         return new PostResponse(post, likeStatus, bookmarkStatus);
     }
 
-
     public PagedResponse<PostResponse> findPostListByUser(Long userId, int offset, int size, String criteria) {//내가 쓴 글 조회/오프셋
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Page<Post> page =  postQueryRepository.findPostListByUser(userId, criteria, PageRequest.of(offset - 1, size));
@@ -83,55 +82,72 @@ public class PostService {
                 page.getTotalPages(), page.isLast());
     }
 
-    public List<PostResponse> findPostListBySpecUser(Long userId, int offset, int size, String criteria, Long myId) {
+    public  PagedResponse<PostResponse> findPostListBySpecUser(Long userId, int offset, int size, String criteria, Long myId) {
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId)); //내가 조회할 유저
         User me = userRepository.findUser(myId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", myId)); //접속 중인 나
 
-        return postQueryRepository.findPostListBySpecUser(userId, criteria, PageRequest.of(offset - 1, size), me)
-                .stream().map((post)-> new PostResponse(post, me)).collect(Collectors.toList()); //오류
+        Page<Post> page = postQueryRepository.findPostListBySpecUser(userId, criteria, PageRequest.of(offset - 1, size), me);
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, me)).collect(Collectors.toList());
+        return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
+                page.getTotalPages(), page.isLast());
     }
 
 
-    public List<PostResponse> findPostList(Long userId, String criteria, int offset, int size) {//전체 리스트 조회,정렬기준(선택/디폴트는 최근 날짜) ,오프셋
+    public PagedResponse<PostResponse> findPostList(Long userId, String criteria, int offset, int size) {//전체 리스트 조회,정렬기준(선택/디폴트는 최근 날짜) ,오프셋
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        return postQueryRepository.findPostList(userId, criteria, PageRequest.of(offset - 1, size))
-                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        Page<Post> page =  postQueryRepository.findPostList(userId, criteria, PageRequest.of(offset - 1, size));
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+
+        return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
+                page.getTotalPages(), page.isLast());
     }
 
-    public List<PostResponse> findByPostTitle(Long userId, PostSearch search, int offset, int size) {//내용으로 검색/오프셋
+    public PagedResponse<PostResponse> findByPostTitle(Long userId, PostSearch search, int offset, int size) {//내용으로 검색/오프셋
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        return postQueryRepository.findByTitleContaining(userId, search, PageRequest.of(offset - 1, size))
-                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        Page<Post> page =  postQueryRepository.findByTitleContaining(userId, search, PageRequest.of(offset - 1, size));
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+
+        return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
+                page.getTotalPages(), page.isLast());
+    }
+
+    public PagedResponse<PostLikePeopleResponse> PostLikesPeople(Long postId, int offset, int size) {//해당 게시물의 좋아요한 사람 리스트
+        Page<PostLike> page = postQueryRepository.PostLikesPeople(postId, PageRequest.of(offset - 1, size));
+        List<PostLikePeopleResponse> responses = page.stream().map(PostLikePeopleResponse::new).collect(Collectors.toList());
+        return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
+                page.getTotalPages(), page.isLast());
     }
 
 
-    public List<PostLikePeopleResponse> PostLikesPeople(Long postId, int offset, int size) {//해당 게시물의 좋아요한 사람 리스트
-        return postQueryRepository.PostLikesPeople(postId, PageRequest.of(offset - 1, size))
-                .stream().map(PostLikePeopleResponse::new).collect(Collectors.toList());
-    }
-
-
-    public List<PostResponse> findByPostSubscribes(PostSearch search, Long userId, int offset, int size) {//내가 구독한 사람의 글 리스트 조회/오프셋
-
-//        User user1 = userRepository.findUser(100L).orElseThrow(() -> new ArgumentMismatchException("잘못된 인자(상황에 맞도록)", data));
+    public PagedResponse<PostResponse> findByPostSubscribes(PostSearch search, Long userId, int offset, int size) {//내가 구독한 사람의 글 리스트 조회/오프셋
 
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-        return postQueryRepository.findByPostSubscribes(search, user, PageRequest.of(offset - 1, size))
-                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        Page<Post> page = postQueryRepository.findByPostSubscribes(search, user, PageRequest.of(offset - 1, size));
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
+                page.getTotalPages(), page.isLast());
     }
 
-    public List<PostResponse> findByLikePostList(Long userId, String criteria, int offset, int size) {
+    public PagedResponse<PostResponse> findByLikePostList(Long userId, String criteria, int offset, int size) {
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-        return postQueryRepository.findByLikePostList(criteria, user, PageRequest.of(offset - 1, size))
-                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        Page<Post> page =  postQueryRepository.findByLikePostList(criteria, user, PageRequest.of(offset - 1, size));
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
+                page.getTotalPages(), page.isLast());
     }
 
-    public List<PostResponse> findByBookmarkPostList(Long userId, String criteria, int offset, int size) {
+    public PagedResponse<PostResponse> findByBookmarkPostList(Long userId, String criteria, int offset, int size) {
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-        return postQueryRepository.findByBookmarkPostList(criteria, user, PageRequest.of(offset - 1, size))
-                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        Page<Post> page = postQueryRepository.findByBookmarkPostList(criteria, user, PageRequest.of(offset - 1, size));
+
+        List<PostResponse> responses = page.stream().map((post) -> new PostResponse(post, user)).collect(Collectors.toList());
+        return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
+                page.getTotalPages(), page.isLast());
+
+//    return postQueryRepository.findByBookmarkPostList(criteria, user, PageRequest.of(offset - 1, size))
+//            .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 
 
