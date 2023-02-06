@@ -1,5 +1,6 @@
 package com.youtil.server.repository.tag;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
@@ -39,7 +40,7 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
 //    }
     public Page<Post> findPostListByTag(Long userId, Long tagId, String criteria, Pageable pageRequest){
 //        return jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
-        List<Post> content = jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
+        QueryResults<Post> content = jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
                 .innerJoin(tagOfPost.post)
                 .where(
                         tagOfPost.tag.tagId.eq(tagId)
@@ -48,14 +49,14 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
-                .fetch();
-        return new PageImpl<>(content, pageRequest, content.size());
+                .fetchResults();
+        return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
     }
 
     public Page<Post> findPostListByMyTag(Long userId, String criteria, PageRequest pageRequest) { //나의 관심 태그별 글 조회
 
 //        return jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
-        List<Post> content = jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
+        QueryResults<Post> content = jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
                 .innerJoin(tagOfPost.post)
                 .where(
 
@@ -69,8 +70,8 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
-                .fetch();
-        return new PageImpl<>(content, pageRequest, content.size());
+                .fetchResults();
+        return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
     }
 
     private BooleanExpression isPrivate(Long userId){ //or사용 / 공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
