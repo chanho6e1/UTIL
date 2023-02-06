@@ -4,7 +4,7 @@ import PostCardItem from "../UI/PostCard/PostCardItem";
 import TagDataList from "../UI/Tag/TagDataList";
 import { Avatar, Pagination } from "@mui/material";
 import Button from "../UI/Button/Button";
-import PostCardContainerLoading from "./PostCardContainerLoading";
+import PostCardContainerLoading from "../UI/Loading/PostCardContainerLoading";
 import { getUserPosts } from "../../api/Post/getUserPosts";
 import { getUserData } from "../../api/Post/getUserData";
 import { getIsFollowing } from "../../api/Post/getIsFollowing";
