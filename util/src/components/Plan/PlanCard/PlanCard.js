@@ -1,9 +1,8 @@
 import React from "react";
 import PlanCardItem from "./PlanCardItem";
-import { notificationSliceActions } from "../../redux/notificationSlice";
+import styles from './PlanCard.module.css'
+import { notificationSliceActions } from "../../../redux/notificationSlice";
 import { useSelector, useDispatch } from 'react-redux'
-
-import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 
 const PlanCard = (props) => {
   const dispatch = useDispatch()

@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 
-import PlanCard from "../Plan/PlanCard/PlanCardItem";
+import PlanCard from "../Plan/PlanCard/PlanCard";
 
 
 const MyUtil = (props) => {
@@ -21,7 +21,7 @@ const MyUtil = (props) => {
   return (
     <div className={styles['my-util']}>
 
-
+      <PlanCard />
         
 
     </div>
