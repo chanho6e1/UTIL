@@ -5,12 +5,22 @@ import { createSlice } from "@reduxjs/toolkit"
 // 초기 State 선언
 const initialSliceState = {
   plans: null,
+  posts: null,
   todos: {
 
   },
   todosPeriod: {
 
-  }
+  },
+  reviews: {
+
+  },
+  tils: {
+
+  },
+  comments: {
+
+  },
 }
 
 const modifyPlanSlice = createSlice({
@@ -24,6 +34,26 @@ const modifyPlanSlice = createSlice({
     responseTodos(state, action) {
       const parsedPayload = JSON.parse(action.payload)
       state.todos[parsedPayload.goalId] = parsedPayload.data
+    },
+    responseReviews(state, action) {
+      const parsedPayload = JSON.parse(action.payload)
+      state.reviews[parsedPayload.goalId] = parsedPayload.data
+    },
+    responseTils(state, action) {
+      const parsedPayload = JSON.parse(action.payload)
+      state.tils[parsedPayload.goalId] = parsedPayload.data
+    },
+    responsePosts(state, action) {
+      const parsedPayload = JSON.parse(action.payload)
+      state.posts = parsedPayload
+    },
+    responseComments(state, action) {
+      const parsedPayload = JSON.parse(action.payload)
+      state.comments[parsedPayload.postId] = parsedPayload.data
+    },
+    deleteComments(state, action) {
+      const parsedPayload = JSON.parse(action.payload)
+      state.comments.splice(parsedPayload, 1)
     },
     responseTodosPeriod(state, action) {
       const parsedPayload = JSON.parse(action.payload)

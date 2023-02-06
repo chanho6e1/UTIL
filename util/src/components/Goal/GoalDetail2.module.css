@@ -1,0 +1,80 @@
+.goal-detail {
+  /* background-color: #EDEDED; */
+  display: grid;
+  grid-template-columns: 3fr 3px 1fr;
+  background-size: cover;
+  height: 100vh;
+  /* overflow: hidden; */
+}
+
+.goal-detail-line {
+ border-left: 2px solid gray; 
+}
+
+.goal-detail-l {
+  display: grid;
+  grid-template-columns: 100px 1fr 100px;
+  overflow: auto;
+}
+
+.goal-detail-l-in {
+  padding: 20px;
+}
+
+.goal-detail-title {
+  font-size: 50px;
+  font-weight: 700;
+}
+
+.goal-detail-date {
+  text-align: end;
+  margin-right: 50px;
+}
+
+.goal-detail-state {
+  height: 30px;
+  margin-left: 60px;
+}
+
+.goal-detail-r-tils {
+  margin-top: 20vh;
+  border-radius: 30px;
+  border: 3px solid gray;
+  text-align: start;
+}
+
+.goal-detail-r-tils-title {
+  text-align: start;
+  margin-left: 30px;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.goal-detail-reviews-item {
+  margin-bottom: 10px;
+  margin-right: 30px;
+}
+
+.goal-detail-todos {
+  height: 25vh;
+  background-color: white;
+  border-radius: 30px;
+  border: 2px gray solid
+}
+
+.goal-detail-reviews-title {
+  text-align: start;
+  margin-left: 30px;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.goal-detail-reviews {
+  text-align: start;
+  margin-top: 30px;
+  height: 45vh;
+}
+
+.goal-detail-reviews-line {
+  border-top: 2px solid gray;
+}
