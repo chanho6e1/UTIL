@@ -1,8 +1,7 @@
 import FeedCardItem from "../UI/FeedCard/FeedCardItem";
 import classes from "./Feed.module.css";
 import { getPosts } from "../../api/Post/getPosts";
-import { useState, useEffect } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { useState, useEffect, useRef, Fragment } from "react";
 import Loading from "../UI/Loading/Loading";
 
 const feedCardItemList = (postList) => {
@@ -25,11 +24,13 @@ const feedCardItemList = (postList) => {
   });
 };
 
-const Feed = () => {
+const Feed = (props) => {
   const [feedList, setFeedList] = useState([]);
   const criteria = ["date", "view", "like"];
   const [offset, setOffset] = useState(1);
-  const size = 5;
+  const size = 10;
+
+  const feedRef = useRef();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -50,32 +51,13 @@ const Feed = () => {
     });
   };
 
-  // const handleScroll = () => {
-  //   console.log("handle");
-  //   const scrollHeight = document.documentElement.scrollHeight;
-  //   const scrollTop = document.documentElement.scrollTop;
-  //   const clientHeight = document.documentElement.clientHeight;
-
-  //   if (scrollTop + clientHeight >= scrollHeight && isLoading === true) {
-  //     fetchMoreData();
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener("scroll", handleScroll);
-  //   // return () => {
-  //   //   window.removeEventListener("scroll", handleScroll);
-  //   // };
-  // });
-
-  // 스크롤 이벤트 핸들러
+  // scroll event handler
   const handleScroll = () => {
-    const scrollHeight = document.documentElement.scrollHeight;
-    const scrollTop = document.documentElement.scrollTop;
-    const clientHeight = document.documentElement.clientHeight;
+    const scrollHeight = feedRef.current.scrollHeight;
+    const scrollTop = feedRef.current.scrollTop;
+    const clientHeight = feedRef.current.clientHeight;
 
-    console.log("sh", scrollHeight, "st", scrollTop, "ch", clientHeight);
-    if (scrollTop + clientHeight >= scrollHeight && isLoading === false) {
+    if (scrollTop + clientHeight >= scrollHeight - 10 && isLoading === false) {
       // 페이지 끝에 도달하면 추가 데이터를 받아온다
       fetchMoreData();
     }
@@ -83,18 +65,20 @@ const Feed = () => {
 
   useEffect(() => {
     // scroll event listener 등록
-    window.addEventListener("scroll", handleScroll);
+    feedRef.current.addEventListener("scroll", handleScroll);
     return () => {
       // scroll event listener 해제
-      window.removeEventListener("scroll", handleScroll);
+      feedRef.current.removeEventListener("scroll", handleScroll);
     };
   });
 
   return (
-    <div className={classes.feed}>
-      {<ul>{feedCardItemList(feedList)}</ul>}
-      {isLoading && Loading()}
-    </div>
+    <Fragment>
+      <div className={classes.feed} ref={feedRef}>
+        {<ul>{feedCardItemList(feedList)}</ul>}
+      </div>
+      <div>{isLoading && <div className={classes.loading}>{Loading()}</div>}</div>
+    </Fragment>
   );
 };
 
