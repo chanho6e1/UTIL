@@ -8,7 +8,9 @@ import com.youtil.server.domain.post.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,23 +25,37 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public List<Post> findPostListByTag(Long userId, Long tagId, String criteria, PageRequest pageRequest){
-        return jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
+//    public List<Post> findPostListByTag(Long userId, Long tagId, String criteria, PageRequest pageRequest){
+//        return jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
+//                .innerJoin(tagOfPost.post)
+//                .where(
+//                       tagOfPost.tag.tagId.eq(tagId)
+//                        ,isPrivate(userId)
+//                )
+//                .orderBy(findCriteria(criteria))
+//                .offset(pageRequest.getOffset())
+//                .limit(pageRequest.getPageSize())
+//                .fetch();
+//    }
+    public Page<Post> findPostListByTag(Long userId, Long tagId, String criteria, Pageable pageRequest){
+//        return jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
+        List<Post> content = jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
                 .innerJoin(tagOfPost.post)
                 .where(
-                       tagOfPost.tag.tagId.eq(tagId)
+                        tagOfPost.tag.tagId.eq(tagId)
                         ,isPrivate(userId)
                 )
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
+        return new PageImpl<>(content, pageRequest, content.size());
     }
 
+    public Page<Post> findPostListByMyTag(Long userId, String criteria, PageRequest pageRequest) { //나의 관심 태그별 글 조회
 
-    public List<Post> findPostListByMyTag(Long userId, String criteria, PageRequest pageRequest) { //나의 관심 태그별 글 조회
-
-        return jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
+//        return jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
+        List<Post> content = jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
                 .innerJoin(tagOfPost.post)
                 .where(
 
@@ -54,7 +70,7 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
-
+        return new PageImpl<>(content, pageRequest, content.size());
     }
 
     private BooleanExpression isPrivate(Long userId){ //or사용 / 공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
