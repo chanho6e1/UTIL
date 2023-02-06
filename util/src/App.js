@@ -81,26 +81,24 @@ const App = () => {
     <div className="App" id="overlay-root">
       {/* <div id="overlay-root" style={{zIndex: '9999'}}></div> */}
       <StackNotification />
+      <div ref={wrapRef} className="wrap loaded">
+
       <Routes>
-        <Route path="/*" element={<Main />} />
-        <Route path="/login" element={<SocialLogin />} />
-        <Route path="/oauth2/redirect" element={<OAuthRedirectHandler />} /> 
+      
         <Route path="/goal/:id" element={<GoalDetail />} /> 
         <Route path="/post/:id" element={<DetailItem />} /> 
 
-        <Routes>
-          <Route path="/*" element={plans && <Main />} />
-          <Route path="/login" element={<SocialLogin />} />
-          <Route path="/oauth2/redirect" element={<OAuthRedirectHandler />} /> 
-          <Route path="/create" >
-            <Route path="review" element={<ToastEditor key={'review'} forReview={true}/>} />
-            <Route path="post" element={<ToastEditor key={'post'} />} />
-          </ Route>
-        </Routes>
-      </div>
+        <Route path="/*" element={plans && <Main />} />
+        <Route path="/login" element={<SocialLogin />} />
+        <Route path="/oauth2/redirect" element={<OAuthRedirectHandler />} /> 
+        <Route path="/create" >
+          <Route path="review" element={<ToastEditor key={'review'} forReview={true}/>} />
+          <Route path="post" element={<ToastEditor key={'post'} />} />
+        </ Route>
+      </Routes>
     
     </div>
-    
+  </div>
 
   );
 }
