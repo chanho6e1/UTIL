@@ -7,7 +7,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
@@ -68,5 +70,13 @@ public class RestControllerExceptionHandler {
 //        bindingResult.getAllErrors().forEach(c -> errors.put(((FieldError)c).getField() , c.getDefaultMessage()));
         bindingResult.getAllErrors().forEach(c ->list.add(new ErrorResponse(false, c.getDefaultMessage(), ((FieldError)c).getField())));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(list);
+    }
+
+    //파일 용량 제한
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    @ResponseStatus(HttpStatus.PAYLOAD_TOO_LARGE)
+    public ResponseEntity<?> handleMaxUploadSizeExceptions(MaxUploadSizeExceededException exception) {
+         ErrorResponse errResponse =  new ErrorResponse(false, "파일 용량이 너무 큽니다.", null);
+        return new ResponseEntity<>(errResponse, HttpStatus.PAYLOAD_TOO_LARGE);
     }
 }

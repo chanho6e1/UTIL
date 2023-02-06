@@ -41,7 +41,7 @@ public class S3Uploader {
         return upload(uploadFile, dirName);
     }
 
-    private String upload(File uploadFile, String dirName) {
+    private String upload(File uploadFile, String dirName){
 
         String name = uploadFile.getName().substring(uploadFile.getName().length()-7);
         String fileName = dirName+"/"+ UUID.randomUUID()+ name;
@@ -67,7 +67,7 @@ public class S3Uploader {
 
 
     private Optional<File> convert(MultipartFile multipartFile) throws IOException {
-        File convertFile = new File(System.getProperty("user.dir")+"/"+ multipartFile.getOriginalFilename());
+    File convertFile = new File(System.getProperty("user.dir")+"/"+ multipartFile.getOriginalFilename());
         if(convertFile.createNewFile()){
             try(FileOutputStream fos = new FileOutputStream(convertFile)){
                 fos.write(multipartFile.getBytes());
