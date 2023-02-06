@@ -47,6 +47,7 @@ public class PostComment extends BaseEntity {
 
     private Integer depth;//0과1
 
+    @Column(columnDefinition="TEXT")
     private String content;
 
     @ColumnDefault("false")

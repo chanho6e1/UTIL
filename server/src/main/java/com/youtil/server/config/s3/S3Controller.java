@@ -21,14 +21,7 @@ public class S3Controller {
     @ApiOperation(value = "포스트에서 파일, 섬네일 업로드", notes="파일을 업로드하고 주소를 반환한다")
     @PostMapping("/posts")
     public String uploadPostFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-
-        String source = null;
-        try {
-            source = s3Uploader.upload(multipartFile, "static/post");
-        }catch (SizeLimitExceededException e){
-            throw new ArithmeticException("파일 용량이 너무 큽니다");
-        }
-        return source;
+       return s3Uploader.upload(multipartFile, "static/post");
     }
 
     @ApiOperation(value = "회고록에서 파일 업로드", notes="파일을 업로드하고 주소를 반환한다")
