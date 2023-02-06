@@ -51,6 +51,10 @@ const modifyPlanSlice = createSlice({
       const parsedPayload = JSON.parse(action.payload)
       state.comments[parsedPayload.postId] = parsedPayload.data
     },
+    deleteComments(state, action) {
+      const parsedPayload = JSON.parse(action.payload)
+      state.comments.splice(parsedPayload, 1)
+    },
     responseTodosPeriod(state, action) {
       const parsedPayload = JSON.parse(action.payload)
       state.todosPeriod = parsedPayload[0]
