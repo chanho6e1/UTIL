@@ -1,7 +1,6 @@
 package com.youtil.server.controller.post;
 
 import com.youtil.server.common.CommonResponse;
-import com.youtil.server.common.PagedResponse;
 import com.youtil.server.dto.post.PostCommentResponse;
 import com.youtil.server.dto.post.PostCommentSaveRequest;
 import com.youtil.server.dto.post.PostCommentUpdateRequest;

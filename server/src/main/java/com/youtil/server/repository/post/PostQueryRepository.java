@@ -9,7 +9,10 @@ import com.youtil.server.domain.post.PostLike;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.post.PostSearch;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -28,8 +31,8 @@ public class PostQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public List<Post> findPostListByUser(Long userId, String criteria,  PageRequest pageRequest){ //내가 쓴 글
-        return jpaQueryFactory.select(post)
+    public Page<Post> findPostListByUser(Long userId, String criteria, Pageable pageRequest){ //내가 쓴 글
+        List<Post> content = jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(post.user.userId.eq(userId))
@@ -37,6 +40,8 @@ public class PostQueryRepository {
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
                 .fetch();
+
+        return new PageImpl<>(content, pageRequest, content.size());
     }
 
     public List<Post> findPostListBySpecUser(Long userId, String criteria, PageRequest pageRequest, User user) { //유저별 글
