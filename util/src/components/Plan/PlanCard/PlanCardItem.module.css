@@ -11,7 +11,7 @@
 @media all and (max-width: 480px) {
     .plan-card {
         width: 90vw;
-        height: 70vh;
+
     }
     
 }
@@ -19,7 +19,7 @@
 @media all and (min-width: 480px) {
     .plan-card {
         width: 300px;
-        height: 400px;
+
     }
     
 }
@@ -44,7 +44,7 @@
     /* box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.2); */
 }
 
-.new-todo-button {
+.new-button {
     /* margin-right: 8px; */
     transition-property: background-color;
     transition-duration: 0.3s;
@@ -57,6 +57,11 @@
     cursor: pointer;
 }
 
-.new-todo-button:hover {
+.new-button:hover {
     background-color: rgb(230, 230, 238);
+}
+
+.button-wrapper {
+    display: flex;
+    /* justify-content:; */
 }
