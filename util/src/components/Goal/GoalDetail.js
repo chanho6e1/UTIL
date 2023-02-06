@@ -2,7 +2,7 @@ import classes from "../Goal/GoalDetail.module.css";
 import GoalDetailL from "./GoalDetailL";
 import GoalDetailR from "./GoalDetailR";
 import React, {useState, useEffect, useRef, useCallback} from "react";
-import { modifyPlanSliceActions } from '../../redux/planSlice'
+import { modifyPostDetailSliceActions } from '../../redux/postDetailSlice'
 import { detailPlansAPI } from "../../api/Goal/detailPlansAPI";
 import { detailTodosAPI } from "../../api/Goal/detailTodosAPI";
 import { detailReviewsAPI } from "../../api/Goal/detailReviewsAPI";
@@ -24,7 +24,7 @@ const GoalDetail = (props) => {
         navigate('/login');
     })
     .then((res) => {
-        dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+        dispatch(modifyPostDetailSliceActions.getPlans(JSON.stringify(res)))
     })
   }, [])
 
@@ -35,7 +35,7 @@ const GoalDetail = (props) => {
         goalId: idx,
         data: res
     }
-    dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
+    dispatch(modifyPostDetailSliceActions.getTodos(JSON.stringify(proccessing)))
     })
   }, [])
 
@@ -46,7 +46,7 @@ const GoalDetail = (props) => {
         goalId: idx,
         data: res
     }
-    dispatch(modifyPlanSliceActions.responseReviews(JSON.stringify(proccessing)))
+    dispatch(modifyPostDetailSliceActions.getReviews(JSON.stringify(proccessing)))
     })
   }, [])
 
@@ -57,15 +57,15 @@ const GoalDetail = (props) => {
         goalId: idx,
         data: res
     }
-    dispatch(modifyPlanSliceActions.responseTils(JSON.stringify(proccessing)))
+    dispatch(modifyPostDetailSliceActions.getTils(JSON.stringify(proccessing)))
     })
   }, [])
 
 
-  const plans = useSelector(state => state.planSlice.plans)
-  const todos = useSelector(state => state.planSlice.todos)
-  const reviews = useSelector(state => state.planSlice.reviews)
-  const tils = useSelector(state => state.planSlice.tils)
+  const plans = useSelector(state => state.postDetailSlice.plans)
+  const todos = useSelector(state => state.postDetailSlice.todos)
+  const reviews = useSelector(state => state.postDetailSlice.reviews)
+  const tils = useSelector(state => state.postDetailSlice.tils)
 
 
   return (
