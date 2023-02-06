@@ -37,8 +37,8 @@ const PlanTodoListRight = (props) => {
         )
     })
 
-    const today = toStringByFormatting(new Date())
-    const [newTodoDateValue, setNewTodoDateValue] = useState(today)
+    const startDate = toStringByFormatting(new Date(props.plan.startDate))
+    const [newTodoDateValue, setNewTodoDateValue] = useState(startDate)
     const newTodoDateInputHandler = (event) => {
         setNewTodoDateValue(event.target.value)
     }
@@ -59,7 +59,7 @@ const PlanTodoListRight = (props) => {
     }
 
     useEffect(() => {
-        setNewTodoDateValue(today)
+        setNewTodoDateValue(startDate)
         setNewTodoDescValue('')
     }, [(props.newTodoGoalId === props.plan.goalId)])
 
