@@ -1,5 +1,6 @@
 package com.youtil.server.repository.post;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
@@ -32,20 +33,20 @@ public class PostQueryRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     public Page<Post> findPostListByUser(Long userId, String criteria, Pageable pageRequest){ //내가 쓴 글
-        List<Post> content = jpaQueryFactory.select(post)
+        QueryResults<Post> content = jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(post.user.userId.eq(userId))
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
-                .fetch();
+                .fetchResults();
 
-        return new PageImpl<>(content, pageRequest, content.size());
+        return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
     }
 
     public  Page<Post> findPostListBySpecUser(Long userId, String criteria, PageRequest pageRequest, User user) { //유저별 글
-        List<Post> content = jpaQueryFactory.select(post)
+        QueryResults<Post> content = jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(post.user.userId.eq(userId)
@@ -54,15 +55,15 @@ public class PostQueryRepository {
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
-                .fetch();
+                .fetchResults();
 
-        return new PageImpl<>(content, pageRequest, content.size());
+        return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
 
     }
 
     public Page<Post> findPostList(Long userId, String criteria, PageRequest pageRequest){ //정렬
 
-        List<Post> content = jpaQueryFactory.select(post)
+        QueryResults<Post> content = jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(
@@ -73,9 +74,9 @@ public class PostQueryRepository {
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
-                .fetch();
+                .fetchResults();
 
-        return new PageImpl<>(content, pageRequest, content.size());
+        return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
 
     }
 
@@ -83,7 +84,7 @@ public class PostQueryRepository {
 
         String criteria = postSearch.getCriteria();
 
-        List<Post> content = jpaQueryFactory.select(post)
+        QueryResults<Post> content = jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(post.title.contains(postSearch.getTitle()),
@@ -92,9 +93,9 @@ public class PostQueryRepository {
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
-                .fetch();
+                .fetchResults();
 
-        return new PageImpl<>(content, pageRequest, content.size());
+        return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
 
     }
 
@@ -102,7 +103,7 @@ public class PostQueryRepository {
 
         String criteria = postSearch.getCriteria();
 
-        List<Post> content =  jpaQueryFactory.select(post)
+        QueryResults<Post> content =  jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(
@@ -118,15 +119,15 @@ public class PostQueryRepository {
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
-                .fetch();
+                .fetchResults();
 
-        return new PageImpl<>(content, pageRequest, content.size());
+        return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
 
     }
 
     public Page<Post> findByLikePostList(String criteria, User user, PageRequest pageRequest) {
 
-        List<Post> content =  jpaQueryFactory.select(post)
+        QueryResults<Post> content =  jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(
@@ -140,16 +141,16 @@ public class PostQueryRepository {
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
-                .fetch();
+                .fetchResults();
 
-        return new PageImpl<>(content, pageRequest, content.size());
+        return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
 
     }
 
 
     public Page<Post> findByBookmarkPostList(String criteria, User user, PageRequest pageRequest) {
 
-        List<Post> content = jpaQueryFactory.select(post)
+        QueryResults<Post> content = jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
                 .where(
@@ -163,22 +164,22 @@ public class PostQueryRepository {
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
-                .fetch();
+                .fetchResults();
 
-        return new PageImpl<>(content, pageRequest, content.size());
+        return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
 
     }
 
 
     public Page<PostLike> PostLikesPeople(Long postId, PageRequest pageRequest) {//해당글 좋아요한 사람들
-        List<PostLike> content = jpaQueryFactory.select(postLike).from(postLike).distinct()
+        QueryResults<PostLike> content = jpaQueryFactory.select(postLike).from(postLike).distinct()
                 .innerJoin(postLike.post).fetchJoin()
                 .where(postLike.post.postId.eq(postId))
                 .orderBy(postLike.createdDate.desc())
                 .offset(pageRequest.getOffset()).limit(pageRequest.getPageSize())
-                .fetch();
+                .fetchResults();
 
-        return new PageImpl<>(content, pageRequest, content.size());
+        return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
 
     }
 
