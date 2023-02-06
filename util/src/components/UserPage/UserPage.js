@@ -54,7 +54,6 @@ const UserPage = (props) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchUserPostData = (criteriaIdx, page, size) => {
-    console.log("fetch!");
     setIsLoading(true);
     getUserPosts(props.id, criteria[criteriaIdx], page, size).then((res) => {
       setPostList(() => res.content);
