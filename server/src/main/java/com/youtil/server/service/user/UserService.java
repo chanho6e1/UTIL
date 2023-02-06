@@ -31,8 +31,8 @@ public class UserService {
 
     public UserResponse getCurrentUser(Long userId) {
         UserResponse user = UserResponse.from(userRepository.findByUserId(userId));
-        String ImgUrl = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/" + user.getImageUrl();
-        user.setImageUrl(ImgUrl);
+//        String ImgUrl = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/" + user.getImageUrl();
+//        user.setImageUrl(ImgUrl);
         return user;
     }
     @Transactional
