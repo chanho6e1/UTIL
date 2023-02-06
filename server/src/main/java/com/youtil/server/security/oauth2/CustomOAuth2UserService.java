@@ -76,7 +76,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setEmail(oAuth2UserInfo.getEmail());
 //        user.setImageUrl(oAuth2UserInfo.getImageUrl());
 //        user.setImageUrl("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/ab578efc-b859-4285-b32f-b1cba56fa51b122.jpg");
-        user.setImageUrl("3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg");
+//       https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/cef3494f-5acf-4d8b-95d7-a9d710722788Pic.jpg
+//        user.setImageUrl("3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg");
+        user.setImageUrl("cef3494f-5acf-4d8b-95d7-a9d710722788Pic.jpg");
 
         return userRepository.save(user);
     }
