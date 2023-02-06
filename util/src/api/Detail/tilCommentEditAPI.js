@@ -3,7 +3,7 @@ import axios from "axios";
 import { tilCommentAPI } from "./tilCommentAPI";
 
 
-export const editTodoAPI = (commentId, postId, data) => {
+export const tilCommentEditAPI = (commentId, postId, data) => {
   return axios({
     method: 'put',
     url: `${API_BASE_URL}/comments/${commentId}`,

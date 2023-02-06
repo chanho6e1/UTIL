@@ -3,7 +3,7 @@ import axios from "axios";
 import { tilCommentAPI } from "./tilCommentAPI";
 
 
-export const delTodoAPI = (commentId, postId) => {
+export const tilCommentDelAPI = (commentId, postId) => {
   return axios({
     method: 'delete',
     url: `${API_BASE_URL}/comments/${commentId}`,
