@@ -10,15 +10,24 @@ const ModalOverlay = (props) => {
   const backdropRef = useRef()
   const modalRef = useRef()
   const cardRef = useRef()
+  const contentRef = useRef()
+  const backRef = useRef()
 
   useEffect(() => {
     if (cardRef?.current?.style) {
       setTimeout(function() {
-        modalRef.current.style.width = props.width + 'px'
-        modalRef.current.style.height = props.height + 'px'
+        modalRef.current.style.width = props.width
+        modalRef.current.style.height = props.height
+        contentRef.current.style.width = props.width
+        contentRef.current.style.height = props.height
+        cardRef.current.style.width = props.width
+        cardRef.current.style.height = props.height
+        // backRef.current.style.width = props.width
+        // backRef.current.style.height = props.height
         backdropRef.current.style.opacity = '100%'
-        cardRef.current.style.transform = 'rotateX(-90deg)'
+        cardRef.current.style.transform = 'rotateX(0deg)'
         modalRef.current.style.opacity = '100%'
+
       }, 1);
 
       
@@ -28,7 +37,7 @@ const ModalOverlay = (props) => {
   const modalHandler = () => {
     setTimeout(function() {
       backdropRef.current.style.opacity = '0%'
-      cardRef.current.style.transform = 'rotateX(0deg)'
+      cardRef.current.style.transform = 'rotateX(30deg)'
       modalRef.current.style.opacity = '0%'
     }, 1);
     
@@ -38,23 +47,11 @@ const ModalOverlay = (props) => {
     }, 300);
   }
 
-  const hideButton = (
-    props.addBtn ? <Button className={styles['button']} onClick={modalHandler}>취소</Button> : <Button onClick={modalHandler}>확인</Button>
-  )
 
-  const addBtn = props.addBtn?.map((el,idx) => {
-      const btn = React.cloneElement(el, {className:el.props.className + ` ${styles['button']}`, onClick: () => {el.props.onClick(); modalHandler()}});
-      return (
-        btn
-      )
-  })
+
+
   
-  const footer = (
-    <div className={styles['footer']}>
-      {hideButton}
-      {addBtn}
-    </div>
-  )
+
   
   const content = React.cloneElement(props.content, {...props, modalHandler: modalHandler});
 
@@ -62,14 +59,13 @@ const ModalOverlay = (props) => {
     <div ref={backdropRef} className={styles.backdrop}>
       <div ref={modalRef} className={`${styles.modal}`}>
         <div ref={cardRef} className={`${styles.card}`}>
-          
-          <div className={styles['back']}>
-            <div className={styles['content']}>
+            <div ref={contentRef} className={styles['content']}>
               {content}
             </div>
-
-            {props.noBtn === true ? null : footer}
-          </div>
+            
+          {/* <div ref={backRef} className={styles['back']}>
+            
+          </div> */}
           
         </div>
         

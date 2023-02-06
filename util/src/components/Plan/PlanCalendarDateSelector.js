@@ -335,7 +335,7 @@ const PlanCalendarDateSelector = (props) => {
         if (updatingStartDate >= minDate) {
           setInitialStartDate(() => minDate)
           setAlertNotiState(true)
-          setStartWidth()
+          // setStartWidth()
         }
       }
     }
@@ -374,7 +374,7 @@ const PlanCalendarDateSelector = (props) => {
         if (updatingEndDate <= maxDate) {
           setInitialEndDate(() => maxDate)
           setAlertNotiState(true)
-          setStartWidth()
+          // setStartWidth()
         }
       }
     }
@@ -424,7 +424,7 @@ const PlanCalendarDateSelector = (props) => {
           setInitialStartDate(() => minDate)
           setInitialEndDate(() => endDateCorrection)
           setAlertNotiState(true)
-          setStartWidth()
+          // setStartWidth()
 
         }
       }
@@ -434,7 +434,7 @@ const PlanCalendarDateSelector = (props) => {
           setInitialStartDate(() => startDateCorrection)
           setInitialEndDate(() => maxDate)
           setAlertNotiState(true)
-          setStartWidth()
+          // setStartWidth()
           
         }
       }

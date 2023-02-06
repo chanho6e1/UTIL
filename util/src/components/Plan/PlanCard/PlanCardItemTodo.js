@@ -1,17 +1,26 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from './PlanCardItemTodo.module.css'
 import arrow from '../../../img/arrow.png'
+import PlanIsDoneToggle from "../PlanIsDoneToggle";
+import FixedModal from "../../UI/FixedModal/FixedModal";
+import PlanCardTodoCRUD from "./PlanCardTodoCRUD";
 
 const PlanCardItemTodo = (props) => {
 
+  const [modalState, setModalState] = useState(false)
+
   const dueDate = new Date(props.todo.dueDate)
-  const dueDateString = `${dueDate.getFullYear()}년 ${dueDate.getMonth()}월 ${dueDate.getDate()}일`
+  const dueDateString = `${dueDate.getFullYear()}.${dueDate.getMonth()}.${dueDate.getDate()}`
   return (
-    <div className={`${styles['plan-item-wrapper']} ${styles[`${props.className}`]}`}>
+    <div onClick={() => {setModalState(true)}} className={`${styles['plan-item-wrapper']} ${styles[`${props.className}`]}`}>
+      <FixedModal modalState={modalState} stateHandler={setModalState} content={<PlanCardTodoCRUD />} width={'400px'} height={'auto'} />
       <img className={styles['arrow-icon']} src={arrow} style={{transform: 0 ? 'rotate(90deg)' : 'none', marginRight:'12px', width: '12px', height: '12px'}}/>
       <div className={styles['plan-item-text']}>
         <span>{props.todo.title}</span>
         <span className={styles['small-text']}>{dueDateString}</span>
+      </div>
+      <div style={{marginLeft: '12px'}}>
+        <PlanIsDoneToggle plan={props.plan} todo={props.todo} />
       </div>
       
     </div>

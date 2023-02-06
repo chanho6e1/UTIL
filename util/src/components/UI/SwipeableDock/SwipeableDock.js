@@ -20,7 +20,7 @@ const SwipeableDock = (props) => {
   const [height, setHeight] = useState(null)
   const [urlLib, setUrlLib] = useState({})
   const location = useLocation();
-  const contentRef = useRef([])
+
 
   useEffect(() => {
     setUrlLib({})
@@ -130,9 +130,11 @@ const SwipeableDock = (props) => {
           <div className={styles.wrapper}>
             <div className={styles.moveable} ref={movingDiv}>
               {postData.content.map((el, idx) => {
-                  const content = React.cloneElement(el, {...props, contentRef: contentRef[idx]});
+
+
+
                   // return <div className={styles.content} style={{width: width + 'px', height: height + 'px'}}><Routes><Route path={`${postData.url[idx]}/*`} element={el} /></Routes></div>
-                  return <div key={`dock-content-${idx}`} ref={el => (contentRef.current[idx] = el)} className={styles.content} style={{width: width + 'px', height: height + 'px'}}>{content}</div>
+                  return <div key={`dock-content-${idx}`} className={styles.content} style={{width: width + 'px', height: height + 'px'}}>{el}</div>
               })}
             </div>
           </div>
