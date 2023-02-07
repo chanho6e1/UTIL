@@ -152,6 +152,7 @@ public class PostService {
         if(request.getGoalId()!=null){
             Goal goal = goalRepository.findGoalByGoalId(request.getGoalId())
                     .orElseThrow(()-> new ResourceNotFoundException("goal" , "goalId", request.getGoalId()));
+            validGoalUser(userId, goal.getUser().getUserId());
             post.setGoal(goal);
         }
 
@@ -203,7 +204,8 @@ public class PostService {
          if(request.getGoalId()!=null){
             Goal goal = goalRepository.findGoalByGoalId(request.getGoalId())
                     .orElseThrow(()-> new ResourceNotFoundException("goal" , "goalId", request.getGoalId()));
-            post.setGoal(goal);
+             validGoalUser(userId, goal.getUser().getUserId());
+             post.setGoal(goal);
         } else{
             post.resetGoal();
         }
@@ -235,6 +237,16 @@ public class PostService {
         }
         else {
             throw new ResourceForbiddenException("본인이 작성한 글이 아닙니다");
+        }
+    }
+
+    public void validGoalUser(Long currentUser, Long postUser) {
+
+        if (currentUser == postUser || currentUser.equals(postUser)) {
+            return;
+        }
+        else {
+            throw new ResourceForbiddenException("본인의 목표가 아닙니다");
         }
     }
 
