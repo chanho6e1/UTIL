@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FollowResponse {
-
+    private Long userId;
     private String userName;
     private String nickName;
     private String imageUrl;
     public FollowResponse(User user) {
-
+        this.userId = user.getUserId();
         this.userName = user.getUserName();
         this.nickName = user.getNickName();
         this.imageUrl = user.getImageUrl();
