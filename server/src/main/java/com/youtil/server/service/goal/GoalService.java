@@ -97,7 +97,7 @@ public class GoalService {
 
         String originImg = goal.getImageUrl();
 
-        if(path==null){
+        if(path==null || path.equals("")){
             goal.setImageUrl(baseImg);
         }else{
             if(!path.equals(originImg)){ //새로운 사진 기존과 다른 경우
