@@ -44,16 +44,16 @@ public class UserService {
         logger.info("=============path : {}", path);
 //        String baseImg = "3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg";
 
-        String newImg = null;
+        String newImg = request.getImageUrl();
 
-        if(request.getImageUrl()==null){
+        if(newImg==null || newImg.equals("")){
             newImg = baseImg;
 //            request.setImageUrl("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg");
 //            originUser.setUserProfile(baseImg.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/",""));
         }else{
             originUser.setUserProfile(path.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/",""));
 //            deleteS3Image(path, baseImg);
-            newImg = request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/", "");
+            newImg = newImg.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/", "");
             if(!path.equals(newImg))
                 deleteS3Image(path, baseImg);
         }
