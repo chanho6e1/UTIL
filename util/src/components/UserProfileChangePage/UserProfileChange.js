@@ -17,18 +17,31 @@ const UserProfileChange = (props) => {
     });
   }, []);
 
+  //   {
+  //     "nickname": "kihunSONG",
+  //     "description": "",
+  //     "department": "string",
+  //     "tagList": [
+  //         "테스트"
+  //     ],
+  //     "imageUrl": "사진데이터",
+  //     "isNewUser": false,
+  //     "uploadImage": {}
+  // }
+
   const submitUserProfileHandler = (newUserData) => {
     console.log("submithandler", newUserData);
+
     // 프사 업로드 axios
-    if (newUserData.uploadImage !== null) {
-      const formData = new FormData();
-      formData.append("files", newUserData.uploadImage);
-      postUserProfilePicUpload(formData).then((res) => {
-        console.log("res", res);
-      });
-    } else {
-      console.log("same");
-    }
+    // if (newUserData.uploadImage !== null) {
+    //   const formData = new FormData();
+    //   formData.append("file", newUserData.uploadImage);
+    //   postUserProfilePicUpload(formData).then((res) => {
+    //     newUserData = { ...newUserData, imageUrl: res.data };
+    //   });
+    // } else {
+    //   console.log("same");
+    // }
   };
 
   return (
