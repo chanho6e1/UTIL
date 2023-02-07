@@ -1,10 +1,33 @@
-.editor-wrapper {
-    width: 100%;
-    height: 32px;
-    display: flex;
-    
+@media all and (max-width: 480px) {
+    .editor-outer-wrapper {
+        /* width: 100%; */
+        overflow: scroll;
+        margin-top: 8px;
+        margin-left: -8px;
+        margin-right: -8px;
+    }
 
+    .editor-wrapper {
+        width:max-content;
+        height: 36px;
+        display: flex;
+        overflow-y: hidden;
+        padding-left:8px;
+    }
 }
+
+@media all and (min-width: 480px) {
+    .editor-wrapper {
+        width: 100%;
+        height: 32px;
+        display: flex;
+    }
+}
+
+
+
+
+
 
 .line-wrapper {
     /* display: flex;
@@ -20,7 +43,7 @@
 
 .line {
     background-color: rgb(240, 241, 243);
-    width: auto;
+    /* width: auto; */
     height:26px;
     border-radius: 30px;;
     text-align: left;

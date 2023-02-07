@@ -13,6 +13,8 @@
         width: 90vw;
 
     }
+
+    
     
 }
 
@@ -21,8 +23,14 @@
         width: 300px;
 
     }
+
+    .todos-wrapper {
+        max-height: 288px;
+    }
     
 }
+
+
 
 .header {
     

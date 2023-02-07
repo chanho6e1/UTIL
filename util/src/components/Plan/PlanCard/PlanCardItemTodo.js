@@ -10,7 +10,7 @@ const PlanCardItemTodo = (props) => {
   const [modalState, setModalState] = useState(false)
 
   const dueDate = new Date(props.todo.dueDate)
-  const dueDateString = `${dueDate.getFullYear()}.${dueDate.getMonth()}.${dueDate.getDate()}`
+  const dueDateString = `${dueDate.getFullYear()}.${dueDate.getMonth() + 1}.${dueDate.getDate()}`
   return (
     <div onClick={() => {setModalState(true)}} className={`${styles['plan-item-wrapper']} ${styles[`${props.className}`]}`}>
       <FixedModal modalState={modalState} stateHandler={setModalState} content={<PlanCardTodoCRUD todo={props.todo} plan={props.plan} />} width={'400px'} height={'auto'} />

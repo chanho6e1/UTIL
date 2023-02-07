@@ -29,7 +29,7 @@ const PlanCard = (props) => {
           </svg>
         </div>
       </div>
-      
+      <PlanCardItem today={true} />
       {plansRender}
     </div>
   )
