@@ -24,8 +24,7 @@ const UserPageResponsive = (props) => {
             </div>
             <div className={styles['mobile']}>
                 <FeedCardItem
-                    id={props.postId}
-                    key={props.postId}
+                    id={props.id}
                     thumbnail={props.thumbnail}
                     title={props.title}
                     contents={props.content}
