@@ -18,7 +18,7 @@ public class WriterInfo {
 
 
     public static WriterInfo from(User user) {
-        return new WriterInfo(user.getUserId(), user.getUserName(), user.getImageUrl());
+        return new WriterInfo(user.getUserId(), user.getUserName(), "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/"+user.getImageUrl());
     }
 
     public void setNickname(String nickname) {
