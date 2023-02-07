@@ -129,7 +129,7 @@ const PlanItem = (props) => {
           </div>
           {isEditMode ? titleEditInput : titleReadMode }
           <div>
-            {/* <Link to={`/goal/${props.el.goalId}`}>
+            <Link to={`/goal/${props.plan.goalId}`}>
               <button>go</button>
             </Link> */}
           </div>

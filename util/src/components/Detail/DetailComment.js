@@ -6,7 +6,7 @@ import depth from "../../img/depth.png";
 import { tilCommentDelAPI } from "../../api/Detail/tilCommentDelAPI";
 import { tilCommentEditAPI } from "../../api/Detail/tilCommentEditAPI";
 import { Fragment, useState, useEffect, useRef, useCallback } from "react";
-import { modifyPlanSliceActions } from '../../redux/planSlice'
+import { modifyPostDetailSliceActions } from '../../redux/postDetailSlice'
 import { useSelector, useDispatch } from 'react-redux'
 
 
@@ -50,7 +50,7 @@ const DetailComment = (props) => {
             postId: props.postId,
             data: res
         }
-        dispatch(modifyPlanSliceActions.responseComments(JSON.stringify(proccessing)))
+        dispatch(modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing)))
     })
     .catch((err) => {
       console.log(err)
@@ -79,7 +79,7 @@ const DetailComment = (props) => {
             postId: props.postId,
             data: res
         }
-        dispatch(modifyPlanSliceActions.responseComments(JSON.stringify(proccessing)))
+        dispatch(modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing)))
     })
     .catch((err) => {
       console.log(err)

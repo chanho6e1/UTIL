@@ -1,4 +1,5 @@
 import classes from "./DetailItem.module.css";
+import { IconButton } from "@mui/material";
 import bookmarkIcon from "../../assets/bookmarkIcon.svg";
 import bookmarkfillIcon from "../../assets/bookmarkfillIcon.svg";
 import flatColorLikeIcon from "../../assets/flatColorLikeIcon.svg";
@@ -8,35 +9,43 @@ import DetailComment from "../Detail/DetailComment.js";
 import { useSelector, useDispatch } from 'react-redux'
 import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate, useMatch, useLocation, useParams } from "react-router-dom";
 import React, {useState, useEffect, useRef, useCallback} from "react";
-import { modifyPlanSliceActions } from '../../redux/planSlice'
+import { modifyPostDetailSliceActions } from '../../redux/postDetailSlice'
 import { tilAPI } from "../../api/Detail/tilAPI";
 import { tilCommentAPI } from "../../api/Detail/tilCommentAPI";
 import { tilCommentNewAPI } from "../../api/Detail/tilCommentNewAPI";
+import bookmarkIconFlat from "../../img/BookmarkIconFlat.svg";
+import bookmarkIconFill from "../../img/BookmarkIconFill.svg";
+import likeIconFlat from "../../img/LikeIconFlat.svg";
+import likeIconFill from "../../img/LikeIconFill.svg";
+import PhotoCameraIcon from "../../img/photoCameraIcon_gray.png";
+import { putLikeToggle } from "../../api/Post/putLikeToggle";
+import { putBookmarkToggle } from "../../api/Post/putBookmarkToggle";
 
 
 const DetailItem = (props) => {
-  const idx = useParams().id
+  const location = useLocation();
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const post = location.state.post
+
+  // useEffect(() => {
+  //   tilAPI(idx)
+  //   .catch((err) => {
+  //       navigate('/login');
+  //   })
+  //   .then((res) => {
+  //       dispatch(modifyPostDetailSliceActions.getPosts(JSON.stringify(res)))
+  //   })
+  // }, [])
 
   useEffect(() => {
-    tilAPI(idx)
-    .catch((err) => {
-        navigate('/login');
-    })
-    .then((res) => {
-        dispatch(modifyPlanSliceActions.responsePosts(JSON.stringify(res)))
-    })
-  }, [])
-
-  useEffect(() => {
-    tilCommentAPI(idx)
+    tilCommentAPI(post.postId)
     .then((res) => {
       const proccessing = {
-        postId: idx,
+        postId: post.postId,
         data: res
     }
-    dispatch(modifyPlanSliceActions.responseComments(JSON.stringify(proccessing)))
+    dispatch(modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing)))
     })
   }, [])
 
@@ -70,19 +79,19 @@ const DetailItem = (props) => {
       content: newCommentContent,
       isPrivate: newCommentIsPrivate,
       parentId: null,
-      postId: idx,
+      postId: post.postId,
     }
     if (inputCommentData.content === '') {
         return
     }
 
-    tilCommentNewAPI(idx, inputCommentData)
+    tilCommentNewAPI(post.postId, inputCommentData)
     .then((res) => {
         const proccessing = {
-            postId: idx,
+            postId: post.postId,
             data: res
         }
-        dispatch(modifyPlanSliceActions.responseComments(JSON.stringify(proccessing)))
+        dispatch(modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing)))
     })
     .catch((err) => {
       console.log(err)
@@ -94,19 +103,19 @@ const DetailItem = (props) => {
       content: newDepthCommentContent,
       isPrivate: newDepthCommentIsPrivate,
       parentId: newDepthCommentParentId,
-      postId: idx,
+      postId: post.postId,
     }
     if (inputDepthCommentData.content === '') {
         return
     }
 
-    tilCommentNewAPI(idx, inputDepthCommentData)
+    tilCommentNewAPI(post.postId, inputDepthCommentData)
     .then((res) => {
         const proccessing = {
-            postId: idx,
+            postId: post.postId,
             data: res
         }
-        dispatch(modifyPlanSliceActions.responseComments(JSON.stringify(proccessing)))
+        dispatch(modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing)))
     })
     .catch((err) => {
       console.log(err)
@@ -128,39 +137,81 @@ const DetailItem = (props) => {
     setnewDepthCommentParentId(null)
   }
   
-  const posts = useSelector(state => state.planSlice.posts)
-  const comments = useSelector(state => state.planSlice.comments)
-
+  const comments = useSelector(state => state.postDetailSlice.comments)
   const [depthCommentIdx, setdepthCommentIdx] = useState(null)
   const newdepthCommentIdx = (commentId) => {
     if (commentId !== depthCommentIdx) {
       setdepthCommentIdx(commentId)
     }
   }
-  
+
+  const [isBookmark, setIsBookmark] = useState(post.bookmarkStatus);
+  const [isLike, setIsLike] = useState(post.likeStatus);
+  const [likeStatusSize, setLikeStatusSize] = useState(post.likeStatusSize);
+  console.log(post.bookmarkStatus)
+  console.log(post.likeStatus)
+  console.log(post.likeStatusSize)
+  console.log(post.postId)
+  const displayLikeStatusSize = (likeStatusSize) => {
+    if (likeStatusSize > 1000) {
+      return (likeStatusSize / 1000).toFixed(2) + "k";
+    } else {
+      return likeStatusSize;
+    }
+  };
+
+  const imgErrorHandler = (event) => {
+    event.target.src = PhotoCameraIcon;
+  };
+
+  const bookmarkClickHandler = () => {
+    putBookmarkToggle(post.postId).then((res) => {
+      if (res === 200) {
+        setIsBookmark((prevState) => !prevState);
+      }
+    });
+  };
+
+  const likeClickHandler = () => {
+    putLikeToggle(post.postId)
+    .then((res) => {
+      if (res === 200) {
+        if (isLike) {
+          setLikeStatusSize((prevState) => prevState - 1);
+        } else {
+          setLikeStatusSize((prevState) => prevState + 1);
+        }
+        setIsLike((prevState) => !prevState);
+      }
+    })
+    .catch((err) => {
+      console.log('DetailItem : putLikeToggle => ', err)
+    })
+  };
+
   return (
     <div className={classes.Detail}>
       <div/>
       <div className={classes.DetailItem}>
         <div className={classes["Detail-text-contents"]}>
-          <div className={classes.title}>{posts?.title}</div>
+          <div className={classes.title}>{post.title}</div>
           <div className={classes["Detail-info"]}>
             <div className={classes["Detail-user"]}>
               <img
                 className={classes["user-picture"]}
                 // src={defaultUserPicture}
                 src={
-                  posts?.writerInfo.profileImg === ""
+                  post.writerInfo.profileImg === ""
                     ? defaultUserPicture
-                    : posts?.writerInfo.profileImg
+                    : post.writerInfo.profileImg
                 }
                 alt="user"
               />
-              <span className={classes.username}>{posts?.writerInfo.nickname}</span>
+              <span className={classes.username}>{post.writerInfo.nickname}</span>
             </div>
             <div className={classes["tag-div"]}>
               {/* <span className={classes.tag}>{props.tag}</span> */}
-              <div className={classes["icons-div"]}>
+              {/* <div className={classes["icons-div"]}>
                 {posts?.bookmarkStatus === true
                   ? <img src={bookmarkfillIcon} alt="bookmarkfillIcon"/>
                   : <img src={bookmarkIcon} alt="bookmarkIcon"/>
@@ -170,16 +221,44 @@ const DetailItem = (props) => {
                   <span className={classes["like-count"]}>{posts?.likeStatusSize}개</span>
                 </span>
                 <span className={classes.updated}>{posts?.createdDate}</span>
+              </div> */}
+              <div className={classes[`icons-div`]}>
+                <IconButton
+                  onClick={bookmarkClickHandler}
+                  style={{
+                    paddingTop: 0,
+                    paddingRight: 0,
+                    paddingBottom: 0,
+                    paddingLeft: 0,
+                    marginRight: 10,
+                  }}
+                >
+                  <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
+                </IconButton>
+                <div className={classes.like}>
+                  <IconButton
+                    onClick={likeClickHandler}
+                    style={{
+                      paddingTop: 0,
+                      paddingRight: 0,
+                      paddingBottom: 0,
+                      paddingLeft: 0,
+                    }}
+                  >
+                    <img src={isLike ? likeIconFill : likeIconFlat} />
+                  </IconButton>
+                  <div className={classes[`like-count`]}>{displayLikeStatusSize(likeStatusSize)}</div>
+                </div>
               </div>
             </div>
           </div>
-          <p className={classes.contents}>{posts?.content}</p>
+          <p className={classes.contents}>{post.content}</p>
         </div>
         <div  className={classes["Detail-comments"]}>
           <hr />
           <div>
-            {comments[posts?.postId]?.map((comment) => (
-              <DetailComment key={`commentId${comment.commentId}`} comment={comment} newDepthCommentContent={newDepthCommentContent} newDepthCommentContentInputHandler={newDepthCommentContentInputHandler} setnewDepthCommentContent={setnewDepthCommentContent} onEnterNewDepthCommentHandler={onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={setnewDepthCommentIsPrivate} newDepthCommentParentId={newDepthCommentParentId} newDepthCommentParentIdInputHandler={newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={setnewDepthCommentParentId} newDepthComment={newDepthComment} depthCommentIdx={depthCommentIdx} setdepthCommentIdx={setdepthCommentIdx} newdepthCommentIdx={newdepthCommentIdx} postId={idx} praentDelete={comment.isDelete}/>
+            {comments[post.postId]?.map((comment) => (
+              <DetailComment key={`commentId${comment.commentId}`} comment={comment} newDepthCommentContent={newDepthCommentContent} newDepthCommentContentInputHandler={newDepthCommentContentInputHandler} setnewDepthCommentContent={setnewDepthCommentContent} onEnterNewDepthCommentHandler={onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={setnewDepthCommentIsPrivate} newDepthCommentParentId={newDepthCommentParentId} newDepthCommentParentIdInputHandler={newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={setnewDepthCommentParentId} newDepthComment={newDepthComment} depthCommentIdx={depthCommentIdx} setdepthCommentIdx={setdepthCommentIdx} newdepthCommentIdx={newdepthCommentIdx} postId={post.postId} praentDelete={comment.isDelete}/>
             ))}
           </div>
           {/* <DetailComment comments={comments[posts?.postId]} newDepthCommentContent={newDepthCommentContent} newDepthCommentContentInputHandler={newDepthCommentContentInputHandler} setnewDepthCommentContent={setnewDepthCommentContent} onEnterNewDepthCommentHandler={onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={setnewDepthCommentIsPrivate} newDepthCommentParentId={newDepthCommentParentId} newDepthCommentParentIdInputHandler={newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={setnewDepthCommentParentId} newDepthComment={newDepthComment} depthCommentIdx={depthCommentIdx} setdepthCommentIdx={setdepthCommentIdx} newdepthCommentIdx={newdepthCommentIdx}/> */}
