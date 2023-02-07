@@ -14,6 +14,7 @@ import MyUtil from "../MyUtil/MyUtil";
 import Feed from "../Feed/Feed";
 import UserPage from "../UserPage/UserPage";
 import UserProfileChange from "../UserProfileChangePage/UserProfileChange";
+import PlanResponsive from "../Plan/PlanResponsive";
 
 const Main = (props) => {
   const parentRef = useRef();
@@ -21,7 +22,8 @@ const Main = (props) => {
 
 
   const postData = {
-    content: [userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />, <UserProfileChange />, <PlanExpanded />, <div>test1</div>, <div>test1</div>],
+    content: [userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />, <UserProfileChange />, <PlanResponsive />, <div>test1</div>, <div>test1</div>],
+    // userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />
     dock: {
       logoContracted: (
         <img className={styles["logo-icon"]} src={logo} style={{ width: "96px", height: "auto" }} />

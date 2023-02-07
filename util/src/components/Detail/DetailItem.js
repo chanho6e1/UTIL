@@ -21,6 +21,7 @@ import PhotoCameraIcon from "../../img/photoCameraIcon_gray.png";
 import { putLikeToggle } from "../../api/Post/putLikeToggle";
 import { putBookmarkToggle } from "../../api/Post/putBookmarkToggle";
 import TextArea from "../UI/TextArea/TextArea";
+import DetailItemLoading from "./DetailItemLoading";
 
 import { Viewer } from '@toast-ui/react-editor';
 
@@ -289,7 +290,8 @@ const DetailItemShow = (props) => {
 
 
 const DetailItem = (props) => {
-  const idx = useParams().id
+  const params = useParams().id
+  const idx = params ? params : props.id
 
   const [detail, setDetail] = useState(null)
   useEffect(() => {
@@ -303,9 +305,9 @@ const DetailItem = (props) => {
   })
 
   return (
-    <React.Fragment>
-      {detail !== null && <DetailItemShow post={detail} /> }
-    </React.Fragment>
+    <div className={classes['detail-wrapper']}>
+      {detail !== null ? <DetailItemShow post={detail} /> : <DetailItemLoading /> }
+    </div>
   )
 }
 

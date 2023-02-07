@@ -7,12 +7,19 @@
     font-weight: 550;
     line-height: 50px;
   }
+  .DetailItem {
+    height: auto;
+    /* padding: 6px 21px 30px 21px; */
+    padding: 0px 4vw 0px 4vw;
+    /* overflow:scroll; */
+  }
 }
 
 @media all and (min-width: 768px) {
   .DetailItem {
     height: auto;
-    padding: 30px 300px 30px 300px;
+    /* padding: 6px 21px 30px 21px; */
+    padding: 30px 20vw 30px 20vw;
     /* overflow:scroll; */
   }
 
@@ -21,10 +28,25 @@
     margin-top: 20px;
     margin-bottom: 20px;
     font-size: 3rem;
+
+
+    /* font-size: 1.3rem;;
+    font-weight: 700; */
+
+
     font-weight: 550;
     line-height: 50px;
   }
 }
+
+
+.detail-wrapper {
+  width: 100vw;
+  height:100vh;
+  background-color: white;
+  overflow:scroll;
+}
+
 
 
 
@@ -36,8 +58,11 @@
 
 .DetailItem {
   height: auto;
+  /* width: 100vw;
+  height: 100vh; */
+  background-color: white;
   /* padding: 30px 60px 30px 60px; */
-  /* overflow:scroll; */
+  
 }
 
 /* .Detail-text-contents {

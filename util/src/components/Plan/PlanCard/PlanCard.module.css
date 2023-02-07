@@ -2,6 +2,10 @@
     .plan-card-wrapper {
         width: 100vw;
         height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #F8F9FA;
     }
 
     .header {
@@ -14,7 +18,7 @@
     .plan-card-wrapper {
         width: 327px;
         height: 100vh;
-
+        
         /* background-color: red; */
     }
 
@@ -27,12 +31,21 @@
 
 .header {
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
     padding-right: 12px;
     align-items: center;
-    height: 48px;
+    height: 54px;
     box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 12px;
+    padding-right: 12px;
+}
 
+.plan-string {
+    
+    font-size: 18px;
+    font-weight: 700;
 }
 
 .new-button {

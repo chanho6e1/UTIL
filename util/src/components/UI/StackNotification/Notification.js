@@ -19,10 +19,21 @@ const Notification = (props) => {
 
         if (popUpRef.current) {
             popUpRef.current.style.height = '0px'
-            popUpRef.current.style.width = `${props.width + 40}px`
-            contentWrapperRef.current.style.width = `${props.width}px`
+            if (document.body.offsetWidth > 480) {
+                popUpRef.current.style.width = `${props.width + 40}px`
+                contentWrapperRef.current.style.width = `${props.width}px`
+            } else {
+                popUpRef.current.style.width = `90vw`
+                contentWrapperRef.current.style.width = `90vw`
+            }
+            
             contentWrapperRef.current.style.height = `${props.height}px`
-            popUpRef.current.style.right = `-${props.width + 20}px`
+            if (document.body.offsetWidth > 480) {
+                popUpRef.current.style.right = `-${props.width + 20}px`
+            } else {
+                popUpRef.current.style.right = `-90vw`
+            }
+            
             popUpRef.current.style.transitionProperty = 'right top height'
             popUpRef.current.style.transitionDuration = `0.3s`
         }
@@ -32,10 +43,21 @@ const Notification = (props) => {
         }, 100);
         setTimeout(function() {
             indicatorRef.current.style.width = '0px'
-            popUpRef.current.style.right = `0px`
+
+            if (document.body.offsetWidth > 480) {
+                popUpRef.current.style.right = `0px`
+            } else {
+                popUpRef.current.style.right = `5vw`
+            }
+            
         }, 400);
         setTimeout(function() {
-            popUpRef.current.style.right = `-${props.width + 20}px`
+            if (document.body.offsetWidth > 480) {
+                popUpRef.current.style.right = `-${props.width + 20}px`
+            } else {
+                popUpRef.current.style.right = `-90vw`
+            }
+            
         }, props.duration + 300);
         setTimeout(function() {
             popUpRef.current.style.height = '0px'
@@ -47,7 +69,12 @@ const Notification = (props) => {
     }, [])
 
     const notiHandler = () => {
-        popUpRef.current.style.right = `-${props.width + 20}px`
+        if (document.body.offsetWidth > 480) {
+            popUpRef.current.style.right = `-${props.width + 20}px`
+        } else {
+            popUpRef.current.style.right = `-90vw`
+        }
+        
         setTimeout(function() {
             popUpRef.current.style.height = '0px'
         }, 300);
