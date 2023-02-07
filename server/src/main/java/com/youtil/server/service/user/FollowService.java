@@ -4,14 +4,11 @@ import com.youtil.server.common.exception.ArgumentMismatchException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.user.Follow;
 import com.youtil.server.domain.user.User;
-import com.youtil.server.dto.todo.TodoResponse;
-import com.youtil.server.dto.user.FollowerResponse;
-import com.youtil.server.dto.user.FollowingResponse;
+import com.youtil.server.dto.user.FollowResponse;
 import com.youtil.server.repository.user.FollowRepository;
 import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,14 +57,14 @@ public class FollowService {
     }
 
 
-    public List<FollowingResponse> getFollowing(Long userId) {
+    public List<FollowResponse> getFollowing(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "fromUserId", userId));
-        return followRepository.getFollowing(user).stream().map(FollowingResponse::new).collect(Collectors.toList());
+        return followRepository.getFollowing(user).stream().map(FollowResponse::new).collect(Collectors.toList());
     }
 
-    public List<FollowerResponse> getFollower(Long userId) {
+    public List<FollowResponse> getFollower(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "fromUserId", userId));
-        return followRepository.getFollower(user).stream().map(FollowerResponse::new).collect(Collectors.toList());
+        return followRepository.getFollower(user).stream().map(FollowResponse::new).collect(Collectors.toList());
     }
 
 
