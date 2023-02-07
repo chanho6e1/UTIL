@@ -199,7 +199,7 @@ export default function ToastEditor(props) {
     <div ref={editorWrapperRef} className={styles['editor-wrapper']} onClick={() => console.log(editorRef.current)}>
       {doneNotiState && <NotiDeliverer content={message1} stateHandler={setDoneNotiState} duration={5000} width={350} height={100} />}
       {alertNotiState && <NotiDeliverer content={alert} stateHandler={setAlertNotiState} duration={5000} width={350} height={100} />}
-      <FixedModal queryString={queryString} modalState={modalState} stateHandler={setModalState} content={<BlogPostForm postSubmitHandler={postSubmitHandler} reviewSubmitHandler={reviewSubmitHandler} forReview={props.forReview} />} noBtn={true} width={'400px'} height={'170px'} />
+      <FixedModal queryString={queryString} modalState={modalState} stateHandler={setModalState} content={<BlogPostForm postSubmitHandler={postSubmitHandler} reviewSubmitHandler={reviewSubmitHandler} forReview={props.forReview} />} noBtn={true} width={'10px'} height={'170px'} />
       <div className={styles['additional-info-wrapper']}>
         <div className={styles['header']}>
           {props.forReview ? dateRender : titleInput}
