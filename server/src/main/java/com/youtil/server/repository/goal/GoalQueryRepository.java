@@ -1,11 +1,14 @@
 package com.youtil.server.repository.goal;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.dto.goal.GoalResponse;
 import com.youtil.server.dto.post.PostResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
@@ -28,14 +31,16 @@ public class GoalQueryRepository {
                 .fetch();
     }
 
-    public List<Post> findPostListByGoalId(Long goalId, PageRequest pageRequest){
-        return jpaQueryFactory.select(post).distinct()
+    public Page<Post> findPostListByGoalId(Long goalId, PageRequest pageRequest){
+        QueryResults<Post> content = jpaQueryFactory.select(post).distinct()
                 .from(post)
                 .where(post.goal.goalId.eq(goalId))
                 .orderBy(post.goal.goalId.asc())
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
-                .fetch();
+                .fetchResults();
+
+        return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
     }
 
     public List<Goal> getDoingGoal(Long userId) { //진행중인 목표만 제공
