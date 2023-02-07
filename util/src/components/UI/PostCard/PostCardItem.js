@@ -11,6 +11,7 @@ import { getPostTag } from "../../../api/Post/getPostTag";
 import { putLikeToggle } from "../../../api/Post/putLikeToggle";
 import { putBookmarkToggle } from "../../../api/Post/putBookmarkToggle";
 import Card from "../Card/Card";
+import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate, useLocation } from "react-router-dom";
 
 const avatarTheme = createTheme({
   components: {
@@ -26,6 +27,7 @@ const PostCardItem = (props) => {
   const [tagList, setTagList] = useState(null);
   const [isBookmark, setIsBookmark] = useState(props.bookmarkStatus);
   const [isLike, setIsLike] = useState(props.likeStatus);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getPostTag(props.id).then((res) => {
@@ -61,6 +63,7 @@ const PostCardItem = (props) => {
 
   const postClickHandler = () => {
     // props.id로 해당 글로 이동
+    navigate(`/post/${props.id}`)
     console.log("clicked", props.id);
   };
 
