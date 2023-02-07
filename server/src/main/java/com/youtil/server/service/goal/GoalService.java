@@ -1,10 +1,12 @@
 package com.youtil.server.service.goal;
 
 import com.amazonaws.services.s3.model.AmazonS3Exception;
+import com.youtil.server.common.PagedResponse;
 import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.config.s3.S3Uploader;
 import com.youtil.server.domain.goal.Goal;
+import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.goal.*;
 import com.youtil.server.repository.goal.GoalQueryRepository;
@@ -15,6 +17,7 @@ import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -159,13 +162,14 @@ public class GoalService {
 //                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
 //    }
 
-    public Map<Long, GoalPostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
+    public PagedResponse<Map<Long, GoalPostResponse>> getGoalPost(Long userId, Long goalId, int offset, int size) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        Map<Long, GoalPostResponse> resultMap = new HashMap<>();
-        goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size))
-                .stream().map((post)-> resultMap.put(post.getPostId(), new GoalPostResponse(post))).collect(Collectors.toList());
-        return resultMap;
+        Map<Long, GoalPostResponse> resultMap = new LinkedHashMap<>();
+        Page<Post> page = goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size));
+        page.stream().map((post)-> resultMap.put(post.getPostId(), new GoalPostResponse(post))).collect(Collectors.toList());
+         return new PagedResponse<>(resultMap, page.getNumber()+1, page.getSize(), page.getTotalElements(),
+                page.getTotalPages(), page.isLast());
     }
 
 //    public List<GoalResponse> getDoingGoal(Long userId) {
