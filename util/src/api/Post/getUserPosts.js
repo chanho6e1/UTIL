@@ -1,10 +1,10 @@
 import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
-export const getUserPosts = (userId) => {
+export const getUserPosts = (userId, criteria, offset, size) => {
   return axios({
     method: "get",
-    url: `${API_BASE_URL}/posts/users/${userId}`,
+    url: `${API_BASE_URL}/posts/users/${userId}?criteria=${criteria}&offset=${offset}&size=${size}`,
     headers: {
       Authorization: TOKEN(),
     },

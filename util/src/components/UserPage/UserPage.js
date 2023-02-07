@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import classes from "./UserPage.module.css";
 import PostCardItem from "../UI/PostCard/PostCardItem";
 import TagDataList from "../UI/Tag/TagDataList";
-import { Avatar } from "@mui/material";
+import { Avatar, Pagination } from "@mui/material";
 import Button from "../UI/Button/Button";
+import PostCardContainerLoading from "../UI/Loading/PostCardContainerLoading";
 import { getUserPosts } from "../../api/Post/getUserPosts";
 import { getUserData } from "../../api/Post/getUserData";
 import { getIsFollowing } from "../../api/Post/getIsFollowing";
@@ -12,6 +13,7 @@ import { getUserFollowing } from "../../api/Post/getUserFollowing";
 import { deleteFollow } from "../../api/Post/deleteUnfollow";
 import { postFollow } from "../../api/Post/postFollow";
 import { getUserTag } from "../../api/Post/getUserTag";
+import { getMyData } from "../../api/UserProfile/getMyData";
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -36,6 +38,7 @@ const postCardItemList = (postList) => {
 const UserPage = (props) => {
   const [postList, setPostList] = useState(null);
   const [userData, setUserData] = useState([]);
+  const [myData, setMyData] = useState([]);
   const [isFollowing, setIsFollowing] = useState(null);
   const [followerList, setFollowerList] = useState(null);
   const [followerListCnt, setFollowerListCnt] = useState(null);
@@ -43,17 +46,47 @@ const UserPage = (props) => {
   const [followingListCnt, setFollowingListCnt] = useState(null);
   const [userTagList, setUserTagList] = useState([]);
 
-  // Post API
-  useEffect(() => {
-    getUserPosts(props.id).then((res) => {
-      setPostList(() => res);
-    });
-  }, []);
+  const criteria = ["date", "view", "like"];
+  const [criteriaIdx, setCriteriaIdx] = useState(0);
+  const [offset, setOffset] = useState(1);
+  const [totalPage, setTotalPage] = useState(10);
+  const size = 10;
+  const [isLoading, setIsLoading] = useState(true);
 
-  // User Data API
+  const fetchUserPostData = (criteriaIdx, page, size) => {
+    setIsLoading(true);
+    getUserPosts(props.id, criteria[criteriaIdx], page, size).then((res) => {
+      setPostList(() => res.content);
+      setOffset(() => page);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+    });
+  };
+
+  // 초기 데이터
   useEffect(() => {
+    // Post API
+    setIsLoading(true);
+    getUserPosts(props.id, criteria[criteriaIdx], offset, size).then((res) => {
+      setPostList(() => res.content);
+      setTotalPage(() => res.totalPages);
+      setIsLoading(false);
+    });
+
+    // My Data API
+    getMyData().then((res) => {
+      setMyData(() => res);
+    });
+
+    // User Data API
     getUserData(props.id).then((res) => {
       setUserData(() => res);
+    });
+
+    // Tag Data API
+    getUserTag(props.id).then((res) => {
+      setUserTagList(() => res);
     });
   }, []);
 
@@ -71,13 +104,6 @@ const UserPage = (props) => {
       setFollowingListCnt(() => res.length);
     });
   }, [isFollowing]);
-
-  // Tag Data API
-  useEffect(() => {
-    getUserTag(props.id).then((res) => {
-      setUserTagList(() => res);
-    });
-  }, []);
 
   const tagOnClickHandler = (event) => {
     console.log(event.currentTarget.id);
@@ -117,6 +143,22 @@ const UserPage = (props) => {
     }
   };
 
+  // 작성 글이 없다면 대체 화면 출력
+  const postCardContainer = (postList) => {
+    if (isLoading) {
+      return <PostCardContainerLoading count={size} />;
+    }
+    if (!isLoading && postList && postList.length === 0) {
+      return <div className={classes[`no-post`]}>포스트가 없습니다</div>;
+    } else {
+      return <ul>{postCardItemList(postList)}</ul>;
+    }
+  };
+
+  const pageChangeHandler = (event, page) => {
+    fetchUserPostData(criteriaIdx, page, size);
+  };
+
   return (
     <div className={classes[`user-page`]}>
       <div className={classes[`user-page-upper`]}>
@@ -142,7 +184,7 @@ const UserPage = (props) => {
               <div className={classes[`follow-text`]}>팔로우</div>
               <div className={classes[`follow-number`]}>{followingListCnt}명</div>
             </div>
-            {followBtn(isFollowing)}
+            {myData.userId !== props.id && followBtn(isFollowing)}
           </div>
           <div className={classes[`userdata`]}>
             <div className={classes[`username-department`]}>
@@ -160,7 +202,10 @@ const UserPage = (props) => {
           </div>
         </div>
       </div>
-      <div className={classes[`postcard-container`]}>{<ul>{postCardItemList(postList)}</ul>}</div>
+      <div className={classes[`postcard-container`]}>{postCardContainer(postList)}</div>
+      <div className={classes[`pagination`]}>
+        <Pagination count={totalPage} onChange={pageChangeHandler} />
+      </div>
     </div>
   );
 };
