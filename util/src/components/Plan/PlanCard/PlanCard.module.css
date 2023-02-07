@@ -1,7 +1,7 @@
 @media all and (max-width: 480px) {
     .plan-card-wrapper {
         width: 100vw;
-        height: 100vh;
+        
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -9,7 +9,10 @@
     }
 
     .header {
+        position: sticky;
+        top:0;
         display: block;
+        background-color: white;
     }
     
 }
@@ -40,6 +43,7 @@
     box-sizing: border-box;
     padding-left: 12px;
     padding-right: 12px;
+    z-index: 9999;
 }
 
 .plan-string {
