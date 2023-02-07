@@ -20,10 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AlarmService {
-    @Autowired
     private final PostAlarmRespository postAlarmRespository;
-
-    @Autowired
     private final UserRepository userRepository;
 
 

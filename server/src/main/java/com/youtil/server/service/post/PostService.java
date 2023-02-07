@@ -36,24 +36,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PostService {
-
-    @Autowired
     private final PostRepository postRepository;
-    @Autowired
     private final PostQueryRepository postQueryRepository;
-    @Autowired
     private final PostLikeRepository postLikeRepository;
-    @Autowired
     private final PostCommentRepository postCommentRepository;
-    @Autowired
     private final UserRepository userRepository;
-    @Autowired
     private final PostBookmarkRepository postBookmarkRepository;
-    @Autowired
     private final GoalRepository goalRepository;
-    @Autowired
     private final S3Uploader s3Uploader;
-
     private final String baseImg = "21ef9957-c12f-4bd8-a098-e0c75fe2b7c3ogo.png";
 
 

@@ -27,17 +27,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GoalService {
 
-    @Autowired
     private final GoalRepository goalRepository;
-    @Autowired
+
     private final UserRepository userRepository;
-    @Autowired
+
     private final ReviewRepository reviewRepository;
-    @Autowired
+
     private final TodoRepository todoRepository;
-    @Autowired
+
     private final GoalQueryRepository goalQueryRepository;
-    @Autowired
+
     private final S3Uploader s3Uploader;
 
     private final String baseImg = "f18b354f-b630-4025-98f7-a7ed74f7ba40ogo.png";
