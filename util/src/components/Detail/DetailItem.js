@@ -20,6 +20,9 @@ import likeIconFill from "../../img/LikeIconFill.svg";
 import PhotoCameraIcon from "../../img/photoCameraIcon_gray.png";
 import { putLikeToggle } from "../../api/Post/putLikeToggle";
 import { putBookmarkToggle } from "../../api/Post/putBookmarkToggle";
+import TextArea from "../UI/TextArea/TextArea";
+
+import { Viewer } from '@toast-ui/react-editor';
 
 
 const DetailItemShow = (props) => {
@@ -145,9 +148,9 @@ const DetailItemShow = (props) => {
     }
   }
 
-  const [isBookmark, setIsBookmark] = useState(post.bookmarkStatus);
-  const [isLike, setIsLike] = useState(post.likeStatus);
-  const [likeStatusSize, setLikeStatusSize] = useState(post.likeStatusSize);
+  const [isBookmark, setIsBookmark] = useState(post?.bookmarkStatus);
+  const [isLike, setIsLike] = useState(post?.likeStatus);
+  const [likeStatusSize, setLikeStatusSize] = useState(post?.likeStatusSize);
 
   const displayLikeStatusSize = (likeStatusSize) => {
     if (likeStatusSize > 1000) {
@@ -186,14 +189,18 @@ const DetailItemShow = (props) => {
     })
   };
 
+  const createdDate = new Date(post.createdDate)
+  const dateString = `${createdDate.getFullYear()}년 ${createdDate.getMonth()}월 ${createdDate.getDate()}일`
+
   return (
     <div className={classes.Detail}>
-      <div/>
+
       <div className={classes.DetailItem}>
         <div className={classes["Detail-text-contents"]}>
           <div className={classes.title}>{post.title}</div>
+          
           <div className={classes["Detail-info"]}>
-            <div className={classes["Detail-user"]}>
+            
               <img
                 className={classes["user-picture"]}
                 // src={defaultUserPicture}
@@ -204,45 +211,62 @@ const DetailItemShow = (props) => {
                 }
                 alt="user"
               />
-              <span className={classes.username}>{post.writerInfo.nickname}</span>
+            <div className={classes["Detail-user"]}>
+              <span className={classes.username}>{post.writerInfo.nickname} ·</span>
+              <span className={classes['created-date']}>{dateString}</span>
             </div>
-            <div className={classes["tag-div"]}>
-              {/* <span className={classes.tag}>{props.tag}</span> */}
-              <div className={classes[`icons-div`]}>
-                <IconButton
-                  onClick={bookmarkClickHandler}
-                  style={{
-                    paddingTop: 0,
-                    paddingRight: 0,
-                    paddingBottom: 0,
-                    paddingLeft: 0,
-                    marginRight: 10,
-                  }}
-                >
-                  <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
-                </IconButton>
-                <div className={classes['icons-like']}>
-                  <IconButton
-                    onClick={likeClickHandler}
-                    style={{
-                      paddingTop: 0,
-                      paddingRight: 0,
-                      paddingBottom: 0,
-                      paddingLeft: 0,
-                    }}
-                  >
-                    <img src={isLike ? likeIconFill : likeIconFlat} />
-                  </IconButton>
-                  <div className={classes[`like-count`]}>{displayLikeStatusSize(likeStatusSize)}</div>
-                </div>
-                <span className={classes.updated}>{post.createdDate}</span>
-              </div>
-            </div>
+            
+            
           </div>
-          <p className={classes.contents}>{post.content}</p>
+          <div className={classes.contents}>
+            <Viewer initialValue={post.content} />
+            {/* {post.content} */}
+          </div>
         </div>
+
+
+
+
+
+        <div className={classes["tag-div"]}>
+          {/* <span className={classes.tag}>{props.tag}</span> */}
+          <div className={classes[`icons-div`]}>
+            <IconButton
+              onClick={bookmarkClickHandler}
+              style={{
+                paddingTop: 0,
+                paddingRight: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                marginRight: 10,
+              }}
+            >
+              <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
+            </IconButton>
+            <div className={classes['icons-like']}>
+              <IconButton
+                onClick={likeClickHandler}
+                style={{
+                  paddingTop: 0,
+                  paddingRight: 0,
+                  paddingBottom: 0,
+                  paddingLeft: 0,
+                }}
+              >
+                <img src={isLike ? likeIconFill : likeIconFlat} />
+              </IconButton>
+              <div className={classes[`like-count`]}>{displayLikeStatusSize(likeStatusSize)}</div>
+            </div>
+            
+          </div>
+        </div>
+
+
+
+
+
         <div  className={classes["Detail-comments"]}>
-          <hr />
+       
           <div>
             {comments[post.postId]?.map((comment) => (
               <DetailComment key={`commentId${comment.commentId}`} comment={comment} newDepthCommentContent={newDepthCommentContent} newDepthCommentContentInputHandler={newDepthCommentContentInputHandler} setnewDepthCommentContent={setnewDepthCommentContent} onEnterNewDepthCommentHandler={onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={setnewDepthCommentIsPrivate} newDepthCommentParentId={newDepthCommentParentId} newDepthCommentParentIdInputHandler={newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={setnewDepthCommentParentId} newDepthComment={newDepthComment} depthCommentIdx={depthCommentIdx} setdepthCommentIdx={setdepthCommentIdx} newdepthCommentIdx={newdepthCommentIdx} postId={post.postId} praentDelete={comment.isDelete}/>
@@ -253,11 +277,12 @@ const DetailItemShow = (props) => {
             <div className={classes["Detail-comments-private"]}>비공개 : 
               <input type="checkbox" checked={newCommentIsPrivate} onChange={newCommentIsPrivateInputHandler} />
             </div>
-            <textarea className={classes['Detail-comments-contents-box']} value={newCommentContent} onChange={newCommentContentInputHandler} placeholder="댓글을 작성해 주세요" onKeyPress={onEnterNewCommentHandler}/>
+            <TextArea className={classes['Detail-comments-contents-box']} value={newCommentContent} onChange={newCommentContentInputHandler} placeholder="댓글을 작성해 주세요" onKeyPress={onEnterNewCommentHandler}/>
+            {/* <textarea className={classes['Detail-comments-contents-box']} value={newCommentContent} onChange={newCommentContentInputHandler} placeholder="댓글을 작성해 주세요" onKeyPress={onEnterNewCommentHandler}/> */}
           </div>
         </div>
       </div>
-      <div/>
+
     </div>
   );
 };

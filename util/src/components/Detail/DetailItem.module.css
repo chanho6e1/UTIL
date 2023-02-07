@@ -1,44 +1,73 @@
+@media all and (max-width: 768px) {
+  .title {
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 550;
+    line-height: 50px;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .DetailItem {
+    height: auto;
+    padding: 30px 300px 30px 300px;
+    /* overflow:scroll; */
+  }
+
+  .title {
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 3rem;
+    font-weight: 550;
+    line-height: 50px;
+  }
+}
+
+
+
 .Detail {
-  display: grid;
-  grid-template-columns: 200px 1fr 200px;
+  /* display: grid;
+  grid-template-columns: 200px 1fr 200px; */
+
 }
 
 .DetailItem {
   height: auto;
-  padding: 30px 60px 30px 60px;
+  /* padding: 30px 60px 30px 60px; */
   /* overflow:scroll; */
 }
 
 /* .Detail-text-contents {
 } */
 
-.title {
-  margin-top: 20px;
-  margin-bottom: 60px;
-  font-size: 3rem;
-  font-weight: 550;
-  line-height: 50px;
-}
+
 
 .Detail-info {
-  display: grid;
-  grid-template-columns: 5fr 5fr;
+  display: flex;
+  align-items: center;
+  padding-bottom:15px;
+  border-bottom: 1px solid rgb(200, 200, 200);
+  margin-bottom: 30px;
 }
 
 .contents {
   text-align: start;
-  margin-top: 50px;
-  margin-inline: 70px;
+
 }
 
 .tag-div {
-  justify-content: right;
+  justify-content: left;
   display: flex;
   align-items: center;
   font-family: Inter;
-  font-size: 1.125rem;
+  margin-top: 30px;
   font-weight: 400;
   line-height: 22px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgb(200, 200, 200);
 }
 
 .icons-div {
@@ -46,7 +75,7 @@
   display: grid;
   align-items: center;
   font-family: Inter;
-  font-size: 1.125rem;
+
   font-weight: 400;
   line-height: 22px;
   grid-template-columns: 1fr 2fr 3fr;
@@ -89,18 +118,19 @@
 
 .Detail-user {
   display: flex;
-  align-items: center;
+  align-items: baseline;
+
   padding: 10px 0 10px 0;
 }
 
 .Detail-user span {
-  margin-right: 20px;
+  margin-right: 8px;
 }
 
 .username {
   font-family: Inter;
   font-size: 1rem;
-  padding-right: 8px;
+  /* padding-right: 8px; */
 }
 
 .date {
@@ -108,7 +138,7 @@
 }
 
 .Detail-comments {
-  margin-top: 40px;
+  /* margin-top: 40px; */
   text-align: left;
 }
 
@@ -130,9 +160,7 @@
   display: flex;
 }
 
-.Detail-comments {
-  margin-top: 30px;
-}
+
 
 .Detail-comments-contents-box {
   width: 100%;
@@ -181,4 +209,22 @@
 .commentContent {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.created-date {
+  font-size: 14px;
+  color: rgb(130,130,130);
+}
+
+.link-text {
+  font-size: 12px;
+  color: rgb(130,130,130);
+  margin: 4px;
+  cursor: pointer;
+  transition-property: color;
+  transition-duration: 0.3s;
+}
+
+.link-text:hover {
+  color: rgb(100,100,100);
 }
