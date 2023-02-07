@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -37,7 +38,7 @@ public class ReviewController {
                                                         @RequestParam(required=false, defaultValue = "date") String criteria,
                                                         @RequestParam(required=false, defaultValue = "1") int offset,
                                                         @RequestParam(value = "size", required = false, defaultValue = "10") int size,
-                                                        @CurrentUser UserPrincipal user
+                                                          @ApiIgnore @CurrentUser UserPrincipal user
                                                         ){
         return ResponseEntity.ok().body(CommonResponse.of(
            HttpStatus.OK, "회고록 조회 성공", reviewService.getReviewList기존(goalId, criteria, offset, size, user.getId())));
@@ -49,7 +50,7 @@ public class ReviewController {
                                                         @RequestParam(required=false, defaultValue = "old") String criteria,
                                                         @RequestParam(required=false, defaultValue = "1") int offset,
                                                         @RequestParam(value = "size", required = false, defaultValue = "10") int size,
-                                                        @CurrentUser UserPrincipal user
+                                                        @ApiIgnore @CurrentUser UserPrincipal user
     ){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "회고록 조회 성공", reviewService.getReviewList(goalId, criteria, offset, size, user.getId())));
@@ -58,7 +59,7 @@ public class ReviewController {
 
     @ApiOperation(value = "회고록 상세 조회", notes = "회고록 상세 정보를 반환한다.")
     @GetMapping("/{reviewId}")
-    public ResponseEntity<CommonResponse> getReview(@PathVariable Long reviewId, @CurrentUser UserPrincipal user){
+    public ResponseEntity<CommonResponse> getReview(@PathVariable Long reviewId, @ApiIgnore @CurrentUser UserPrincipal user){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "조회 성공", reviewService.getReview(reviewId, user.getId())));
     }
@@ -66,14 +67,14 @@ public class ReviewController {
     @ApiOperation(value = "회고록 수정", notes = "회고록을 수정한다.")
     @PutMapping("/{reviewId}")
     public ResponseEntity<CommonResponse> updateReview(@PathVariable Long reviewId, @RequestBody @Valid ReviewUpdateRequest request,
-                                                       @CurrentUser UserPrincipal user){
+                                                        @ApiIgnore @CurrentUser UserPrincipal user){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "수정 성공", reviewService.updateReview(reviewId, request, user.getId())));
     }
 
     @ApiOperation(value = "회고록 삭제", notes = "회고록을 삭제한다.")
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<CommonResponse> deleteReview(@CurrentUser UserPrincipal user, @PathVariable Long reviewId){
+    public ResponseEntity<CommonResponse> deleteReview(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long reviewId){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.NO_CONTENT, "삭제 성공", reviewService.deleteReview(reviewId, user.getId())));
     }
