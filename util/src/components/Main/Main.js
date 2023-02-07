@@ -33,7 +33,7 @@ const Main = (props) => {
         <div>피드</div>,
         <div>검색</div>,
         <div>탐색 탭</div>,
-        <div>피드 작성</div>,
+        <div>목표</div>,
       ],
       dockContractedBottom: [Icons.notification, <UserIcon />],
       dockExpandedBottom: [<div>알림</div>, <CurrentUser />],

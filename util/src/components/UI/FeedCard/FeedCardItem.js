@@ -8,6 +8,7 @@ import likeIconFill from "../../../img/LikeIconFill.svg";
 import PhotoCameraIcon from "../../../img/photoCameraIcon_gray.png";
 import { putLikeToggle } from "../../../api/Post/putLikeToggle";
 import { putBookmarkToggle } from "../../../api/Post/putBookmarkToggle";
+import Card from "../Card/Card";
 
 const avatarTheme = createTheme({
   components: {
@@ -67,8 +68,8 @@ const FeedCardItem = (props) => {
   };
 
   return (
-    <li>
-      <div className={classes.feedcarditem}>
+
+      <Card className={classes.feedcarditem}>
         <div className={classes[`feedcard-image`]} onClick={postClickHandler}>
           <img src={props.thumbnail} onError={imgErrorHandler} />
         </div>
@@ -123,8 +124,8 @@ const FeedCardItem = (props) => {
           </div>
           <div className={classes.date}>{props.createdDate}</div>
         </div>
-      </div>
-    </li>
+      </Card>
+
   );
 };
 

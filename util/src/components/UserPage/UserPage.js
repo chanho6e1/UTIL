@@ -14,13 +14,14 @@ import { deleteFollow } from "../../api/Post/deleteUnfollow";
 import { postFollow } from "../../api/Post/postFollow";
 import { getUserTag } from "../../api/Post/getUserTag";
 import { getMyData } from "../../api/UserProfile/getMyData";
+import UserPageResponsive from "./UserPageResponsive";
 
 import PlanCard from "../Plan/PlanCard/PlanCard";
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
     return (
-      <PostCardItem
+      <UserPageResponsive
         id={post.postId}
         key={post.postId}
         thumbnail={post.thumbnail}
@@ -153,7 +154,7 @@ const UserPage = (props) => {
     if (!isLoading && postList && postList.length === 0) {
       return <div className={classes[`no-post`]}>포스트가 없습니다</div>;
     } else {
-      return <ul>{postCardItemList(postList)}</ul>;
+      return postCardItemList(postList);
     }
   };
 
@@ -225,8 +226,10 @@ const UserPage = (props) => {
  
         </div>
         <div className={classes[`postcard-container`]}>
+          <div className={classes[`postcard-inner`]}>
+            {postCardContainer(postList)}
+          </div>
           
-          {postCardContainer(postList)}
           <div className={classes['plan-card-wrapper']}>
             <PlanCard />
           </div>
