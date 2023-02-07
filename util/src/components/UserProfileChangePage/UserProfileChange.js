@@ -5,6 +5,9 @@ import { getMyData } from "../../api/UserProfile/getMyData";
 import { getMyTags } from "../../api/UserProfile/getMyTags";
 import defautUserProfilePic from "../../img/defaultUserProfilePic.svg";
 import { postUserProfilePicUpload } from "../../api/UserProfile/postUserProfilePicUpload";
+import { putUserData } from "../../api/UserProfile/putUserData";
+import { postUserTags } from "../../api/UserProfile/postUserTags";
+import { putUserTags } from "../../api/UserProfile/putUserTags";
 
 const UserProfileChange = (props) => {
   const [userData, setUserData] = useState("");
@@ -17,31 +20,47 @@ const UserProfileChange = (props) => {
     });
   }, []);
 
-  //   {
-  //     "nickname": "kihunSONG",
-  //     "description": "",
-  //     "department": "string",
-  //     "tagList": [
-  //         "테스트"
-  //     ],
-  //     "imageUrl": "사진데이터",
-  //     "isNewUser": false,
-  //     "uploadImage": {}
-  // }
+  const submitUserProfileHandler = (userData) => {
+    const newTagList = [];
+    for (const idx in userData.tagList) {
+      const newItem = userData.tagList[idx].replace(/\s/g, "").toLowerCase();
+      newTagList.push(newItem);
+    }
 
-  const submitUserProfileHandler = (newUserData) => {
-    console.log("submithandler", newUserData);
+    const updateUserData = (userData, newImageUrl, newTagList) => {
+      const newUserData = {
+        department: userData.department,
+        discription: userData.description,
+        imageUrl: newImageUrl,
+        nickName: userData.nickname,
+      };
+      // 유저 데이터 변경
+      putUserData(newUserData)
+        .then((res) => {})
+        .then(() => {
+          // 태그 데이터 변경
+          if (userData.isNewUser) {
+            postUserTags(newTagList).then((res) => {
+              // 성공 시 보낼 곳
+            });
+          } else {
+            putUserTags(newTagList).then((res) => {
+              // 성공 시 보낼 곳
+            });
+          }
+        });
+    };
 
-    // 프사 업로드 axios
-    // if (newUserData.uploadImage !== null) {
-    //   const formData = new FormData();
-    //   formData.append("file", newUserData.uploadImage);
-    //   postUserProfilePicUpload(formData).then((res) => {
-    //     newUserData = { ...newUserData, imageUrl: res.data };
-    //   });
-    // } else {
-    //   console.log("same");
-    // }
+    // Profile Pic Upload
+    if (userData.uploadImage !== null) {
+      const formData = new FormData();
+      formData.append("file", userData.uploadImage);
+      postUserProfilePicUpload(formData).then((res) => {
+        updateUserData(userData, res.data, newTagList);
+      });
+    } else {
+      updateUserData(userData, userData.imageUrl, newTagList);
+    }
   };
 
   return (
@@ -51,7 +70,7 @@ const UserProfileChange = (props) => {
           imageUrl={userData.imageUrl}
           userName={userData.userName}
           nickname={userData.nickname}
-          description={userData.description}
+          description={userData.discription}
           department={userData.department}
           myTagList={userTagList}
           onConfirm={submitUserProfileHandler}
