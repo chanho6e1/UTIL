@@ -1,6 +1,6 @@
 .Detail {
   display: grid;
-  grid-template-columns: 100px 1fr 100px;
+  grid-template-columns: 200px 1fr 200px;
 }
 
 .DetailItem {
@@ -39,18 +39,23 @@
   font-size: 1.125rem;
   font-weight: 400;
   line-height: 22px;
-  margin-top: 10px;
 }
 
 .icons-div {
   justify-content: right;
-  display: flex;
+  display: grid;
   align-items: center;
   font-family: Inter;
   font-size: 1.125rem;
   font-weight: 400;
   line-height: 22px;
-  margin-top: 10px;
+  grid-template-columns: 1fr 2fr 3fr;
+}
+
+.icons-like {
+  display: flex;
+  align-items: center;
+
 }
 
 .icons-div img {

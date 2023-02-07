@@ -22,27 +22,27 @@ import { putLikeToggle } from "../../api/Post/putLikeToggle";
 import { putBookmarkToggle } from "../../api/Post/putBookmarkToggle";
 
 
-const DetailItemShow = (props) => {
-  const location = useLocation();
+const DetailItem = (props) => {
+  const idx = useParams().id
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const post = props.post
-
-  // useEffect(() => {
-  //   tilAPI(idx)
-  //   .catch((err) => {
-  //       navigate('/login');
-  //   })
-  //   .then((res) => {
-  //       dispatch(modifyPostDetailSliceActions.getPosts(JSON.stringify(res)))
-  //   })
-  // }, [])
+  const [post, setpost] = useState("")
 
   useEffect(() => {
-    tilCommentAPI(post.postId)
+    tilAPI(idx)
+    .catch((err) => {
+        console.log(err);
+    })
+    .then((res) => {
+        setpost(res)
+    })
+  }, [])
+
+  useEffect(() => {
+    tilCommentAPI(idx)
     .then((res) => {
       const proccessing = {
-        postId: post.postId,
+        postId: idx,
         data: res
     }
     dispatch(modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing)))
@@ -79,16 +79,16 @@ const DetailItemShow = (props) => {
       content: newCommentContent,
       isPrivate: newCommentIsPrivate,
       parentId: null,
-      postId: post.postId,
+      postId: idx,
     }
     if (inputCommentData.content === '') {
         return
     }
 
-    tilCommentNewAPI(post.postId, inputCommentData)
+    tilCommentNewAPI(idx, inputCommentData)
     .then((res) => {
         const proccessing = {
-            postId: post.postId,
+            postId: idx,
             data: res
         }
         dispatch(modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing)))
@@ -103,16 +103,16 @@ const DetailItemShow = (props) => {
       content: newDepthCommentContent,
       isPrivate: newDepthCommentIsPrivate,
       parentId: newDepthCommentParentId,
-      postId: post.postId,
+      postId: idx,
     }
     if (inputDepthCommentData.content === '') {
         return
     }
 
-    tilCommentNewAPI(post.postId, inputDepthCommentData)
+    tilCommentNewAPI(idx, inputDepthCommentData)
     .then((res) => {
         const proccessing = {
-            postId: post.postId,
+            postId: idx,
             data: res
         }
         dispatch(modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing)))
@@ -148,6 +148,10 @@ const DetailItemShow = (props) => {
   const [isBookmark, setIsBookmark] = useState(post.bookmarkStatus);
   const [isLike, setIsLike] = useState(post.likeStatus);
   const [likeStatusSize, setLikeStatusSize] = useState(post.likeStatusSize);
+  
+  console.log(post.bookmarkStatus)
+  console.log(post.likeStatus)
+  console.log(post.likeStatusSize)
 
   const displayLikeStatusSize = (likeStatusSize) => {
     if (likeStatusSize > 1000) {
@@ -166,6 +170,9 @@ const DetailItemShow = (props) => {
       if (res === 200) {
         setIsBookmark((prevState) => !prevState);
       }
+      console.log(post.bookmarkStatus)
+      console.log(post.likeStatus)
+      console.log(post.likeStatusSize)
     });
   };
 
@@ -180,6 +187,9 @@ const DetailItemShow = (props) => {
         }
         setIsLike((prevState) => !prevState);
       }
+      console.log(post.bookmarkStatus)
+      console.log(post.likeStatus)
+      console.log(post.likeStatusSize)
     })
     .catch((err) => {
       console.log('DetailItem : putLikeToggle => ', err)
@@ -261,27 +271,5 @@ const DetailItemShow = (props) => {
     </div>
   );
 };
-
-
-const DetailItem = (props) => {
-  const idx = useParams().id
-
-  const [detail, setDetail] = useState(null)
-  useEffect(() => {
-    tilAPI(idx)
-    .catch((err) => {
-        // navigate('/login');
-    })
-    .then((res) => {
-      setDetail(res)
-    })
-  })
-
-  return (
-    <React.Fragment>
-      {detail !== null && <DetailItemShow post={detail} /> }
-    </React.Fragment>
-  )
-}
 
 export default DetailItem;
