@@ -8,7 +8,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import 'dayjs/locale/ko';
-import styles from './PlanCardTodoCRUD.module.css'
+import styles from './PlanCardPlanCRUD.module.css'
 import { styled, createTheme, ThemeProvider } from '@mui/material';
 import Button from '../../UI/Button/Button';
 import { editTodoAPI } from '../../../api/Plan/editTodoAPI';
@@ -16,14 +16,16 @@ import { modifyPlanSliceActions } from '../../../redux/planSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { newTodoAPI } from '../../../api/Plan/newTodoAPI';
 import { recvTodoPeriodAPI } from '../../../api/Plan/recvTodoPeriodAPI';
+import { editPlanAPI } from '../../../api/Plan/editPlanAPI';
 import NotiDeliverer from '../../UI/StackNotification/NotiDeliverer';
 import warning from "../../../img/Warning.png"
-import { delTodoAPI } from '../../../api/Plan/delTodoAPI';
+import { newPlanAPI } from '../../../api/Plan/newPlanAPI';
+import { delPlanAPI } from '../../../api/Plan/delPlanAPI';
 import FixedModal from '../../UI/FixedModal/FixedModal';
 
 
 
-const PlanCardTodoCRUD = (props) => {
+const PlanCardPlanCRUD = (props) => {
     const dispatch = useDispatch()
 
     const customTheme = createTheme({
@@ -51,93 +53,70 @@ const PlanCardTodoCRUD = (props) => {
     }
 
 
-    const startDate = toStringByFormatting(new Date(props.plan.startDate))
+    const today = toStringByFormatting(new Date())
 
-    const [title, setTitle] = useState(props.todo ? props.todo.title : null)
-    const [description, setDescription] = useState(props.todo ? props.todo.description : null)
-    const [dueDate, setDueDate] = useState(props.todo ? toStringByFormatting(new Date(props.todo.dueDate)) : startDate)
+    const [title, setTitle] = useState(props.plan ? props.plan.title : null)
+    const [startDate, setStartDate] = useState(props.plan ? toStringByFormatting(new Date(props.plan.startDate)) : today)
+    const [endDate, setEndDate] = useState(props.plan ? toStringByFormatting(new Date(props.plan.startDate)) : null)
 
     const titleChangeHandler = (event) => {
         setTitle(() => event.target.value)
     }
 
-    const descriptionChangeHandler = (event) => {
-        setDescription(() => event.target.value)
+    const startDateChangeHandler = (value) => {
+        setStartDate(() => value)
     }
 
-    const dueDateChangeHandler = (value) => {
-        setDueDate(() => value)
+    const endDateChangeHandler = (value) => {
+        setEndDate(() => value)
     }
 
     const submitHandler = () => {
+      if (props.plan) {
         const processing = {
             title: title,
-            description: description,
-            state: props.todo ? props.todo.state : null,
-            dueDate: dueDate,
-        }
-        if (props.todo) {
-            
-            editTodoAPI(props.todo.todoId, props.plan.goalId, processing)
-            .then((res) => {
-                const proccessing = {
-                    goalId: props.plan.goalId,
-                    data: res
+            startDate: startDate,
+            endDate: endDate
+          }
+          editPlanAPI(props.plan.goalId, processing)
+          .then((res) => {
+              dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+              props.modalHandler()
+          })
+          .catch((err) => {
+            console.log('PlanItem : editPlanAPI => ', err)
+            if (err.response.data[0].message == "목표 내용이 없습니다.") {
+                setNotiContent('목표의 타이틀은 필수 입력 사항입니다.')
+                setDoneNotiState(true)
+            }
+          })
+      } else {
+        newPlanAPI(startDate, endDate, title)
+            .catch((err) => {
+                // navigate('/login');
+                console.log('Plan : newPlanAPI => ', err)
+                if (startDate == null || endDate == null) {
+                    setNotiContent('시작일과 마감일은 필수 입력 사항입니다.')
+                    setDoneNotiState(true)
                 }
-                dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
+                if (err.response.data[0].message == "목표 내용이 없습니다.") {
+                    setNotiContent('목표의 타이틀은 필수 입력 사항입니다.')
+                    setDoneNotiState(true)
+                }
             })
             .then((res) => {
+                dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
                 props.modalHandler()
-            })
-            .catch((err) => {
-                console.log('PlanCardTodoCRUD : editTodoAPI => ', err)
-                if (err.response.data[0].message == "제목이 없습니다.") {
-                    setNotiContent('TODO의 타이틀은 필수 입력 사항입니다.')
-                    setDoneNotiState(true)
-                }
-                
-            })
 
-        } else {
-            newTodoAPI(props.plan.goalId, processing)
-            .then((res) => {
-                const processing = {
-                    goalId: props.plan.goalId,
-                    data: res
-                }
-                dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
-            })
-            .then((res) => {
-                recvTodoPeriodAPI(props.plan.goalId)
-                .then((res) => {
-                    const processing = {
-                        goalId: props.plan.goalId,
-                        data: res
-                    }
-                    dispatch(modifyPlanSliceActions.responseTodoPeriod(JSON.stringify(processing)))
-                    props.modalHandler()
-                })
-                .catch((err) => {
-                    console.log('PlanCardTodoCRUD : recvTodoPeriodAPI => ', err)
-                })
-    
-            })
-            .catch((err) => {
-                console.log('PlanCardTodoCRUD : newTodoAPI => ', err)
-    
-                if (err.response.data[0].message == "제목이 없습니다.") {
-                    setNotiContent('TODO의 타이틀은 필수 입력 사항입니다.')
-                    setDoneNotiState(true)
-                }
                 
             })
-        }
+      }
     }
-
 
     const [doneNotiState, setDoneNotiState] = useState(false)
     const [notiContent, setNotiContent] = useState()
     const [askDeleteState, setAskDeleteState] = useState(false)
+
 
     const ErrorMessage = (props) => {
         return (
@@ -151,17 +130,16 @@ const PlanCardTodoCRUD = (props) => {
         )
     }
 
-    const deleteTodo = () => {
-        delTodoAPI(props.todo.todoId, props.plan.goalId)
+    const deletePlan = () => {
+        delPlanAPI(props.plan.goalId)
         .then((res) => {
-            const proccessing = {
-                goalId: props.plan.goalId,
-                data: res
-            }
-            dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
+          dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
         })
+        .catch((err) => {
+          console.log('PlanItem : delPlanAPI => ', err)
+        })
+    
     }
-
 
     const AskDeleteForm = (props) => {
         return (
@@ -173,11 +151,13 @@ const PlanCardTodoCRUD = (props) => {
             </div>
             <div style={{width:'100%', display:'flex', justifyContent:'space-evenly', marginTop:'12px'}}>
               <Button className={styles['modal-button']} onClick={props.modalHandler}>취소</Button>
-              <Button className={`${styles['modal-button']} ${styles['modal-delete']}`} onClick={() => {deleteTodo(); props.modalHandler()}}>삭제</Button>
+              <Button className={`${styles['modal-button']} ${styles['modal-delete']}`} onClick={() => {deletePlan(); props.modalHandler()}}>삭제</Button>
             </div>
           </div>
         )
       }
+    
+
     
 
     const deleteButton = (
@@ -189,31 +169,35 @@ const PlanCardTodoCRUD = (props) => {
         </div>
     )
 
-    
-
 
     return (
         <div className={styles['form-wrapper']}>
             <FixedModal modalState={askDeleteState} stateHandler={setAskDeleteState} content={<AskDeleteForm />} width={'340px'} height={'310px'} />
             {doneNotiState && <NotiDeliverer content={<ErrorMessage />} stateHandler={setDoneNotiState} duration={5000} width={400} />}
             <div className={styles['title-wrapper']}>
-            {props.todo ? 'TODO 수정' : 'TODO 생성'}
-            {props.todo && deleteButton}
+                {props.plan ? '목표 수정' : '목표 생성'}
+                {props.plan && deleteButton}
             </div>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
                 <ThemeProvider theme={customTheme}>
 
                     <TextField onChange={titleChangeHandler} value={title} id="outlined-basic" label="타이틀" variant="outlined" sx={{width:'100%', paddingBottom:'24px'}}/>
-                    <TextField onChange={descriptionChangeHandler} value={description} id="outlined-basic" label="메모" variant="outlined" sx={{width:'100%', paddingBottom:'24px'}} multiline />
                     <Stack spacing={3}>
                         <MobileDatePicker
-                        label="날짜"
-                        minDate={toStringByFormatting(new Date(props.plan.startDate))}
-                        maxDate={toStringByFormatting(new Date(props.plan.endDate))}
-                        value={dueDate}
-                        onChange={dueDateChangeHandler}
-                        
-                        renderInput={(params) => <TextField {...params} sx={{width:'100%', paddingBottom:'24px'}} />}
+                            label="시작일"
+                            value={startDate}
+                            maxDate={endDate}
+                            onChange={startDateChangeHandler}
+                            renderInput={(params) => <TextField {...params} sx={{width:'100%', paddingBottom:'24px'}} />}
+                        />
+                    </Stack>
+                    <Stack spacing={3}>
+                        <MobileDatePicker
+                            label="마감일"
+                            value={endDate}
+                            minDate={startDate}
+                            onChange={endDateChangeHandler}
+                            renderInput={(params) => <TextField {...params} sx={{width:'100%', paddingBottom:'24px'}} />}
                         />
                     </Stack>
                 </ThemeProvider>
@@ -221,10 +205,10 @@ const PlanCardTodoCRUD = (props) => {
             
             <footer className={styles['footer']}>
                 <Button className={styles['button']} onClick={() => {props.modalHandler()}}>취소</Button>
-                <Button onClick={submitHandler} className={styles['button']}>{props.todo ? '수정' : '생성'}</Button>
+                <Button onClick={submitHandler} className={styles['button']}>{props.plan ? '수정' : '생성'}</Button>
             </footer>
         </div>
     )
 }
 
-export default PlanCardTodoCRUD
+export default PlanCardPlanCRUD
