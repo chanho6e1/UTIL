@@ -52,8 +52,10 @@ public class UserService {
 //            originUser.setUserProfile(baseImg.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/",""));
         }else{
             originUser.setUserProfile(path.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/",""));
-            deleteS3Image(path, baseImg);
+//            deleteS3Image(path, baseImg);
             newImg = request.getImageUrl().replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/", "");
+            if(!path.equals(newImg))
+                deleteS3Image(path, baseImg);
         }
         request.setImageUrl(newImg);
 
