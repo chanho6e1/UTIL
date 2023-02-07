@@ -9,6 +9,7 @@ import PhotoCameraIcon from "../../../img/photoCameraIcon_gray.png";
 import { putLikeToggle } from "../../../api/Post/putLikeToggle";
 import { putBookmarkToggle } from "../../../api/Post/putBookmarkToggle";
 import Card from "../Card/Card";
+import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate, useLocation } from "react-router-dom";
 
 const avatarTheme = createTheme({
   components: {
@@ -21,6 +22,7 @@ const avatarTheme = createTheme({
 });
 
 const FeedCardItem = (props) => {
+  const navigate = useNavigate();
   const [isBookmark, setIsBookmark] = useState(props.bookmarkStatus);
   const [isLike, setIsLike] = useState(props.likeStatus);
   const [likeStatusSize, setLikeStatusSize] = useState(props.likeStatusSize);
@@ -64,6 +66,7 @@ const FeedCardItem = (props) => {
   };
 
   const postClickHandler = () => {
+    navigate(`/post/${props.id}`)
     console.log("post click");
   };
 
