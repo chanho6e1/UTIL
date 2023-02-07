@@ -1,5 +1,6 @@
 .form-wrapper {
     padding:24px;
+    width: 100%;
 }
 
 .title-wrapper {
@@ -25,8 +26,8 @@
     transition-property: background-color;
     transition-duration: 0.3s;
     border-radius: 5px;
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -49,3 +50,4 @@
 .modal-button {
     width: 40%;
 }
+

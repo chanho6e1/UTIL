@@ -13,16 +13,17 @@ const PlanCardItemTodo = (props) => {
   const dueDateString = `${dueDate.getFullYear()}.${dueDate.getMonth()}.${dueDate.getDate()}`
   return (
     <div onClick={() => {setModalState(true)}} className={`${styles['plan-item-wrapper']} ${styles[`${props.className}`]}`}>
-      <FixedModal modalState={modalState} stateHandler={setModalState} content={<PlanCardTodoCRUD />} width={'400px'} height={'auto'} />
-      <img className={styles['arrow-icon']} src={arrow} style={{transform: 0 ? 'rotate(90deg)' : 'none', marginRight:'12px', width: '12px', height: '12px'}}/>
+      <FixedModal modalState={modalState} stateHandler={setModalState} content={<PlanCardTodoCRUD todo={props.todo} plan={props.plan} />} width={'400px'} height={'auto'} />
+      {/* <img className={styles['arrow-icon']} src={arrow} style={{transform: 0 ? 'rotate(90deg)' : 'none', marginRight:'12px', width: '12px', height: '12px'}}/> */}
+      
       <div className={styles['plan-item-text']}>
-        <span>{props.todo.title}</span>
+        <span className={styles['title-text']}>{props.todo.title}</span>
         <span className={styles['small-text']}>{dueDateString}</span>
       </div>
-      <div style={{marginLeft: '12px'}}>
+      
+      <div onClick={(event) => {event.stopPropagation();}} style={{marginLeft: '12px'}}>
         <PlanIsDoneToggle plan={props.plan} todo={props.todo} />
       </div>
-      
     </div>
   )
 }
