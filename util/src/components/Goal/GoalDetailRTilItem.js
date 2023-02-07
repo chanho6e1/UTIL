@@ -7,29 +7,10 @@ import { tilAPI } from "../../api/Detail/tilAPI";
 
 const GoalDetailRTilItem = (props) => {
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-
-  const move = () => {
-    tilAPI(props.til.postId)
-    .catch((err) => {
-        navigate('/login');
-    })
-    .then((res) => {
-      navigate(`/post/${props.til.postId}`, {
-        state: {
-          post: res
-        }
-      });
-    })
-  };
-
-
   return (
-    // <Link to={`/post/${props.til.postId}`} post={posts}>
-    //   <li className={classes["goal-detail-r-tils-item-title"]}>{props.til.title}</li>
-    // </Link>
-    <p onClick={move}>{props.til.title}</p>
+    <Link to={`/post/${props.til.postId}`}>
+      <li className={classes["goal-detail-r-tils-item-title"]}>{props.til.title}</li>
+    </Link>
   );
 };
 
