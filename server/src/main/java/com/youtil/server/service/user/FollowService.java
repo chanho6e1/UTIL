@@ -23,10 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FollowService {
-    @Autowired
     private final FollowRepository followRepository;
-
-    @Autowired
     private final UserRepository userRepository;
     //팔로우
     @Transactional

@@ -27,18 +27,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PostCategoryService {
-
-    @Autowired
-    PostCategoryRepository postCategoryRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    PostRepository postRepository;
-
-    @Autowired
-    PostCategoryQueryRepository postCategoryQueryRepository;
+    private final PostCategoryRepository postCategoryRepository;
+    private final UserRepository userRepository;
+    private final PostRepository postRepository;
+    private final PostCategoryQueryRepository postCategoryQueryRepository;
 
     @Transactional
     public Long createCategory(Long userId, CategorySaveRequest request) {
