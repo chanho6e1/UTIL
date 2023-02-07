@@ -34,7 +34,7 @@ public class PostController {
 
     @ApiOperation(value = "단일 게시물 조회", notes = "게시물 id로 게시물을 조회한다.")
     @GetMapping("/{postId}")
-    public ResponseEntity<CommonResponse> getPost(@CurrentUser UserPrincipal user, @PathVariable Long postId) {
+    public ResponseEntity<CommonResponse> getPost(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long postId) {
 
         System.out.println(
                 user.getId()
