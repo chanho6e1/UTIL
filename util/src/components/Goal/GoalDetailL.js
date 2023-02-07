@@ -22,7 +22,7 @@ const GoalDetailL = (props) => {
         <div className={classes["goal-detail-date"]}>
           <p>{props.plan?.startDate} ~ {props.plan?.endDate}</p>
         </div>
-        {props.plan !== null && <PlanCardItem plan={props.plan} />}
+        {/* {props.plan !== null && <PlanCardItem plan={props.plan} />} */}
         {/* <GoalDetailLTodo todos={props.todos[props.goal?.goalId]}/> */}
         <GoalDetailLReview reviews={props.reviews[props.plan?.goalId]}/>
       </div>
