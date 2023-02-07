@@ -24,11 +24,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TodoService {
-    @Autowired
     private final TodoRepository todoRepository;
-    @Autowired
+
     private final UserRepository userRepository;
-    @Autowired
+
     private final GoalRepository goalRepository;
 
     @Transactional

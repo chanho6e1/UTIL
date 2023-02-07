@@ -26,17 +26,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PostCommentService {
-
-    @Autowired
-    PostCommentRepository postCommentRepository;
-    @Autowired
-    PostCommentQueryRepository postCommentQueryRepository;
-
-    @Autowired
-    PostRepository postRepository;
-
-    @Autowired
-    UserRepository userRepository;
+    private final PostCommentRepository postCommentRepository;
+    private final PostCommentQueryRepository postCommentQueryRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     public List<PostCommentResponse> findPostCommentList(Long postId, int offset, Integer size) {
         return convertNestedStructure(postCommentRepository.findCommentByPostId(postId));

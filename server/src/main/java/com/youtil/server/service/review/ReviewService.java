@@ -28,11 +28,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    @Autowired
     private final ReviewRepository reviewRepository;
-    @Autowired
+
     private final ReviewQueryRepository reviewQueryRepository;
-    @Autowired
+
     private final GoalRepository goalRepository;
 
     @Transactional
