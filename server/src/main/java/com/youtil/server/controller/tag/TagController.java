@@ -34,14 +34,14 @@ public class TagController {
     // 관심 테그
     @ApiOperation(value = "관심 테그 등록", notes = "관심 테그를 등록한다")
     @PostMapping("/likes")
-    public ResponseEntity<CommonResponse> findOrCrateTagLike(@CurrentUser UserPrincipal user, @RequestBody @Valid TagSaveRequest request) throws Exception {
+    public ResponseEntity<CommonResponse> findOrCrateTagLike(@ApiIgnore @CurrentUser UserPrincipal user, @RequestBody @Valid TagSaveRequest request) throws Exception {
 
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "등록 성공", tagService.findOrCrateTagLike(user.getId(), request)));
     }
     @ApiOperation(value = "관심 테그 조회", notes = "관심 테그를 조회한다")
     @GetMapping("/likes")
-    public ResponseEntity<CommonResponse> getTagLike(@CurrentUser UserPrincipal user){
+    public ResponseEntity<CommonResponse> getTagLike(@ApiIgnore @CurrentUser UserPrincipal user){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "나의 관심 테그 조회 성공", tagService.getTagLike(user.getId())));
     }
@@ -55,14 +55,14 @@ public class TagController {
 
     @ApiOperation(value = "관심 테그 삭제", notes = "관심 테그를 삭제한다")
     @DeleteMapping("/likes")
-    public ResponseEntity<CommonResponse> deleteTagLike(@CurrentUser UserPrincipal user) {
+    public ResponseEntity<CommonResponse> deleteTagLike(@ApiIgnore @CurrentUser UserPrincipal user) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.NO_CONTENT, "관심 테그 삭제 성공", tagService.deleteTagLike(user.getId())));
     }
 
     @ApiOperation(value = "관심 테그 수정", notes = "관심 테그를 수정한다")
     @PutMapping("/likes")
-    public ResponseEntity<CommonResponse> updateTagLike(@CurrentUser UserPrincipal user, @RequestBody @Valid TagSaveRequest request) throws Exception {
+    public ResponseEntity<CommonResponse> updateTagLike(@ApiIgnore @CurrentUser UserPrincipal user, @RequestBody @Valid TagSaveRequest request) throws Exception {
 
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "관심 테그 수정 성공", tagService.updateTagLike(user.getId(), request)));

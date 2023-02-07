@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
@@ -26,7 +27,7 @@ public class UserController {
     @GetMapping("/me")
     @ApiOperation(value = "로그인 유저 조회", notes = "현재 로그인한 유저 정보를 반환한다.")
     @PreAuthorize("hasRole('USER')")
-    public  ResponseEntity<CommonResponse>  getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+    public  ResponseEntity<CommonResponse>  getCurrentUser(@ApiIgnore @CurrentUser UserPrincipal userPrincipal) {
 
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "유저 정보 조회 성공", userService.getCurrentUser(userPrincipal.getId())));
@@ -34,7 +35,7 @@ public class UserController {
 
     @PutMapping
     @ApiOperation(value = "유저 정보 업데이트", notes = "현재 로그인한 유저 정보를 업데이트한다.")
-    public ResponseEntity<CommonResponse> updateUserInfo(@CurrentUser UserPrincipal userPrincipal,
+    public ResponseEntity<CommonResponse> updateUserInfo(@ApiIgnore @CurrentUser UserPrincipal userPrincipal,
                                                          @RequestBody @Valid UserUpdateRequest request) throws UnsupportedEncodingException {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "유저 정보 수정 성공", userService.updateUser(userPrincipal.getId(), request)));
