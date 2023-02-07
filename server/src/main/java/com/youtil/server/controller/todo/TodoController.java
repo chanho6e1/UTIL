@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -83,14 +84,14 @@ public class TodoController {
     }
     @ApiOperation(value = "날짜별 투두 조회", notes = "날짜별 투두를 조회한다")
     @GetMapping("/today/{dueDate}")
-    public ResponseEntity<CommonResponse> getTodoByGoal(@CurrentUser UserPrincipal userPrincipal, @PathVariable String dueDate){
+    public ResponseEntity<CommonResponse> getTodoByGoal(@ApiIgnore @CurrentUser UserPrincipal userPrincipal, @PathVariable String dueDate){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "날짜별 투두 조회 성공", todoService.getTodoByDate(userPrincipal.getId(), dueDate)));
     }
 
     @ApiOperation(value = "전체 목표별 투두 최소, 최고 날짜 조회", notes = "사용자의 전체 목표에서 최소, 최고 날짜를 조회한다.")
     @GetMapping("/period")
-    public ResponseEntity<CommonResponse> getTodoPeriod(@CurrentUser UserPrincipal userPrincipal){
+    public ResponseEntity<CommonResponse> getTodoPeriod(@ApiIgnore @CurrentUser UserPrincipal userPrincipal){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "목표별 투두 min, max 조회 성공", todoService.getTodoPeriod(userPrincipal.getId())));
     }
