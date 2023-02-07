@@ -2,9 +2,10 @@
   display: flex;
   justify-content: space-between;
   text-align: start;
+  width: 50vw;
   height: 200px;
-  outline: 1px solid #c9c9c9;
-  border-radius: 20px;
+  /* outline: 1px solid #c9c9c9; */
+  /* border-radius: 20px; */
   list-style: none;
   margin: 18px;
 }
@@ -95,8 +96,9 @@
   display: flex;
   align-items: center;
   width: 200px;
-  outline: 1px solid #c9c9c9;
-  border-radius: 0 20px 20px 0;
+  /* outline: 1px solid #c9c9c9; */
+  border-left: 1px solid #c9c9c9; 
+  /* border-radius: 0 20px 20px 0; */
   cursor: pointer;
 }
 
