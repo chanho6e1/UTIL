@@ -19,8 +19,9 @@ const Main = (props) => {
   const parentRef = useRef();
   const userAuth = useSelector((state) => state.userAuthSlice.userAuth);
 
+
   const postData = {
-    content: [<MyUtil />, <div>test1</div>, <PlanExpanded />, <div>test1</div>, <div>test1</div>],
+    content: [userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />, <UserProfileChange />, <PlanExpanded />, <div>test1</div>, <div>test1</div>],
     dock: {
       logoContracted: (
         <img className={styles["logo-icon"]} src={logo} style={{ width: "96px", height: "auto" }} />

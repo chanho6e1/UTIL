@@ -10,6 +10,7 @@ import PhotoCameraIcon from "../../../img/photoCameraIcon_gray.png";
 import { getPostTag } from "../../../api/Post/getPostTag";
 import { putLikeToggle } from "../../../api/Post/putLikeToggle";
 import { putBookmarkToggle } from "../../../api/Post/putBookmarkToggle";
+import Card from "../Card/Card";
 
 const avatarTheme = createTheme({
   components: {
@@ -65,7 +66,7 @@ const PostCardItem = (props) => {
 
   return (
     <li>
-      <div className={classes.postcarditem}>
+      <Card className={classes.postcarditem}>
         <div className={classes[`card-text`]}>
           <div className={classes.title} onClick={postClickHandler}>
             {props.title}
@@ -112,6 +113,7 @@ const PostCardItem = (props) => {
                     height: 24,
                     border: "1px solid lightgray",
                     objectFit: "scale-down",
+                    
                   }}
                 />
               </ThemeProvider>
@@ -123,7 +125,7 @@ const PostCardItem = (props) => {
         <div className={classes[`card-image`]} onClick={postClickHandler}>
           <img src={props.thumbnail} onError={imgErrorHandler} />
         </div>
-      </div>
+      </Card>
     </li>
   );
 };
