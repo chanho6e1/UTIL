@@ -100,9 +100,11 @@ public class GoalService {
         if(path==null){
             goal.setImageUrl(baseImg);
         }else{
+            if(!path.equals(originImg)){ //새로운 사진 기존과 다른 경우
+                deleteS3Image(originImg, baseImg); //기존이미지와 링크도 다른 경우 원래 이미지 삭제
+            }
             goal.setImageUrl(path);
-            deleteS3Image(originImg, baseImg);
-       }
+        }
         goal.update(request);
         return goal.getGoalId();
     }
