@@ -58,7 +58,7 @@ public class PostService {
         }
         Boolean bookmarkStatus = false;
         if(postBookmarkRepository.existsByPostIdAndUserId(postId, userId).isPresent()){
-            likeStatus = true;
+            bookmarkStatus = true;
         }
         return new PostResponse(post, likeStatus, bookmarkStatus);
     }
