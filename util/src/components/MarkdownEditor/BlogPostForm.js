@@ -90,13 +90,13 @@ const BlogPostForm = (props) => {
                 <div onClick={() => {setSelectedScope(1); scopePickerHandler() }} className={styles['item']} style={{backgroundColor: 1 === selectedScope ? 'rgb(235, 236, 239)' : '', }}>
                     <b>팔로잉 공개</b>
                     <div className={styles['small-text']}>
-                        회원님이 팔로잉 한 사용자에게 이 글을 공개합니다.
+                        팔로잉 한 사용자에게 이 글을 공개합니다.
                     </div>
                 </div>
                 <div onClick={() => {setSelectedScope(0); scopePickerHandler() }} className={styles['item']} style={{backgroundColor: 0 === selectedScope ? 'rgb(235, 236, 239)' : '', }}>
                     <b>비공개</b>
                     <div className={styles['small-text']}>
-                        회원님을 제외한 모든 이용자는 이 글을 볼 수 없습니다.
+                        다른 이용자는 이 글을 볼 수 없습니다.
                     </div>
                 </div>
             </div>
