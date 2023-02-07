@@ -87,7 +87,7 @@ public class PostQueryRepository {
         QueryResults<Post> content = jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
-                .where(post.title.contains(postSearch.getTitle()),
+                .where(post.title.toLowerCase().contains(postSearch.getTitle()),
                         isPrivate(userId)
                 )
                 .orderBy(findCriteria(criteria))

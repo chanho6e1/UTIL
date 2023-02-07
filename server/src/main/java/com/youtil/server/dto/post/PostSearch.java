@@ -16,7 +16,7 @@ public class PostSearch {
     }
 
     public static PostSearch of(String title, String criteria){
-        return new PostSearch(title, criteria);
+        return new PostSearch(title.toLowerCase(), criteria);
     }
 
     public static PostSearch of(String criteria){
