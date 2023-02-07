@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import Card from "../../UI/Card/Card";
 import { recvTodosAPI } from "../../../api/Plan/recvTodosAPI";
 import { modifyPlanSliceActions } from '../../../redux/planSlice'
@@ -8,8 +8,18 @@ import styles from './PlanCardItem.module.css'
 import FixedModal from "../../UI/FixedModal/FixedModal";
 import PlanCardTodoCRUD from "./PlanCardTodoCRUD";
 import PlanCardPlanCRUD from "./PlanCardPlanCRUD";
+import { OverlayScrollbarsComponent, useOverlayScrollbars } from "overlayscrollbars-react";
 
 const PlanCardItem = (props) => {
+  const scrollRef = useRef();
+  const [initialize, instance] = useOverlayScrollbars({ options: { scrollbars: { autoHide: 'scroll' } },});
+
+  
+  useEffect(() => {
+    initialize(scrollRef.current);
+  }, [initialize]);
+
+
   const dispatch = useDispatch()
   const todos = useSelector(state => state.planSlice.todos[props.plan.goalId])
 
@@ -67,8 +77,11 @@ const PlanCardItem = (props) => {
           
         </div>
       </header>
-      <div style={{maxHeight:`${48 * 6}px`, overflow:'scroll'}}>
+      <div ref={scrollRef} style={{maxHeight:`${48 * 6}px`}}>
+        <div>
         {todoList}
+        </div>
+        
       </div>
       {todos?.length === 0 && empty}
     </Card>

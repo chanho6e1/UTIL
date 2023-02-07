@@ -15,6 +15,8 @@ import { postFollow } from "../../api/Post/postFollow";
 import { getUserTag } from "../../api/Post/getUserTag";
 import { getMyData } from "../../api/UserProfile/getMyData";
 
+import PlanCard from "../Plan/PlanCard/PlanCard";
+
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
     return (
@@ -161,51 +163,77 @@ const UserPage = (props) => {
 
   return (
     <div className={classes[`user-page`]}>
-      <div className={classes[`user-page-upper`]}>
-        <div className={classes[`avatar-username`]}>
-          <Avatar
-            src={userData.imageUrl}
-            sx={{
-              width: 128,
-              height: 128,
-              border: "1px solid lightgray",
-              objectFit: "scale-down",
-            }}
-          />
-          <div className={classes.nickname}>{userData.nickname}</div>
-        </div>
-        <div className={classes[`follow-userdata`]}>
-          <div className={classes.follow}>
-            <div className={classes.follower}>
-              <div className={classes[`follow-text`]}>팔로워</div>
-              <div className={classes[`follow-number`]}>{followerListCnt}명</div>
-            </div>
-            <div className={classes.follower}>
-              <div className={classes[`follow-text`]}>팔로우</div>
-              <div className={classes[`follow-number`]}>{followingListCnt}명</div>
-            </div>
-            {myData.userId !== props.id && followBtn(isFollowing)}
+
+        <div className={classes[`user-page-upper`]}>
+          
+
+          
+          <div className={classes[`avatar-username`]}>
+            <Avatar
+              src={userData.imageUrl}
+              sx={{
+                width: '15vw',
+                height: '15vw',
+                minWidth: '96px',
+                minHeight: '96px',
+                maxWidth: '128px',
+                maxHeight: '128px',
+                border: "1px solid lightgray",
+                objectFit: "scale-down",
+              }}
+            />
+            
           </div>
-          <div className={classes[`userdata`]}>
-            <div className={classes[`username-department`]}>
+
+          <div className={classes['user-outer-wrapper']}>
+
+          <div className={classes['user-wrapper']}>
+            <div>
+              <div className={classes['user-column']}>
+                <div className={classes.nickname}>
+                  {userData.nickname}
+                </div>
+                <div className={classes.follow}>
+
+                  <div className={classes[`follow-text`]}>팔로워</div>
+                  <div className={classes[`follow-number`]}>{followerListCnt}명</div>
+                  <div className={classes[`follow-text`]}>팔로우</div>
+                  <div className={classes[`follow-number`]}>{followingListCnt}명</div>
+                  {myData.userId !== props.id && followBtn(isFollowing)}
+
+                  
+                </div>
+      
+            </div>
+
+            {/* <div className={classes['user-column']}>
               <div className={classes.username}>{userData.userName}</div>
-              <div className={classes[`department-text`]}>소속</div>
-              <div className={classes[`department-data`]}>{userData.department}</div>
+            </div> */}
+            
+            <div className={classes['user-column']}>
+              <div className={classes['user-description']}>{userData.discription}</div>
             </div>
-            <div className={classes[`username-department`]}>
-              <div className={classes[`department-text`]}>email</div>
-              <div className={classes[`department-data`]}>{userData.email}</div>
             </div>
-            <div className={classes.tags}>
-              <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
-            </div>
+            
+            
+            
+          </div>
+
+          <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
+          
+          </div>
+ 
+        </div>
+        <div className={classes[`postcard-container`]}>
+          
+          {postCardContainer(postList)}
+          <div className={classes['plan-card-wrapper']}>
+            <PlanCard />
           </div>
         </div>
-      </div>
-      <div className={classes[`postcard-container`]}>{postCardContainer(postList)}</div>
-      <div className={classes[`pagination`]}>
-        <Pagination count={totalPage} onChange={pageChangeHandler} />
-      </div>
+        <div className={classes[`pagination`]}>
+          <Pagination count={totalPage} onChange={pageChangeHandler} />
+        </div>
     </div>
   );
 };
