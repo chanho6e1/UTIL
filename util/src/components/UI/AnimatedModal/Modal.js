@@ -14,6 +14,7 @@ const ModalOverlay = (props) => {
   const backdropRef = useRef()
   const contentRef = useRef()
   const indicatorRef = useRef()
+  const propsRef = useRef()
   const navigate = useNavigate()
   
 
@@ -36,8 +37,9 @@ const ModalOverlay = (props) => {
     
     const modalInitialize = async () => {
       console.log(props.parentRef)
-      contentRef.current.style.transitionProperty = 'left top width height opacity'
-      contentRef.current.style.transitionDuration = '0s'
+
+      contentRef.current.style.transitionProperty = await 'left top width height opacity'
+      contentRef.current.style.transitionDuration = await '0s'
       indicatorRef.current.style.width = await contentRef.current.clientWidth + 'px'
       indicatorRef.current.style.height = await contentRef.current.clientHeight + 'px'
       contentRef.current.style.left = await props.parentRef.current.getBoundingClientRect().left + 'px'
@@ -48,18 +50,20 @@ const ModalOverlay = (props) => {
     }
     
     const modalExecute = () => {
+
       backdropRef.current.style.opacity = 255
       if (props.toggleBoolean) {
         contentRef.current.style.transitionProperty = 'left top width height opacity'
         contentRef.current.style.transitionDuration = '0.3s'
-        
+        contentRef.current.style.transitionProperty = 'left top width height opacity'
+        contentRef.current.style.transitionDuration = '0.3s'
       }
-
 
       const responsiveWidth = 100 * indicatorRef.current.clientWidth / window.innerWidth
       const responsiveHeight = 100 * indicatorRef.current.clientHeight / window.innerHeight
       contentRef.current.style.width = responsiveWidth + '%'
       contentRef.current.style.height = responsiveHeight + '%'
+
 
       // contentRef.current.style.width = indicatorRef.current.clientWidth + 'px'
       // contentRef.current.style.height = indicatorRef.current.clientHeight + 'px'
@@ -67,9 +71,11 @@ const ModalOverlay = (props) => {
       contentRef.current.style.top = indicatorRef.current.getBoundingClientRect().top + 'px'
       
     }
-
     await modalInitialize()
     await modalExecute()
+
+
+    
     console.log(contentRef)
 
     const displayCorrection =  setTimeout(async () => {
@@ -95,10 +101,14 @@ const ModalOverlay = (props) => {
     const modalExecute = async () => {
       contentRef.current.style.transitionProperty = await 'left top width height opacity'
       contentRef.current.style.transitionDuration = await '0.3s'
+      contentRef.current.style.transitionProperty = await 'left top width height opacity'
+      contentRef.current.style.transitionDuration = await '0.3s'
       modalRef.current.style.display = await 'block'
       contentRef.current.style.position = await 'absolute'
       contentRef.current.style.left = await indicatorRef.current.getBoundingClientRect().left + 'px'
       contentRef.current.style.top = await indicatorRef.current.getBoundingClientRect().top + 'px'
+      
+      
       
       // const contentLeft = await contentRef.current.getBoundingClientRect().left
       // const contentTop = await contentRef.current.getBoundingClientRect().top
@@ -109,6 +119,11 @@ const ModalOverlay = (props) => {
 
       // modalRef.current.style.transitionProperty = await 'left top width height opacity'
       // modalRef.current.style.transitionDuration = await '0.3s'
+      setTimeout(async () => {
+        if (props.fadeOut === true) {
+          contentRef.current.style.opacity = await '0'
+        }
+      }, 100);
       
       
       
@@ -117,7 +132,6 @@ const ModalOverlay = (props) => {
       
       contentRef.current.style.width = await props.parentRef.current.clientWidth + 'px'
       contentRef.current.style.height = await props.parentRef.current.clientHeight + 'px'
-
 
       backdropRef.current.style.opacity = await 0
       
@@ -137,7 +151,7 @@ const ModalOverlay = (props) => {
 
 
 
-  const content = React.cloneElement(props.component, {unmountModalHandler: unmountModalHandler});
+  const content = React.cloneElement(props.component, {unmountModalHandler: unmountModalHandler, ref:propsRef});
 
 
 
@@ -160,12 +174,12 @@ const ModalOverlay = (props) => {
 
 
 
-const AnimatedModal = (props) => {
+const Modal = (props) => {
   
 
   const match = useMatch(`${props.url}`);
   const condition = (match || props.toggleBoolean)
-  const modal = ReactDOM.createPortal(<ModalOverlay component={props.component} id={props.id} name={props.name} parentId={props.parentId} parentRef={props.parentRef} toggleFunction={props.toggleFunction} toggleBoolean={props.toggleBoolean} url={props.url} prevUrl={props.prevUrl} />, document.getElementById('overlay-root'))
+  const modal = ReactDOM.createPortal(<ModalOverlay component={props.component} id={props.id} name={props.name} parentId={props.parentId} parentRef={props.parentRef} toggleFunction={props.toggleFunction} toggleBoolean={props.toggleBoolean} url={props.url} prevUrl={props.prevUrl} fadeOut={props.fadeOut} />, document.getElementById('overlay-root'))
   const result = condition && modal
 
   return (
@@ -179,4 +193,4 @@ const AnimatedModal = (props) => {
 
 
 
-export default AnimatedModal
+export default Modal
