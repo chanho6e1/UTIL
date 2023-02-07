@@ -17,6 +17,6 @@ public class FollowResponse {
         this.userId = user.getUserId();
         this.userName = user.getUserName();
         this.nickName = user.getNickName();
-        this.imageUrl = user.getImageUrl();
+        this.imageUrl = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/" + user.getImageUrl();
     }
 }
