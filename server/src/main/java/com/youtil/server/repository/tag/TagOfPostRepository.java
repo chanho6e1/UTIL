@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TagOfPostRepository extends JpaRepository<TagOfPost, Long> {
@@ -28,4 +29,6 @@ public interface TagOfPostRepository extends JpaRepository<TagOfPost, Long> {
     @Modifying
     @Query("DELETE FROM TagOfPost t WHERE t.post = :post")
     void deleteByPost(@Param("post") Post post);
+    @Query("select t from TagOfPost t where t.tag = :tag and t.post = :post")
+    Optional<TagOfPost> findByPostAndTag(Post post, Tag tag);
 }

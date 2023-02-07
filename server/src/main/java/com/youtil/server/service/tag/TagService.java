@@ -53,8 +53,11 @@ public class TagService {
             if(findTags == null){
                 findTags = tagRepository.save(request.of(tag));
             }
-            UserOfTag userOfTag = new UserOfTag(user, findTags);
-            list.add(userOfTagRepository.save(userOfTag).getUserOfTagId());
+            if(userOfTagRepository.findUserAndTag(user, findTags).isEmpty()){
+                UserOfTag userOfTag = new UserOfTag(user, findTags);
+                list.add(userOfTagRepository.save(userOfTag).getUserOfTagId());
+            }
+
         }
         return list;    // UserOfTagId 리스트 리턴
     }
@@ -95,8 +98,10 @@ public class TagService {
             if(findTags == null){
                 findTags = tagRepository.save(request.of(tag));
             }
-            TagOfPost tagOfPost = new TagOfPost(post, findTags);
-            list.add(tagOfPostRepository.save(tagOfPost).getTagOfPostId());
+            if(tagOfPostRepository.findByPostAndTag(post, findTags).isEmpty()){
+                TagOfPost tagOfPost = new TagOfPost(post, findTags);
+                list.add(tagOfPostRepository.save(tagOfPost).getTagOfPostId());
+            }
         }
         return list;    // UserOfTagId 리스트 리턴
     }
