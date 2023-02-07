@@ -65,7 +65,7 @@ const PostCardItem = (props) => {
   };
 
   return (
-    <li>
+
       <Card className={classes.postcarditem}>
         <div className={classes[`card-text`]}>
           <div className={classes.title} onClick={postClickHandler}>
@@ -126,7 +126,7 @@ const PostCardItem = (props) => {
           <img src={props.thumbnail} onError={imgErrorHandler} />
         </div>
       </Card>
-    </li>
+
   );
 };
 
