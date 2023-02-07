@@ -75,6 +75,7 @@ const UserPage = (props) => {
       setPostList(() => res.content);
       setTotalPage(() => res.totalPages);
       setIsLoading(false);
+      
     });
 
     // My Data API
