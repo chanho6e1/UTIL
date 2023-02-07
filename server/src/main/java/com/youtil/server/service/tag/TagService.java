@@ -34,18 +34,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TagService {
-    @Autowired
-    UserOfTagRepository userOfTagRepository;
-    @Autowired
-    TagRepository tagRepository;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    PostRepository postRepository;
-    @Autowired
-    TagOfPostRepository tagOfPostRepository;
-    @Autowired
-    TagQueryRepository tagQueryRepository;
+    final UserOfTagRepository userOfTagRepository;
+    final TagRepository tagRepository;
+    final UserRepository userRepository;
+    final PostRepository postRepository;
+    final TagOfPostRepository tagOfPostRepository;
+    final TagQueryRepository tagQueryRepository;
 
     // 관심 테그
     @Transactional
