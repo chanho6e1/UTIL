@@ -3,6 +3,7 @@ import GoalDetailL from "./GoalDetailL";
 import GoalDetailR from "./GoalDetailR";
 import React, {useState, useEffect, useRef, useCallback} from "react";
 import { modifyPostDetailSliceActions } from '../../redux/postDetailSlice'
+import { modifyPlanSliceActions } from '../../redux/planSlice'
 import { detailPlansAPI } from "../../api/Goal/detailPlansAPI";
 import { detailTodosAPI } from "../../api/Goal/detailTodosAPI";
 import { detailReviewsAPI } from "../../api/Goal/detailReviewsAPI";
@@ -24,7 +25,7 @@ const GoalDetail = (props) => {
         navigate('/login');
     })
     .then((res) => {
-        dispatch(modifyPostDetailSliceActions.getPlans(JSON.stringify(res)))
+        dispatch(modifyPlanSliceActions.getPlans(JSON.stringify(res)))
     })
   }, [])
 
@@ -62,17 +63,18 @@ const GoalDetail = (props) => {
   }, [])
 
 
-  const plans = useSelector(state => state.postDetailSlice.plans)
+  const plans = useSelector(state => state.planSlice.plans)
   const todos = useSelector(state => state.postDetailSlice.todos)
   const reviews = useSelector(state => state.postDetailSlice.reviews)
   const tils = useSelector(state => state.postDetailSlice.tils)
 
-
   return (
     <div className={classes["goal-detail"]}>
-      <GoalDetailL goal={plans} todos={todos} reviews={reviews}/>
+      <div />
+      {plans && <GoalDetailL className={classes["goal-todos"]} plan={plans[idx]} todos={todos} reviews={reviews}/>}
       <div className={classes["goal-detail-line"]}/>
-      <GoalDetailR goal={plans} tils={tils}/>
+      {plans && <GoalDetailR plan={plans[idx]} tils={tils}/>}
+      <div />
     </div>
   );
 };

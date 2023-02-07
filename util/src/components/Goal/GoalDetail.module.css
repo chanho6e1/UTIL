@@ -1,7 +1,7 @@
 .goal-detail {
   /* background-color: #EDEDED; */
   display: grid;
-  grid-template-columns: 3fr 3px 1fr;
+  grid-template-columns: 150px 3fr 3px 1fr 150px;
   background-size: cover;
   height: 100vh;
   /* overflow: hidden; */
@@ -9,6 +9,10 @@
 
 .goal-detail-line {
  /* border-left: 2px solid gray;  */
+}
+
+.goal-todos {
+  width: 100%;
 }
 
 .goal-detail-l {
