@@ -97,15 +97,33 @@ const UserProfileChangeCard = (props) => {
               !myTagOverFive
           );
         } else {
-          nicknameDuplicateCheck(nickname).then((res) => {
-            setNicknameIsDuplicated(() => res);
+          if (originalNickname === "") {
             setFormIsValid(
               !nicknameIsDuplicated &&
                 !nicknameIsUnderTwoChars &&
                 !nicknameIsOverTenChars &&
                 !myTagOverFive
             );
-          });
+          } else {
+            if (nickname) {
+              nicknameDuplicateCheck(nickname).then((res) => {
+                setNicknameIsDuplicated(() => res);
+                setFormIsValid(
+                  !nicknameIsDuplicated &&
+                    !nicknameIsUnderTwoChars &&
+                    !nicknameIsOverTenChars &&
+                    !myTagOverFive
+                );
+              });
+            } else {
+              setFormIsValid(
+                !nicknameIsDuplicated &&
+                  !nicknameIsUnderTwoChars &&
+                  !nicknameIsOverTenChars &&
+                  !myTagOverFive
+              );
+            }
+          }
         }
       }
     }, 300);
