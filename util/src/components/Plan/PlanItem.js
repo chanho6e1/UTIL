@@ -129,9 +129,9 @@ const PlanItem = (props) => {
           </div>
           {isEditMode ? titleEditInput : titleReadMode }
           <div>
-            <Link to={`/goal/${props.el.goalId}`}>
+            {/* <Link to={`/goal/${props.el.goalId}`}>
               <button>go</button>
-            </Link>
+            </Link> */}
           </div>
       </div>
       {props.todoFormVisibility[props.idx] && <PlanTodoListLeft applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} plan={props.plan} todos={props.todos} getNewTodoIdx={props.getNewTodoIdx} newTodoGoalId={props.newTodoGoalId} />}

@@ -5,6 +5,13 @@
     box-sizing: border-box;
     height: 48px;
     align-items: center;
+    transition-property: background-color;
+    transition-duration: 0.3s;
+    cursor: pointer;
+}
+
+.plan-item-wrapper:hover {
+    background-color: rgb(230, 230, 238);
 }
 
 .plan-item-text {
@@ -16,6 +23,15 @@
 
 .even {
     background-color: rgb(243, 243, 248);
+}
+
+.title-text {
+    text-align: left;
+    width: 140px;
+    overflow: hidden;  		
+    text-overflow: ellipsis;  	
+    white-space: nowrap; 		
+    word-break:break-all
 }
 
 .small-text {
