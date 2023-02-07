@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
@@ -27,21 +28,21 @@ public class GoalController {
 
     @ApiOperation(value = "목표 등록", notes = "목표를 등록한다.")
     @PostMapping
-    public ResponseEntity<CommonResponse> createGoal(@CurrentUser UserPrincipal userPrincipal, @RequestBody @Valid GoalSaveRequest request){
+    public ResponseEntity<CommonResponse> createGoal(@ApiIgnore @CurrentUser UserPrincipal userPrincipal, @RequestBody @Valid GoalSaveRequest request){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "등록 성공", goalService.createGoal(userPrincipal.getId(), request)));
     }
 
     @ApiOperation(value = "나의 목표 리스트", notes = "내가 작성한 목표를 조회한다.")
     @GetMapping
-    public ResponseEntity<CommonResponse> getGoalList(@CurrentUser UserPrincipal userPrincipal){
+    public ResponseEntity<CommonResponse> getGoalList(@ApiIgnore @CurrentUser UserPrincipal userPrincipal){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "조회 성공", goalService.getGoalList(userPrincipal.getId())));
     }
 
     @ApiOperation(value = "목표 단일 조회", notes = "내가 작성한 목표를 단일 조회한다.")
     @GetMapping("/{goalId}")
-    public ResponseEntity<CommonResponse> getGoal(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId){
+    public ResponseEntity<CommonResponse> getGoal(@ApiIgnore @CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "조회 성공", goalService.getGoal(userPrincipal.getId(), goalId)));
     }
@@ -49,14 +50,14 @@ public class GoalController {
     // input 2023-01-31T06:24:59.000Z
     @ApiOperation(value = "목표 수정", notes = "내가 작성한 목표를 수정한다.")
     @PutMapping("/{goalId}")
-    public ResponseEntity<CommonResponse> updateGoal(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId, @RequestBody @Valid GoalUpdateRequest request) throws UnsupportedEncodingException {
+    public ResponseEntity<CommonResponse> updateGoal(@ApiIgnore @CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId, @RequestBody @Valid GoalUpdateRequest request) throws UnsupportedEncodingException {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "수정 성공", goalService.updateGoal(userPrincipal.getId(), goalId, request)));
     }
 
     @ApiOperation(value = "목표 삭제", notes = "내가 작성한 목표를 삭제한다.")
     @DeleteMapping("/{goalId}")
-    public ResponseEntity<CommonResponse> deleteGoal(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId) throws UnsupportedEncodingException {
+    public ResponseEntity<CommonResponse> deleteGoal(@ApiIgnore @CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId) throws UnsupportedEncodingException {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.NO_CONTENT, "삭제 성공", goalService.deleteGoal(userPrincipal.getId(), goalId)));
     }
@@ -75,7 +76,7 @@ public class GoalController {
     // 목표별 간단 글 정보 보기
     @ApiOperation(value = "목표별 간단 요약된 글 조회", notes = "목표에 해당하는 간단한 글 목록을 조회한다.")
     @GetMapping("/{goalId}/posts")
-    public ResponseEntity<CommonResponse> getGoalPost(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId,
+    public ResponseEntity<CommonResponse> getGoalPost(@ApiIgnore @CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId,
                                                       @RequestParam(required=false, defaultValue = "1") int offset,
                                                       @RequestParam(value = "size", required = false, defaultValue = "10") int size){
         return ResponseEntity.ok().body(CommonResponse.of(
@@ -85,7 +86,7 @@ public class GoalController {
 
     @ApiOperation(value = "목표 기간 정렬", notes = "내가 설정한 목표 총 기간(시작이 제일 빠른, 종료가 가장 느린 목표 날짜 각각 반환")
     @GetMapping("/period")
-    public ResponseEntity<CommonResponse> getGoalPeriod(@CurrentUser UserPrincipal userPrincipal) {
+    public ResponseEntity<CommonResponse> getGoalPeriod(@ApiIgnore @CurrentUser UserPrincipal userPrincipal) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "조회 성공", goalService.getGoalPeriod(userPrincipal.getId())
         ));
@@ -95,7 +96,7 @@ public class GoalController {
 
     @ApiOperation(value = "목표 달성 유무 변경", notes = "내가 설정한 목표의 달성 상태를 변경")
     @PutMapping("/{goalId}/state")
-    public ResponseEntity<CommonResponse> updateGoalState(@CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId){
+    public ResponseEntity<CommonResponse> updateGoalState(@ApiIgnore @CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "수정 성공", goalService.toggleGoalState(userPrincipal.getId(), goalId)
         ));
@@ -104,7 +105,7 @@ public class GoalController {
     //진행중인 목표만 제공
     @ApiOperation(value = "나의 진행중인 목표만 제공", notes = "나의 진행중인 목표만 제공(정렬: 옛날꺼부터)")
     @GetMapping("/ing")
-    public ResponseEntity<CommonResponse> getDoingGoal(@CurrentUser UserPrincipal userPrincipal){
+    public ResponseEntity<CommonResponse> getDoingGoal(@ApiIgnore @CurrentUser UserPrincipal userPrincipal){
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "진행중인 목표 조회 성공", goalService.getDoingGoal(userPrincipal.getId())
         ));
