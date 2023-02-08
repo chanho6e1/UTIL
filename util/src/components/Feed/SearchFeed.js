@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, Fragment } from "react";
 import Loading from "../UI/Loading/Loading";
 import { getPostSearch } from "../../api/Post/getPostSearch";
 import { getPostByTagName } from "../../api/Post/getPostByTagName";
+import { getPostByNickname } from "../../api/Post/getPostByNickname";
 
 const feedCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -45,8 +46,15 @@ const SearchFeed = (props) => {
           }
           setIsLoading(false);
         });
-      } else {
+      } else if (props.api === 1) {
         getPostByTagName(criteria[props.criteria], offset, size, props.searchInput).then((res) => {
+          if (res.content.length !== 0) {
+            setFeedList(() => res.content);
+          }
+          setIsLoading(false);
+        });
+      } else {
+        getPostByNickname(criteria[props.criteria], offset, size, props.searchInput).then((res) => {
           if (res.content.length !== 0) {
             setFeedList(() => res.content);
           }

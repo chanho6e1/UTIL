@@ -5,24 +5,22 @@ import { IconButton, createTheme, ThemeProvider } from "@mui/material";
 
 const TagList = styled("li")(({ theme }) => ({
   margin: theme.spacing(0, 0.5, 0, 0),
-  listStyle: 'none'
+  listStyle: "none",
 }));
-
 
 const chipTheme = createTheme({
   components: {
     MuiChip: {
       styleOverrides: {
-        root: { 
+        root: {
           marginRight: 4,
-          border: '1px solid rgba(0,0,0,0.05);',
-          boxSizing: 'border-box'
-         },
+          border: "1px solid rgba(0,0,0,0.05);",
+          boxSizing: "border-box",
+        },
       },
     },
   },
 });
-
 
 const TagDataList = (props) => {
   const TagDataItem = [];
@@ -42,21 +40,22 @@ const TagDataList = (props) => {
     TagDataItem.push(
       <TagList key={i}>
         <ThemeProvider theme={chipTheme}>
-        <Chip
-          variant="outlined"
-          label={props.tagList[i].tagName}
-          onClick={props.onClick}
-          size="medium"
-          sx={{
-            // outline: 'rgb(255,0,0)',
-            bgcolor: bgColorList[i],
-            color: colorList[i],
-            "& .MuiButtonBase-root": {
-              borderRadius: '1px'
-            }
-          }}
-          id={props.tagList[i].tagId}
-        />
+          <Chip
+            variant="outlined"
+            label={props.tagList[i].tagName}
+            onClick={props.onClick}
+            size="medium"
+            sx={{
+              // outline: 'rgb(255,0,0)',
+              bgcolor: bgColorList[i],
+              color: colorList[i],
+              "& .MuiButtonBase-root": {
+                borderRadius: "1px",
+              },
+            }}
+            id={props.tagList[i].tagId}
+            value={props.tagList[i].tagName}
+          />
         </ThemeProvider>
       </TagList>
     );
@@ -64,7 +63,7 @@ const TagDataList = (props) => {
 
   return (
     <Fragment>
-      <div style={{display:'flex', marginTop:'8px'}}>{TagDataItem}</div>
+      <div style={{ display: "flex", marginTop: "8px" }}>{TagDataItem}</div>
     </Fragment>
   );
 };

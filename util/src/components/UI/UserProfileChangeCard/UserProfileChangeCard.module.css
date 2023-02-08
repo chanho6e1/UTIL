@@ -3,9 +3,6 @@
   align-items: center;
   width: 50%;
   background-color: white;
-  border: 3px solid #cccccc;
-  box-shadow: 4px 2px 2px #c9c9c9;
-  border-radius: 20px;
   margin: 10px auto;
   padding: 20px;
 }
@@ -69,31 +66,44 @@
   padding: 40px 0px 0px 0px;
 }
 
-.button {
+.button-wrap {
   text-align: end;
   padding: 20px 0px 0px 0px;
+}
+
+.button-cancel {
+  width: 80px;
+  height: 40px;
+  min-width: fit-content;
+  min-height: fit-content;
+  margin-right: 10px;
+}
+
+.button-save {
+  width: 80px;
+  height: 40px;
+  min-width: fit-content;
+  min-height: fit-content;
+}
+
+.button-save :disabled {
+  background-color: rgb(170, 220, 190);
 }
 
 @media screen and (max-width: 768px) {
   .userprofile {
     justify-content: center;
     align-items: center;
-    width: 100%;
-    background-color: white;
-    box-shadow: 4px 2px 2px #c9c9c9;
-    border: 3px solid #cccccc;
-    border-radius: 20px;
-    margin: 10px auto;
-    padding: 20px;
+    width: 90%;
+    border: none;
+    box-shadow: none;
   }
   .header {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    text-align: center;
-    margin: 0 auto;
-    font-weight: bold;
+    width: 80%;
     font-size: x-large;
+  }
+  .userdata {
+    width: 90%;
   }
 }
 
@@ -103,42 +113,22 @@
     align-items: center;
     width: 80%;
     background-color: white;
-    border: 3px solid #cccccc;
-    box-shadow: 4px 2px 2px #c9c9c9;
-    border-radius: 20px;
     margin: 10px auto;
     padding: 20px;
   }
   .header {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    text-align: center;
-    margin: 0 auto;
-    font-weight: bold;
-    font-size: xx-large;
+    width: 70%;
+  }
+  .userdata {
+    width: 80%;
   }
 }
 
 @media screen and (min-width: 1201px) and (max-width: 1500px) {
   .userprofile {
-    justify-content: center;
-    align-items: center;
     width: 70%;
-    background-color: white;
-    border: 3px solid #cccccc;
-    box-shadow: 4px 2px 2px #c9c9c9;
-    border-radius: 20px;
-    margin: 10px auto;
-    padding: 20px;
   }
   .header {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    text-align: center;
-    margin: 0 auto;
-    font-weight: bold;
-    font-size: xx-large;
+    width: 60%;
   }
 }

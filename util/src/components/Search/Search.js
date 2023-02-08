@@ -4,11 +4,20 @@ import SearchBar from "../UI/SearchBar/SearchBar";
 import { getPostSearch } from "../../api/Post/getPostSearch";
 import { getPostByTagName } from "../../api/Post/getPostByTagName";
 import SearchFeed from "../Feed/SearchFeed";
+import {
+  useNavigate,
+  useMatch,
+  useLocation,
+  Routes,
+  Route,
+  useSearchParams,
+  useParams,
+} from "react-router-dom";
 
 const Search = (props) => {
-  const apiLabelList = ["제목", "태그"];
+  const apiLabelList = ["제목", "태그", "닉네임"];
   const criteriaLabelList = ["최신", "조회수", "좋아요"];
-
+  const location = useLocation();
   const [searchInput, setSearchInput] = useState("");
   const [dropDownLabel, setDropDownLabel] = useState(apiLabelList[0]);
   const [dropDownCriteriaLabel, setDropDownCriteriaLabel] = useState(criteriaLabelList[0]);
@@ -33,6 +42,10 @@ const Search = (props) => {
     setApi(1);
     setDropDownLabel(apiLabelList[1]);
   };
+  const onNicknameClick = (event) => {
+    setApi(2);
+    setDropDownLabel(apiLabelList[2]);
+  };
 
   // Criteria Items
   const onDateClick = () => {
@@ -48,6 +61,16 @@ const Search = (props) => {
     setDropDownCriteriaLabel(criteriaLabelList[2]);
   };
 
+  useEffect(() => {
+    if (location.key !== "default") {
+      const searchParams = new URLSearchParams(location.search);
+      const tagName = searchParams.get("tag");
+      setSearchInput(() => tagName);
+      setApi(() => 1);
+      setDropDownLabel(() => apiLabelList[1]);
+    }
+  }, [location]);
+
   return (
     <div className={classes[`searchbar-feed`]}>
       <div className={classes[`searchbar`]}>
@@ -56,6 +79,7 @@ const Search = (props) => {
           clearBtnHandler={clearBtnHandler}
           onTitleClick={onTitleClick}
           onTagClick={onTagClick}
+          onNicknameClick={onNicknameClick}
           onDateClick={onDateClick}
           onViewClick={onViewClick}
           onLikeClick={onLikeClick}

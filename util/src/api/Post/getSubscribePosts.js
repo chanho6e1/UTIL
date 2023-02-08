@@ -1,10 +1,10 @@
 import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
-export const getPostSearch = (criteria, offset, size, title) => {
+export const getSubscribePosts = (criteria, offset, size) => {
   return axios({
     method: "get",
-    url: `${API_BASE_URL}/posts/search?criteria=${criteria}&offset=${offset}&size=${size}&title=${title}`,
+    url: `${API_BASE_URL}/posts/subscribes?criteria=${criteria}&offset=${offset}&size=${size}`,
     headers: {
       Authorization: TOKEN(),
     },

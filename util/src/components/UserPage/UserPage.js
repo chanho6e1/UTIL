@@ -15,6 +15,7 @@ import { deleteFollow } from "../../api/Post/deleteUnfollow";
 import { postFollow } from "../../api/Post/postFollow";
 import { getUserTag } from "../../api/Post/getUserTag";
 import { getMyData } from "../../api/UserProfile/getMyData";
+import { useNavigate } from "react-router-dom";
 import UserPageResponsive from "./UserPageResponsive";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
 
@@ -61,6 +62,8 @@ const UserPage = (props) => {
   const [totalPage, setTotalPage] = useState(10);
   const size = 8;
   const [isLoading, setIsLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   const fetchUserPostData = (criteriaIdx, page, size) => {
     setIsLoading(true);
@@ -123,13 +126,12 @@ const UserPage = (props) => {
       setPostList(() => res.content);
       setTotalPage(() => res.totalPages);
       setIsLoading(false);
-      
     });
     // getUserPosts(props.id, criteria[criteriaIdx], offset, size).then((res) => {
     //   setPostList(() => res.content);
     //   setTotalPage(() => res.totalPages);
     //   setIsLoading(false);
-      
+
     // });
 
     // My Data API
@@ -167,7 +169,8 @@ const UserPage = (props) => {
   }, [isFollowing]);
 
   const tagOnClickHandler = (event) => {
-    console.log(event.currentTarget.id);
+    const tagName = event.currentTarget.getAttribute("value");
+    navigate(`/search?tag=${tagName}`);
   };
 
   const followBtnHandler = () => {
@@ -259,50 +262,46 @@ const UserPage = (props) => {
 
 
   const userPageUpper = (
-        <div className={classes[`user-page-upper`]}>
-          <div className={classes[`avatar-username`]}>
-            <Avatar
-              src={userData.imageUrl}
-              sx={{
-                width: '15vw',
-                height: '15vw',
-                minWidth: '96px',
-                minHeight: '96px',
-                maxWidth: '128px',
-                maxHeight: '128px',
-                border: "1px solid lightgray",
-                objectFit: "scale-down",
-              }}
-            />
-          </div>
-          <div className={classes['user-outer-wrapper']}>
-            <div className={classes['user-wrapper']}>
-              <div>
-                <div className={classes['user-column']}>
-                  <div className={classes.nickname}>
-                    {userData.nickname}
-                  </div>
-                  <div className={classes.follow}>
-                    <div className={classes[`follow-text`]}>팔로워</div>
-                    <div className={classes[`follow-number`]}>{followerListCnt}명</div>
-                    <div className={classes[`follow-text`]}>팔로우</div>
-                    <div className={classes[`follow-number`]}>{followingListCnt}명</div>
-                    {myData.userId !== props.id && followBtn(isFollowing)}
-                  </div>
-                </div>
-                <div className={classes['user-column']}>
-                  <div className={classes['user-description']}>{userData.discription}</div>
-                </div>
+    <div className={classes[`user-page-upper`]}>
+      <div className={classes[`avatar-username`]}>
+        <Avatar
+          src={userData.imageUrl}
+          sx={{
+            width: "15vw",
+            height: "15vw",
+            minWidth: "96px",
+            minHeight: "96px",
+            maxWidth: "128px",
+            maxHeight: "128px",
+            border: "1px solid lightgray",
+            objectFit: "scale-down",
+          }}
+        />
+      </div>
+      <div className={classes["user-outer-wrapper"]}>
+        <div className={classes["user-wrapper"]}>
+          <div>
+            <div className={classes["user-column"]}>
+              <div className={classes.nickname}>{userData.nickname}</div>
+              <div className={classes.follow}>
+                <div className={classes[`follow-text`]}>팔로워</div>
+                <div className={classes[`follow-number`]}>{followerListCnt}명</div>
+                <div className={classes[`follow-text`]}>팔로우</div>
+                <div className={classes[`follow-number`]}>{followingListCnt}명</div>
+                {myData.userId !== props.id && followBtn(isFollowing)}
               </div>
             </div>
-            <div className={classes['tag-wrapper']}>
-              <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
+            <div className={classes["user-column"]}>
+              <div className={classes["user-description"]}>{userData.discription}</div>
             </div>
-            
           </div>
-          
         </div>
-  )
+        <div className={classes["tag-wrapper"]}>
+          <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div ref={wrapperDiv} className={classes[`user-page`]}>
@@ -319,9 +318,14 @@ const UserPage = (props) => {
             <PlanCard />
           </div>
         </div>
-        <div className={classes[`pagination`]}>
-          <Pagination count={totalPage} onChange={pageChangeHandler} />
+
+        <div className={classes["plan-card-wrapper"]}>
+          <PlanCard />
         </div>
+      </div>
+      <div className={classes[`pagination`]}>
+        <Pagination count={totalPage} onChange={pageChangeHandler} />
+      </div>
     </div>
   );
 };
