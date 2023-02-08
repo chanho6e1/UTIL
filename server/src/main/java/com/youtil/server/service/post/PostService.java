@@ -103,6 +103,16 @@ public class PostService {
                 page.getTotalPages(), page.isLast());
     }
 
+    public PagedResponse<PostResponse> findByNickName(Long userId, PostSearch search, int offset, int size) {//내용으로 검색/오프셋
+        User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+
+        Page<Post> page =  postQueryRepository.findByNickNameContaining(userId, search, PageRequest.of(offset - 1, size));
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+
+        return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
+                page.getTotalPages(), page.isLast());
+    }
+
     public PagedResponse<PostLikePeopleResponse> PostLikesPeople(Long postId, int offset, int size) {//해당 게시물의 좋아요한 사람 리스트
         Page<PostLike> page = postQueryRepository.PostLikesPeople(postId, PageRequest.of(offset - 1, size));
         List<PostLikePeopleResponse> responses = page.stream().map(PostLikePeopleResponse::new).collect(Collectors.toList());
