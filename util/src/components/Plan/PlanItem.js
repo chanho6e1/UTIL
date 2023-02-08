@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import arrow from '../../img/arrow.png'
+import extension from '../../img/Extension.png'
 import styles from './PlanItem.module.css'
 import PlanTodoListLeft from "./PlanTodoListLeft";
 import { delPlanAPI } from "../../api/Plan/delPlanAPI";
@@ -130,7 +131,8 @@ const PlanItem = (props) => {
           {isEditMode ? titleEditInput : titleReadMode }
           <div>
             <Link to={`/goal/${props.plan.goalId}`}>
-              <button>go</button>
+              {/* <img src={extension} alt="extension" className={styles['go-to-detail']}/> */}
+              <span className={styles['go-to-detail']}>+</span>
             </Link>
           </div>
       </div>
