@@ -65,10 +65,14 @@ const Feed = (props) => {
 
   useEffect(() => {
     // scroll event listener 등록
-    feedRef.current.addEventListener("scroll", handleScroll);
+    if (feedRef.current !== null) {
+      feedRef.current.addEventListener("scroll", handleScroll);
+    }
     return () => {
       // scroll event listener 해제
-      feedRef.current.removeEventListener("scroll", handleScroll);
+      if (feedRef.current !== null) {
+        feedRef.current.removeEventListener("scroll", handleScroll);
+      }
     };
   });
 
@@ -76,8 +80,8 @@ const Feed = (props) => {
     <Fragment>
       <div className={classes.feed} ref={feedRef}>
         {<ul>{feedCardItemList(feedList)}</ul>}
+        {isLoading && <div className={classes.loading}>{Loading()}</div>}
       </div>
-      <div>{isLoading && <div className={classes.loading}>{Loading()}</div>}</div>
     </Fragment>
   );
 };
