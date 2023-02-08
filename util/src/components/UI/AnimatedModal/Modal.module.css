@@ -6,7 +6,7 @@
     height: 100vh;
     z-index: 10;
     opacity: 0;
-    backdrop-filter: blur(10px);
+    /* backdrop-filter: blur(10px); */
     transition-property: opacity 0.3s;
     transition-duration: 0.2s;
     background-color: rgba(0, 0, 0, 0.5);
