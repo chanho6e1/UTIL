@@ -1,0 +1,27 @@
+.explore-container {
+  height: 100%;
+  overflow: hidden;
+}
+
+.explore-feed {
+  height: 90%;
+  overflow: hidden;
+}
+
+.dropdown {
+  position: relative;
+  margin-right: 0px;
+}
+
+.dropdown-item {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.dropdown-sort {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: absolute;
+  right: 20px;
+}

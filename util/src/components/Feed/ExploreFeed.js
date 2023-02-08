@@ -24,9 +24,11 @@ const feedCardItemList = (postList) => {
   });
 };
 
-const Feed = (props) => {
+const ExploreFeed = (props) => {
+  console.log("props", props.criteria);
+
   const [feedList, setFeedList] = useState([]);
-  const [criteria, setCriteria] = useState(props.criteria || 0);
+  const [criteria, setCriteria] = useState(props.criteria === undefined ? 0 : props.criteria);
   const criteriaList = ["date", "view", "like"];
   const [offset, setOffset] = useState(1);
   const size = 10;
@@ -76,14 +78,22 @@ const Feed = (props) => {
     };
   });
 
+  const content = (postList) => {
+    if (postList.length > 0) {
+      return <ul>{feedCardItemList(feedList)}</ul>;
+    } else {
+      return <h1>포스트가 없습니다.</h1>;
+    }
+  };
   return (
     <Fragment>
       <div className={classes.feed} ref={feedRef}>
-        {<ul>{feedCardItemList(feedList)}</ul>}
+        {/* {<ul>{feedCardItemList(feedList)}</ul>} */}
+        {content(feedList)}
         {isLoading && <div className={classes.loading}>{Loading()}</div>}
       </div>
     </Fragment>
   );
 };
 
-export default Feed;
+export default ExploreFeed;
