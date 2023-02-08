@@ -1,3 +1,38 @@
+/* @media all and (max-width: 480px) {
+    
+
+    .blog-post-form {
+        width: 90vw;
+    }
+    .form-wrapper {
+        width: 90vw;
+    }
+    .picker-wrapper {
+        width: 90vw;
+    }
+    .shadow-box-wrapper {
+        width: 90vw;
+    }
+    
+}
+
+@media all and (min-width: 480px) {
+    .blog-post-form {
+        width: 440px;
+    }
+    .form-wrapper {
+        width: 440px;
+    }
+    .picker-wrapper {
+        width: 440px;
+    }
+    .shadow-box-wrapper {
+        width: 440px;
+    }
+} */
+
+
+
 .form-wrapper {
     padding:24px;
     width: 100%;

@@ -57,7 +57,6 @@ const PlanTodoListRightItem = (props) => {
                     goalId: props.plan.goalId,
                     data: res
                 }
-                console.log(res)
                 dispatch(modifyPlanSliceActions.responseTodoPeriod(JSON.stringify(processing)))
             })
         })

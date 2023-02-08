@@ -1,10 +1,10 @@
 .goal-detail {
   /* background-color: #EDEDED; */
   display: grid;
-  grid-template-columns: 3fr 3px 1fr;
+  grid-template-columns: 150px 3fr 3px 1fr 150px;
   background-size: cover;
   height: 100vh;
-  /* overflow: hidden; */
+  overflow: auto;
 }
 
 .goal-detail-line {
@@ -36,20 +36,50 @@
   margin-left: 60px;
 }
 
+.goal-detail-r {
+  margin-top: 15px;
+}
+
 .goal-detail-r-tils {
-  margin-top: 20vh;
+  display: grid;
+  margin-top: 30px;
+  margin-inline: 10px;
   border-radius: 30px;
   border: 3px solid gray;
   text-align: start;
-  height: auto;
-  margin-inline: 50px;
+  height: 330px;
+  width: 300px;
+  overflow: hidden;
+  grid-template-rows: 1fr 8fr 1fr;
 }
 
 .goal-detail-r-tils-title {
   text-align: start;
   margin-left: 30px;
-  font-size: 30px;
-  font-weight: 400;
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.goal-detail-r-tils-item {
+  width: 230px;
+}
+
+.goal-detail-r-tils-item-title {
+  margin-top: 3px;
+  text-overflow : ellipsis;
+  white-space : nowrap;
+  overflow: hidden;
+  word-wrap: break-all;
+}
+
+.goal-detail-r-tils-page {
+  width: 100%;
+  text-align: center;
+}
+
+.goal-detail-r-tils-page-num {
+  margin-inline: 15px;
 }
 
 .goal-detail-reviews-item {
