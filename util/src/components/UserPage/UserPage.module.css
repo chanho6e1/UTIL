@@ -52,10 +52,12 @@
   }
 
   .postcard-container {
+    width: 100%;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
     box-sizing: border-box;
   }
 
@@ -70,11 +72,13 @@
 
   .user-page {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     flex-direction: column;
     width: 100%;
+
     margin-bottom: 20px;
     background-color: #F8F9FA;
+
   }
 
   /* .user-page-upper {

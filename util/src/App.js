@@ -97,6 +97,10 @@ const App = () => {
           <Route path="review" element={<ToastEditor key={'review'} forReview={true}/>} />
           <Route path="post" element={<ToastEditor key={'post'} />} />
         </ Route>
+        <Route path="/edit" >
+          <Route path="review/:id" element={<ToastEditor key={'review'} edit={true} forReview={true}/>} />
+          <Route path="post/:id" element={<ToastEditor key={'post'} edit={true} />} />
+        </ Route>
       </Routes>
     
     </div>

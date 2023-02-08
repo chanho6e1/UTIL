@@ -7,10 +7,11 @@ import NotiDeliverer from '../UI/StackNotification/NotiDeliverer';
 import warning from "../../img/Warning.png"
 import { uploadPost } from '../../api/Post/uploadPost';
 import { uploadReview } from '../../api/Post/uploadReview';
-import { useNavigate, useMatch, useLocation, Routes, Route, useSearchParams } from "react-router-dom";
+import { useNavigate, useMatch, useLocation, Routes, Route, useSearchParams, useParams } from "react-router-dom";
 import { recvPlanAPI } from '../../api/Plan/recvPlanAPI';
 import { chkPlanAPI } from '../../api/Plan/chkPlanAPI';
 import useDidMountEffect from '../../hooks/useDidMountEffect';
+import { detailReviewAPI } from '../../api/Goal/detailReviewAPI';
 
 // Toast 에디터
 import { Editor } from '@toast-ui/react-editor';
@@ -32,6 +33,8 @@ import prism from 'prismjs';
 import 'prismjs/themes/prism.css';
 import { tilAPI } from '../../api/Detail/tilAPI';
 import { getPostTag } from '../../api/Post/getPostTag';
+import { editDetailReviewAPI } from '../../api/Goal/editDetailReviewAPI';
+import { editPostAPI } from '../../api/Post/editPostAPI';
 
 
 
@@ -78,7 +81,7 @@ const ToastEditorForm = (props) => {
 
     uploadPost({
       title: title,
-      content: content,
+      content: editorRef.current.getInstance().getHTML(),
       postFileList: images,
       isPrivate: selectedScope,
       goalId: selectedGoalId,
@@ -99,7 +102,7 @@ const ToastEditorForm = (props) => {
   const reviewSubmitHandler = (selectedGoalId) => {
     uploadReview(selectedGoalId, {
       title: title,
-      content: content,
+      content: editorRef.current.getInstance().getHTML(),
     })
     .then((res) => {
       if (queryString.askDone) {
@@ -110,14 +113,9 @@ const ToastEditorForm = (props) => {
         })
         .then((res) => {
           setTimeout(function() {
-            navigate('/index', { replace: true });
-            
+            navigate('/index', { replace: true }); 
           }, 1000);
-          
-
-          
         })
-
       } else {
         navigate('/index', { replace: true });
       }
@@ -125,6 +123,34 @@ const ToastEditorForm = (props) => {
     })
     .catch((err) => {
       console.log(err)
+    })
+  }
+
+
+  const reviewEditHandler = () => {
+    console.log('fwefwefeawfawe', content)
+    editDetailReviewAPI(props.editIdx, {
+      title: title,
+      content: editorRef.current.getInstance().getHTML(),
+    })
+    .then((res) => {
+      navigate('/index', { replace: true }); 
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
+  const postEditHandler = () => {
+    editPostAPI({
+      title: title,
+      content: editorRef.current.getInstance().getHTML(),
+      postFileList: images,
+      isPrivate: props.editContent.isPrivate,
+      goalId: props.editContent.goalId,
+    }, {skill: tags}, props.editIdx)
+    .then((res) => {
+      navigate('/index', { replace: true }); 
     })
   }
 
@@ -147,7 +173,17 @@ const ToastEditorForm = (props) => {
       setAlertNotiState(true)
     } else {
       setContent(editorRef.current.getInstance().getHTML())
-      setModalState(true)
+
+      if (props.edit === true) {
+        if (props.forReview === true) {
+          reviewEditHandler()
+        } else {
+          postEditHandler()
+        }
+      } else {
+        setModalState(true)
+      }
+      
     }
     
   }
@@ -203,20 +239,20 @@ const ToastEditorForm = (props) => {
     <div ref={editorWrapperRef} className={styles['editor-wrapper']} onClick={() => console.log(editorRef.current)}>
       {doneNotiState && <NotiDeliverer content={message1} stateHandler={setDoneNotiState} duration={5000} width={350} height={100} />}
       {alertNotiState && <NotiDeliverer content={alert} stateHandler={setAlertNotiState} duration={5000} width={350} height={100} />}
-      <FixedModal queryString={queryString} modalState={modalState} stateHandler={setModalState} content={<BlogPostForm postSubmitHandler={postSubmitHandler} reviewSubmitHandler={reviewSubmitHandler} forReview={props.forReview} />} noBtn={true} width={'10px'} height={'170px'} />
+      <FixedModal edit={props.edit} queryString={queryString} modalState={modalState} stateHandler={setModalState} content={<BlogPostForm postSubmitHandler={postSubmitHandler} reviewSubmitHandler={reviewSubmitHandler} forReview={props.forReview} />} noBtn={true} width={'10px'} height={'170px'} />
       <div className={styles['additional-info-wrapper']}>
         <div className={styles['header']}>
           {props.forReview ? dateRender : titleInput}
           <div className={styles['header-buttons-wrapper']}>
             {queryString.takeStep && <Button onClick={skipHandler} className={`${styles['button']} ${styles['skip-button']}`}>건너뛰기</Button>}
-            {queryString.takeStep && <Button onClick={clickSubmitHandler} className={`${styles['button']}`}>다음</Button>}
+            {queryString.takeStep && <Button onClick={clickSubmitHandler} className={`${styles['button']} ${styles['next-button']}`}>다음</Button>}
             {!queryString.takeStep && <Button onClick={clickSubmitHandler} className={`${styles['button']}`}>글 작성</Button>}
           </div>
           
           
         </div>
         
-        {!props.forReview && <PostTag setTags={setTags} editTags={props.editTags} />}
+        {props.forReview === true ? null : <PostTag setTags={setTags} editTags={props.editTags} />}
       </div>
       <Editor
         ref={editorRef}
@@ -254,22 +290,33 @@ const ToastEditor = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [editContent, setEditContent] = useState(null)
   const [editTags, setEditTags] = useState(null)
+  const params = useParams()
+  const editIdx = params.id
 
   useEffect(() => {
-    const edit = searchParams.get('edit')
 
-    if (edit) {
-      tilAPI(edit)
-      .then((post) => {
-        getPostTag(edit)
-        .then((tags) => {
-          setEditContent(() => post)
-          setEditTags(() => tags)
-          
+    
+
+    if (editIdx) {
+      if (props.forReview === true) {
+        detailReviewAPI(editIdx)
+        .then((review) => {
+          setEditContent(() => review)
         })
-
-        
-      })
+        .catch((err) => {
+          console.log('ToastEditor : detailReviewAPI => ', err)
+        })
+      } else {
+        tilAPI(editIdx)
+        .then((post) => {
+          getPostTag(editIdx)
+          .then((tags) => {
+            setEditContent(() => post)
+            setEditTags(() => tags)
+          })  
+        })
+      }
+      
     } else {
       setEditContent(() => '')
     }
@@ -277,7 +324,7 @@ const ToastEditor = (props) => {
 
   return (
     <React.Fragment>
-      {editContent !== null && <ToastEditorForm editContent={editContent} editTags={editTags} forReview={props.forReview} />}
+      {editContent !== null && <ToastEditorForm editContent={editContent} editTags={editTags} forReview={props.forReview} edit={props.edit} editIdx={editIdx} />}
     </React.Fragment>
     
   )
