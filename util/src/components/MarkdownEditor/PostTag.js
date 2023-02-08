@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import logo from '../../img/util-logo.png'
 import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 import warning from "../../img/Warning.png"
+import useDidMountEffect from "../../hooks/useDidMountEffect";
 
 
 
@@ -17,28 +18,31 @@ const PostTag = (props) => {
   const editorWrapperRef = useRef()
 
 
+
   useEffect(() => {
-    if (frontData.length === 1) {
+    if (frontData.length === 1 && props.editTags && props?.editTags?.length !== 0) {
+      console.log('ffjawek;jfksdjnl;vjsdfjfgserklgio;hbgfnld;jfdilsnafs;dfhkwe')
       setFrontData([])
       props?.editTags?.map((el, idx) => {
         setFrontData((prev) => [...prev, el.tagName])
+        
       })
     }
-    
-    
   }, [])
 
   useEffect(() => {
-    syncInput()
-    console.log('태그', frontData)
-  }, [frontData])
+    if (props?.editTags?.length !== 0 && lineRef?.current[0]?.innerText === '') {
+      syncInput()
+    }
+  },[frontData])
+
 
 
 
   const createLine = (idx) => {
     return (
       <div  className={styles[`line-wrapper`]}>
-        <div ref={el => (lineRef.current[idx] = el)}  id={idx} className={styles[`line`]} contentEditable="true" placeholder="태그를 입력하세요." onInput={inputToArray.bind(this, idx)} onKeyDown={(event) => {deleteLine(idx, event); pushLine(idx, event); preventSpace(idx, event); }} ></div>
+        <div ref={el => (lineRef.current[idx] = el)}   id={idx} className={styles[`line`]} contentEditable="true" placeholder="태그를 입력하세요." onInput={inputToArray.bind(this, idx)} onKeyDown={(event) => {deleteLine(idx, event); pushLine(idx, event); preventSpace(idx, event); }} ></div>
       </div>
     )
   }
