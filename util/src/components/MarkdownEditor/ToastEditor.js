@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PostTag from './PostTag';
 import Button from '../UI/Button/Button';
 import FixedModal from '../UI/FixedModal/FixedModal';
@@ -30,10 +30,12 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 
 import prism from 'prismjs';
 import 'prismjs/themes/prism.css';
+import { tilAPI } from '../../api/Detail/tilAPI';
+import { getPostTag } from '../../api/Post/getPostTag';
 
 
 
-export default function ToastEditor(props) {
+const ToastEditorForm = (props) => {
   const editorRef = useRef()
   const editorWrapperRef = useRef()
   const [searchParams, setSearchParams] = useSearchParams();
@@ -41,7 +43,7 @@ export default function ToastEditor(props) {
   const dateString = `${today.getFullYear()}년 ${today.getMonth()}월 ${today.getDate()}일 회고록`
   const [images, setImages] = useState([])
   const [tags, setTags] = useState([])
-  const [title, setTitle] = useState(props.forReview ? dateString : '')
+  const [title, setTitle] = useState(props.forReview ? (props.editContent ? props.editContent.createdDate : dateString) : (props.editContent ? props.editContent.title : ''))
   const [content, setContent] = useState(null)
   const [modalState, setModalState] = useState(false)
   const [scope, setScope] = useState()
@@ -49,7 +51,7 @@ export default function ToastEditor(props) {
   const [queryString, setQueryString] = useState({goal:null, takeStep:null, askDone:null})
 
   const navigate = useNavigate()
-
+  const location = useLocation()
 
 
 
@@ -63,8 +65,10 @@ export default function ToastEditor(props) {
         setQueryString((prev) => {return {...prev, goal:res, takeStep, askDone}})
       })
     }
+    console.log(location)
 
-  })
+    
+  }, [])
 
   
 
@@ -212,12 +216,12 @@ export default function ToastEditor(props) {
           
         </div>
         
-        {!props.forReview && <PostTag setTags={setTags} />}
+        {!props.forReview && <PostTag setTags={setTags} editTags={props.editTags} />}
       </div>
       <Editor
         ref={editorRef}
         language='ko-KR'
-        initialValue={content || ' '} // content는 글 수정시 사용
+        initialValue={props.editContent.content || ' '} // content는 글 수정시 사용
         placeholder="내용을 입력해주세요."
         previewStyle={`${editorWrapperRef?.current?.clientWidth > 470 ? "vertical" : "tab"}`} // 미리보기 스타일 지정
         height="100%" // 에디터 창 높이
@@ -245,3 +249,38 @@ export default function ToastEditor(props) {
     </div>
   );
 }
+
+const ToastEditor = (props) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [editContent, setEditContent] = useState(null)
+  const [editTags, setEditTags] = useState(null)
+
+  useEffect(() => {
+    const edit = searchParams.get('edit')
+
+    if (edit) {
+      tilAPI(edit)
+      .then((post) => {
+        getPostTag(edit)
+        .then((tags) => {
+          setEditContent(() => post)
+          setEditTags(() => tags)
+          console.log('feawfjaweulfhwe', tags)
+        })
+
+        
+      })
+    } else {
+      setEditContent(() => '')
+    }
+  }, [])
+
+  return (
+    <React.Fragment>
+      {editContent !== null && <ToastEditorForm editContent={editContent} editTags={editTags} forReview={props.forReview} />}
+    </React.Fragment>
+    
+  )
+}
+
+export default ToastEditor
