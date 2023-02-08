@@ -1,6 +1,5 @@
 import FeedCardItem from "../UI/FeedCard/FeedCardItem";
 import classes from "./Feed.module.css";
-import { getPosts } from "../../api/Post/getPosts";
 import { useState, useEffect, useRef, Fragment } from "react";
 import Loading from "../UI/Loading/Loading";
 import { getPostSearch } from "../../api/Post/getPostSearch";
@@ -27,7 +26,6 @@ const feedCardItemList = (postList) => {
 };
 
 const SearchFeed = (props) => {
-  console.log("SSAFY SF", props);
   const [feedList, setFeedList] = useState([]);
   const criteria = ["date", "view", "like"];
   const [offset, setOffset] = useState(1);
@@ -39,17 +37,16 @@ const SearchFeed = (props) => {
 
   useEffect(() => {
     if (props.searchInput !== null && props.searchInput !== "") {
-      console.log("SSAFY UE", props);
       setIsLoading(true);
       if (props.api === 0) {
-        getPostSearch(criteria[0], offset, size, props.searchInput).then((res) => {
+        getPostSearch(criteria[props.criteria], offset, size, props.searchInput).then((res) => {
           if (res.content.length !== 0) {
             setFeedList(() => res.content);
           }
           setIsLoading(false);
         });
       } else {
-        getPostByTagName(criteria[0], offset, size, props.searchInput).then((res) => {
+        getPostByTagName(criteria[props.criteria], offset, size, props.searchInput).then((res) => {
           if (res.content.length !== 0) {
             setFeedList(() => res.content);
           }
@@ -57,22 +54,24 @@ const SearchFeed = (props) => {
         });
       }
     }
-  }, [props.searchInput, props.api]);
+  }, [props.searchInput, props.api, props.criteria]);
 
   const fetchMoreData = () => {
     setIsLoading(true);
     if (props.api === 0) {
-      getPostSearch(criteria[0], offset + 1, size, props.searchInput).then((res) => {
+      getPostSearch(criteria[props.criteria], offset + 1, size, props.searchInput).then((res) => {
         setFeedList((prevState) => [...prevState, ...res.content]);
         setOffset((prevState) => prevState + 1);
         setIsLoading(false);
       });
     } else {
-      getPostByTagName(criteria[0], offset + 1, size, props.searchInput).then((res) => {
-        setFeedList((prevState) => [...prevState, ...res.content]);
-        setOffset((prevState) => prevState + 1);
-        setIsLoading(false);
-      });
+      getPostByTagName(criteria[props.criteria], offset + 1, size, props.searchInput).then(
+        (res) => {
+          setFeedList((prevState) => [...prevState, ...res.content]);
+          setOffset((prevState) => prevState + 1);
+          setIsLoading(false);
+        }
+      );
     }
   };
 
@@ -105,8 +104,8 @@ const SearchFeed = (props) => {
     <Fragment>
       <div className={classes.feed} ref={searchRef}>
         {<ul>{feedCardItemList(feedList)}</ul>}
+        {isLoading && <div className={classes.loading}>{Loading()}</div>}
       </div>
-      <div>{isLoading && <div className={classes.loading}>{Loading()}</div>}</div>
     </Fragment>
   );
 };
