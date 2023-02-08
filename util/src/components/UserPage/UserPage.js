@@ -56,7 +56,7 @@ const UserPage = (props) => {
   const [criteriaIdx, setCriteriaIdx] = useState(0);
   const [offset, setOffset] = useState(1);
   const [totalPage, setTotalPage] = useState(10);
-  const size = 10;
+  const size = 8;
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchUserPostData = (criteriaIdx, page, size) => {
@@ -82,12 +82,19 @@ const UserPage = (props) => {
   useEffect(() => {
     // Post API
     setIsLoading(true);
-    getUserPosts(props.id, criteria[criteriaIdx], offset, size).then((res) => {
+    getMyPosts(criteria[criteriaIdx], offset, size).then((res) => {
+      console.log('fjweia;fjs;lfjser', res)
       setPostList(() => res.content);
       setTotalPage(() => res.totalPages);
       setIsLoading(false);
       
     });
+    // getUserPosts(props.id, criteria[criteriaIdx], offset, size).then((res) => {
+    //   setPostList(() => res.content);
+    //   setTotalPage(() => res.totalPages);
+    //   setIsLoading(false);
+      
+    // });
 
     // My Data API
     getMyData().then((res) => {

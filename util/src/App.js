@@ -33,7 +33,7 @@ const App = () => {
   const plans = useSelector(state => state.planSlice.plans)
 
   const movePage = (url) =>{
-    if(pathname !== `/${url}` && !pathname.includes('modal') && !pathname.includes('index')) {
+    if(pathname !== `/${url}` && !pathname.includes('modal')) {
       
       wrapRef.current.classList.replace('loaded', 'unloaded');
       setTimeout(()=> { 
