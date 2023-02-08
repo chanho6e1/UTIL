@@ -208,6 +208,10 @@ const DetailItemShow = (props) => {
   const createdDate = new Date(post.createdDate)
   const dateString = `${createdDate.getFullYear()}년 ${createdDate.getMonth() + 1}월 ${createdDate.getDate()}일`
 
+  const postEditHandler = () => {
+    navigate(`/create/post?edit=${post.postId}`)
+  }
+
   return (
     <div className={classes.Detail}>
 
@@ -217,20 +221,32 @@ const DetailItemShow = (props) => {
           
           <div className={classes["Detail-info"]}>
             
+            <div className={classes["Detail-info-inner"]}>
               <img
-                className={classes["user-picture"]}
-                // src={defaultUserPicture}
-                src={
-                  post.writerInfo.profileImg === ""
-                    ? defaultUserPicture
-                    : post.writerInfo.profileImg
-                }
-                alt="user"
-              />
-            <div className={classes["Detail-user"]}>
-              <span className={classes.username}>{post.writerInfo.nickname} ·</span>
-              <span className={classes['created-date']}>{dateString}</span>
+                  className={classes["user-picture"]}
+                  // src={defaultUserPicture}
+                  src={
+                    post.writerInfo.profileImg === ""
+                      ? defaultUserPicture
+                      : post.writerInfo.profileImg
+                  }
+                  alt="user"
+                />
+              <div className={classes["Detail-user"]}>
+                <span className={classes.username}>{post.writerInfo.nickname} ·</span>
+                <span className={classes['created-date']}>{dateString}</span>
+              </div>
             </div>
+
+            <div>
+              <span onClick={postEditHandler} className={classes['link-text']}>
+                수정
+              </span>
+              <span className={classes['link-text']}>
+                삭제
+              </span>
+            </div>
+            
             
             
           </div>
