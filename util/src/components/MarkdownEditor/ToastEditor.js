@@ -265,7 +265,7 @@ const ToastEditor = (props) => {
         .then((tags) => {
           setEditContent(() => post)
           setEditTags(() => tags)
-          console.log('feawfjaweulfhwe', tags)
+          
         })
 
         
