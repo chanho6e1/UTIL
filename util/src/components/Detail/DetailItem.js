@@ -13,6 +13,7 @@ import { modifyPostDetailSliceActions } from '../../redux/postDetailSlice'
 import { tilAPI } from "../../api/Detail/tilAPI";
 import { tilCommentAPI } from "../../api/Detail/tilCommentAPI";
 import { tilCommentNewAPI } from "../../api/Detail/tilCommentNewAPI";
+import { tilUserAPI } from "../../api/Detail/tilUserAPI";
 import bookmarkIconFlat from "../../img/BookmarkIconFlat.svg";
 import bookmarkIconFill from "../../img/BookmarkIconFill.svg";
 import likeIconFlat from "../../img/LikeIconFlat.svg";
@@ -31,16 +32,14 @@ const DetailItemShow = (props) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const post = props.post
-
-  // useEffect(() => {
-  //   tilAPI(idx)
-  //   .catch((err) => {
-  //       navigate('/login');
-  //   })
-  //   .then((res) => {
-  //       dispatch(modifyPostDetailSliceActions.getPosts(JSON.stringify(res)))
-  //   })
-  // }, [])
+  const [userInfo, setuserInfo] = useState(null)
+  
+  useEffect(() => {
+    tilUserAPI()
+    .then((res) => {
+      setuserInfo(res)
+    })
+  }, [])
 
   useEffect(() => {
     tilCommentAPI(post.postId)
@@ -270,7 +269,7 @@ const DetailItemShow = (props) => {
        
           <div>
             {comments[post.postId]?.map((comment) => (
-              <DetailComment key={`commentId${comment.commentId}`} comment={comment} newDepthCommentContent={newDepthCommentContent} newDepthCommentContentInputHandler={newDepthCommentContentInputHandler} setnewDepthCommentContent={setnewDepthCommentContent} onEnterNewDepthCommentHandler={onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={setnewDepthCommentIsPrivate} newDepthCommentParentId={newDepthCommentParentId} newDepthCommentParentIdInputHandler={newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={setnewDepthCommentParentId} newDepthComment={newDepthComment} depthCommentIdx={depthCommentIdx} setdepthCommentIdx={setdepthCommentIdx} newdepthCommentIdx={newdepthCommentIdx} postId={post.postId} praentDelete={comment.isDelete}/>
+              <DetailComment key={`commentId${comment.commentId}`} comment={comment} postWriterInfo={post.writerInfo} userInfo={userInfo} newDepthCommentContent={newDepthCommentContent} newDepthCommentContentInputHandler={newDepthCommentContentInputHandler} setnewDepthCommentContent={setnewDepthCommentContent} onEnterNewDepthCommentHandler={onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={setnewDepthCommentIsPrivate} newDepthCommentParentId={newDepthCommentParentId} newDepthCommentParentIdInputHandler={newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={setnewDepthCommentParentId} newDepthComment={newDepthComment} depthCommentIdx={depthCommentIdx} setdepthCommentIdx={setdepthCommentIdx} newdepthCommentIdx={newdepthCommentIdx} postId={post.postId} praentDelete={comment.isDelete}/>
             ))}
           </div>
           {/* <DetailComment comments={comments[posts?.postId]} newDepthCommentContent={newDepthCommentContent} newDepthCommentContentInputHandler={newDepthCommentContentInputHandler} setnewDepthCommentContent={setnewDepthCommentContent} onEnterNewDepthCommentHandler={onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={setnewDepthCommentIsPrivate} newDepthCommentParentId={newDepthCommentParentId} newDepthCommentParentIdInputHandler={newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={setnewDepthCommentParentId} newDepthComment={newDepthComment} depthCommentIdx={depthCommentIdx} setdepthCommentIdx={setdepthCommentIdx} newdepthCommentIdx={newdepthCommentIdx}/> */}
