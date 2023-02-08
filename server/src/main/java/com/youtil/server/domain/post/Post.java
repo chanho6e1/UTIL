@@ -162,12 +162,10 @@ public class Post extends BaseEntity implements Serializable {
     }
 
     public void addPostFile(int idx, String source) {
-//        System.out.println("idx: "+idx+"source: "+source);
         postFileMap.put(idx, source);
     }
 
     public void setScore (Post post) throws ParseException {
-
         Date format1 = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
         String[] arr = post.getCreatedDate().toString().split("T");
         Date format2 = new SimpleDateFormat("yyyy-MM-dd").parse(arr[0]);
@@ -175,6 +173,7 @@ public class Post extends BaseEntity implements Serializable {
         long diffSec = (format1.getTime() - format2.getTime()) / 1000; //초 차이
         long diffDays = diffSec / (24*60*60); //일자수 차이
         this.likeScore = post.getTotalLikes() / (diffDays+1.0);
-        this.likeScore = post.getTotalLikes() / (diffDays+1.0);
+        this.viewScore = post.views / (diffDays+1.0);
+        //
     }
 }
