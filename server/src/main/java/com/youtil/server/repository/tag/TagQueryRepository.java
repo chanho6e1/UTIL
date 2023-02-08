@@ -6,6 +6,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.youtil.server.domain.post.Post;
+import com.youtil.server.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -52,6 +53,7 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
                 .fetchResults();
         return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
     }
+
     public Page<Post> findPostListByTagName(Long userId, String tagName, String criteria, Pageable pageRequest){
 //        return jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
         QueryResults<Post> content = jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
@@ -86,7 +88,23 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
                 .fetchResults();
         return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
     }
+    public Page<User> findUserListByMyTag(Long userId, PageRequest pageRequest) { // 나의 관심 유저의 글 조회
 
+//        return jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
+        QueryResults<User> content = jpaQueryFactory.select(userOfTag.user).distinct().from(userOfTag)
+                .innerJoin(userOfTag.user)
+                .where(
+                        userOfTag.tag.in(
+                                JPAExpressions
+                                        .select(userOfTag.tag).from(userOfTag)
+                                        .where( userOfTag.user.userId.eq(userId)
+                                        )), userOfTag.user.userId.ne(userId)
+                )
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
+                .fetchResults();
+        return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
+    }
     private BooleanExpression isPrivate(Long userId){ //or사용 / 공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
         return  tagOfPost.post.isPrivate.eq(2).or(
                 tagOfPost.post.user.userId.in(JPAExpressions
