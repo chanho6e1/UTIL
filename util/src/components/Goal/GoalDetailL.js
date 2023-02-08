@@ -17,7 +17,7 @@ const GoalDetailL = (props) => {
       <div className={classes["goal-detail-l-in"]}>
         <div>
           <span className={classes["goal-detail-title"]}>{props.plan?.title}</span>
-          <img className={classes["goal-detail-state"]} src={run} alt="goal-state" />
+          {/* <img className={classes["goal-detail-state"]} src={run} alt="goal-state" /> */}
         </div>
         <div className={classes["goal-detail-date"]}>
           <p>{props.plan?.startDate} ~ {props.plan?.endDate}</p>
