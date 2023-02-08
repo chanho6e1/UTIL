@@ -36,7 +36,6 @@ const ModalOverlay = (props) => {
   const mountModalHandler = async () => {
     
     const modalInitialize = async () => {
-      console.log(props.parentRef)
 
       contentRef.current.style.transitionProperty = await 'left top width height opacity'
       contentRef.current.style.transitionDuration = await '0s'
@@ -78,7 +77,7 @@ const ModalOverlay = (props) => {
 
 
     
-    console.log(contentRef)
+
 
     const displayCorrection =  setTimeout(async () => {
       contentRef.current.style.position = 'static'

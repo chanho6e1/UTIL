@@ -167,7 +167,6 @@ const Plan = (props) => {
                     goalId: newTodoGoalId,
                     data: res
                 }
-                console.log(res)
                 dispatch(modifyPlanSliceActions.responseTodoPeriod(JSON.stringify(processing)))
             })
             .catch((err) => {
