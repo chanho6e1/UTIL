@@ -1,10 +1,28 @@
 import Chip from "@mui/material/Chip";
 import { styled } from "@mui/material/styles";
 import { Fragment } from "react";
+import { IconButton, createTheme, ThemeProvider } from "@mui/material";
 
 const TagList = styled("li")(({ theme }) => ({
   margin: theme.spacing(0, 0.5, 0, 0),
+  listStyle: 'none'
 }));
+
+
+const chipTheme = createTheme({
+  components: {
+    MuiChip: {
+      styleOverrides: {
+        root: { 
+          marginRight: 4,
+          border: '1px solid rgba(0,0,0,0.05);',
+          boxSizing: 'border-box'
+         },
+      },
+    },
+  },
+});
+
 
 const TagDataList = (props) => {
   const TagDataItem = [];
@@ -23,24 +41,30 @@ const TagDataList = (props) => {
   for (var i = 0; i < maxIndex(props.tagList); i++) {
     TagDataItem.push(
       <TagList key={i}>
+        <ThemeProvider theme={chipTheme}>
         <Chip
           variant="outlined"
           label={props.tagList[i].tagName}
           onClick={props.onClick}
-          size="small"
+          size="medium"
           sx={{
+            // outline: 'rgb(255,0,0)',
             bgcolor: bgColorList[i],
             color: colorList[i],
+            "& .MuiButtonBase-root": {
+              borderRadius: '1px'
+            }
           }}
           id={props.tagList[i].tagId}
         />
+        </ThemeProvider>
       </TagList>
     );
   }
 
   return (
     <Fragment>
-      <ul>{TagDataItem}</ul>
+      <div style={{display:'flex', marginTop:'8px'}}>{TagDataItem}</div>
     </Fragment>
   );
 };

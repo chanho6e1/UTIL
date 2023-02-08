@@ -33,7 +33,7 @@ const App = () => {
   const plans = useSelector(state => state.planSlice.plans)
 
   const movePage = (url) =>{
-    if(pathname !== `/${url}` ){
+    if(pathname !== `/${url}` && !pathname.includes('modal') && !pathname.includes('index')) {
       
       wrapRef.current.classList.replace('loaded', 'unloaded');
       setTimeout(()=> { 
@@ -44,6 +44,7 @@ const App = () => {
   }
 
   useEffect(() => {
+
     movePage(pathname)
   }, [pathname])
 
@@ -87,6 +88,7 @@ const App = () => {
       
         <Route path="/goal/:id" element={<GoalDetail />} /> 
         <Route path="/post/:id" element={<DetailItem />} /> 
+        {/* <Route path="/post/:id" element={<DetailItem />} />  */}
 
         <Route path="/*" element={plans && <Main />} />
         <Route path="/login" element={<SocialLogin />} />

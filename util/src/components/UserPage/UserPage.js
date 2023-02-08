@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import classes from "./UserPage.module.css";
 import PostCardItem from "../UI/PostCard/PostCardItem";
 import TagDataList from "../UI/Tag/TagDataList";
@@ -6,6 +6,7 @@ import { Avatar, Pagination } from "@mui/material";
 import Button from "../UI/Button/Button";
 import PostCardContainerLoading from "../UI/Loading/PostCardContainerLoading";
 import { getUserPosts } from "../../api/Post/getUserPosts";
+import { getMyPosts } from "../../api/Post/getMyPosts";
 import { getUserData } from "../../api/Post/getUserData";
 import { getIsFollowing } from "../../api/Post/getIsFollowing";
 import { getUserFollower } from "../../api/Post/getUserFollower";
@@ -14,11 +15,15 @@ import { deleteFollow } from "../../api/Post/deleteUnfollow";
 import { postFollow } from "../../api/Post/postFollow";
 import { getUserTag } from "../../api/Post/getUserTag";
 import { getMyData } from "../../api/UserProfile/getMyData";
+import UserPageResponsive from "./UserPageResponsive";
+
+import PlanCard from "../Plan/PlanCard/PlanCard";
 
 const postCardItemList = (postList) => {
+  console.log("post", postList);
   return postList?.map((post) => {
     return (
-      <PostCardItem
+      <UserPageResponsive
         id={post.postId}
         key={post.postId}
         thumbnail={post.thumbnail}
@@ -36,6 +41,7 @@ const postCardItemList = (postList) => {
 };
 
 const UserPage = (props) => {
+  const containerRef = useRef()
   const [postList, setPostList] = useState(null);
   const [userData, setUserData] = useState([]);
   const [myData, setMyData] = useState([]);
@@ -55,15 +61,23 @@ const UserPage = (props) => {
 
   const fetchUserPostData = (criteriaIdx, page, size) => {
     setIsLoading(true);
-    getUserPosts(props.id, criteria[criteriaIdx], page, size).then((res) => {
+
+    getMyPosts(criteria[criteriaIdx], page, size).then((res) => {
       setPostList(() => res.content);
       setOffset(() => page);
       setTimeout(() => {
         setIsLoading(false);
       }, 500);
     });
+    // getUserPosts(props.id, criteria[criteriaIdx], page, size).then((res) => {
+    //   setPostList(() => res.content);
+    //   setOffset(() => page);
+    //   setTimeout(() => {
+    //     setIsLoading(false);
+    //   }, 500);
+    // });
   };
-
+  
   // 초기 데이터
   useEffect(() => {
     // Post API
@@ -72,6 +86,7 @@ const UserPage = (props) => {
       setPostList(() => res.content);
       setTotalPage(() => res.totalPages);
       setIsLoading(false);
+      
     });
 
     // My Data API
@@ -151,7 +166,7 @@ const UserPage = (props) => {
     if (!isLoading && postList && postList.length === 0) {
       return <div className={classes[`no-post`]}>포스트가 없습니다</div>;
     } else {
-      return <ul>{postCardItemList(postList)}</ul>;
+      return postCardItemList(postList);
     }
   };
 
@@ -159,53 +174,72 @@ const UserPage = (props) => {
     fetchUserPostData(criteriaIdx, page, size);
   };
 
-  return (
-    <div className={classes[`user-page`]}>
-      <div className={classes[`user-page-upper`]}>
-        <div className={classes[`avatar-username`]}>
-          <Avatar
-            src={userData.imageUrl}
-            sx={{
-              width: 128,
-              height: 128,
-              border: "1px solid lightgray",
-              objectFit: "scale-down",
-            }}
-          />
-          <div className={classes.nickname}>{userData.nickname}</div>
-        </div>
-        <div className={classes[`follow-userdata`]}>
-          <div className={classes.follow}>
-            <div className={classes.follower}>
-              <div className={classes[`follow-text`]}>팔로워</div>
-              <div className={classes[`follow-number`]}>{followerListCnt}명</div>
-            </div>
-            <div className={classes.follower}>
-              <div className={classes[`follow-text`]}>팔로우</div>
-              <div className={classes[`follow-number`]}>{followingListCnt}명</div>
-            </div>
-            {myData.userId !== props.id && followBtn(isFollowing)}
+  const userPageUpper = (
+        <div className={classes[`user-page-upper`]}>
+          <div className={classes[`avatar-username`]}>
+            <Avatar
+              src={userData.imageUrl}
+              sx={{
+                width: '15vw',
+                height: '15vw',
+                minWidth: '96px',
+                minHeight: '96px',
+                maxWidth: '128px',
+                maxHeight: '128px',
+                border: "1px solid lightgray",
+                objectFit: "scale-down",
+              }}
+            />
           </div>
-          <div className={classes[`userdata`]}>
-            <div className={classes[`username-department`]}>
-              <div className={classes.username}>{userData.userName}</div>
-              <div className={classes[`department-text`]}>소속</div>
-              <div className={classes[`department-data`]}>{userData.department}</div>
+          <div className={classes['user-outer-wrapper']}>
+            <div className={classes['user-wrapper']}>
+              <div>
+                <div className={classes['user-column']}>
+                  <div className={classes.nickname}>
+                    {userData.nickname}
+                  </div>
+                  <div className={classes.follow}>
+                    <div className={classes[`follow-text`]}>팔로워</div>
+                    <div className={classes[`follow-number`]}>{followerListCnt}명</div>
+                    <div className={classes[`follow-text`]}>팔로우</div>
+                    <div className={classes[`follow-number`]}>{followingListCnt}명</div>
+                    {myData.userId !== props.id && followBtn(isFollowing)}
+                  </div>
+                </div>
+                <div className={classes['user-column']}>
+                  <div className={classes['user-description']}>{userData.discription}</div>
+                </div>
+              </div>
             </div>
-            <div className={classes[`username-department`]}>
-              <div className={classes[`department-text`]}>email</div>
-              <div className={classes[`department-data`]}>{userData.email}</div>
-            </div>
-            <div className={classes.tags}>
+            <div className={classes['tag-wrapper']}>
               <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
             </div>
+            
+          </div>
+          
+        </div>
+  )
+
+  return (
+    <div className={classes[`user-page`]}>
+
+        
+        <div ref={containerRef} className={classes[`postcard-container`]}>
+          <div className={classes[`postcard-inner`]}>
+            
+            {userPageUpper}
+            <div className={classes['line']} />
+            {postCardContainer(postList)}
+            
+          </div>
+          
+          <div className={classes['plan-card-wrapper']}>
+            <PlanCard />
           </div>
         </div>
-      </div>
-      <div className={classes[`postcard-container`]}>{postCardContainer(postList)}</div>
-      <div className={classes[`pagination`]}>
-        <Pagination count={totalPage} onChange={pageChangeHandler} />
-      </div>
+        <div className={classes[`pagination`]}>
+          <Pagination count={totalPage} onChange={pageChangeHandler} />
+        </div>
     </div>
   );
 };

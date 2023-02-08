@@ -218,7 +218,7 @@ const PostTag = (props) => {
 
 
   return (
-    <div>
+    <div className={styles['editor-outer-wrapper']}>
       {alertNotiState && <NotiDeliverer content={alert} stateHandler={setAlertNotiState} duration={3000} width={350} height={100} />}
       <div ref={editorWrapperRef} id="editor-wrapper" className={styles['editor-wrapper']}>
         {frontData.map((el, idx) => createLine(idx))}

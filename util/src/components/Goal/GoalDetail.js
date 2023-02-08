@@ -3,6 +3,7 @@ import GoalDetailL from "./GoalDetailL";
 import GoalDetailR from "./GoalDetailR";
 import React, {useState, useEffect, useRef, useCallback} from "react";
 import { modifyPostDetailSliceActions } from '../../redux/postDetailSlice'
+import { modifyPlanSliceActions } from '../../redux/planSlice'
 import { detailPlansAPI } from "../../api/Goal/detailPlansAPI";
 import { detailTodosAPI } from "../../api/Goal/detailTodosAPI";
 import { detailReviewsAPI } from "../../api/Goal/detailReviewsAPI";
@@ -17,6 +18,7 @@ const GoalDetail = (props) => {
   const idx = useParams().id
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [tilPage, settilPage] = useState(1)
 
   useEffect(() => {
     detailPlansAPI(idx)
@@ -24,7 +26,7 @@ const GoalDetail = (props) => {
         navigate('/login');
     })
     .then((res) => {
-        dispatch(modifyPostDetailSliceActions.getPlans(JSON.stringify(res)))
+        dispatch(modifyPlanSliceActions.getPlans(JSON.stringify(res)))
     })
   }, [])
 
@@ -51,7 +53,7 @@ const GoalDetail = (props) => {
   }, [])
 
   useEffect(() => {
-    detailTilAPI(idx)
+    detailTilAPI(idx, tilPage)
     .then((res) => {
       const proccessing = {
         goalId: idx,
@@ -59,20 +61,33 @@ const GoalDetail = (props) => {
     }
     dispatch(modifyPostDetailSliceActions.getTils(JSON.stringify(proccessing)))
     })
-  }, [])
+  }, [tilPage])
 
 
-  const plans = useSelector(state => state.postDetailSlice.plans)
+  const plans = useSelector(state => state.planSlice.plans)
   const todos = useSelector(state => state.postDetailSlice.todos)
   const reviews = useSelector(state => state.postDetailSlice.reviews)
   const tils = useSelector(state => state.postDetailSlice.tils)
 
+  const prevPage = () => {
+    if (tilPage > 1) {
+      settilPage((prevState) => prevState - 1)
+    }
+  }
 
+  const nextPage = () => {
+    if (tilPage < tils[idx].totalPages)
+    settilPage((prevState) => prevState + 1)
+  }
+
+  
   return (
     <div className={classes["goal-detail"]}>
-      <GoalDetailL goal={plans} todos={todos} reviews={reviews}/>
+      <div />
+      {plans && <GoalDetailL plan={plans[idx]} reviews={reviews}/>}
       <div className={classes["goal-detail-line"]}/>
-      <GoalDetailR goal={plans} tils={tils}/>
+      {plans && <GoalDetailR plan={plans[idx]} tils={tils} nextPage={nextPage} prevPage={prevPage} tilPage={tilPage}/>}
+      <div />
     </div>
   );
 };

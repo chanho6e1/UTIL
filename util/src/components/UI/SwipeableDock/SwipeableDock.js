@@ -30,7 +30,10 @@ const SwipeableDock = (props) => {
   }, [])
 
   useEffect(() => {
+
     setContentCount(urlLib[location.pathname])
+
+    
   }, [urlLib, location.pathname])
 
 
@@ -97,6 +100,7 @@ const SwipeableDock = (props) => {
 
 
   const clickDockHandler = async (idx) => {
+    // navigate(postData.url[idx], { replace: true });
     setContentCount(() => idx + 1)
   }
 

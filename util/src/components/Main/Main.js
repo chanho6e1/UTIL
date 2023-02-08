@@ -14,14 +14,16 @@ import MyUtil from "../MyUtil/MyUtil";
 import Feed from "../Feed/Feed";
 import UserPage from "../UserPage/UserPage";
 import UserProfileChange from "../UserProfileChangePage/UserProfileChange";
-import SearchBar from "../UI/SearchBar/SearchBar";
+import PlanResponsive from "../Plan/PlanResponsive";
 
 const Main = (props) => {
   const parentRef = useRef();
   const userAuth = useSelector((state) => state.userAuthSlice.userAuth);
 
+
   const postData = {
-    content: [<MyUtil />, <SearchBar />, <PlanExpanded />, <div>test1</div>, <div>test1</div>],
+    content: [userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />, <UserProfileChange />, <PlanResponsive />, <div>test1</div>, <div>test1</div>],
+    // userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />
     dock: {
       logoContracted: (
         <img className={styles["logo-icon"]} src={logo} style={{ width: "96px", height: "auto" }} />
@@ -33,7 +35,7 @@ const Main = (props) => {
         <div>피드</div>,
         <div>검색</div>,
         <div>탐색 탭</div>,
-        <div>피드 작성</div>,
+        <div>목표</div>,
       ],
       dockContractedBottom: [Icons.notification, <UserIcon />],
       dockExpandedBottom: [<div>알림</div>, <CurrentUser />],

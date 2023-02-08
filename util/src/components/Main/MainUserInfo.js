@@ -85,7 +85,6 @@ export const UserDockWrapper = (props) => {
 
   const dropDownItems = {
     label: ['로그아웃', '마이프로필'],
-
     function: [handleLogout, null],
   }
 
@@ -94,7 +93,7 @@ export const UserDockWrapper = (props) => {
   
 
   return (
-    <div onClick={() => {userAuth.authenticated ? setDropDownState(true) : navigateLogin(); }}>
+    <div onClick={() => {userAuth.authenticated ? setDropDownState(true) : navigateLogin(); console.log(userAuth) }}>
       
       {props.children}
       <DropDown dropDownItems={dropDownItems} dropDownState={dropDownState} setDropDownState={setDropDownState} marginLeft={'-20px'} width={'260px'} direction={'up'} conditionalRender={props.isMouseOn} />

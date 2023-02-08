@@ -13,7 +13,6 @@ import { modifyPostDetailSliceActions } from '../../redux/postDetailSlice'
 import { tilAPI } from "../../api/Detail/tilAPI";
 import { tilCommentAPI } from "../../api/Detail/tilCommentAPI";
 import { tilCommentNewAPI } from "../../api/Detail/tilCommentNewAPI";
-import { tilUserAPI } from "../../api/Detail/tilUserAPI";
 import bookmarkIconFlat from "../../img/BookmarkIconFlat.svg";
 import bookmarkIconFill from "../../img/BookmarkIconFill.svg";
 import likeIconFlat from "../../img/LikeIconFlat.svg";
@@ -21,31 +20,29 @@ import likeIconFill from "../../img/LikeIconFill.svg";
 import PhotoCameraIcon from "../../img/photoCameraIcon_gray.png";
 import { putLikeToggle } from "../../api/Post/putLikeToggle";
 import { putBookmarkToggle } from "../../api/Post/putBookmarkToggle";
-import TextArea from "../UI/TextArea/TextArea";
-import DetailItemLoading from "./DetailItemLoading";
-
-import { Viewer } from '@toast-ui/react-editor';
 
 
-const DetailItemShow = (props) => {
-  const location = useLocation();
+const DetailItem = (props) => {
+  const idx = useParams().id
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const post = props.post
-  const [userInfo, setuserInfo] = useState(null)
-  
+  const [post, setpost] = useState("")
+
   useEffect(() => {
-    tilUserAPI()
+    tilAPI(idx)
+    .catch((err) => {
+        console.log(err);
+    })
     .then((res) => {
-      setuserInfo(res)
+        setpost(res)
     })
   }, [])
 
   useEffect(() => {
-    tilCommentAPI(post.postId)
+    tilCommentAPI(idx)
     .then((res) => {
       const proccessing = {
-        postId: post.postId,
+        postId: idx,
         data: res
     }
     dispatch(modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing)))
@@ -82,16 +79,16 @@ const DetailItemShow = (props) => {
       content: newCommentContent,
       isPrivate: newCommentIsPrivate,
       parentId: null,
-      postId: post.postId,
+      postId: idx,
     }
     if (inputCommentData.content === '') {
         return
     }
 
-    tilCommentNewAPI(post.postId, inputCommentData)
+    tilCommentNewAPI(idx, inputCommentData)
     .then((res) => {
         const proccessing = {
-            postId: post.postId,
+            postId: idx,
             data: res
         }
         dispatch(modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing)))
@@ -106,16 +103,16 @@ const DetailItemShow = (props) => {
       content: newDepthCommentContent,
       isPrivate: newDepthCommentIsPrivate,
       parentId: newDepthCommentParentId,
-      postId: post.postId,
+      postId: idx,
     }
     if (inputDepthCommentData.content === '') {
         return
     }
 
-    tilCommentNewAPI(post.postId, inputDepthCommentData)
+    tilCommentNewAPI(idx, inputDepthCommentData)
     .then((res) => {
         const proccessing = {
-            postId: post.postId,
+            postId: idx,
             data: res
         }
         dispatch(modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing)))
@@ -148,9 +145,13 @@ const DetailItemShow = (props) => {
     }
   }
 
-  const [isBookmark, setIsBookmark] = useState(post?.bookmarkStatus);
-  const [isLike, setIsLike] = useState(post?.likeStatus);
-  const [likeStatusSize, setLikeStatusSize] = useState(post?.likeStatusSize);
+  const [isBookmark, setIsBookmark] = useState(post.bookmarkStatus);
+  const [isLike, setIsLike] = useState(post.likeStatus);
+  const [likeStatusSize, setLikeStatusSize] = useState(post.likeStatusSize);
+  
+  console.log(post.bookmarkStatus)
+  console.log(post.likeStatus)
+  console.log(post.likeStatusSize)
 
   const displayLikeStatusSize = (likeStatusSize) => {
     if (likeStatusSize > 1000) {
@@ -169,6 +170,9 @@ const DetailItemShow = (props) => {
       if (res === 200) {
         setIsBookmark((prevState) => !prevState);
       }
+      console.log(post.bookmarkStatus)
+      console.log(post.likeStatus)
+      console.log(post.likeStatusSize)
     });
   };
 
@@ -183,24 +187,23 @@ const DetailItemShow = (props) => {
         }
         setIsLike((prevState) => !prevState);
       }
+      console.log(post.bookmarkStatus)
+      console.log(post.likeStatus)
+      console.log(post.likeStatusSize)
     })
     .catch((err) => {
       console.log('DetailItem : putLikeToggle => ', err)
     })
   };
 
-  const createdDate = new Date(post.createdDate)
-  const dateString = `${createdDate.getFullYear()}년 ${createdDate.getMonth() + 1}월 ${createdDate.getDate()}일`
-
   return (
     <div className={classes.Detail}>
-
+      <div/>
       <div className={classes.DetailItem}>
         <div className={classes["Detail-text-contents"]}>
           <div className={classes.title}>{post.title}</div>
-          
           <div className={classes["Detail-info"]}>
-            
+            <div className={classes["Detail-user"]}>
               <img
                 className={classes["user-picture"]}
                 // src={defaultUserPicture}
@@ -211,110 +214,62 @@ const DetailItemShow = (props) => {
                 }
                 alt="user"
               />
-            <div className={classes["Detail-user"]}>
-              <span className={classes.username}>{post.writerInfo.nickname} ·</span>
-              <span className={classes['created-date']}>{dateString}</span>
+              <span className={classes.username}>{post.writerInfo.nickname}</span>
             </div>
-            
-            
-          </div>
-          <div className={classes.contents}>
-            <Viewer initialValue={post.content} />
-            {/* {post.content} */}
-          </div>
-        </div>
-
-
-
-
-
-        <div className={classes["tag-div"]}>
-          {/* <span className={classes.tag}>{props.tag}</span> */}
-          <div className={classes[`icons-div`]}>
-            <IconButton
-              onClick={bookmarkClickHandler}
-              style={{
-                paddingTop: 0,
-                paddingRight: 0,
-                paddingBottom: 0,
-                paddingLeft: 0,
-                marginRight: 10,
-              }}
-            >
-              <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
-            </IconButton>
-            <div className={classes['icons-like']}>
-              <IconButton
-                onClick={likeClickHandler}
-                style={{
-                  paddingTop: 0,
-                  paddingRight: 0,
-                  paddingBottom: 0,
-                  paddingLeft: 0,
-                }}
-              >
-                <img src={isLike ? likeIconFill : likeIconFlat} />
-              </IconButton>
-              <div className={classes[`like-count`]}>{displayLikeStatusSize(likeStatusSize)}</div>
+            <div className={classes["tag-div"]}>
+              {/* <span className={classes.tag}>{props.tag}</span> */}
+              <div className={classes[`icons-div`]}>
+                <IconButton
+                  onClick={bookmarkClickHandler}
+                  style={{
+                    paddingTop: 0,
+                    paddingRight: 0,
+                    paddingBottom: 0,
+                    paddingLeft: 0,
+                    marginRight: 10,
+                  }}
+                >
+                  <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
+                </IconButton>
+                <div className={classes['icons-like']}>
+                  <IconButton
+                    onClick={likeClickHandler}
+                    style={{
+                      paddingTop: 0,
+                      paddingRight: 0,
+                      paddingBottom: 0,
+                      paddingLeft: 0,
+                    }}
+                  >
+                    <img src={isLike ? likeIconFill : likeIconFlat} />
+                  </IconButton>
+                  <div className={classes[`like-count`]}>{displayLikeStatusSize(likeStatusSize)}</div>
+                </div>
+                <span className={classes.updated}>{post.createdDate}</span>
+              </div>
             </div>
-            
           </div>
+          <p className={classes.contents}>{post.content}</p>
         </div>
-
-
-
-
-
         <div  className={classes["Detail-comments"]}>
-       
+          <hr />
           <div>
-            {userInfo &&
-              comments[post.postId]?.map((comment) => (
-                <DetailComment key={`commentId${comment.commentId}`} comment={comment} postWriterInfo={post.writerInfo} userInfo={userInfo} newDepthCommentContent={newDepthCommentContent} newDepthCommentContentInputHandler={newDepthCommentContentInputHandler} setnewDepthCommentContent={setnewDepthCommentContent} onEnterNewDepthCommentHandler={onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={setnewDepthCommentIsPrivate} newDepthCommentParentId={newDepthCommentParentId} newDepthCommentParentIdInputHandler={newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={setnewDepthCommentParentId} newDepthComment={newDepthComment} depthCommentIdx={depthCommentIdx} setdepthCommentIdx={setdepthCommentIdx} newdepthCommentIdx={newdepthCommentIdx} postId={post.postId} praentDelete={comment.isDelete}/>
-              ))
-            }
+            {comments[post.postId]?.map((comment) => (
+              <DetailComment key={`commentId${comment.commentId}`} comment={comment} newDepthCommentContent={newDepthCommentContent} newDepthCommentContentInputHandler={newDepthCommentContentInputHandler} setnewDepthCommentContent={setnewDepthCommentContent} onEnterNewDepthCommentHandler={onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={setnewDepthCommentIsPrivate} newDepthCommentParentId={newDepthCommentParentId} newDepthCommentParentIdInputHandler={newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={setnewDepthCommentParentId} newDepthComment={newDepthComment} depthCommentIdx={depthCommentIdx} setdepthCommentIdx={setdepthCommentIdx} newdepthCommentIdx={newdepthCommentIdx} postId={post.postId} praentDelete={comment.isDelete}/>
+            ))}
           </div>
           {/* <DetailComment comments={comments[posts?.postId]} newDepthCommentContent={newDepthCommentContent} newDepthCommentContentInputHandler={newDepthCommentContentInputHandler} setnewDepthCommentContent={setnewDepthCommentContent} onEnterNewDepthCommentHandler={onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={setnewDepthCommentIsPrivate} newDepthCommentParentId={newDepthCommentParentId} newDepthCommentParentIdInputHandler={newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={setnewDepthCommentParentId} newDepthComment={newDepthComment} depthCommentIdx={depthCommentIdx} setdepthCommentIdx={setdepthCommentIdx} newdepthCommentIdx={newdepthCommentIdx}/> */}
           <div className={classes["Detail-comments-input"]}>
             <div className={classes["Detail-comments-private"]}>비공개 : 
               <input type="checkbox" checked={newCommentIsPrivate} onChange={newCommentIsPrivateInputHandler} />
             </div>
-            <TextArea className={classes['Detail-comments-contents-box']} value={newCommentContent} onChange={newCommentContentInputHandler} placeholder="댓글을 작성해 주세요" onKeyPress={onEnterNewCommentHandler}/>
-            {/* <textarea className={classes['Detail-comments-contents-box']} value={newCommentContent} onChange={newCommentContentInputHandler} placeholder="댓글을 작성해 주세요" onKeyPress={onEnterNewCommentHandler}/> */}
+            <textarea className={classes['Detail-comments-contents-box']} value={newCommentContent} onChange={newCommentContentInputHandler} placeholder="댓글을 작성해 주세요" onKeyPress={onEnterNewCommentHandler}/>
           </div>
         </div>
       </div>
-
+      <div/>
     </div>
   );
 };
-
-
-const DetailItem = (props) => {
-  const params = useParams().id
-  const idx = params ? params : props.id
-
-  const [loading, setLoading] = useState(true)
-  const [detail, setDetail] = useState(null)
-  useEffect(() => {
-    tilAPI(idx)
-    .catch((err) => {
-        // navigate('/login');
-    })
-    .then((res) => {
-      setDetail(res)
-    })
-
-    setTimeout(() => {
-      setLoading(() => false)
-    }, 500)
-  }, [])
-
-  return (
-    <div className={classes['detail-wrapper']}>
-      {detail !== null && loading === false ? <DetailItemShow post={detail} /> : <DetailItemLoading /> }
-    </div>
-  )
-}
 
 export default DetailItem;
