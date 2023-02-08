@@ -6,6 +6,7 @@ import { Avatar, Pagination } from "@mui/material";
 import Button from "../UI/Button/Button";
 import PostCardContainerLoading from "../UI/Loading/PostCardContainerLoading";
 import { getUserPosts } from "../../api/Post/getUserPosts";
+import { getMyPosts } from "../../api/Post/getMyPosts";
 import { getUserData } from "../../api/Post/getUserData";
 import { getIsFollowing } from "../../api/Post/getIsFollowing";
 import { getUserFollower } from "../../api/Post/getUserFollower";
@@ -60,13 +61,21 @@ const UserPage = (props) => {
 
   const fetchUserPostData = (criteriaIdx, page, size) => {
     setIsLoading(true);
-    getUserPosts(props.id, criteria[criteriaIdx], page, size).then((res) => {
+
+    getMyPosts(criteria[criteriaIdx], page, size).then((res) => {
       setPostList(() => res.content);
       setOffset(() => page);
       setTimeout(() => {
         setIsLoading(false);
       }, 500);
     });
+    // getUserPosts(props.id, criteria[criteriaIdx], page, size).then((res) => {
+    //   setPostList(() => res.content);
+    //   setOffset(() => page);
+    //   setTimeout(() => {
+    //     setIsLoading(false);
+    //   }, 500);
+    // });
   };
   
   // 초기 데이터
