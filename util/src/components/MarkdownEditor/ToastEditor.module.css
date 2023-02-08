@@ -27,9 +27,24 @@
         border: none;
         min-height: 24px;
         min-width: 72px;
-        width: 72px;
+        width: 84px;
         font-size: 18px;
         font-weight: 700;
+        color: rgb(70,70,70);
+
+    }
+    .next-button {
+        min-width: 52px;
+        width: 52px;
+    }
+
+    .date-title {
+        width: 100%;
+        font-size: 18px;
+        height: 20px;
+        border: none;
+        font-weight: 600;
+        margin-bottom:12px;
         color: rgb(70,70,70)
     }
 }
@@ -51,6 +66,20 @@
         font-weight: 700;
         color: rgb(70,70,70)
     }
+    .skip-button {
+        margin-right: 24px;
+    }
+
+    .date-title {
+        width: 100%;
+        font-size: 36px;
+        height: 36px;
+        border: none;
+        font-weight: 600;
+        margin-bottom:12px;
+        color: rgb(70,70,70)
+    }
+    
 }
 
 
@@ -89,19 +118,8 @@
     outline:none;
 }
 
-.date-title {
-    width: 100%;
-    font-size: 36px;
-    height: 36px;
-    border: none;
-    font-weight: 600;
-    margin-bottom:12px;
-    color: rgb(70,70,70)
-}
 
-.skip-button {
-    margin-right: 24px;
-}
+
 
 .header-buttons-wrapper {
     display: flex;

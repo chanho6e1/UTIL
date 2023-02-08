@@ -209,7 +209,7 @@ const DetailItemShow = (props) => {
   const dateString = `${createdDate.getFullYear()}년 ${createdDate.getMonth() + 1}월 ${createdDate.getDate()}일`
 
   const postEditHandler = () => {
-    navigate(`/create/post?edit=${post.postId}`)
+    navigate(`/edit/post/${post.postId}`)
   }
 
   return (
