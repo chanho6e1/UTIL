@@ -8,9 +8,11 @@ import { detailPlansAPI } from "../../api/Goal/detailPlansAPI";
 import { detailTodosAPI } from "../../api/Goal/detailTodosAPI";
 import { detailReviewsAPI } from "../../api/Goal/detailReviewsAPI";
 import { detailTilAPI } from "../../api/Goal/detailTilAPI";
+import GoalDetailMobile from "./GoalDetailMobile";
 
 import { useSelector, useDispatch } from 'react-redux'
 import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate, useMatch, useLocation, useParams } from "react-router-dom";
+import { Fragment } from "react";
 
 
 
@@ -82,13 +84,18 @@ const GoalDetail = (props) => {
 
   
   return (
-    <div className={classes["goal-detail"]}>
-      <div />
-      {plans && <GoalDetailL plan={plans[idx]} reviews={reviews}/>}
-      <div className={classes["goal-detail-line"]}/>
-      {plans && <GoalDetailR plan={plans[idx]} tils={tils} nextPage={nextPage} prevPage={prevPage} tilPage={tilPage}/>}
-      <div />
-    </div>
+    <Fragment>
+      <div className={classes["goal-detail-pc"]}>
+        <div />
+        {plans && <GoalDetailL plan={plans[idx]} reviews={reviews}/>}
+        <div className={classes["goal-detail-line"]}/>
+        {plans && <GoalDetailR plan={plans[idx]} tils={tils} nextPage={nextPage} prevPage={prevPage} tilPage={tilPage}/>}
+        <div />
+      </div>
+      <div className={classes["goal-detail-mobile"]}>
+        {plans && <GoalDetailMobile plan={plans[idx]} reviews={reviews} tils={tils} nextPage={nextPage} prevPage={prevPage} tilPage={tilPage}/>}
+      </div>
+    </Fragment>
   );
 };
 
