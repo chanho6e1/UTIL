@@ -21,8 +21,10 @@ import likeIconFill from "../../img/LikeIconFill.svg";
 import PhotoCameraIcon from "../../img/photoCameraIcon_gray.png";
 import { putLikeToggle } from "../../api/Post/putLikeToggle";
 import { putBookmarkToggle } from "../../api/Post/putBookmarkToggle";
+import { getPostTag } from "../../api/Post/getPostTag"
 import TextArea from "../UI/TextArea/TextArea";
 import DetailItemLoading from "./DetailItemLoading";
+import TagDataList from "../UI/Tag/TagDataList";
 
 import { Viewer } from '@toast-ui/react-editor';
 
@@ -33,6 +35,7 @@ const DetailItemShow = (props) => {
   const navigate = useNavigate()
   const post = props.post
   const [userInfo, setuserInfo] = useState(null)
+  const [tagList, setTagList] = useState(null);
   
   useEffect(() => {
     tilUserAPI()
@@ -40,6 +43,13 @@ const DetailItemShow = (props) => {
       setuserInfo(res)
     })
   }, [])
+
+  useEffect(() => {
+    getPostTag(post.postId).then((res) => {
+      setTagList(() => res);
+    });
+  }, []);
+
 
   useEffect(() => {
     tilCommentAPI(post.postId)
@@ -164,6 +174,12 @@ const DetailItemShow = (props) => {
     event.target.src = PhotoCameraIcon;
   };
 
+  const tagOnClickHandler = (event) => {
+    // 태그 클릭시 검색 페이지로 이동
+    console.log(event.currentTarget.id);
+  };
+
+
   const bookmarkClickHandler = () => {
     putBookmarkToggle(post.postId).then((res) => {
       if (res === 200) {
@@ -257,7 +273,9 @@ const DetailItemShow = (props) => {
               </IconButton>
               <div className={classes[`like-count`]}>{displayLikeStatusSize(likeStatusSize)}</div>
             </div>
-            
+            <div className={classes['icons-tag']}>
+              <TagDataList tagList={tagList} onClick={tagOnClickHandler} />
+            </div>
           </div>
         </div>
 
