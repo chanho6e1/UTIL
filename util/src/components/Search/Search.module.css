@@ -1,2 +1,16 @@
 .searchbar-feed {
+  margin-top: 20px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.searchfeed {
+  height: 90%;
+  overflow: hidden;
+}
+
+.enter-search {
+  margin-top: 40px;
+  font-size: x-large;
+  color: #aaacae;
 }
