@@ -1,3 +1,37 @@
+@media all and (max-width: 480px) {
+    
+
+    .modal {
+        max-width: 90vw;
+    }
+    .card {
+      max-width: 90vw;
+    }
+    .content {
+      max-width: 90vw;
+    }
+    /* .shadow-box-wrapper {
+        width: 90vw;
+    } */
+    
+}
+
+/* @media all and (min-width: 480px) {
+    .blog-post-form {
+        width: 440px;
+    }
+    .form-wrapper {
+        width: 440px;
+    }
+    .picker-wrapper {
+        width: 440px;
+    }
+    .shadow-box-wrapper {
+        width: 440px;
+    }
+} */
+
+
 .backdrop {
     position: fixed;
     top: 0;

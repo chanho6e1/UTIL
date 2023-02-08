@@ -35,6 +35,7 @@ import 'prismjs/themes/prism.css';
 
 export default function ToastEditor(props) {
   const editorRef = useRef()
+  const editorWrapperRef = useRef()
   const [searchParams, setSearchParams] = useSearchParams();
   const today = new Date()
   const dateString = `${today.getFullYear()}년 ${today.getMonth()}월 ${today.getDate()}일 회고록`
@@ -195,16 +196,19 @@ export default function ToastEditor(props) {
 
   return (
 
-    <div className={styles['editor-wrapper']} onClick={() => console.log(editorRef.current)}>
+    <div ref={editorWrapperRef} className={styles['editor-wrapper']} onClick={() => console.log(editorRef.current)}>
       {doneNotiState && <NotiDeliverer content={message1} stateHandler={setDoneNotiState} duration={5000} width={350} height={100} />}
       {alertNotiState && <NotiDeliverer content={alert} stateHandler={setAlertNotiState} duration={5000} width={350} height={100} />}
-      <FixedModal queryString={queryString} modalState={modalState} stateHandler={setModalState} content={<BlogPostForm postSubmitHandler={postSubmitHandler} reviewSubmitHandler={reviewSubmitHandler} forReview={props.forReview} />} noBtn={true} width={'400px'} height={'170px'} />
+      <FixedModal queryString={queryString} modalState={modalState} stateHandler={setModalState} content={<BlogPostForm postSubmitHandler={postSubmitHandler} reviewSubmitHandler={reviewSubmitHandler} forReview={props.forReview} />} noBtn={true} width={'10px'} height={'170px'} />
       <div className={styles['additional-info-wrapper']}>
         <div className={styles['header']}>
           {props.forReview ? dateRender : titleInput}
-          {queryString.takeStep && <Button onClick={skipHandler} className={`${styles['button']} ${styles['skip-button']}`}>건너뛰기</Button>}
-          {queryString.takeStep && <Button onClick={clickSubmitHandler} className={`${styles['button']}`}>다음</Button>}
-          {!queryString.takeStep && <Button onClick={clickSubmitHandler} className={`${styles['button']}`}>글 작성</Button>}
+          <div className={styles['header-buttons-wrapper']}>
+            {queryString.takeStep && <Button onClick={skipHandler} className={`${styles['button']} ${styles['skip-button']}`}>건너뛰기</Button>}
+            {queryString.takeStep && <Button onClick={clickSubmitHandler} className={`${styles['button']}`}>다음</Button>}
+            {!queryString.takeStep && <Button onClick={clickSubmitHandler} className={`${styles['button']}`}>글 작성</Button>}
+          </div>
+          
           
         </div>
         
@@ -215,7 +219,7 @@ export default function ToastEditor(props) {
         language='ko-KR'
         initialValue={content || ' '} // content는 글 수정시 사용
         placeholder="내용을 입력해주세요."
-        previewStyle="vertical" // 미리보기 스타일 지정
+        previewStyle={`${editorWrapperRef?.current?.clientWidth > 470 ? "vertical" : "tab"}`} // 미리보기 스타일 지정
         height="100%" // 에디터 창 높이
         initialEditType="wysiwyg" // 초기 입력모드 설정(디폴트 markdown)
         plugins={[colorSyntax, [codeSyntaxHighlight,{ highlighter: prism }]]}
