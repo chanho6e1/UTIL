@@ -1,148 +1,273 @@
-.goal-detail {
-  /* background-color: #EDEDED; */
-  display: grid;
-  grid-template-columns: 150px 3fr 3px 1fr 150px;
-  background-size: cover;
-  height: 100vh;
-  overflow: auto;
+@media all and (max-width: 768px) {
+  .goal-detail-pc {
+    display: none;
+  }
+
+  .goal-detail-mobile-big {
+    display: none;
+  }
+
+  .goal-detail-mobile-small {
+    /* display: none; */
+  }
+
+  .goal-detail-title {
+    margin-top: 20px;
+    font-size: 40px;
+    font-weight: 600;
+  }
+
+  .goal-detail-reviews {
+    text-align: start;
+    margin-top: 30px;
+    width: 350px;
+    margin:auto;
+  }
+
+  .goal-detail-r-tils {
+    display: grid;
+    margin-top: 30px;
+    margin: auto;
+    border-radius: 30px;
+    border: 3px solid gray;
+    text-align: start;
+    height: 330px;
+    width: 300px;
+    overflow: hidden;
+    grid-template-rows: 1fr 8fr 1fr;
+  }
+
+  .goal-detail-mobile-button {
+    /* margin-bottom: 20px; */
+  }
+
+  .goal-detail-mobile-button-in {
+    margin-inline: 10px;
+  }
+
+  .goal-detail-mobile-content {
+    max-width: 400px;
+    margin: auto;
+    padding: 14px;
+  }
+
+  .goal-detail-r-tils-page {
+    width: 100%;
+    text-align: center;
+    margin-top: 14px;
+  }
+}
+
+@media all and (max-width: 1024px) and (min-width: 768px) {
+  .goal-detail-pc {
+    display: none;
+  }
+
+  .goal-detail-mobile-big {
+    /* display: none; */
+  }
+
+  .goal-detail-mobile-small {
+    display: none;
+  }
+
+  .goal-detail-title {
+    margin-top: 20px;
+    font-size: 40px;
+    font-weight: 600;
+  }
+
+  .goal-detail-mobile-content {
+    display: flex;
+    justify-content:space-around;
+  }
+
+  .goal-detail-mobile-content-in {
+    display: grid;
+    grid-template-columns: 1fr 30px 1fr;
+  }
+
+  .goal-detail-reviews {
+    text-align: start;
+    margin-top: 30px;
+    width: 300px;
+    margin:auto;
+  }
+
+  .goal-detail-r-tils {
+    display: grid;
+    margin-top: 30px;
+    margin: auto;
+    border-radius: 30px;
+    border: 3px solid gray;
+    text-align: start;
+    height: 330px;
+    width: 300px;
+    overflow: hidden;
+    grid-template-rows: 1fr 8fr 1fr;
+  }
+
+  .goal-detail-r-tils-page {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media all and (min-width: 1024px) {
+  .goal-detail-pc {
+    /* background-color: #EDEDED; */
+    display: grid;
+    grid-template-columns: 150px 3fr 3px 1fr 150px;
+    background-size: cover;
+    height: 100vh;
+    overflow: auto;
+  }
+  
+  .goal-detail-mobile-big {
+    display: none;
+  }
+
+  .goal-detail-mobile-small {
+    display: none;
+  }
+   
+ .goal-detail-title {
+  font-size: 50px;
+  font-weight: 700;
+  }
+  
+  .goal-detail-reviews {
+    text-align: start;
+    margin-top: 30px;
+    height: 45vh;
+  }
+
+  .goal-detail-r-tils {
+    display: grid;
+    margin-top: 30px;
+    margin-inline: 10px;
+    border-radius: 30px;
+    border: 3px solid gray;
+    text-align: start;
+    height: 330px;
+    width: 300px;
+    overflow: hidden;
+    grid-template-rows: 1fr 8fr 1fr;
+  }
+
+  .goal-detail-r-tils-page {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 .goal-detail-line {
- /* border-left: 2px solid gray;  */
-}
+  /* border-left: 2px solid gray;  */
+ }
+ 
+ .goal-detail-l {
+   display: grid;
+   grid-template-columns: 100px 1fr 100px;
+   /* overflow: auto; */
+ }
+ 
+ .goal-detail-l-in {
+   padding: 20px;
+ }
 
-.goal-detail-l {
-  display: grid;
-  grid-template-columns: 100px 1fr 100px;
-  /* overflow: auto; */
-}
-
-.goal-detail-l-in {
-  padding: 20px;
-}
-
-.goal-detail-title {
-  font-size: 50px;
-  font-weight: 700;
-}
-
-.goal-detail-date {
-  text-align: end;
-  margin-right: 50px;
-}
-
-.goal-detail-state {
-  height: 30px;
-  margin-left: 60px;
-}
-
-.goal-detail-r {
-  margin-top: 15px;
-}
-
-.goal-detail-r-tils {
-  display: grid;
-  margin-top: 30px;
-  margin-inline: 10px;
-  border-radius: 30px;
-  border: 3px solid gray;
-  text-align: start;
-  height: 330px;
-  width: 300px;
-  overflow: hidden;
-  grid-template-rows: 1fr 8fr 1fr;
-}
-
-.goal-detail-r-tils-title {
-  text-align: start;
-  margin-left: 30px;
-  font-size: 20px;
-  font-weight: 500;
-  margin-top: 10px;
-}
-
-.goal-detail-r-tils-item {
-  width: 230px;
-}
-
-.goal-detail-r-tils-item-title {
-  margin-top: 3px;
-  text-overflow : ellipsis;
-  white-space : nowrap;
-  overflow: hidden;
-  word-wrap: break-all;
-}
-
-.goal-detail-r-tils-page {
-  width: 100%;
-  text-align: center;
-}
-
-.goal-detail-r-tils-page-button {
-  font-size: 20px;
-  color: rgb(130,130,130);
-  margin: 4px;
-  cursor: pointer;
-  transition-property: color;
-  transition-duration: 0.3s;
-}
-
-.goal-detail-r-tils-page-button:hover {
-  color: rgb(100,100,100);
-}
-
-.goal-detail-r-tils-page-num {
-  margin-inline: 15px;
-}
-
-.goal-detail-reviews-item {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  margin-right: 30px;
-}
-
-.goal-detail-reviews-item-title {
-  display: flex;
-}
-
-.goal-detail-reviews-item-date {
-  margin-right: 10px;
-}
-
-.goal-detail-reviews-item-link {
-  font-size: 12px;
-  color: rgb(130,130,130);
-  margin: 4px;
-  cursor: pointer;
-  transition-property: color;
-  transition-duration: 0.3s;
-}
-
-.goal-detail-reviews-item-link:hover {
-  color: rgb(100,100,100);
-}
-
-.goal-detail-todos {
-  height: 25vh;
-  background-color: white;
-  border-radius: 30px;
-  border: 2px gray solid
-}
-
-.goal-detail-reviews-title {
-  text-align: start;
-  margin-left: 30px;
-  font-size: 30px;
-  font-weight: 400;
-  margin-bottom: 10px;
-}
-
-.goal-detail-reviews {
-  text-align: start;
-  margin-top: 30px;
-  height: 45vh;
-}
-
-.goal-detail-reviews-line {
-  border-top: 2px solid gray;
-}
+ .goal-detail-date {
+   text-align: end;
+   margin-right: 50px;
+ }
+ 
+ .goal-detail-state {
+   height: 30px;
+   margin-left: 60px;
+ }
+ 
+ .goal-detail-r {
+   margin-top: 15px;
+ }
+ 
+ .goal-detail-r-tils-title {
+   text-align: start;
+   margin-left: 30px;
+   font-size: 20px;
+   font-weight: 500;
+   margin-top: 10px;
+ }
+ 
+ .goal-detail-r-tils-item {
+   width: 230px;
+ }
+ 
+ .goal-detail-r-tils-item-title {
+   margin-top: 3px;
+   text-overflow : ellipsis;
+   white-space : nowrap;
+   overflow: hidden;
+   word-wrap: break-all;
+ }
+ 
+ .goal-detail-r-tils-page-button {
+   font-size: 20px;
+   color: rgb(130,130,130);
+   margin: 4px;
+   cursor: pointer;
+   transition-property: color;
+   transition-duration: 0.3s;
+ }
+ 
+ .goal-detail-r-tils-page-button:hover {
+   color: rgb(100,100,100);
+ }
+ 
+ .goal-detail-r-tils-page-num {
+   margin-inline: 15px;
+ }
+ 
+ .goal-detail-reviews-item {
+   margin-top: 20px;
+   margin-bottom: 10px;
+   margin-right: 30px;
+ }
+ 
+ .goal-detail-reviews-item-title {
+   display: flex;
+ }
+ 
+ .goal-detail-reviews-item-date {
+   margin-right: 10px;
+ }
+ 
+ .goal-detail-reviews-item-link {
+   font-size: 12px;
+   color: rgb(130,130,130);
+   margin: 4px;
+   cursor: pointer;
+   transition-property: color;
+   transition-duration: 0.3s;
+ }
+ 
+ .goal-detail-reviews-item-link:hover {
+   color: rgb(100,100,100);
+ }
+ 
+ .goal-detail-todos {
+   height: 25vh;
+   background-color: white;
+   border-radius: 30px;
+   border: 2px gray solid
+ }
+ 
+ .goal-detail-reviews-title {
+   text-align: start;
+   margin-left: 30px;
+   font-size: 30px;
+   font-weight: 400;
+   margin-bottom: 10px;
+ }
+ 
+ .goal-detail-reviews-line {
+   border-top: 2px solid gray;
+ }
