@@ -11,8 +11,10 @@
 }
 
 .loading {
-  display: block;
-  justify-content: center;
+  width: 100px;
+  height: 100px;
+  position: fixed;
+  bottom: 0;
 }
 
 .feed ul {
