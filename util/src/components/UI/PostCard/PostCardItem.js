@@ -14,6 +14,7 @@ import Card from "../Card/Card";
 import { useNavigate } from "react-router-dom";
 import AnimatedModal from "../AnimatedModal/Modal";
 import DetailItem from "../../Detail/DetailItem";
+import Swipe from "react-easy-swipe";
 
 const avatarTheme = createTheme({
   components: {
@@ -75,58 +76,66 @@ const PostCardItem = (props) => {
     <Card className={classes.card}>
       <div className={classes.postcarditem} style={{ width: "100%", height: "100%" }}>
         <div className={classes[`card-text`]}>
-          <div className={classes.title} onClick={postClickHandler}>
-            {props.title}
-          </div>
-          <div className={classes.contents} onClick={postClickHandler}>
-            {props.content}
-          </div>
-          <div className={classes.tags}>
-            <TagDataList tagList={tagList} onClick={tagOnClickHandler} />
-          </div>
-          <div className={classes[`icon-user`]}>
-            <div className={classes.iconbutton}>
-              <IconButton
-                onClick={bookmarkClickHandler}
-                style={{
-                  paddingTop: 0,
-                  paddingRight: 0,
-                  paddingBottom: 0,
-                  paddingLeft: 0,
-                  marginRight: 10,
-                }}
-              >
-                <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
-              </IconButton>
-              <IconButton
-                onClick={likeClickHandler}
-                style={{
-                  paddingTop: 0,
-                  paddingRight: 0,
-                  paddingBottom: 0,
-                  paddingLeft: 0,
-                }}
-              >
-                <img src={isLike ? likeIconFill : likeIconFlat} />
-              </IconButton>
-              <div className={classes.likecount}>{props.likeCount}</div>
+          <div>
+            <div className={classes.title} onClick={postClickHandler}>
+              {props.title}
             </div>
-            <div className={classes.user}>
-              <ThemeProvider theme={avatarTheme}>
-                <Avatar
-                  src={props.profileImg}
-                  sx={{
-                    width: 24,
-                    height: 24,
-                    border: "1px solid lightgray",
-                    objectFit: "scale-down",
+            <div className={classes.contents} onClick={postClickHandler}>
+              {props.content}
+            </div>
+          </div>
+          
+          <div>
+            <Swipe onSwipeStart={(event) => {event.stopPropagation()}}>
+              <div className={classes.tags}>
+                <TagDataList tagList={tagList} onClick={tagOnClickHandler} />
+              </div>
+            </Swipe>
+            <div className={classes[`icon-user`]}>
+              <div className={classes.iconbutton}>
+                <IconButton
+                  onClick={bookmarkClickHandler}
+                  style={{
+                    paddingTop: 0,
+                    paddingRight: 0,
+                    paddingBottom: 0,
+                    paddingLeft: 0,
+                    marginRight: 10,
                   }}
-                />
-              </ThemeProvider>
-              <div className={classes.nickname}>{props.nickname}</div>
-              <div className={classes.date}>{props.createdDate}</div>
+                >
+                  <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
+                </IconButton>
+                <IconButton
+                  onClick={likeClickHandler}
+                  style={{
+                    paddingTop: 0,
+                    paddingRight: 0,
+                    paddingBottom: 0,
+                    paddingLeft: 0,
+                  }}
+                >
+                  <img src={isLike ? likeIconFill : likeIconFlat} />
+                </IconButton>
+                <div className={classes.likecount}>{props.likeCount}</div>
+              </div>
+              <div className={classes.user}>
+                <ThemeProvider theme={avatarTheme}>
+                  <Avatar
+                    src={props.profileImg}
+                    sx={{
+                      width: 24,
+                      height: 24,
+                      border: "1px solid lightgray",
+                      objectFit: "scale-down",
+                    }}
+                  />
+                </ThemeProvider>
+                <div className={classes.nickname}>{props.nickname} ·</div>
+                <div className={classes.date}>{props.createdDate}</div>
+              </div>
             </div>
           </div>
+
         </div>
         <div className={classes[`card-image`]} onClick={postClickHandler}>
           <img src={props.thumbnail} onError={imgErrorHandler} />

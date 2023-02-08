@@ -10,7 +10,7 @@
 
 @media all and (max-width: 480px) {
     .plan-card {
-        width: 90vw;
+        width: 100%;
 
     }
 

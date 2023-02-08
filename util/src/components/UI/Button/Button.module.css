@@ -1,9 +1,9 @@
 .button {
   min-width: 100px;
   min-height: 40px;
-  background-color: rgb(245, 245, 245);
+  background-color: rgb(230, 232, 235);
   border-radius: 7px;
-  border: 1px solid rgb(240, 240, 240);
+  border: 1px solid rgb(220, 220, 220);
   box-sizing: border-box;
   transition-property: background-color;
   transition-duration: 0.3s;

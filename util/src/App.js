@@ -87,9 +87,9 @@ const App = () => {
 
       <Routes>
       
-        <Route path="/goal/:id" element={<GoalDetail />} /> 
-        <Route path="/post/:id" element={<DetailItem />} /> 
-        {/* <Route path="/post/:id" element={<DetailItem />} />  */}
+        {/* <Route path="/goal/:id" element={<GoalDetail />} /> 
+        <Route path="/post/:id" element={<DetailItem />} />  */}
+
 
         <Route path="/*" element={plans && <Main />} />
         <Route path="/login" element={<SocialLogin />} />
