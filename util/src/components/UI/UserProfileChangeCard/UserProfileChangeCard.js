@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import classes from "./UserProfileChangeCard.module.css";
-import { Avatar, Button, TextField, FormControl, IconButton } from "@mui/material";
+import Button from "../../UI/Button/Button";
+import { Avatar, TextField, FormControl, IconButton } from "@mui/material";
 import AutoCompleteMultipleTagInput from "../Tag/AutoCompleteMultipleTagInput";
 import PhotoCameraIconCircle from "../../../img/photoCameraIcon_circle.png";
 import { nicknameDuplicateCheck } from "../../../api/UserProfile/nicknameDuplicateCheck";
 import { getAllTags } from "../../../api/UserProfile/getAllTags";
+import Card from "../Card/Card";
 
 const isUnderTwoChars = (value) => (typeof value === "string" ? value.trim().length < 2 : false);
 const isOverTenChars = (value) => (typeof value === "string" ? value.trim().length > 10 : false);
@@ -181,106 +183,119 @@ const UserProfileChangeCard = (props) => {
   };
 
   return (
-    <form className={classes.userprofile} onSubmit={confirmHandler}>
-      <div className={classes.header}>
-        <IconButton
-          onClick={() => {
-            fileInput.current.click();
-          }}
-          onMouseEnter={avatarOnMouseToggleHandler}
-          onMouseLeave={avatarOnMouseToggleHandler}
-          className={classes.iconbutton}
-        >
-          <Avatar
-            src={imageUrl}
-            sx={{ width: 100, height: 100 }}
-            className={classes[`avatar-img`]}
-          />
-          {isHover && <img src={PhotoCameraIconCircle} className={classes.camera} />}
-          <input
-            style={{ display: "none" }}
-            type="file"
-            accept="image/jpg,image/png,image/jpeg"
-            ref={fileInput}
-            onChange={fileChangeHandler}
-          />
-        </IconButton>
-        {props.userName}
-      </div>
-      <div className={classes.userdata}>
-        <div className={classes.nickname}>
-          <FormControl sx={{ width: "100%" }}>
-            <TextField
-              id="filled-basic"
-              error={nicknameIsUnderTwoChars || nicknameIsOverTenChars || nicknameIsDuplicated}
-              helperText={
-                nicknameIsUnderTwoChars || nicknameIsOverTenChars
-                  ? "닉네임은 2자 이상 10자 이하입니다."
-                  : nicknameIsDuplicated
-                  ? "중복된 닉네임입니다."
-                  : ""
-              }
-              label="Nickname"
-              variant="outlined"
-              defaultValue={nickname}
-              inputRef={nicknameInputRef}
-              onChange={nicknameOnChangeHandler}
+    <Card className={classes.userprofile}>
+      <form onSubmit={confirmHandler}>
+        <div className={classes.header}>
+          <IconButton
+            onClick={() => {
+              fileInput.current.click();
+            }}
+            onMouseEnter={avatarOnMouseToggleHandler}
+            onMouseLeave={avatarOnMouseToggleHandler}
+            className={classes.iconbutton}
+          >
+            <Avatar
+              src={imageUrl}
+              sx={{ width: 100, height: 100 }}
+              className={classes[`avatar-img`]}
             />
-          </FormControl>
-        </div>
-        <div className={classes.description}>
-          <FormControl sx={{ width: "100%" }}>
-            <TextField
-              id="filled-multiline-static"
-              label="자기소개"
-              variant="outlined"
-              multiline
-              rows={5}
-              defaultValue={description}
-              inputProps={{ maxLength: 150 }}
-              helperText={`${count}/150`}
-              inputRef={descriptionInputRef}
-              onChange={descriptionOnChangeHandler}
+            {isHover && <img src={PhotoCameraIconCircle} className={classes.camera} />}
+            <input
+              style={{ display: "none" }}
+              type="file"
+              accept="image/jpg,image/png,image/jpeg"
+              ref={fileInput}
+              onChange={fileChangeHandler}
             />
-          </FormControl>
+          </IconButton>
+          {props.userName}
         </div>
-        <div className={classes.skill}>
-          <FormControl sx={{ width: "100%" }}>
-            <TextField
-              id="filled-basic"
-              label="소속"
-              variant="outlined"
-              defaultValue={myDepartment}
-              inputRef={departmentInputRef}
-              onChange={departmentOnChangeHandler}
-            />
-          </FormControl>
-        </div>
-        <div className={classes.skill}>
-          <FormControl sx={{ width: "100%" }}>
-            <AutoCompleteMultipleTagInput
-              value={myTagList}
-              tagList={allTagList}
-              label={"관심 태그"}
-              onChange={myTagListChangeHandler}
-              error={myTagOverFive}
-              helperText={myTagOverFive ? "관심 태그는 5개까지 등록 가능합니다." : ""}
-            />
-          </FormControl>
-        </div>
-        <div className={classes.button}>
-          {/* 신규유저라면 취소버튼을 숨긴다 */}
-          {!isNewUser && (
-            <Button type="button" variant="contained" sx={{ mr: 2 }} onClick={onCancelClicked}>
-              취소
+        <div className={classes.userdata}>
+          <div className={classes.nickname}>
+            <FormControl sx={{ width: "100%" }}>
+              <TextField
+                id="filled-basic"
+                error={nicknameIsUnderTwoChars || nicknameIsOverTenChars || nicknameIsDuplicated}
+                helperText={
+                  nicknameIsUnderTwoChars || nicknameIsOverTenChars
+                    ? "닉네임은 2자 이상 10자 이하입니다."
+                    : nicknameIsDuplicated
+                    ? "중복된 닉네임입니다."
+                    : ""
+                }
+                label="Nickname"
+                variant="outlined"
+                defaultValue={nickname}
+                inputRef={nicknameInputRef}
+                onChange={nicknameOnChangeHandler}
+              />
+            </FormControl>
+          </div>
+          <div className={classes.description}>
+            <FormControl sx={{ width: "100%" }}>
+              <TextField
+                id="filled-multiline-static"
+                label="자기소개"
+                variant="outlined"
+                multiline
+                rows={5}
+                defaultValue={description}
+                inputProps={{ maxLength: 150 }}
+                helperText={`${count}/150`}
+                inputRef={descriptionInputRef}
+                onChange={descriptionOnChangeHandler}
+              />
+            </FormControl>
+          </div>
+          <div className={classes.skill}>
+            <FormControl sx={{ width: "100%" }}>
+              <TextField
+                id="filled-basic"
+                label="소속"
+                variant="outlined"
+                defaultValue={myDepartment}
+                inputRef={departmentInputRef}
+                onChange={departmentOnChangeHandler}
+              />
+            </FormControl>
+          </div>
+          <div className={classes.skill}>
+            <FormControl sx={{ width: "100%" }}>
+              <AutoCompleteMultipleTagInput
+                value={myTagList}
+                tagList={allTagList}
+                label={"관심 태그"}
+                onChange={myTagListChangeHandler}
+                error={myTagOverFive}
+                helperText={myTagOverFive ? "관심 태그는 5개까지 등록 가능합니다." : ""}
+              />
+            </FormControl>
+          </div>
+          <div className={classes[`button-wrap`]}>
+            {/* 신규유저라면 취소버튼을 숨긴다 */}
+            {!isNewUser && (
+              <Button
+                type="button"
+                variant="contained"
+                sx={{ mr: 2 }}
+                onClick={onCancelClicked}
+                className={classes[`button-cancel`]}
+              >
+                취소
+              </Button>
+            )}
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={!formIsValid}
+              className={classes[`button-save`]}
+            >
+              저장
             </Button>
-          )}
-          <Button type="submit" variant="contained" disabled={!formIsValid}>
-            저장
-          </Button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </Card>
   );
 };
 
