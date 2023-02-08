@@ -19,6 +19,7 @@ import UserPageResponsive from "./UserPageResponsive";
 import PlanCard from "../Plan/PlanCard/PlanCard";
 
 const postCardItemList = (postList) => {
+  console.log("post", postList);
   return postList?.map((post) => {
     return (
       <UserPageResponsive
@@ -67,7 +68,7 @@ const UserPage = (props) => {
       }, 500);
     });
   };
-
+  
   // 초기 데이터
   useEffect(() => {
     // Post API
