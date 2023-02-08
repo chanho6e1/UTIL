@@ -169,8 +169,12 @@ const DetailComment = (props) => {
           {depthMessage}
           <div className={classes.commentContent}>{props.comment.content}</div>
           <div className={classes["Detail-comments-plus"]}>
-            <span className={classes['link-text']} onClick={openEditCommentHandler}>수정</span>
-            <span className={classes['link-text']} onClick={delComment}>삭제</span>
+            {props.userInfo.userId === props.comment.writerInfo.userId &&
+              <Fragment>
+                <span className={classes['link-text']} onClick={openEditCommentHandler}>수정</span>
+                <span className={classes['link-text']} onClick={delComment}>삭제</span>
+              </Fragment>
+            }
             <span className={classes['link-text']} onClick={openCommentHandler}>답글 쓰기</span>
             {/* <input type="button" onClick={openEditCommentHandler} value="수정"/>
             <input type="button" onClick={delComment} value="삭제"/>
@@ -240,7 +244,7 @@ const DetailComment = (props) => {
     commentItem
   )
   
-  const checkPrivate = (props.userInfo.userId === props.comment.writerInfo.userId || props.postWriterInfo.userId === props.comment.writerInfo.userId
+  const privateComment = (props.userInfo.userId === props.comment.writerInfo.userId || props.postWriterInfo.userId === props.userInfo.userId
     ?
     editCommentBox
     :
@@ -257,6 +261,13 @@ const DetailComment = (props) => {
       ))}
     </Fragment>
   )
+  
+  const checkPrivate = (props.comment.isPrivate
+    ?
+    privateComment
+    :
+    editCommentBox
+  )
 
   const checkChildren = (props.comment.children
     ?
@@ -271,6 +282,10 @@ const DetailComment = (props) => {
     :
     checkPrivate
   )
+  
+  console.log("댓글 ID", props.comment.writerInfo.userId)
+  console.log("유저 ID", props.userInfo.userId)
+  console.log("포스트 ID",props.postWriterInfo.userId)
 
   return (
     checkDelete
