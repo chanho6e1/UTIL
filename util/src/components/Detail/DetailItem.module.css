@@ -45,6 +45,7 @@
   height:100vh;
   background-color: white;
   overflow:scroll;
+  will-change: left, top, width, height;
 }
 
 
@@ -62,7 +63,7 @@
   height: 100vh; */
   background-color: white;
   /* padding: 30px 60px 30px 60px; */
-  
+  will-change: left, top, width, height;
 }
 
 /* .Detail-text-contents {

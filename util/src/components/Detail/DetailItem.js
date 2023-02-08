@@ -191,7 +191,7 @@ const DetailItemShow = (props) => {
   };
 
   const createdDate = new Date(post.createdDate)
-  const dateString = `${createdDate.getFullYear()}년 ${createdDate.getMonth()}월 ${createdDate.getDate()}일`
+  const dateString = `${createdDate.getFullYear()}년 ${createdDate.getMonth() + 1}월 ${createdDate.getDate()}일`
 
   return (
     <div className={classes.Detail}>
@@ -293,6 +293,7 @@ const DetailItem = (props) => {
   const params = useParams().id
   const idx = params ? params : props.id
 
+  const [loading, setLoading] = useState(true)
   const [detail, setDetail] = useState(null)
   useEffect(() => {
     tilAPI(idx)
@@ -302,11 +303,15 @@ const DetailItem = (props) => {
     .then((res) => {
       setDetail(res)
     })
-  })
+
+    setTimeout(() => {
+      setLoading(() => false)
+    }, 500)
+  }, [])
 
   return (
     <div className={classes['detail-wrapper']}>
-      {detail !== null ? <DetailItemShow post={detail} /> : <DetailItemLoading /> }
+      {detail !== null && loading === false ? <DetailItemShow post={detail} /> : <DetailItemLoading /> }
     </div>
   )
 }

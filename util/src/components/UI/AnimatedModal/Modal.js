@@ -52,11 +52,13 @@ const ModalOverlay = (props) => {
     const modalExecute = () => {
 
       backdropRef.current.style.opacity = 255
+      contentRef.current.style.opacity = 255
       if (props.toggleBoolean) {
+        
         contentRef.current.style.transitionProperty = 'left top width height opacity'
-        contentRef.current.style.transitionDuration = '0.5s'
+        contentRef.current.style.transitionDuration = '0.4s'
         contentRef.current.style.transitionProperty = 'left top width height opacity'
-        contentRef.current.style.transitionDuration = '0.5s'
+        contentRef.current.style.transitionDuration = '0.4s'
       }
 
       const responsiveWidth = 100 * indicatorRef.current.clientWidth / window.innerWidth
@@ -85,7 +87,7 @@ const ModalOverlay = (props) => {
       modalRef.current.style.alignItems = 'center'
       
       
-    }, 300);
+    }, 400);
   }
   
 
@@ -100,9 +102,9 @@ const ModalOverlay = (props) => {
 
     const modalExecute = async () => {
       contentRef.current.style.transitionProperty = await 'left top width height opacity'
-      contentRef.current.style.transitionDuration = await '0.5s'
+      contentRef.current.style.transitionDuration = await '0.4s'
       contentRef.current.style.transitionProperty = await 'left top width height opacity'
-      contentRef.current.style.transitionDuration = await '0.5s'
+      contentRef.current.style.transitionDuration = await '0.4s'
       modalRef.current.style.display = await 'block'
       contentRef.current.style.position = await 'absolute'
       contentRef.current.style.left = await indicatorRef.current.getBoundingClientRect().left + 'px'
@@ -142,7 +144,7 @@ const ModalOverlay = (props) => {
     const redirect = setTimeout(() => {
       props.toggleFunction(false)
       navigate(props.prevUrl, { replace: true });
-    }, 290);
+    }, 390);
     
     await modalExecute()
   }
