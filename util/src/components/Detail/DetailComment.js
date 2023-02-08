@@ -282,10 +282,6 @@ const DetailComment = (props) => {
     :
     checkPrivate
   )
-  
-  console.log("댓글 ID", props.comment.writerInfo.userId)
-  console.log("유저 ID", props.userInfo.userId)
-  console.log("포스트 ID",props.postWriterInfo.userId)
 
   return (
     checkDelete
