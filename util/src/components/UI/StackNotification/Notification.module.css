@@ -1,3 +1,29 @@
+@media all and (max-width: 480px) {
+    .content-wrapper {
+        max-width: 90vw;
+    }
+}
+
+@media all and (min-width: 480px) {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .backdrop {
     position: fixed;
     top: 0;
