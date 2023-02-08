@@ -1,4 +1,4 @@
-@media all and (max-width: 1024px) {
+@media all and (max-width: 1080px) {
   .user-column {
     display: flex;
     flex-direction: column;
@@ -52,10 +52,12 @@
   }
 
   .postcard-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    overflow-x: hidden;
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* align-items: center; */
+    /* justify-content: center; */
     box-sizing: border-box;
   }
 
@@ -64,17 +66,17 @@
     display: none;
   }
 
-  .postcard-inner {
-    width: 90%;
-  }
+  
 
   .user-page {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     flex-direction: column;
     width: 100%;
+
     margin-bottom: 20px;
     background-color: #F8F9FA;
+
   }
 
   /* .user-page-upper {
@@ -92,7 +94,7 @@
   }
 }
 
-@media all and (min-width: 1024px) {
+@media all and (min-width: 1080px) {
 
   .follow-text {
     font-size: 1.3rem;
@@ -124,7 +126,14 @@
     display: flex;
     box-sizing: border-box;
     justify-content: center;
+    width: 80%;
+    
   }
+
+  .postcard-inner {
+    width: 100%;
+  }
+
 
   .user-page {
     display: flex;
@@ -133,6 +142,7 @@
     flex-direction: column;
     width: 100%;
     background-color: #F8F9FA;
+    
     /* margin: 30px auto 20px auto; */
   }
 
@@ -140,7 +150,7 @@
     width: 100%;
     height: 1px;
     border-bottom: 1px solid rgb(210,210,210);
-    margin-bottom: 48px;
+    margin-bottom: 32px;
   }
   
 
@@ -159,6 +169,7 @@
 
 
 .user-page {
+  width: 100%;
   height: 100%;
   overflow: scroll;
 }
@@ -176,8 +187,10 @@
 
 
 
+.postcard-inner {
+  padding: 14px;
 
-
+}
 
 
 
@@ -312,6 +325,6 @@
 }
 
 .plan-card-wrapper {
-  margin-top: 262px;
+  margin-top: 261px;
 }
 

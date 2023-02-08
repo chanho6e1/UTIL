@@ -1,25 +1,20 @@
 import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
-import { postPostTags } from "./postPostTags";
 
 
-export const uploadPost = (data, tags) => {
+export const editPostTags = (postId, data) => {
   return axios({
-  method: 'post',
-  url: `${API_BASE_URL}/posts`,
+  method: 'put',
+  url: `${API_BASE_URL}/tags/posts/${postId}`,
   data: data,
   headers: {
     Authorization: TOKEN(),
     },
   })
     .then((res) => {
-      return postPostTags(res.data.data, tags)
+      return res.data
     })
     .catch((err) => {
       throw err
     });
 }
-
-
-
-

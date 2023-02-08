@@ -17,6 +17,7 @@ import { getUserTag } from "../../api/Post/getUserTag";
 import { getMyData } from "../../api/UserProfile/getMyData";
 import { useNavigate } from "react-router-dom";
 import UserPageResponsive from "./UserPageResponsive";
+import useDidMountEffect from "../../hooks/useDidMountEffect";
 
 import PlanCard from "../Plan/PlanCard/PlanCard";
 
@@ -42,7 +43,9 @@ const postCardItemList = (postList) => {
 };
 
 const UserPage = (props) => {
-  const containerRef = useRef();
+
+
+  const containerRef = useRef()
   const [postList, setPostList] = useState(null);
   const [userData, setUserData] = useState([]);
   const [myData, setMyData] = useState([]);
@@ -81,6 +84,40 @@ const UserPage = (props) => {
     // });
   };
 
+
+  const [fetchStart, setFetchStart] = useState(false)
+
+  useEffect(() => {
+    if (fetchStart === true) {
+      fetchUserPostDataMobile(criteriaIdx, offset, size)
+    }
+    
+  }, [fetchStart])
+
+  const fetchUserPostDataMobile = (criteriaIdx, page, size) => {
+    
+    setIsLoading(true);
+
+    getMyPosts(criteria[criteriaIdx], page + 1, size).then((res) => {
+      setPostList((prev) => [...prev, ...res.content]);
+      setOffset(() => page + 1);
+      // setIsLoading(false)
+      setTimeout(() => {
+        setIsLoading(false);
+        setFetchStart(() => false)
+      }, 500);
+    });
+
+    
+    // getUserPosts(props.id, criteria[criteriaIdx], page, size).then((res) => {
+    //   setPostList(() => res.content);
+    //   setOffset(() => page);
+    //   setTimeout(() => {
+    //     setIsLoading(false);
+    //   }, 500);
+    // });
+  };
+  
   // 초기 데이터
   useEffect(() => {
     // Post API
@@ -100,11 +137,13 @@ const UserPage = (props) => {
     // My Data API
     getMyData().then((res) => {
       setMyData(() => res);
+      console.log('ssafy me', res)
     });
 
     // User Data API
     getUserData(props.id).then((res) => {
       setUserData(() => res);
+      console.log('ssafy user', res)
     });
 
     // Tag Data API
@@ -112,6 +151,7 @@ const UserPage = (props) => {
       setUserTagList(() => res);
     });
   }, []);
+
 
   // Follow Data API
   useEffect(() => {
@@ -183,6 +223,44 @@ const UserPage = (props) => {
     fetchUserPostData(criteriaIdx, page, size);
   };
 
+
+
+  const wrapperDiv = useRef()
+
+    // scroll event handler
+    const handleScroll = () => {
+      const scrollHeight = containerRef.current.scrollHeight;
+      const scrollTop = containerRef.current.scrollTop;
+      const clientHeight = containerRef.current.clientHeight;
+      console.log("SSAFY st", scrollTop, "ch", clientHeight, "sh", scrollHeight)
+      if (scrollTop + clientHeight >= scrollHeight - 1 && isLoading === false) {
+
+        if (offset < totalPage) {
+          setFetchStart(() => true)
+        }
+        
+        // 페이지 끝에 도달하면 추가 데이터를 받아온다
+        
+        
+      }
+    };
+  
+    useEffect(() => {
+      // scroll event listener 등록
+      if (containerRef.current !== null) {
+        containerRef.current.addEventListener("scroll", handleScroll);
+      }
+      return () => {
+        // scroll event listener 해제
+        if (containerRef.current !== null) {
+          containerRef.current.removeEventListener("scroll", handleScroll);
+        }
+      };
+    });
+
+
+
+
   const userPageUpper = (
     <div className={classes[`user-page-upper`]}>
       <div className={classes[`avatar-username`]}>
@@ -226,12 +304,19 @@ const UserPage = (props) => {
   );
 
   return (
-    <div className={classes[`user-page`]}>
-      <div ref={containerRef} className={classes[`postcard-container`]}>
-        <div className={classes[`postcard-inner`]}>
-          {userPageUpper}
-          <div className={classes["line"]} />
-          {postCardContainer(postList)}
+    <div ref={wrapperDiv} className={classes[`user-page`]}>
+
+        
+        <div ref={containerRef} className={classes[`postcard-container`]}>
+          <div  className={classes[`postcard-inner`]}>
+            {userPageUpper}
+            <div className={classes['line']} />
+            {postCardContainer(postList)}
+          </div>
+          
+          <div className={classes['plan-card-wrapper']}>
+            <PlanCard />
+          </div>
         </div>
 
         <div className={classes["plan-card-wrapper"]}>
