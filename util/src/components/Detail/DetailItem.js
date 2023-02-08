@@ -11,6 +11,7 @@ import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useN
 import React, {useState, useEffect, useRef, useCallback} from "react";
 import { modifyPostDetailSliceActions } from '../../redux/postDetailSlice'
 import { tilAPI } from "../../api/Detail/tilAPI";
+import { tilDeleteAPI } from "../../api/Detail/tilDeleteAPI";
 import { tilCommentAPI } from "../../api/Detail/tilCommentAPI";
 import { tilCommentNewAPI } from "../../api/Detail/tilCommentNewAPI";
 import { tilUserAPI } from "../../api/Detail/tilUserAPI";
@@ -212,6 +213,14 @@ const DetailItemShow = (props) => {
     navigate(`/create/post?edit=${post.postId}`)
   }
 
+  const postDeleteHandler = () => {
+    tilDeleteAPI(post.postId)
+    .then((res) => {
+      console.log("삭제되었습니다.")
+      navigate(`/`)
+    })
+  }
+
   return (
     <div className={classes.Detail}>
 
@@ -237,15 +246,17 @@ const DetailItemShow = (props) => {
                 <span className={classes['created-date']}>{dateString}</span>
               </div>
             </div>
-
-            <div>
-              <span onClick={postEditHandler} className={classes['link-text']}>
-                수정
-              </span>
-              <span className={classes['link-text']}>
-                삭제
-              </span>
-            </div>
+            
+            {post?.writerInfo.userId === userInfo?.userId &&
+              <div>
+                <span onClick={postEditHandler} className={classes['link-text']}>
+                  수정
+                </span>
+                <span onClick={postDeleteHandler} className={classes['link-text']}>
+                  삭제
+                </span>
+              </div>
+            }
             
             
             
