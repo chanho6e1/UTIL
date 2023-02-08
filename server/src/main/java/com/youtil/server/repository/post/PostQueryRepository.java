@@ -101,6 +101,26 @@ public class PostQueryRepository {
 
     }
 
+    public Page<Post> findByNickNameContaining(Long userId, PostSearch postSearch, PageRequest pageRequest){ //제목으로 검색, 정렬도 지정
+
+        String criteria = postSearch.getCriteria();
+
+        QueryResults<Post> content = jpaQueryFactory.select(post)
+                .distinct().from(post)
+                .innerJoin(post.user).fetchJoin()
+                .where(post.user.nickName.toLowerCase().contains(postSearch.getTitle()),
+                        isPrivate(userId),
+                        post.user.userId.ne(userId)
+                )
+                .orderBy(findCriteria(criteria))
+                .offset(pageRequest.getOffset())
+                .limit(pageRequest.getPageSize())
+                .fetchResults();
+
+        return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
+
+    }
+
     public Page<Post> findByPostSubscribes(PostSearch postSearch, User user, PageRequest pageRequest) {
 
         String criteria = postSearch.getCriteria();
