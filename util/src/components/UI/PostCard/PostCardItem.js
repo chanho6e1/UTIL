@@ -69,18 +69,18 @@ const PostCardItem = (props) => {
     // navigate(`/post/${props.id}`)
     // console.log("clicked", props.id);
 
-    navigate(`/post/${props.id}`);
+    navigate(`/modal/post/${props.id}`);
     setShowModal(true)
   };
 
   const ShowModalHandler = (boolean) => {
-    navigate(`/post/${props.id}`);
+    navigate(`/modal/post/${props.id}`);
     setShowModal(boolean)
   }
 
   const cardRef = useRef()
   const [showModal, setShowModal] = useState(false)
-  const modal = <AnimatedModal fadeOut={true} component={<DetailItem id={props.id} />} id={props.id} name={props.title} parentId={`modal-parent-${props.title}-${props.id}`} parentRef={cardRef} toggleFunction={ShowModalHandler} toggleBoolean={showModal} url={`post/${props.id}`} prevUrl={'/index'} />
+  const modal = <AnimatedModal fadeOut={true} component={<DetailItem id={props.id} />} id={props.id} name={props.title} parentId={`modal-parent-${props.title}-${props.id}`} parentRef={cardRef} toggleFunction={ShowModalHandler} toggleBoolean={showModal} url={`modal/post/${props.id}`} prevUrl={'/index'} />
   return (
 
       <Card className={classes.card}>
