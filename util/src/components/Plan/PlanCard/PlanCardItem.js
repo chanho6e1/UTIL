@@ -24,7 +24,6 @@ const PlanCardItemForm = (props) => {
   
 
   const todoList = todos && todos.map((todo, idx) => {
-    console.log(todos)
     return (
       <PlanCardItemTodo todo={todo} plan={props.plan} className={idx % 2 ? 'odd' : 'even'} />
     )

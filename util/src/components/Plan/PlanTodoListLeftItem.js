@@ -39,7 +39,6 @@ const PlanTodoListLeftItem = (props) => {
         })
         .catch((err) => {
             console.log('PlanTodoListLeftItem : editTodoAPI => ', err)
-            console.log()
             if (err.response.data[0].message == "제목이 없습니다." ) {
                 setTitleValue(props.todo.title)
                 setIsEditMode(false)
