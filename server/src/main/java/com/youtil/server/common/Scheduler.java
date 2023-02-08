@@ -15,7 +15,8 @@ import java.util.Date;
 public class Scheduler {
 
     private final PostRepository postRepository;
-    @Scheduled(cron = "0 0 9 ? * MON")
+//    @Scheduled(cron = "0 0 9 ? * MON")
+    @Scheduled(cron = "0 0/10 * * * ?")
     @Transactional
     public void run() {
         // TODO
