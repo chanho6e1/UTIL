@@ -17,6 +17,22 @@ const PostTag = (props) => {
   const editorWrapperRef = useRef()
 
 
+  useEffect(() => {
+    if (frontData.length === 1) {
+      setFrontData([])
+      props?.editTags?.map((el, idx) => {
+        setFrontData((prev) => [...prev, el.tagName])
+      })
+    }
+    
+    
+  }, [])
+
+  useEffect(() => {
+    syncInput()
+    console.log('태그', frontData)
+  }, [frontData])
+
 
 
   const createLine = (idx) => {
