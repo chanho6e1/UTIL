@@ -7,9 +7,9 @@ import DropDown from "../DropDown/DropDown";
 
 const SearchBar = (props) => {
   const dropDownSearchItems = {
-    label: ["제목", "태그"],
+    label: ["제목", "태그", "닉네임"],
     description: ["", ""],
-    function: [props.onTitleClick, props.onTagClick],
+    function: [props.onTitleClick, props.onTagClick, props.onNicknameClick],
   };
 
   const dropDownCriteriaItems = {
