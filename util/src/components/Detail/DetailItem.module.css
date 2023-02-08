@@ -81,7 +81,7 @@
 
 .contents {
   text-align: start;
-
+  /* margin-inline: 40px; */
 }
 
 .tag-div {
@@ -253,4 +253,8 @@
 
 .link-text:hover {
   color: rgb(100,100,100);
+}
+
+.icons-tag {
+  margin-bottom: 2px;
 }
