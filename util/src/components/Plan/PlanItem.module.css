@@ -90,14 +90,22 @@
     opacity: 255;
 }
 
-/* .go-to-detail{
+.go-to-detail{
+    width: 16px;
+    height: 16px;
+    margin-top: 4px;
+    margin-left: 5px;
+}
+
+.go-to-detail:hover{
     width: 20px;
     height: 20px;
-    margin-top: 1px;
-} */
+    margin-top: 3px;
+    margin-left: 3px;
+}
 
 .plan-title-bar-button {
-    width:75%;
+    width:64%;
     height:32px;
     display: flex;
     padding-left: 8px;;
@@ -206,7 +214,7 @@
 .edit-todo-input {
     padding-left:8px;
     padding-right:8px;
-    width: 75%;
+    width: 60%;
     margin-right: 10px;
     background-color: rgb(220, 220, 228);
     border-radius: 5px;
