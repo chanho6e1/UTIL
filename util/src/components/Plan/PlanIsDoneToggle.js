@@ -49,7 +49,6 @@ const PlanIsDoneToggle = (props) => {
 
             recvIsAllTodosDoneAPI(props.plan.goalId)
             .then((res) => {
-                console.log('목표 투두 완료', res)
                 if (res === true) {
                     const today = new Date()
                     if (today > new Date(props.plan.endDate)) {
