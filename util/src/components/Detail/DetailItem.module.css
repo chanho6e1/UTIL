@@ -13,11 +13,15 @@
     padding: 0px 4vw 0px 4vw;
     /* overflow:scroll; */
   }
+
+  
+  
 }
 
 @media all and (min-width: 768px) {
   .DetailItem {
     height: auto;
+    /* padding: 30px 5vw 30px 5vw; */
     /* padding: 6px 21px 30px 21px; */
     padding: 30px 20vw 30px 20vw;
     /* overflow:scroll; */
@@ -37,6 +41,9 @@
     font-weight: 550;
     line-height: 50px;
   }
+
+
+  
 }
 
 
@@ -47,7 +54,6 @@
   overflow:scroll;
   will-change: left, top, width, height;
 }
-
 
 
 
@@ -73,10 +79,17 @@
 
 .Detail-info {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding-bottom:15px;
   border-bottom: 1px solid rgb(200, 200, 200);
   margin-bottom: 30px;
+}
+
+.Detail-info-inner {
+  display: flex;
+  align-items: center;
+
 }
 
 .contents {
