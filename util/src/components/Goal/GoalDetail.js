@@ -18,6 +18,7 @@ const GoalDetail = (props) => {
   const idx = useParams().id
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [tilPage, settilPage] = useState(1)
 
   useEffect(() => {
     detailPlansAPI(idx)
@@ -52,7 +53,7 @@ const GoalDetail = (props) => {
   }, [])
 
   useEffect(() => {
-    detailTilAPI(idx)
+    detailTilAPI(idx, tilPage)
     .then((res) => {
       const proccessing = {
         goalId: idx,
@@ -60,7 +61,7 @@ const GoalDetail = (props) => {
     }
     dispatch(modifyPostDetailSliceActions.getTils(JSON.stringify(proccessing)))
     })
-  }, [])
+  }, [tilPage])
 
 
   const plans = useSelector(state => state.planSlice.plans)
@@ -68,12 +69,24 @@ const GoalDetail = (props) => {
   const reviews = useSelector(state => state.postDetailSlice.reviews)
   const tils = useSelector(state => state.postDetailSlice.tils)
 
+  const prevPage = () => {
+    if (tilPage > 1) {
+      settilPage((prevState) => prevState - 1)
+    }
+  }
+
+  const nextPage = () => {
+    if (tilPage < tils[idx].totalPages)
+    settilPage((prevState) => prevState + 1)
+  }
+
+  
   return (
     <div className={classes["goal-detail"]}>
       <div />
-      {plans && <GoalDetailL className={classes["goal-todos"]} plan={plans[idx]} todos={todos} reviews={reviews}/>}
+      {plans && <GoalDetailL plan={plans[idx]} reviews={reviews}/>}
       <div className={classes["goal-detail-line"]}/>
-      {plans && <GoalDetailR plan={plans[idx]} tils={tils}/>}
+      {plans && <GoalDetailR plan={plans[idx]} tils={tils} nextPage={nextPage} prevPage={prevPage} tilPage={tilPage}/>}
       <div />
     </div>
   );
