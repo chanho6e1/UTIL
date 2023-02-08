@@ -23,9 +23,9 @@ const GoalDetailRTil = (props) => {
         ))}
       </ol>
       <div className={classes["goal-detail-r-tils-page"]}>
-        <button onClick={props.prevPage}>prev</button>
+        <span className={classes["goal-detail-r-tils-page-button"]} onClick={props.prevPage}>prev</span>
         <span className={classes["goal-detail-r-tils-page-num"]}>{props.tilPage}</span>
-        <button onClick={props.nextPage}>next</button>
+        <span className={classes["goal-detail-r-tils-page-button"]} onClick={props.nextPage}>next</span>
       </div>
     </div>
   );
