@@ -2,7 +2,6 @@ import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
 export const getPostSearch = (criteria, offset, size, title) => {
-  console.log("SSAFY", criteria, offset, size, title);
   return axios({
     method: "get",
     url: `${API_BASE_URL}/posts/search?criteria=${criteria}&offset=${offset}&size=${size}&title=${title}`,
