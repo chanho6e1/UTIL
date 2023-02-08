@@ -1,4 +1,4 @@
-@media all and (max-width: 768px) {
+@media all and (max-width: 1024px) {
   .user-column {
     display: flex;
     flex-direction: column;
@@ -6,15 +6,25 @@
   }
 
   .follow-text {
+    margin-top: 4px;
     font-size: 16px;
     font-weight: 700;
     margin-right: 10px;
   }
   
   .follow-number {
+    margin-top: 4px;
     font-size: 14px;
     font-weight: 400;
     margin-right: 20px;
+  }
+
+  .tag-wrapper {
+    margin-top: 12px;
+  }
+
+  .avatar-username {
+    margin-top: 4px;
   }
 
   .user-page-upper {
@@ -22,9 +32,11 @@
     /* margin-left: 18px; */
     justify-content: left;
     /* align-items: flex-end; */
-    width: 78%;
+    box-sizing: border-box;
     /* margin: 0 auto; */
     /* justify-content: space-evenly; */
+    margin-top:24px;
+    margin-bottom: 24px;
   }
 
   .user-description {
@@ -44,6 +56,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
   }
 
   .plan-card-wrapper {
@@ -61,21 +74,25 @@
     flex-direction: column;
     width: 100%;
     margin-bottom: 20px;
-
+    background-color: #F8F9FA;
   }
 
-  .user-page-upper {
+  /* .user-page-upper {
     display: flex;
-    /* justify-content: center; */
-    /* align-items: flex-end; */
+
     width: 100%;
     margin: 20px;
-    /* justify-content: space-evenly; */
-  }
 
+  } */
+  .line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px solid rgb(210,210,210);
+    margin-bottom: 24px;
+  }
 }
 
-@media all and (min-width: 768px) {
+@media all and (min-width: 1024px) {
 
   .follow-text {
     font-size: 1.3rem;
@@ -94,15 +111,18 @@
     /* justify-content: center; */
     /* align-items: flex-end; */
     width: 100%;
+    box-sizing: border-box;
     margin:10px;
+    margin-top:48px;
+    margin-bottom: 48px;
     /* margin: 0 auto; */
     /* justify-content: space-evenly; */
   }
 
   .postcard-container {
-    width: 100%;
+    /* width: 100%; */
     display: flex;
-
+    box-sizing: border-box;
     justify-content: center;
   }
 
@@ -111,8 +131,16 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 80%;
-    margin: 30px auto 20px auto;
+    width: 100%;
+    background-color: #F8F9FA;
+    /* margin: 30px auto 20px auto; */
+  }
+
+  .line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px solid rgb(210,210,210);
+    margin-bottom: 48px;
   }
   
 
@@ -157,7 +185,7 @@
 
 
 .user-outer-wrapper {
-  width: 55%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -286,5 +314,6 @@
 }
 
 .plan-card-wrapper {
-  margin-top: 5px;
+  margin-top: 262px;
 }
+

@@ -6,7 +6,7 @@
     height: 100vh;
     z-index: 10;
     opacity: 0;
-    backdrop-filter: blur(10px);
+    /* backdrop-filter: blur(10px); */
     transition-property: opacity 0.3s;
     transition-duration: 0.2s;
     background-color: rgba(0, 0, 0, 0.5);
@@ -22,8 +22,8 @@
 } */
 
 .indicator {
-  width:500px;
-  height:500px;
+  /* width:500px;
+  height:500px; */
   /* background-color: red; */
 }
 
@@ -42,11 +42,15 @@
 }
 
 .content {
+
   will-change: left, top, width, height;
   position: absolute;
   transition-property: left top width height opacity;
   transition-duration: 0.3s;
   overflow:hidden;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.2);
+  /* width: auto;
+  height: auto; */
   /* display: flex;
   justify-content: center;
   align-items:center; */

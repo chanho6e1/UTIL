@@ -1,3 +1,7 @@
+.card {
+  margin-top:20px;
+}
+
 .feedcarditem {
   display: flex;
   flex-direction: column;
@@ -7,8 +11,8 @@
   /* border: 1px solid #c9c9c9; */
   /* border-radius: 20px; */
   font-family: Inter;
-  margin-top:20px;
-
+  
+  background-color: white;
   /* margin: 10px; */
   overflow: hidden;
 }
@@ -30,10 +34,13 @@
 .feedcard-text-contents {
   padding: 14px 10px 0px 10px;
   cursor: pointer;
+  
+
 }
 
 .title {
-  font-size: 1.5rem;
+  text-align: left;
+  font-size: 1.2rem;
   font-weight: 700;
   text-overflow: clip;
   display: -webkit-box;
@@ -45,6 +52,7 @@
 }
 
 .contents {
+  text-align: left;
   display: -webkit-box;
   height: 60px;
   -webkit-box-orient: vertical;

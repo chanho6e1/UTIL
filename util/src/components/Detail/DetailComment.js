@@ -8,6 +8,7 @@ import { tilCommentEditAPI } from "../../api/Detail/tilCommentEditAPI";
 import { Fragment, useState, useEffect, useRef, useCallback } from "react";
 import { modifyPostDetailSliceActions } from '../../redux/postDetailSlice'
 import { useSelector, useDispatch } from 'react-redux'
+import TextArea from "../UI/TextArea/TextArea";
 
 
 const DetailComment = (props) => {
@@ -129,7 +130,8 @@ const DetailComment = (props) => {
         <div className={classes["Detail-comments-private"]}>비공개 : 
             <input type="checkbox" checked={props.newDepthCommentIsPrivate} onChange={props.newDepthCommentIsPrivateInputHandler} />
         </div>
-        <textarea className={classes['Detail-comments-contents-box']} value={props.newDepthCommentContent} onChange={props.newDepthCommentContentInputHandler} placeholder="답글을 작성해 주세요" onKeyPress={onEnterNewDepthCommentHandlerAndClose}/>
+        <TextArea className={classes['Detail-comments-contents-box']} value={props.newDepthCommentContent} onChange={props.newDepthCommentContentInputHandler} placeholder="답글을 작성해 주세요" onKeyPress={onEnterNewDepthCommentHandlerAndClose}/>
+        {/* <textarea className={classes['Detail-comments-contents-box']} value={props.newDepthCommentContent} onChange={props.newDepthCommentContentInputHandler} placeholder="답글을 작성해 주세요" onKeyPress={onEnterNewDepthCommentHandlerAndClose}/> */}
       </div>
       <hr />
     </Fragment>
@@ -156,9 +158,12 @@ const DetailComment = (props) => {
           {depthMessage}
           <div className={classes.commentContent}>{props.comment.content}</div>
           <div className={classes["Detail-comments-plus"]}>
-            <input type="button" onClick={openEditCommentHandler} value="수정"/>
+            <span className={classes['link-text']} onClick={openEditCommentHandler}>수정</span>
+            <span className={classes['link-text']} onClick={delComment}>삭제</span>
+            <span className={classes['link-text']} onClick={openCommentHandler}>답글 쓰기</span>
+            {/* <input type="button" onClick={openEditCommentHandler} value="수정"/>
             <input type="button" onClick={delComment} value="삭제"/>
-            <input type="button" onClick={openCommentHandler} value="+"/>
+            <input type="button" onClick={openCommentHandler} value="+"/> */}
           </div>
         </div>
       </div>
@@ -208,7 +213,8 @@ const DetailComment = (props) => {
               <div className={classes["Detail-comments-private"]}>비공개 : 
                 <input type="checkbox" checked={editCommentIsPrivate} onChange={editCommentIsPrivateInputHandler} />
               </div>
-              <textarea className={classes['Detail-comments-contents-box']} value={editCommentContent} onChange={editCommentContentInputHandler} onKeyPress={onEnterEditCommentHandler}/>
+              <TextArea className={classes['Detail-comments-contents-box']} value={editCommentContent} onChange={editCommentContentInputHandler} onKeyPress={onEnterEditCommentHandler}/>
+              {/* <textarea className={classes['Detail-comments-contents-box']} value={editCommentContent} onChange={editCommentContentInputHandler} onKeyPress={onEnterEditCommentHandler}/> */}
             </div>
           </div>
         </div>

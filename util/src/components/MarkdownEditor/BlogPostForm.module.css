@@ -1,5 +1,40 @@
+
+@media all and (max-width: 480px) {
+    
+
+    .blog-post-form {
+        width: 90vw;
+    }
+    .form-wrapper {
+        width: 90vw;
+    }
+    .picker-wrapper {
+        width: 90vw;
+    }
+    .shadow-box-wrapper {
+        width: 90vw;
+    }
+    
+}
+
+@media all and (min-width: 480px) {
+    .blog-post-form {
+        width: 440px;
+    }
+    .form-wrapper {
+        width: 440px;
+    }
+    .picker-wrapper {
+        width: 440px;
+    }
+    .shadow-box-wrapper {
+        width: 440px;
+    }
+}
+
+
 .blog-post-form {
-    width: 440px;
+    
     height: 180px;
     background-color: rgb(250, 251, 253);
     display: flex;
@@ -9,7 +44,7 @@
 }
 
 .form-wrapper {
-    width: 440px;
+    
     height: auto;
     background-color: rgb(250, 251, 253);
     /* background-color: red; */
@@ -21,6 +56,7 @@
     box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
     
 }
+
 
 .header {
     width: 100%;
@@ -85,7 +121,6 @@
 }
 
 .picker-wrapper {
-    width:440px;;
     /* margin: 12px; */
     /* margin-top: 20px; */
     overflow: scroll;
@@ -104,7 +139,6 @@
 }
 
 .shadow-box-wrapper {
-    width: 440px;
     overflow: hidden;
     position: fixed;
     z-index: 9999;

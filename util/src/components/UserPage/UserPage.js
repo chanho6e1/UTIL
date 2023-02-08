@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import classes from "./UserPage.module.css";
 import PostCardItem from "../UI/PostCard/PostCardItem";
 import TagDataList from "../UI/Tag/TagDataList";
@@ -39,6 +39,7 @@ const postCardItemList = (postList) => {
 };
 
 const UserPage = (props) => {
+  const containerRef = useRef()
   const [postList, setPostList] = useState(null);
   const [userData, setUserData] = useState([]);
   const [myData, setMyData] = useState([]);
@@ -75,6 +76,7 @@ const UserPage = (props) => {
       setPostList(() => res.content);
       setTotalPage(() => res.totalPages);
       setIsLoading(false);
+      
     });
 
     // My Data API
@@ -162,13 +164,8 @@ const UserPage = (props) => {
     fetchUserPostData(criteriaIdx, page, size);
   };
 
-  return (
-    <div className={classes[`user-page`]}>
-
+  const userPageUpper = (
         <div className={classes[`user-page-upper`]}>
-          
-
-          
           <div className={classes[`avatar-username`]}>
             <Avatar
               src={userData.imageUrl}
@@ -183,51 +180,47 @@ const UserPage = (props) => {
                 objectFit: "scale-down",
               }}
             />
-            
           </div>
-
           <div className={classes['user-outer-wrapper']}>
-
-          <div className={classes['user-wrapper']}>
-            <div>
-              <div className={classes['user-column']}>
-                <div className={classes.nickname}>
-                  {userData.nickname}
+            <div className={classes['user-wrapper']}>
+              <div>
+                <div className={classes['user-column']}>
+                  <div className={classes.nickname}>
+                    {userData.nickname}
+                  </div>
+                  <div className={classes.follow}>
+                    <div className={classes[`follow-text`]}>팔로워</div>
+                    <div className={classes[`follow-number`]}>{followerListCnt}명</div>
+                    <div className={classes[`follow-text`]}>팔로우</div>
+                    <div className={classes[`follow-number`]}>{followingListCnt}명</div>
+                    {myData.userId !== props.id && followBtn(isFollowing)}
+                  </div>
                 </div>
-                <div className={classes.follow}>
-
-                  <div className={classes[`follow-text`]}>팔로워</div>
-                  <div className={classes[`follow-number`]}>{followerListCnt}명</div>
-                  <div className={classes[`follow-text`]}>팔로우</div>
-                  <div className={classes[`follow-number`]}>{followingListCnt}명</div>
-                  {myData.userId !== props.id && followBtn(isFollowing)}
-
-                  
+                <div className={classes['user-column']}>
+                  <div className={classes['user-description']}>{userData.discription}</div>
                 </div>
-      
+              </div>
             </div>
-
-            {/* <div className={classes['user-column']}>
-              <div className={classes.username}>{userData.userName}</div>
-            </div> */}
-            
-            <div className={classes['user-column']}>
-              <div className={classes['user-description']}>{userData.discription}</div>
+            <div className={classes['tag-wrapper']}>
+              <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
             </div>
-            </div>
-            
-            
             
           </div>
-
-          <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
           
-          </div>
- 
         </div>
-        <div className={classes[`postcard-container`]}>
+  )
+
+  return (
+    <div className={classes[`user-page`]}>
+
+        
+        <div ref={containerRef} className={classes[`postcard-container`]}>
           <div className={classes[`postcard-inner`]}>
+            
+            {userPageUpper}
+            <div className={classes['line']} />
             {postCardContainer(postList)}
+            
           </div>
           
           <div className={classes['plan-card-wrapper']}>
