@@ -145,7 +145,6 @@ public class PostService {
 
     @Transactional
     public Long createPost(Long userId, PostSaveRequest request) {
-
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Post post = postRepository.save(request.of(user));
 
