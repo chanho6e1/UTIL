@@ -54,9 +54,9 @@ const ModalOverlay = (props) => {
       backdropRef.current.style.opacity = 255
       if (props.toggleBoolean) {
         contentRef.current.style.transitionProperty = 'left top width height opacity'
-        contentRef.current.style.transitionDuration = '0.3s'
+        contentRef.current.style.transitionDuration = '0.5s'
         contentRef.current.style.transitionProperty = 'left top width height opacity'
-        contentRef.current.style.transitionDuration = '0.3s'
+        contentRef.current.style.transitionDuration = '0.5s'
       }
 
       const responsiveWidth = 100 * indicatorRef.current.clientWidth / window.innerWidth
@@ -100,9 +100,9 @@ const ModalOverlay = (props) => {
 
     const modalExecute = async () => {
       contentRef.current.style.transitionProperty = await 'left top width height opacity'
-      contentRef.current.style.transitionDuration = await '0.3s'
+      contentRef.current.style.transitionDuration = await '0.5s'
       contentRef.current.style.transitionProperty = await 'left top width height opacity'
-      contentRef.current.style.transitionDuration = await '0.3s'
+      contentRef.current.style.transitionDuration = await '0.5s'
       modalRef.current.style.display = await 'block'
       contentRef.current.style.position = await 'absolute'
       contentRef.current.style.left = await indicatorRef.current.getBoundingClientRect().left + 'px'
