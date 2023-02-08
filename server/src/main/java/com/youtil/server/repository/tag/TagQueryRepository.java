@@ -103,9 +103,9 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
         if(criteria.contains("date")){
             return tagOfPost.post.createdDate.desc();
         } else if(criteria.contains("like")){
-            return tagOfPost.post.postLikeList.postLikeList.size().desc();
+            return tagOfPost.post.likeScore.desc();
         } else if(criteria.contains("view")){
-            return tagOfPost.post.views.desc();
+            return tagOfPost.post.viewScore.desc();
         } else if(criteria == null){
             return tagOfPost.post.createdDate.desc();
         }
