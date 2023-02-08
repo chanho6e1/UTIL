@@ -4,15 +4,7 @@ import SearchBar from "../UI/SearchBar/SearchBar";
 import { getPostSearch } from "../../api/Post/getPostSearch";
 import { getPostByTagName } from "../../api/Post/getPostByTagName";
 import SearchFeed from "../Feed/SearchFeed";
-import {
-  useNavigate,
-  useMatch,
-  useLocation,
-  Routes,
-  Route,
-  useSearchParams,
-  useParams,
-} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Search = (props) => {
   const apiLabelList = ["제목", "태그", "닉네임"];
