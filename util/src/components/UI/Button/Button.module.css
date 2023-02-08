@@ -1,16 +1,15 @@
 .button {
-    min-width: 100px;
-    min-height:40px;
-    background-color: rgb(245, 245, 245);
-    border-radius: 7px;
-    border: 1px solid rgb(240, 240, 240);
-    box-sizing: border-box;
-    transition-property: background-color;
-    transition-duration: 0.3s;
-    cursor: pointer;
-
+  min-width: 100px;
+  min-height: 40px;
+  background-color: rgb(245, 245, 245);
+  border-radius: 7px;
+  border: 1px solid rgb(240, 240, 240);
+  box-sizing: border-box;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  cursor: pointer;
 }
 
-.button:hover {
-    background-color: rgba(154, 76, 249, 0.2);
+.button:hover:enabled {
+  background-color: rgba(154, 76, 249, 0.2);
 }

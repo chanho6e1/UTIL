@@ -64,7 +64,7 @@ const UserProfileChange = (props) => {
   };
 
   return (
-    <div>
+    <div className={classes[`profilecard-wrapper`]}>
       {userData && userTagList && (
         <UserProfileChangeCard
           imageUrl={userData.imageUrl}
