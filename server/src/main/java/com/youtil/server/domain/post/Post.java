@@ -18,9 +18,14 @@ import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 @Getter
 @NoArgsConstructor
@@ -74,6 +79,10 @@ public class Post extends BaseEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="goal_id")
     private Goal goal;
+
+    private Double likeScore;
+
+    private Double viewScore;
 
     @Builder
     public Post(User user, String title, String content, String thumbnail, Integer isPrivate){
@@ -155,5 +164,17 @@ public class Post extends BaseEntity implements Serializable {
     public void addPostFile(int idx, String source) {
 //        System.out.println("idx: "+idx+"source: "+source);
         postFileMap.put(idx, source);
+    }
+
+    public void setScore (Post post) throws ParseException {
+
+        Date format1 = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
+        String[] arr = post.getCreatedDate().toString().split("T");
+        Date format2 = new SimpleDateFormat("yyyy-MM-dd").parse(arr[0]);
+
+        long diffSec = (format1.getTime() - format2.getTime()) / 1000; //초 차이
+        long diffDays = diffSec / (24*60*60); //일자수 차이
+        this.likeScore = post.getTotalLikes() / (diffDays+1.0);
+        this.likeScore = post.getTotalLikes() / (diffDays+1.0);
     }
 }

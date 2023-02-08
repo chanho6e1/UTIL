@@ -55,9 +55,9 @@ public class PostCategoryQueryRepository {
         if (criteria.contains("date")) {
             return post.createdDate.desc();
         } else if (criteria.contains("like")) {
-            return post.postLikeList.postLikeList.size().desc();
+            return post.likeScore.desc();
         } else if (criteria.contains("view")) {
-            return post.views.desc();
+            return post.viewScore.desc();
         }
 
         return post.createdDate.desc();

@@ -3,6 +3,7 @@ package com.youtil.server.repository.post;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.youtil.server.domain.post.Post;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.List;
 
+import static com.querydsl.core.types.dsl.DateTimeExpression.currentTimestamp;
 import static com.youtil.server.domain.post.QPost.post;
 import static com.youtil.server.domain.post.QPostBookmark.postBookmark;
 import static com.youtil.server.domain.post.QPostLike.postLike;
@@ -203,21 +205,19 @@ public class PostQueryRepository {
                         )));
     }
 
-    private BooleanExpression isPrivate2(Long userId){ //공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
-        return  post.isPrivate.ne(0);
-    }
     private OrderSpecifier<?> findCriteria(String criteria){ //정렬 조건
         if(criteria.contains("date")){
             return post.createdDate.desc();
         } else if(criteria.contains("like")){
-            return post.postLikeList.postLikeList.size().desc();
+            return post.likeScore.desc();
         } else if(criteria.contains("view")){
-            return post.views.desc();
+            return post.viewScore.desc();
         } else if(criteria == null){
             return post.createdDate.desc();
         }
         return post.createdDate.desc();
     }
+
 
 
 }
