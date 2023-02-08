@@ -9,6 +9,7 @@ import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.goal.*;
+import com.youtil.server.dto.post.PostResponse;
 import com.youtil.server.repository.goal.GoalQueryRepository;
 import com.youtil.server.repository.goal.GoalRepository;
 import com.youtil.server.repository.review.ReviewRepository;
@@ -156,11 +157,15 @@ public class GoalService {
         return goal.isState();
     }
 
-//    public List<PostResponse> getGoalPost(Long userId, Long goalId, int offset, int size) {
-//        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-//        return goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size))
-//                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
-//    }
+    public PagedResponse<PostResponse> getGoalPostDetail(Long userId, Long goalId, int offset, int size) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        List<PostResponse> result = new ArrayList<>();
+        Page<Post> page =  goalQueryRepository.findPostListByGoalId(goalId, PageRequest.of(offset-1, size));
+        result = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+
+        return new PagedResponse<>(result, page.getNumber()+1, page.getSize(), page.getTotalElements(),
+                page.getTotalPages(), page.isLast());
+    }
 
     public PagedResponse<Map<Long, GoalPostResponse>> getGoalPost(Long userId, Long goalId, int offset, int size) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
