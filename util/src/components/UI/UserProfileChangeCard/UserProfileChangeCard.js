@@ -149,12 +149,11 @@ const UserProfileChangeCard = (props) => {
   };
 
   const onCancelClicked = () => {
-    console.log("cancel");
+    navigate(`/index`);
   };
 
   const confirmHandler = (event) => {
     event.preventDefault();
-    console.log("submit");
 
     const enteredNickname = nicknameInputRef.current.value;
     const enteredDescription = descriptionInputRef.current.value;
