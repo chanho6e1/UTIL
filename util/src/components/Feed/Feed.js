@@ -3,6 +3,9 @@ import classes from "./Feed.module.css";
 import { getPosts } from "../../api/Post/getPosts";
 import { useState, useEffect, useRef, Fragment } from "react";
 import Loading from "../UI/Loading/Loading";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getUserFollowing } from "../../api/Post/getUserFollowing";
 
 const feedCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -27,21 +30,36 @@ const feedCardItemList = (postList) => {
 };
 
 const Feed = (props) => {
+  const userAuth = useSelector((state) => state.userAuthSlice.userAuth);
+  console.log("ai", userAuth);
   const [feedList, setFeedList] = useState([]);
   const [criteria, setCriteria] = useState(props.criteria || 0);
   const criteriaList = ["date", "view", "like"];
   const [offset, setOffset] = useState(1);
   const size = 10;
   const feedRef = useRef();
-
+  const [followingListCnt, setFollowingListCnt] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
-    props.api(criteriaList[criteria], offset, size).then((res) => {
-      setFeedList(() => res.content);
-      setIsLoading(false);
-    });
+    if (userAuth.currentUser !== null) {
+      getUserFollowing(userAuth.currentUser.userId)
+        .then((res) => {
+          setFollowingListCnt(() => res.length);
+        })
+        .then(() => {
+          if (followingListCnt > 0) {
+            props.api(criteriaList[criteria], offset, size).then((res) => {
+              setFeedList(() => res.content);
+              setIsLoading(false);
+            });
+          } else {
+            navigate(`/recommend`);
+          }
+        });
+    }
   }, [criteria]);
 
   const fetchMoreData = () => {

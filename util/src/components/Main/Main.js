@@ -16,17 +16,23 @@ import UserPage from "../UserPage/UserPage";
 import UserProfileChange from "../UserProfileChangePage/UserProfileChange";
 import PlanResponsive from "../Plan/PlanResponsive";
 import Explore from "../Explore/Explore";
-import { getSubscribePosts } from '../../api/Post/getSubscribePosts'
-import Search from '../Search/Search'
-
+import { getSubscribePosts } from "../../api/Post/getSubscribePosts";
+import Search from "../Search/Search";
+import UserRecommend from "../UserRecommend/UserRecommend";
 
 const Main = (props) => {
   const parentRef = useRef();
   const userAuth = useSelector((state) => state.userAuthSlice.userAuth);
 
   const postData = {
-    content: [userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />, <Feed api={getSubscribePosts} />, <Search />, <Explore />, <PlanResponsive />],
-    // 
+    content: [
+      userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />,
+      <Feed api={getSubscribePosts} />,
+      <UserRecommend />,
+      <Explore />,
+      <PlanResponsive />,
+    ],
+    //
     dock: {
       logoContracted: (
         <img className={styles["logo-icon"]} src={logo} style={{ width: "96px", height: "auto" }} />
