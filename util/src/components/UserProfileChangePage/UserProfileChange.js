@@ -3,15 +3,16 @@ import classes from "./UserProfileChange.module.css";
 import UserProfileChangeCard from "../UI/UserProfileChangeCard/UserProfileChangeCard";
 import { getMyData } from "../../api/UserProfile/getMyData";
 import { getMyTags } from "../../api/UserProfile/getMyTags";
-import defautUserProfilePic from "../../img/defaultUserProfilePic.svg";
 import { postUserProfilePicUpload } from "../../api/UserProfile/postUserProfilePicUpload";
 import { putUserData } from "../../api/UserProfile/putUserData";
 import { postUserTags } from "../../api/UserProfile/postUserTags";
 import { putUserTags } from "../../api/UserProfile/putUserTags";
+import { useNavigate } from "react-router-dom";
 
 const UserProfileChange = (props) => {
   const [userData, setUserData] = useState("");
   const [userTagList, setUserTagList] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getMyData().then((res) => setUserData(() => res));
@@ -41,11 +42,17 @@ const UserProfileChange = (props) => {
           // 태그 데이터 변경
           if (userData.isNewUser) {
             postUserTags(newTagList).then((res) => {
-              // 성공 시 보낼 곳
+              // 성공 시 마이 유틸
+              if (res.status === 200) {
+                navigate(`/index`);
+              }
             });
           } else {
             putUserTags(newTagList).then((res) => {
-              // 성공 시 보낼 곳
+              // 성공 시 마이 유틸
+              if (res.status === 200) {
+                navigate(`/index`);
+              }
             });
           }
         });
