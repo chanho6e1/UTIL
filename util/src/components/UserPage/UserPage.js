@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { Route, Routes } from "react-router-dom";
 import classes from "./UserPage.module.css";
 import PostCardItem from "../UI/PostCard/PostCardItem";
 import TagDataList from "../UI/Tag/TagDataList";
@@ -18,6 +19,10 @@ import { getMyData } from "../../api/UserProfile/getMyData";
 import { useNavigate } from "react-router-dom";
 import UserPageResponsive from "./UserPageResponsive";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
+import { useSelector, useDispatch } from 'react-redux'
+import Swipe from "react-easy-swipe";
+import GoalDetail from "../Goal/GoalDetail";
+import DetailItem from "../Detail/DetailItem";
 
 import PlanCard from "../Plan/PlanCard/PlanCard";
 
@@ -41,18 +46,18 @@ const postCardItemList = (postList) => {
   });
 };
 
-const UserPage = (props) => {
+const UserPageForm = (props) => {
   const containerRef = useRef();
   const [postList, setPostList] = useState(null);
   const [userData, setUserData] = useState([]);
-  const [myData, setMyData] = useState([]);
+  // const [myData, setMyData] = useState([]);
   const [isFollowing, setIsFollowing] = useState(null);
   const [followerList, setFollowerList] = useState(null);
   const [followerListCnt, setFollowerListCnt] = useState(null);
   const [followingList, setFollowingList] = useState(null);
   const [followingListCnt, setFollowingListCnt] = useState(null);
   const [userTagList, setUserTagList] = useState([]);
-
+  const myData = useSelector(state => state.userAuthSlice.userAuth.currentUser)
   const criteria = ["date", "view", "like"];
   const [criteriaIdx, setCriteriaIdx] = useState(0);
   const [offset, setOffset] = useState(1);
@@ -64,21 +69,47 @@ const UserPage = (props) => {
 
   const fetchUserPostData = (criteriaIdx, page, size) => {
     setIsLoading(true);
+    if (myData.userId === props.id) {
+      getMyPosts(criteria[criteriaIdx], page, size).then((res) => {
+        setPostList(() => res.content);
+        setOffset(() => page);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
+      });
+    } else {
+      getUserPosts(props.id, criteria[criteriaIdx], page, size).then((res) => {
+        setPostList(() => res.content);
+        setOffset(() => page);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 500);
+      });
+    }
+  };
 
-    getMyPosts(criteria[criteriaIdx], page, size).then((res) => {
-      setPostList(() => res.content);
-      setOffset(() => page);
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
-    });
-    // getUserPosts(props.id, criteria[criteriaIdx], page, size).then((res) => {
-    //   setPostList(() => res.content);
-    //   setOffset(() => page);
-    //   setTimeout(() => {
-    //     setIsLoading(false);
-    //   }, 500);
-    // });
+  const fetchUserPostDataMobile = (criteriaIdx, page, size) => {
+    setIsLoading(true);
+    if (myData.userId === props.id) {
+      getMyPosts(criteria[criteriaIdx], page + 1, size).then((res) => {
+        setPostList((prev) => [...prev, ...res.content]);
+        setOffset(() => page + 1);
+        // setIsLoading(false)
+        setTimeout(() => {
+          setIsLoading(false);
+          setFetchStart(() => false);
+        }, 500);
+      });
+    } else {
+      getUserPosts(props.id, criteria[criteriaIdx], page + 1, size).then((res) => {
+        setPostList((prev) => [...prev, ...res.content]);
+        setOffset(() => page + 1);
+        setTimeout(() => {
+          setIsLoading(false);
+          setFetchStart(() => false);
+        }, 500);
+      });
+    } 
   };
 
   const [fetchStart, setFetchStart] = useState(false);
@@ -89,48 +120,35 @@ const UserPage = (props) => {
     }
   }, [fetchStart]);
 
-  const fetchUserPostDataMobile = (criteriaIdx, page, size) => {
-    setIsLoading(true);
 
-    getMyPosts(criteria[criteriaIdx], page + 1, size).then((res) => {
-      setPostList((prev) => [...prev, ...res.content]);
-      setOffset(() => page + 1);
-      // setIsLoading(false)
-      setTimeout(() => {
-        setIsLoading(false);
-        setFetchStart(() => false);
-      }, 500);
-    });
-
-    // getUserPosts(props.id, criteria[criteriaIdx], page, size).then((res) => {
-    //   setPostList(() => res.content);
-    //   setOffset(() => page);
-    //   setTimeout(() => {
-    //     setIsLoading(false);
-    //   }, 500);
-    // });
-  };
 
   // 초기 데이터
   useEffect(() => {
+    console.log('ssafy myData', myData)
     // Post API
     setIsLoading(true);
-    getMyPosts(criteria[criteriaIdx], offset, size).then((res) => {
-      setPostList(() => res.content);
-      setTotalPage(() => res.totalPages);
-      setIsLoading(false);
-    });
-    // getUserPosts(props.id, criteria[criteriaIdx], offset, size).then((res) => {
-    //   setPostList(() => res.content);
-    //   setTotalPage(() => res.totalPages);
-    //   setIsLoading(false);
 
-    // });
+    if (myData.userId === props.id) {
+      getMyPosts(criteria[criteriaIdx], offset, size).then((res) => {
+        setPostList(() => res.content);
+        setTotalPage(() => res.totalPages);
+        setIsLoading(false);
+      });
+    } else {
+      getUserPosts(props.id, criteria[criteriaIdx], offset, size).then((res) => {
+        setPostList(() => res.content);
+        setTotalPage(() => res.totalPages);
+        setIsLoading(false);
+      });
+    }
+    
+  
 
     // My Data API
-    getMyData().then((res) => {
-      setMyData(() => res);
-    });
+    // getMyData().then((res) => {
+    //   setMyData(() => res);
+    //   console.log("ssafy me", res);
+    // });
 
     // User Data API
     getUserData(props.id).then((res) => {
@@ -184,13 +202,13 @@ const UserPage = (props) => {
   const followBtn = (isFollowing) => {
     if (isFollowing) {
       return (
-        <Button className={classes[`follow-btn-true`]} onClick={followBtnHandler}>
+        <Button className={`${classes[`follow-btn-true`]} ${classes[`button`]}`} onClick={followBtnHandler}>
           팔로잉
         </Button>
       );
     } else {
       return (
-        <Button className={classes[`follow-btn-false`]} onClick={followBtnHandler}>
+        <Button className={`${classes[`follow-btn-false`]} ${classes[`button`]}`} onClick={followBtnHandler}>
           팔로우
         </Button>
       );
@@ -244,48 +262,63 @@ const UserPage = (props) => {
 
   const userPageUpper = (
     <div className={classes[`user-page-upper`]}>
-      <div className={classes[`avatar-username`]}>
-        <Avatar
-          src={userData.imageUrl}
-          sx={{
-            width: "15vw",
-            height: "15vw",
-            minWidth: "96px",
-            minHeight: "96px",
-            maxWidth: "128px",
-            maxHeight: "128px",
-            border: "1px solid lightgray",
-            objectFit: "scale-down",
-          }}
-        />
-      </div>
-      <div className={classes["user-outer-wrapper"]}>
-        <div className={classes["user-wrapper"]}>
-          <div>
-            <div className={classes["user-column"]}>
-              <div className={classes.nickname}>{userData.nickname}</div>
-              <div className={classes.follow}>
-                <div className={classes[`follow-text`]}>팔로워</div>
-                <div className={classes[`follow-number`]}>{followerListCnt}명</div>
-                <div className={classes[`follow-text`]}>팔로우</div>
-                <div className={classes[`follow-number`]}>{followingListCnt}명</div>
-                {myData.userId !== props.id && followBtn(isFollowing)}
+      <div className={classes[`user-page-upper-inner`]}>
+
+      
+        <div className={classes[`avatar-username`]}>
+          <Avatar
+            src={userData.imageUrl}
+            sx={{
+              width: "15vw",
+              height: "15vw",
+              minWidth: "96px",
+              minHeight: "96px",
+              maxWidth: "128px",
+              maxHeight: "128px",
+              border: "1px solid lightgray",
+              marginRight: '12px',
+              objectFit: "scale-down",
+            }}
+          />
+        </div>
+        <div className={classes["user-outer-wrapper"]}>
+          <div className={classes["user-wrapper"]}>
+            <div>
+              <div className={classes["user-column"]}>
+                <div className={classes.nickname}>{userData.nickname}</div>
+                <div className={classes.follow}>
+                  <div className={classes['follow-text-wrapper']}>
+                    <div className={classes[`follow-text`]}>팔로워</div>
+                    <div className={classes[`follow-number`]}>{followerListCnt}명</div>
+                    <div className={classes[`follow-text`]}>팔로우</div>
+                    <div className={classes[`follow-number`]}>{followingListCnt}명</div>
+                  </div>
+  
+                    {myData.userId !== props.id && followBtn(isFollowing)}
+
+                </div>
+              </div>
+              <div className={classes["user-column"]}>
+                <div className={classes["user-description"]}>{userData.discription}</div>
               </div>
             </div>
-            <div className={classes["user-column"]}>
-              <div className={classes["user-description"]}>{userData.discription}</div>
-            </div>
+          </div>
+          <div className={classes["tag-wrapper-pc"]}>
+            <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
           </div>
         </div>
-        <div className={classes["tag-wrapper"]}>
-          <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
-        </div>
       </div>
+      <Swipe onSwipeStart={(event) => {event.stopPropagation()}}>
+          <div className={classes["tag-wrapper-mobile"]}>
+            <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
+          </div>
+        </Swipe>
     </div>
   );
 
   return (
     <div ref={wrapperDiv} className={classes[`user-page`]}>
+      <div id="inner-overlay-root"></div>
       <div ref={containerRef} className={classes[`postcard-container`]}>
         <div className={classes[`postcard-inner`]}>
           {userPageUpper}
@@ -305,4 +338,18 @@ const UserPage = (props) => {
   );
 };
 
+
+
+const UserPage = (props) => {
+
+  return (
+    <div>
+      <Routes>
+        <Route path="/*" element={<UserPageForm id={props.id} />} /> 
+        <Route path="/goal/:id" element={<GoalDetail />} /> 
+        <Route path="/post/:id" element={<DetailItem />} />
+      </Routes>
+    </div>
+  )
+}
 export default UserPage;

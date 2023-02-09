@@ -25,7 +25,7 @@ const PlanCardItemForm = (props) => {
 
   const todoList = todos && todos.map((todo, idx) => {
     return (
-      <PlanCardItemTodo todo={todo} plan={props.plan} className={idx % 2 ? 'odd' : 'even'} />
+      <PlanCardItemTodo key={`plan-card-${todo.todoId}`} todo={todo} plan={props.plan} className={idx % 2 ? 'odd' : 'even'} />
     )
   })
 
@@ -84,10 +84,22 @@ const PlanCardItem = (props) => {
 
 
   useEffect(() => {
+    recvTodayTodosAPI()
+    .then((res) => {
+      dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
+      console.log('ssafy4 ', res)
+    })
+    .catch((err) => {
+      console.log('PlanCardItem : recvTodayTodosAPI => ', err)
+    })
+  }, [todos])
+
+  useEffect(() => {
     if (props.today === true) {
       recvTodayTodosAPI()
       .then((res) => {
         dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
+        console.log('ssafy4 ', res)
       })
       .catch((err) => {
         console.log('PlanCardItem : recvTodayTodosAPI => ', err)
@@ -109,7 +121,7 @@ const PlanCardItem = (props) => {
   }, [])
   return (
     <React.Fragment>
-      {todos?.length !== 0 ? <PlanCardItemForm today={props.today} plan={props.plan} /> : null}
+      <PlanCardItemForm today={props.today} plan={props.plan} />
     </React.Fragment>
     
   )
