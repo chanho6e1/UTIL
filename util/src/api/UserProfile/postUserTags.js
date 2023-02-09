@@ -13,7 +13,6 @@ export const postUserTags = (userTagList) => {
     },
   })
     .then((res) => {
-      console.log(res);
       return res;
     })
     .catch((err) => {
