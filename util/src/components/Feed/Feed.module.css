@@ -31,6 +31,12 @@
   padding: 0 0 0 0;
 }
 
+.alt-text {
+  margin: auto;
+  font-size: x-large;
+  color: #aaacae;
+}
+
 @media screen and (max-width: 768px) {
   .feed ul {
     display: grid;
