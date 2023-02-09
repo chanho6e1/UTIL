@@ -22,6 +22,7 @@ import warning from "../../../img/Warning.png"
 import { newPlanAPI } from '../../../api/Plan/newPlanAPI';
 import { delPlanAPI } from '../../../api/Plan/delPlanAPI';
 import FixedModal from '../../UI/FixedModal/FixedModal';
+import { recvTodayTodosAPI } from '../../../api/Plan/recvTodayTodosAPI';
 
 
 
@@ -134,6 +135,16 @@ const PlanCardPlanCRUD = (props) => {
         delPlanAPI(props.plan.goalId)
         .then((res) => {
           dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+
+          recvTodayTodosAPI()
+            .then((res) => {
+            dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
+            props.modalHandler()
+            })
+            .catch((err) => {
+            console.log('PlanCardPlanCRUD : recvTodayTodosAPI => ', err)
+            })
+
         })
         .catch((err) => {
           console.log('PlanItem : delPlanAPI => ', err)

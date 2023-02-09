@@ -48,7 +48,9 @@ const GoalDetailMobile = (props) => {
         <div className={classes["goal-detail-mobile-content-in"]}>
           <GoalDetailLReview reviews={props.reviews[props.plan?.goalId]}/>
           <div />
-          <GoalDetailRTil tils={props.tils[props.plan?.goalId]?.content} prevPage={props.prevPage} nextPage={props.nextPage} tilPage={props.tilPage}/>
+          <div className={classes["goal-detail-r-out"]}>
+            <GoalDetailRTil tils={props.tils[props.plan?.goalId]?.content} prevPage={props.prevPage} nextPage={props.nextPage} tilPage={props.tilPage}/>
+          </div>
           {/* {todosView && props.plan !== null && <PlanCardItem plan={props.plan} />} */}
         </div>
       </div>

@@ -83,9 +83,13 @@ export const UserDockWrapper = (props) => {
     navigate('/login');
   }
 
+  const navigateProfile = () => {
+    navigate('/profile');
+  }
+
   const dropDownItems = {
     label: ['로그아웃', '마이프로필'],
-    function: [handleLogout, null],
+    function: [handleLogout, navigateProfile],
   }
 
   const [dropDownState, setDropDownState] = useState(false)
