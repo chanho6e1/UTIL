@@ -158,7 +158,6 @@ public class TagController {
     @ApiOperation(value = "나의 관심 태그별 유저 리스트 조회", notes = "나의 관심 테그별로, 유저 목록을 조회한다.")
     @GetMapping("/mytags/users")
     public ResponseEntity<CommonResponse> findByMyTagUserPostList(@ApiIgnore @CurrentUser UserPrincipal user,
-                                                              @RequestParam(required=false, defaultValue = "date") String criteria,
                                                               @RequestParam(required=false, defaultValue = "1") int offset,
                                                               @RequestParam(value = "size", required = false, defaultValue = "10") int size){
         return ResponseEntity.ok().body(CommonResponse.of(
