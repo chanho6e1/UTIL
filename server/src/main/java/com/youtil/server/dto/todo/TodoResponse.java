@@ -16,6 +16,7 @@ public class TodoResponse {
     private boolean state;
     private String dueDate;
     private String description;
+    private Long goalId;
 
     public TodoResponse(Todo todo) {
         todoId = todo.getTodoId();
@@ -23,5 +24,6 @@ public class TodoResponse {
         state = todo.isState();
         dueDate = todo.getDueDate();
         description = todo.getDescription();
+        goalId = todo.getGoal().getGoalId();
     }
 }

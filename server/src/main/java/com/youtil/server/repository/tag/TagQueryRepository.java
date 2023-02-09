@@ -69,7 +69,6 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
         return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
     }
     public Page<Post> findPostListByMyTag(Long userId, String criteria, PageRequest pageRequest) { //나의 관심 태그별 글 조회
-
 //        return jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
         QueryResults<Post> content = jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
                 .innerJoin(tagOfPost.post)
