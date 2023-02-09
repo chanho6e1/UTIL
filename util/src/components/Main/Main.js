@@ -16,13 +16,16 @@ import UserPage from "../UserPage/UserPage";
 import UserProfileChange from "../UserProfileChangePage/UserProfileChange";
 import PlanResponsive from "../Plan/PlanResponsive";
 import Explore from "../Explore/Explore";
+import { getSubscribePosts } from '../../api/Post/getSubscribePosts'
+import Search from '../Search/Search'
+
 
 const Main = (props) => {
   const parentRef = useRef();
   const userAuth = useSelector((state) => state.userAuthSlice.userAuth);
 
   const postData = {
-    content: [userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />, <UserProfileChange />, <PlanResponsive />, <div>test1</div>, <div>test1</div>],
+    content: [userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />, <Feed api={getSubscribePosts} />, <Search />, <Explore />, <PlanResponsive />],
     // 
     dock: {
       logoContracted: (

@@ -130,7 +130,7 @@ const PlanItem = (props) => {
           </div>
           {isEditMode ? titleEditInput : titleReadMode }
           <div>
-            <Link to={`/goal/${props.plan.goalId}`}>
+            <Link to={`index/goal/${props.plan.goalId}`}>
               <img src={extension} alt="extension" className={styles['go-to-detail']}/>
               {/* <span className={styles['go-to-detail']}>+</span> */}
             </Link>

@@ -83,23 +83,21 @@ const PlanCardItem = (props) => {
   const todos = useSelector(state => {return props.today === true ? state.planSlice.todayTodos : state.planSlice.todos[props?.plan?.goalId]})
 
 
-  useEffect(() => {
-    recvTodayTodosAPI()
-    .then((res) => {
-      dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
-      console.log('ssafy4 ', res)
-    })
-    .catch((err) => {
-      console.log('PlanCardItem : recvTodayTodosAPI => ', err)
-    })
-  }, [todos])
+  // useEffect(() => {
+  //   recvTodayTodosAPI()
+  //   .then((res) => {
+  //     dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
+  //   })
+  //   .catch((err) => {
+  //     console.log('PlanCardItem : recvTodayTodosAPI => ', err)
+  //   })
+  // }, [todos])
 
   useEffect(() => {
     if (props.today === true) {
       recvTodayTodosAPI()
       .then((res) => {
         dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
-        console.log('ssafy4 ', res)
       })
       .catch((err) => {
         console.log('PlanCardItem : recvTodayTodosAPI => ', err)

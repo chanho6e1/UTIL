@@ -91,7 +91,11 @@
     text-align: start;
     margin-top: 30px;
     width: 300px;
-    margin:auto;
+    margin-inline:auto;
+  }
+
+  .goal-detail-r-out {
+    margin-top: 30px;
   }
 
   .goal-detail-r-tils {
@@ -117,7 +121,7 @@
   .goal-detail-pc {
     /* background-color: #EDEDED; */
     display: grid;
-    grid-template-columns: 150px 3fr 3px 1fr 150px;
+    grid-template-columns: 100px 3fr 3px 1fr 150px;
     background-size: cover;
     height: 100vh;
     overflow: auto;
@@ -166,8 +170,10 @@
 }
 
 .goal-detail-l {
-  display: grid;
-  grid-template-columns: 100px 1fr 100px;
+  margin-inline: auto;
+  width: 100%;
+  max-width: 700px;
+  /* display: grid; */
   /* overflow: auto; */
 }
 

@@ -188,7 +188,8 @@ const DetailItemShow = (props) => {
 
   const tagOnClickHandler = (event) => {
     // 태그 클릭시 검색 페이지로 이동
-    console.log(event.currentTarget.id);
+    const tagName = event.currentTarget.getAttribute("value");
+    navigate(`/search?tag=${tagName}`);
   };
 
 

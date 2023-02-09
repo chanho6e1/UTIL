@@ -20,6 +20,7 @@ import NotiDeliverer from '../../UI/StackNotification/NotiDeliverer';
 import warning from "../../../img/Warning.png"
 import { delTodoAPI } from '../../../api/Plan/delTodoAPI';
 import FixedModal from '../../UI/FixedModal/FixedModal';
+import { recvTodayTodosAPI } from '../../../api/Plan/recvTodayTodosAPI';
 
 
 
@@ -88,7 +89,19 @@ const PlanCardTodoCRUD = (props) => {
                 dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
             })
             .then((res) => {
-                props.modalHandler()
+
+
+
+                recvTodayTodosAPI()
+                    .then((res) => {
+                    dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
+                    props.modalHandler()
+                    })
+                    .catch((err) => {
+                    console.log('PlanCardItem : recvTodayTodosAPI => ', err)
+                    })
+
+                
             })
             .catch((err) => {
                 console.log('PlanCardTodoCRUD : editTodoAPI => ', err)
@@ -116,7 +129,17 @@ const PlanCardTodoCRUD = (props) => {
                         data: res
                     }
                     dispatch(modifyPlanSliceActions.responseTodoPeriod(JSON.stringify(processing)))
+                    
+                    
+                    recvTodayTodosAPI()
+                    .then((res) => {
+                    dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
                     props.modalHandler()
+                    })
+                    .catch((err) => {
+                    console.log('PlanCardItem : recvTodayTodosAPI => ', err)
+                    })
+
                 })
                 .catch((err) => {
                     console.log('PlanCardTodoCRUD : recvTodoPeriodAPI => ', err)
@@ -134,6 +157,8 @@ const PlanCardTodoCRUD = (props) => {
             })
         }
     }
+
+    
 
 
     const [doneNotiState, setDoneNotiState] = useState(false)
@@ -160,6 +185,16 @@ const PlanCardTodoCRUD = (props) => {
                 data: res
             }
             dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
+
+
+            recvTodayTodosAPI()
+            .then((res) => {
+            dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
+            props.modalHandler()
+            })
+            .catch((err) => {
+            console.log('PlanCardItem : recvTodayTodosAPI => ', err)
+            })
         })
     }
 

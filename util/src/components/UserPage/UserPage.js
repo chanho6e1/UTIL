@@ -318,7 +318,7 @@ const UserPageForm = (props) => {
 
   return (
     <div ref={wrapperDiv} className={classes[`user-page`]}>
-      <div id="inner-overlay-root"></div>
+      
       <div ref={containerRef} className={classes[`postcard-container`]}>
         <div className={classes[`postcard-inner`]}>
           {userPageUpper}
@@ -344,10 +344,12 @@ const UserPage = (props) => {
 
   return (
     <div>
+      <div id="inner-overlay-root"></div>
       <Routes>
-        <Route path="/*" element={<UserPageForm id={props.id} />} /> 
-        <Route path="/goal/:id" element={<GoalDetail />} /> 
-        <Route path="/post/:id" element={<DetailItem />} />
+      <Route path="/*" element={<UserPageForm id={props.id} />} /> 
+        <Route path="index/*" element={<UserPageForm id={props.id} />} /> 
+        <Route path="index/goal/:id" element={<GoalDetail />} /> 
+        <Route path="index/post/:id" element={<DetailItem />} />
       </Routes>
     </div>
   )

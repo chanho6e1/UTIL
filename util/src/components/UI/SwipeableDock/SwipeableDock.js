@@ -23,18 +23,25 @@ const SwipeableDock = (props) => {
 
 
   useEffect(() => {
+    const url = '/' + location.pathname.split('/')[1]
+    const index = postData.url.indexOf(url)
+    setContentCount(index + 1)
+  }, [location.pathname])
+
+  useEffect(() => {
     setUrlLib({})
     postData.url.map((el,idx) => {
       setUrlLib((prev) => {return {...prev, [el]: idx + 1}})
     })
   }, [])
 
-  useEffect(() => {
 
-    setContentCount(urlLib[location.pathname])
+  // useEffect(() => {
+
+  //   // setContentCount(urlLib[location.pathname])
 
     
-  }, [urlLib, location.pathname])
+  // }, [urlLib, location.pathname])
 
 
 
@@ -100,8 +107,8 @@ const SwipeableDock = (props) => {
 
 
   const clickDockHandler = async (idx) => {
-    // navigate(postData.url[idx], { replace: true });
-    setContentCount(() => idx + 1)
+    navigate(postData.url[idx], { replace: true });
+    // setContentCount(() => idx + 1)
   }
 
 
@@ -125,6 +132,34 @@ const SwipeableDock = (props) => {
 
 
 
+
+
+
+  const { pathname } = useLocation();
+  const wrapRef = useRef([]);
+  const movePage = (url) =>{
+    if(pathname !== `/${url}` && !pathname.includes('modal')) {
+      
+      wrapRef?.current[contentCount - 1]?.classList?.replace('loaded', 'unloaded');
+      setTimeout(()=> { 
+        // navigate(url);
+        wrapRef?.current[contentCount - 1]?.classList?.replace('unloaded', 'loaded');
+      } , 10)
+    }
+  }
+
+  useEffect(() => {
+    if (wrapRef?.current[0]) {
+      movePage(pathname)
+    }
+    
+  }, [pathname])
+
+
+
+
+
+
   return (
     <div className={styles['dock-view']}>
       
@@ -138,7 +173,7 @@ const SwipeableDock = (props) => {
 
 
                   // return <div className={styles.content} style={{width: width + 'px', height: height + 'px'}}><Routes><Route path={`${postData.url[idx]}/*`} element={el} /></Routes></div>
-                  return <div key={`dock-content-${idx}`} className={styles.content} style={{width: width + 'px', height: height + 'px'}}>{el}</div>
+                  return <div key={`dock-content-${idx}`} ref={el => (wrapRef.current[idx] = el)} className={`${styles.content} loaded`} style={{width: width + 'px', height: height + 'px'}}>{el}</div>
               })}
             </div>
           </div>

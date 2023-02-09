@@ -9,19 +9,21 @@ import { getPostByNickname } from "../../api/Post/getPostByNickname";
 const feedCardItemList = (postList) => {
   return postList?.map((post) => {
     return (
-      <FeedCardItem
-        id={post.postId}
-        key={post.postId}
-        thumbnail={post.thumbnail}
-        title={post.title}
-        contents={post.contents}
-        likeStatusSize={post.likeStatusSize}
-        likeStatus={post.likeStatus}
-        bookmarkStatus={post.bookmarkStatus}
-        profileImg={post.writerInfo.profileImg}
-        nickname={post.writerInfo.nickname}
-        createdDate={post.createdDate}
-      />
+      <div key={`search-feed-card-${post.postId}`} className={classes['card-wrapper']}>
+        <FeedCardItem
+          id={post.postId}
+          
+          thumbnail={post.thumbnail}
+          title={post.title}
+          contents={post.contents}
+          likeStatusSize={post.likeStatusSize}
+          likeStatus={post.likeStatus}
+          bookmarkStatus={post.bookmarkStatus}
+          profileImg={post.writerInfo.profileImg}
+          nickname={post.writerInfo.nickname}
+          createdDate={post.createdDate}
+        />
+      </div>
     );
   });
 };
