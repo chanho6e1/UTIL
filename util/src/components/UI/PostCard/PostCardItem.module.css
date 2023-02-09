@@ -1,38 +1,85 @@
 .card {
   width: 100%;
   height: 240px;
-  /* margin: 18px; */
-  margin-bottom: 18px;
-}
-
-.postcarditem {
+  margin-bottom: 14px;
   display: flex;
   justify-content: space-between;
-  text-align: start;
-  width: 100%;
-  height: 100%;
-  /* outline: 1px solid #c9c9c9; */
-  /* border-radius: 20px; */
-  list-style: none;
-  background-color: white;
-
 }
 
-.card-text {
+.left-wrapper {
+  padding: 20px;
+  flex-grow:1;
+  /* background-color: red; */
   
-  /* flex: 1; */
-  padding: 16px 20px 16px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: auto;
-  overflow: hidden;
-  /* min-width: 70%; */
+  align-items: baseline;
+}
+
+.card-image-wrapper {
+
+
+
+  display: flex;
+  align-items: center;
+  width: 200px;
+  height: 100%;
+  border-left: 1px solid #c9c9c9; 
+
+  cursor: pointer;
 
 }
 
+.card-image-wrapper img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+.left-bottom {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.user {
+  display: flex;
+}
+
+.function-wrapper {
+  display: flex;
+}
+
+
+
+
+.tags {
+  display: flex;
+  width: 50%;
+  box-sizing: border-box;
+  overflow: scroll;
+  /* margin-bottom: 10px;
+  padding-left: 20px;
+  margin-left: -20px;
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 5%, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0)  100%);
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 5%, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0) 100%); */
+
+}
+
+/* .tags::-webkit-scrollbar {
+  display: none; 
+}
+
+.tags {
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+} */
+
+
 .title {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 700;
   text-overflow: clip;
   display: -webkit-box;
@@ -40,54 +87,25 @@
   -webkit-line-clamp: 1;
   overflow: hidden;
   margin-bottom: 6px;
-  cursor: pointer;
 }
 
 .contents {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 1;
   overflow: hidden;
   text-overflow: clip;
   font-size: 1rem;
   font-weight: 300;
-  margin-bottom: 6px;
-  cursor: pointer;
 }
 
-.tags {
-  width: 100%;
-  overflow: scroll;
-  /* display: flex;
-  justify-content: left;
-  flex-wrap: wrap; */
-
-  margin-bottom: 10px;
-
-  padding-left: 20px;
-  margin-left: -20px;
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 5%, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0)  100%);
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 5%, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0) 100%);
-
+.username {
+  margin-right: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.tags::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera*/
-}
-
-.tags {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-/* .tags ul {
-  padding: 0 0 0 0;
-  margin: 8px 0 0 0;
-}
-
-.tags li {
-  list-style: none;
-  float: left;
-} */
 
 .icon-user {
   display: flex;
@@ -120,78 +138,4 @@
 
 .date {
   color: #585858;
-}
-
-.card-image {
-  display: flex;
-  align-items: center;
-  width: 300px;
-  /* outline: 1px solid #c9c9c9; */
-  border-left: 1px solid #c9c9c9; 
-  /* border-radius: 0 20px 20px 0; */
-  cursor: pointer;
-  min-width: 300px;;
-}
-
-.card-image img {
-  width: 70%;
-  height: 70%;
-  object-fit: contain;
-  margin: 0 auto;
-}
-
-
-.postcarditem {
-  display: flex;
-  justify-content: space-between;
-  height: 180px;
-}
-
-.card-text {
-  flex: 1;
-  padding: 20px 14px 20px 14px;
-}
-
-.card-image {
-  display: flex;
-  align-items: center;
-  width: 180px;
-  outline: 1px solid #c9c9c9;
-  /* border-radius: 0 20px 20px 0; */
-}
-
-.title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-overflow: clip;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-  margin-bottom: 6px;
-}
-
-.contents {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-  text-overflow: clip;
-  font-size: 1rem;
-  font-weight: 300;
-}
-
-.username {
-  margin-right: 4px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-
-
-@media screen and (max-width: 768px) {
-
-
-
 }

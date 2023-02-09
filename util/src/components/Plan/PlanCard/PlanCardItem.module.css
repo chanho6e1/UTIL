@@ -1,10 +1,4 @@
-.plan-card {
-    margin: 12px;
-    background-color: white;
 
-
-
-}
 
 
 
@@ -14,13 +8,22 @@
 
     }
 
+    .plan-card {
+        margin: 12px;
+        background-color: white;
+    
+    
+    
+    }
+
     
     
 }
 
 @media all and (min-width: 480px) {
     .plan-card {
-        width: 300px;
+        width: 100%;
+        margin-bottom: 14px;
 
     }
 
