@@ -43,7 +43,9 @@ public class S3Uploader {
 
     private String upload(File uploadFile, String dirName){
 
-        String name = uploadFile.getName().substring(uploadFile.getName().length()-7);
+        String name = uploadFile.getName();
+        if(name.length() > 8)
+            name = uploadFile.getName().substring(uploadFile.getName().length()-7);
         String fileName = dirName+"/"+ UUID.randomUUID()+ name;
         String uploadImageUrl = puts3(uploadFile, fileName);
 
