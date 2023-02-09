@@ -23,8 +23,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import Swipe from "react-easy-swipe";
 import GoalDetail from "../Goal/GoalDetail";
 import DetailItem from "../Detail/DetailItem";
-
+import Card from "../UI/Card/Card";
 import PlanCard from "../Plan/PlanCard/PlanCard";
+import PlanExpanded from "../Plan/PlanExpanded";
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -231,48 +232,46 @@ const UserPageForm = (props) => {
     fetchUserPostData(criteriaIdx, page, size);
   };
 
-  const wrapperDiv = useRef();
 
-  // scroll event handler
-  const handleScroll = () => {
-    const scrollHeight = containerRef.current.scrollHeight;
-    const scrollTop = containerRef.current.scrollTop;
-    const clientHeight = containerRef.current.clientHeight;
-    if (scrollTop + clientHeight >= scrollHeight - 1 && isLoading === false) {
-      if (offset < totalPage) {
-        setFetchStart(() => true);
-      }
 
-      // 페이지 끝에 도달하면 추가 데이터를 받아온다
-    }
-  };
+  // // scroll event handler
+  // const handleScroll = () => {
+  //   const scrollHeight = containerRef.current.scrollHeight;
+  //   const scrollTop = containerRef.current.scrollTop;
+  //   const clientHeight = containerRef.current.clientHeight;
+  //   if (scrollTop + clientHeight >= scrollHeight - 1 && isLoading === false) {
+  //     if (offset < totalPage) {
+  //       setFetchStart(() => true);
+  //     }
 
-  useEffect(() => {
-    // scroll event listener 등록
-    if (containerRef.current !== null) {
-      containerRef.current.addEventListener("scroll", handleScroll);
-    }
-    return () => {
-      // scroll event listener 해제
-      if (containerRef.current !== null) {
-        containerRef.current.removeEventListener("scroll", handleScroll);
-      }
-    };
-  });
+  //     // 페이지 끝에 도달하면 추가 데이터를 받아온다
+  //   }
+  // };
 
-  const userPageUpper = (
+  // useEffect(() => {
+  //   // scroll event listener 등록
+  //   if (containerRef.current !== null) {
+  //     containerRef.current.addEventListener("scroll", handleScroll);
+  //   }
+  //   return () => {
+  //     // scroll event listener 해제
+  //     if (containerRef.current !== null) {
+  //       containerRef.current.removeEventListener("scroll", handleScroll);
+  //     }
+  //   };
+  // });
+
+  const userInformation = (
     <div className={classes[`user-page-upper`]}>
       <div className={classes[`user-page-upper-inner`]}>
-
-      
         <div className={classes[`avatar-username`]}>
           <Avatar
             src={userData.imageUrl}
             sx={{
-              width: "15vw",
-              height: "15vw",
-              minWidth: "96px",
-              minHeight: "96px",
+              width: "5vw",
+              height: "5vw",
+              minWidth: "48px",
+              minHeight: "48px",
               maxWidth: "128px",
               maxHeight: "128px",
               border: "1px solid lightgray",
@@ -312,30 +311,58 @@ const UserPageForm = (props) => {
           <div className={classes["tag-wrapper-mobile"]}>
             <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
           </div>
-        </Swipe>
+      </Swipe>
     </div>
   );
 
-  return (
-    <div ref={wrapperDiv} className={classes[`user-page`]}>
+  const header = (
+    <React.Fragment>
+      {userInformation}
+      <div className={classes["line"]} />
       
-      <div ref={containerRef} className={classes[`postcard-container`]}>
-        <div className={classes[`postcard-inner`]}>
-          {userPageUpper}
-          <div className={classes["line"]} />
-          {postCardContainer(postList)}
-        </div>
+    </React.Fragment>
+  )
 
-        <div className={classes["plan-card-wrapper"]}>
-          <PlanCard />
-        </div>
-      </div>
+
+  const temp = (
+    <React.Fragment>
+
+      
+      
+
+      
 
       <div className={classes[`pagination`]}>
-        <Pagination count={totalPage} onChange={pageChangeHandler} />
+      <Pagination count={totalPage} onChange={pageChangeHandler} />
+      </div>
+
+    </React.Fragment>
+    
+  )
+
+  return (
+    <div className={classes['user-page']}>
+      <div className={classes['contents']}>
+        {header}
+        <div className={classes['body']}>
+          <div className={classes['article-list-wrapper']}>
+            <div className={classes['kanban-wrapper']}>
+              <Card className={classes["plan-kanban"]}>
+                <PlanExpanded contracted={true} />
+              </Card>
+            </div>
+            
+            {postCardContainer(postList)}
+          </div>
+          <div className={classes["plan-card-wrapper"]}>
+            <PlanCard />
+          </div>
+        </div>
       </div>
     </div>
+
   );
+
 };
 
 
