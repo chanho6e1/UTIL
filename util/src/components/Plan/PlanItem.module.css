@@ -43,7 +43,7 @@
     border-bottom: 1px solid transparent;
 
     background-color: rgb(244, 245, 247);
-    width: 240px;
+    /* width: 240px; */
     padding-left: 10px;
     min-height: 48px;
     display: flex;
@@ -236,4 +236,8 @@
 
 .button {
     width: 40%;
+}
+
+.link-icons {
+    color:rgb(120, 120, 120);
 }

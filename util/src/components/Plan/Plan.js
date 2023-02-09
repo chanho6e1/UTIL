@@ -258,7 +258,7 @@ const Plan = (props) => {
     }
 
     const newPlanDummy = (
-        <div onClick={newPlanClickShow} className={`${styles['new-plan-button']} ${styles['plan-title-bar']} ${plans.length % 2 ? styles['title-odd'] : styles['title-even']}`}>
+        <div onClick={newPlanClickShow} className={`${styles['new-plan-button']} ${styles['plan-title-bar']} ${plans.length % 2 ? styles['title-odd'] : styles['title-even']}`} style={{width: `${props.contracted === true ? '160px' : '240px'}`}}>
             {newPlan ? <input type="text" onChange={newPlanValueHandler} value={newPlanValue} onKeyPress={(event) => {addNewPlan(event)}} onBlur={newPlanClickHide} placeholder="목표를 입력해 주세요." autoFocus className={styles['new-plan-input']} /> : <div className={styles['new-plan']}>{plusImg} 목표 작성</div> }
         </div>
     )
@@ -284,7 +284,7 @@ const Plan = (props) => {
         <div className={styles['plans-wrapper']}>
             {notiState && <NotiDeliverer content={errorMessage} stateHandler={setNotiState} duration={5000} width={400} />}
             <div className={styles['plans-title-wrapper']} > 
-                <div className={styles['plan-title-bar-space']} />
+                <div className={styles['plan-title-bar-space']} style={{width: `${props.contracted === true ? '170px' : '250px'}`}} />
                 <div className={styles['plans-titles']} ref={plansTitleWrapperRef}>
                     <div className={styles['plans-titles-inner']} ref={plansTitleInnerRef}>
                         {planTitleGrid}
