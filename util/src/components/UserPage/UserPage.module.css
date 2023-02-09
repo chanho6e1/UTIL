@@ -171,12 +171,12 @@
     display: flex;
     box-sizing: border-box;
     justify-content: center;
-    width: 80%;
+    width: 100%;
     
   }
 
   .postcard-inner {
-    width: 100%;
+    width: 60%;
   }
 
 

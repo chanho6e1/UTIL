@@ -27,6 +27,7 @@ import TextArea from "../UI/TextArea/TextArea";
 import DetailItemLoading from "./DetailItemLoading";
 import TagDataList from "../UI/Tag/TagDataList";
 import Button from "../UI/Button/Button";
+import Swipe from "react-easy-swipe";
 
 import { Viewer } from '@toast-ui/react-editor';
 
@@ -256,8 +257,8 @@ const DetailItemShow = (props) => {
           <div className={classes["Detail-info"]}>
             
             <div className={classes["Detail-info-inner"]}>
-              {/* <img
-                  className={classes["user-picture"]}
+              <img
+                  className={classes["detail-user-picture"]}
                   // src={defaultUserPicture}
                   src={
                     post.writerInfo.profileImg === ""
@@ -265,7 +266,7 @@ const DetailItemShow = (props) => {
                       : post.writerInfo.profileImg
                   }
                   alt="user"
-                /> */}
+                />
               <div className={classes["Detail-user"]}>
                 <span className={classes.username}>{post.writerInfo.nickname} ·</span>
                 <span className={classes['created-date']}>{dateString}</span>
@@ -331,10 +332,13 @@ const DetailItemShow = (props) => {
               </div>
             </div>
 
-
+            
             <div className={classes['icons-tag']}>
+            <Swipe onSwipeStart={(event) => {event.stopPropagation()}}>
               <TagDataList tagList={tagList} onClick={tagOnClickHandler} />
+              </Swipe>
             </div>
+            
           </div>
         </div>
 
