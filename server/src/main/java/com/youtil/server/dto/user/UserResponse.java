@@ -31,7 +31,7 @@ public class UserResponse {
         this.userId = u.getUserId();
         this.userName = u.getUserName();
         this.nickname = u.getNickName();
-        this.imageUrl = u.getImageUrl();
+        this.imageUrl = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/" + u.getImageUrl();
     }
 
     public static UserResponse from(User user) {
