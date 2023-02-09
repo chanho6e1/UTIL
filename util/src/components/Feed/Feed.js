@@ -7,7 +7,7 @@ import Loading from "../UI/Loading/Loading";
 const feedCardItemList = (postList) => {
   return postList?.map((post) => {
     return (
-      <div className={classes['card-wrapper']}>
+      <div key={`simple-feed-card-${post.postId}`} className={classes["card-wrapper"]}>
         <FeedCardItem
           id={post.postId}
           key={post.postId}
@@ -20,9 +20,8 @@ const feedCardItemList = (postList) => {
           profileImg={post.writerInfo.profileImg}
           nickname={post.writerInfo.nickname}
           createdDate={post.createdDate}
-      />
+        />
       </div>
-      
     );
   });
 };
