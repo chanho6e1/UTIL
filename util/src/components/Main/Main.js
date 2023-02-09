@@ -22,14 +22,8 @@ const Main = (props) => {
   const userAuth = useSelector((state) => state.userAuthSlice.userAuth);
 
   const postData = {
-    content: [
-      userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />,
-      <Explore />,
-      <PlanResponsive />,
-      <div>test1</div>,
-      <div>test1</div>,
-    ],
-    // userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />
+    content: [userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />, <UserProfileChange />, <PlanResponsive />, <div>test1</div>, <div>test1</div>],
+    // 
     dock: {
       logoContracted: (
         <img className={styles["logo-icon"]} src={logo} style={{ width: "96px", height: "auto" }} />

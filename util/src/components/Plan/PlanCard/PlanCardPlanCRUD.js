@@ -56,8 +56,8 @@ const PlanCardPlanCRUD = (props) => {
     const today = toStringByFormatting(new Date())
 
     const [title, setTitle] = useState(props.plan ? props.plan.title : null)
-    const [startDate, setStartDate] = useState(props.plan ? toStringByFormatting(new Date(props.plan.startDate)) : today)
-    const [endDate, setEndDate] = useState(props.plan ? toStringByFormatting(new Date(props.plan.startDate)) : null)
+    const [startDate, setStartDate] = useState(props.plan ? new Date(props.plan.startDate) : today)
+    const [endDate, setEndDate] = useState(props.plan ? new Date(props.plan.startDate) : null)
 
     const titleChangeHandler = (event) => {
         setTitle(() => event.target.value)

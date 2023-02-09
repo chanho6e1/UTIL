@@ -21,7 +21,6 @@ const PostTag = (props) => {
 
   useEffect(() => {
     if (frontData.length === 1 && props.editTags && props?.editTags?.length !== 0) {
-      console.log('ffjawek;jfksdjnl;vjsdfjfgserklgio;hbgfnld;jfdilsnafs;dfhkwe')
       setFrontData([])
       props?.editTags?.map((el, idx) => {
         setFrontData((prev) => [...prev, el.tagName])
