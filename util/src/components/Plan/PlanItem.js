@@ -121,20 +121,23 @@ const PlanItem = (props) => {
     </div>
   )
   
+    const arrowRender = (
+      <div onClick={props.todoFormToggleHandler.bind(this, props.idx, props.plan.goalId)} className={styles['plan-title-bar-icon-wrapper']}>
+        <img className={styles['arrow-icon']} src={arrow} style={{transform: props.todoFormVisibility[props.idx] ? 'rotate(90deg)' : 'none', marginLeft:'13px', width: '12px', height: 'auto'}}/>
+      </div>
+    )
+
   return (
     <React.Fragment>
       <FixedModal modalState={askDeleteState} stateHandler={setAskDeleteState} content={<AskDeleteForm />} width={'300px'} height={'310px'} />
       <div  id={`${props.plan.goalId}`} className={`${styles['plan-title-bar']} ${props.idx % 2 ? styles['title-odd'] : styles['title-even']}`}>
-          <div onClick={props.todoFormToggleHandler.bind(this, props.idx, props.plan.goalId)} className={styles['plan-title-bar-icon-wrapper']}>
-              <img className={styles['arrow-icon']} src={arrow} style={{transform: props.todoFormVisibility[props.idx] ? 'rotate(90deg)' : 'none', marginLeft:'13px', width: '12px', height: 'auto'}}/>
-          </div>
+          {props.contracted === true ? null : arrowRender}
           {isEditMode ? titleEditInput : titleReadMode }
-          <div>
+          {/* <div>
             <Link to={`index/goal/${props.plan.goalId}`}>
               <img src={extension} alt="extension" className={styles['go-to-detail']}/>
-              {/* <span className={styles['go-to-detail']}>+</span> */}
             </Link>
-          </div>
+          </div> */}
       </div>
       {props.todoFormVisibility[props.idx] && <PlanTodoListLeft applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} plan={props.plan} todos={props.todos} getNewTodoIdx={props.getNewTodoIdx} newTodoGoalId={props.newTodoGoalId} />}
   </React.Fragment>

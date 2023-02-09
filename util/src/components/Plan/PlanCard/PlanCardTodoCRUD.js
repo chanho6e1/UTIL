@@ -129,16 +129,16 @@ const PlanCardTodoCRUD = (props) => {
                         data: res
                     }
                     dispatch(modifyPlanSliceActions.responseTodoPeriod(JSON.stringify(processing)))
-                    
-                    
-                    recvTodayTodosAPI()
-                    .then((res) => {
-                    dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
                     props.modalHandler()
-                    })
-                    .catch((err) => {
-                    console.log('PlanCardItem : recvTodayTodosAPI => ', err)
-                    })
+                    
+                    // recvTodayTodosAPI()
+                    // .then((res) => {
+                    // dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
+                    // props.modalHandler()
+                    // })
+                    // .catch((err) => {
+                    // console.log('PlanCardItem : recvTodayTodosAPI => ', err)
+                    // })
 
                 })
                 .catch((err) => {
@@ -185,16 +185,16 @@ const PlanCardTodoCRUD = (props) => {
                 data: res
             }
             dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing)))
-
-
-            recvTodayTodosAPI()
-            .then((res) => {
-            dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
             props.modalHandler()
-            })
-            .catch((err) => {
-            console.log('PlanCardItem : recvTodayTodosAPI => ', err)
-            })
+
+            // recvTodayTodosAPI()
+            // .then((res) => {
+            // dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
+            // props.modalHandler()
+            // })
+            // .catch((err) => {
+            // console.log('PlanCardItem : recvTodayTodosAPI => ', err)
+            // })
         })
     }
 

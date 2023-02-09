@@ -186,7 +186,7 @@ const PlanCalendar = (props) => {
           <div ref={monthBarRef} className={styles['scroll-div']} >
             {totalPlansGrid}
             {props.columns? null : newPlanDummy}
-            <div ref={monthSpaceRef} className={styles['month-space']} style={{width: `${containerRef?.current?.scrollWidth}px`}} />
+            {props.contracted === true ? null : <div ref={monthSpaceRef} className={styles['month-space']} style={{width: `${containerRef?.current?.scrollWidth}px`}} />}
           </div>
         </div>
       </div>

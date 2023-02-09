@@ -179,8 +179,9 @@ const Modal = (props) => {
   
 
   const match = useMatch(`${props.url}`);
+  const rootElement = document.getElementById(`${props.rootId}`)
   const condition = (match || props.toggleBoolean)
-  const modal = ReactDOM.createPortal(<ModalOverlay component={props.component} id={props.id} name={props.name} parentId={props.parentId} parentRef={props.parentRef} toggleFunction={props.toggleFunction} toggleBoolean={props.toggleBoolean} url={props.url} prevUrl={props.prevUrl} fadeOut={props.fadeOut} />, document.getElementById(`${props.rootId}`))
+  const modal = rootElement && ReactDOM.createPortal(<ModalOverlay component={props.component} id={props.id} name={props.name} parentId={props.parentId} parentRef={props.parentRef} toggleFunction={props.toggleFunction} toggleBoolean={props.toggleBoolean} url={props.url} prevUrl={props.prevUrl} fadeOut={props.fadeOut} />, document.getElementById(`${props.rootId}`))
   const result = condition && modal
 
   return (
