@@ -148,10 +148,6 @@ const DetailItem = (props) => {
   const [isBookmark, setIsBookmark] = useState(post.bookmarkStatus);
   const [isLike, setIsLike] = useState(post.likeStatus);
   const [likeStatusSize, setLikeStatusSize] = useState(post.likeStatusSize);
-  
-  console.log(post.bookmarkStatus)
-  console.log(post.likeStatus)
-  console.log(post.likeStatusSize)
 
   const displayLikeStatusSize = (likeStatusSize) => {
     if (likeStatusSize > 1000) {
@@ -170,9 +166,6 @@ const DetailItem = (props) => {
       if (res === 200) {
         setIsBookmark((prevState) => !prevState);
       }
-      console.log(post.bookmarkStatus)
-      console.log(post.likeStatus)
-      console.log(post.likeStatusSize)
     });
   };
 
@@ -187,9 +180,6 @@ const DetailItem = (props) => {
         }
         setIsLike((prevState) => !prevState);
       }
-      console.log(post.bookmarkStatus)
-      console.log(post.likeStatus)
-      console.log(post.likeStatusSize)
     })
     .catch((err) => {
       console.log('DetailItem : putLikeToggle => ', err)

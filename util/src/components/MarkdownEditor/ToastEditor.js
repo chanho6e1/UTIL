@@ -68,7 +68,6 @@ const ToastEditorForm = (props) => {
         setQueryString((prev) => {return {...prev, goal:res, takeStep, askDone}})
       })
     }
-    console.log(location)
 
     
   }, [])
@@ -128,7 +127,6 @@ const ToastEditorForm = (props) => {
 
 
   const reviewEditHandler = () => {
-    console.log('fwefwefeawfawe', content)
     editDetailReviewAPI(props.editIdx, {
       title: title,
       content: editorRef.current.getInstance().getHTML(),
@@ -236,7 +234,7 @@ const ToastEditorForm = (props) => {
 
   return (
 
-    <div ref={editorWrapperRef} className={styles['editor-wrapper']} onClick={() => console.log(editorRef.current)}>
+    <div ref={editorWrapperRef} className={styles['editor-wrapper']}>
       {doneNotiState && <NotiDeliverer content={message1} stateHandler={setDoneNotiState} duration={5000} width={350} height={100} />}
       {alertNotiState && <NotiDeliverer content={alert} stateHandler={setAlertNotiState} duration={5000} width={350} height={100} />}
       <FixedModal edit={props.edit} queryString={queryString} modalState={modalState} stateHandler={setModalState} content={<BlogPostForm postSubmitHandler={postSubmitHandler} reviewSubmitHandler={reviewSubmitHandler} forReview={props.forReview} />} noBtn={true} width={'10px'} height={'170px'} />

@@ -70,7 +70,6 @@ const FeedCardItem = (props) => {
   const postClickHandler = () => {
     navigate(`/m/modal/post/${props.id}`)
     setShowModal(true)
-    console.log("post click");
   };
 
 
