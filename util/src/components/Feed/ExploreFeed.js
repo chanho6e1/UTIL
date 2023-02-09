@@ -25,8 +25,6 @@ const feedCardItemList = (postList) => {
 };
 
 const ExploreFeed = (props) => {
-  console.log("props", props.criteria);
-
   const [feedList, setFeedList] = useState([]);
   const [criteria, setCriteria] = useState(props.criteria === undefined ? 0 : props.criteria);
   const criteriaList = ["date", "view", "like"];
@@ -82,13 +80,12 @@ const ExploreFeed = (props) => {
     if (postList.length > 0) {
       return <ul>{feedCardItemList(feedList)}</ul>;
     } else {
-      return <h1>포스트가 없습니다.</h1>;
+      return <div className={classes[`alt-text`]}>관련 태그에 맞는 게시물이 없어요</div>;
     }
   };
   return (
     <Fragment>
       <div className={classes.feed} ref={feedRef}>
-        {/* {<ul>{feedCardItemList(feedList)}</ul>} */}
         {content(feedList)}
         {isLoading && <div className={classes.loading}>{Loading()}</div>}
       </div>
