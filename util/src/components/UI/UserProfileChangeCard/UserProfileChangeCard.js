@@ -7,6 +7,7 @@ import PhotoCameraIconCircle from "../../../img/photoCameraIcon_circle.png";
 import { nicknameDuplicateCheck } from "../../../api/UserProfile/nicknameDuplicateCheck";
 import { getAllTags } from "../../../api/UserProfile/getAllTags";
 import Card from "../Card/Card";
+import { useNavigate } from "react-router-dom";
 
 const isUnderTwoChars = (value) => (typeof value === "string" ? value.trim().length < 2 : false);
 const isOverTenChars = (value) => (typeof value === "string" ? value.trim().length > 10 : false);
@@ -15,6 +16,7 @@ const isTagOverFive = (value) => value.length > 5;
 const UserProfileChangeCard = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
   const [isInit, setIsInit] = useState(true);
+  const navigate = useNavigate();
 
   // 신규 유저 체크
   const [isNewUser, setIsNewUser] = useState(props.nickname === null ? true : false);
