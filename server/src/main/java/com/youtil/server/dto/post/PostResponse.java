@@ -26,7 +26,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class PostResponse {
+public class
+PostResponse {
 
     private Long postId;
 

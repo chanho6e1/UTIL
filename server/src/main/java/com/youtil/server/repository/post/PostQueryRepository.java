@@ -144,7 +144,6 @@ public class PostQueryRepository {
                 .fetchResults();
 
         return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
-
     }
 
     public Page<Post> findByLikePostList(String criteria, User user, PageRequest pageRequest) {
