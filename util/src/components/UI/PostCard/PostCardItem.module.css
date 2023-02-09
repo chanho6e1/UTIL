@@ -77,6 +77,9 @@
   scrollbar-width: none; 
 } */
 
+.left-top {
+  text-align: start;
+}
 
 .title {
   font-size: 1.5rem;
@@ -91,8 +94,9 @@
 
 .contents {
   display: -webkit-box;
+  margin-top: 20px;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 3;
   overflow: hidden;
   text-overflow: clip;
   font-size: 1rem;

@@ -154,12 +154,14 @@ const DetailComment = (props) => {
             <input type="checkbox" checked={props.newDepthCommentIsPrivate} onChange={props.newDepthCommentIsPrivateInputHandler} />
             
         </div>
-        <TextArea className={classes['Detail-comments-contents-box']} value={props.newDepthCommentContent} onChange={props.newDepthCommentContentInputHandler} placeholder="답글을 작성해 주세요" onKeyPress={onEnterNewDepthCommentHandlerAndClose}/>
-        <div className={classes['comments-buttons-wrapper']}>
-          {/* <Button className={classes["solid-button"]} onClick={closeAllHandler}>취소</Button>
-          <Button className={classes["solid-button"]} onClick={onClickNewDepthCommentHandlerAndClose}>등록</Button> */}
-          <span className={classes['link-text']} onClick={closeAllHandler}>취소</span>
-          <span className={classes['link-text']} onClick={onClickNewDepthCommentHandlerAndClose}>등록</span>
+        <div className={classes["Detail-comments-contents-warpper"]}>
+          <TextArea className={classes['Detail-comments-contents-box']} value={props.newDepthCommentContent} onChange={props.newDepthCommentContentInputHandler} placeholder="답글을 작성해 주세요" onKeyPress={onEnterNewDepthCommentHandlerAndClose}/>
+          <div className={classes['comments-buttons-wrapper']}>
+            {/* <Button className={classes["solid-button"]} onClick={closeAllHandler}>취소</Button>
+            <Button className={classes["solid-button"]} onClick={onClickNewDepthCommentHandlerAndClose}>등록</Button> */}
+            <span className={classes['link-text']} onClick={closeAllHandler}>취소</span>
+            <span className={classes['link-text']} onClick={onClickNewDepthCommentHandlerAndClose}>등록</span>
+          </div>
         </div>
         
         {/* <textarea className={classes['Detail-comments-contents-box']} value={props.newDepthCommentContent} onChange={props.newDepthCommentContentInputHandler} placeholder="답글을 작성해 주세요" onKeyPress={onEnterNewDepthCommentHandlerAndClose}/> */}
@@ -252,12 +254,14 @@ const DetailComment = (props) => {
                 <input type="checkbox" checked={editCommentIsPrivate} onChange={editCommentIsPrivateInputHandler} />
                 
               </div>
-              <TextArea className={classes['Detail-comments-contents-box']} value={editCommentContent} onChange={editCommentContentInputHandler} onKeyPress={onEnterEditCommentHandler}/>
-              <div className={classes['comments-buttons-wrapper']}>
-                {/* <Button className={classes["solid-button"]} onClick={closeAllHandler}>취소</Button>
-                <Button className={classes["solid-button"]} onClick={onClickEditCommentHandler}>등록</Button> */}
-                <span className={classes['link-text']} onClick={closeAllHandler}>취소</span>
-                <span className={classes['link-text']} onClick={onClickEditCommentHandler}>등록</span>
+              <div className={classes["Detail-comments-contents-warpper"]}>
+                <TextArea className={classes['Detail-comments-contents-box']} value={editCommentContent} onChange={editCommentContentInputHandler} onKeyPress={onEnterEditCommentHandler}/>
+                <div className={classes['comments-buttons-wrapper']}>
+                  {/* <Button className={classes["solid-button"]} onClick={closeAllHandler}>취소</Button>
+                  <Button className={classes["solid-button"]} onClick={onClickEditCommentHandler}>등록</Button> */}
+                  <span className={classes['link-text']} onClick={closeAllHandler}>취소</span>
+                  <span className={classes['link-text']} onClick={onClickEditCommentHandler}>등록</span>
+                </div>
               </div>
               {/* <textarea className={classes['Detail-comments-contents-box']} value={editCommentContent} onChange={editCommentContentInputHandler} onKeyPress={onEnterEditCommentHandler}/> */}
             </div>
