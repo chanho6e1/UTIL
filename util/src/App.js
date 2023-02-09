@@ -57,7 +57,6 @@ const App = () => {
   const loadCurrentlyLoggedInUser = () => {
     getCurrentUser()
     .then(response => {
-      console.log('ssafy', response)
       dispatch(userAuthSliceActions.changeAuthenticated('true'))
       dispatch(userAuthSliceActions.changeCurrentUser(JSON.stringify(response.data)))
       dispatch(userAuthSliceActions.changeLoading('false'))
