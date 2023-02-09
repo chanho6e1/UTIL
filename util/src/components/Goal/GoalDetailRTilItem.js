@@ -8,7 +8,7 @@ import { tilAPI } from "../../api/Detail/tilAPI";
 const GoalDetailRTilItem = (props) => {
 
   return (
-    <Link to={`/post/${props.til.postId}`}>
+    <Link className={classes["goal-detail-r-tils-item-link"]} to={`/post/${props.til.postId}`}>
       <li className={classes["goal-detail-r-tils-item-title"]}>{props.til.title}</li>
     </Link>
   );

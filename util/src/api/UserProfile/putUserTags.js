@@ -13,7 +13,6 @@ export const putUserTags = (userTagList) => {
     },
   })
     .then((res) => {
-      console.log(res);
       return res;
     })
     .catch((err) => {

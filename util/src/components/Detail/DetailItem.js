@@ -216,7 +216,6 @@ const DetailItemShow = (props) => {
   const postDeleteHandler = () => {
     tilDeleteAPI(post.postId)
     .then((res) => {
-      console.log("삭제되었습니다.")
       navigate(`/`)
     })
   }
