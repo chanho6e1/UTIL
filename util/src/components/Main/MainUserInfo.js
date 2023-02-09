@@ -93,7 +93,7 @@ export const UserDockWrapper = (props) => {
   
 
   return (
-    <div onClick={() => {userAuth.authenticated ? setDropDownState(true) : navigateLogin(); console.log(userAuth) }}>
+    <div onClick={() => {userAuth.authenticated ? setDropDownState(true) : navigateLogin();}}>
       
       {props.children}
       <DropDown dropDownItems={dropDownItems} dropDownState={dropDownState} setDropDownState={setDropDownState} marginLeft={'-20px'} width={'260px'} direction={'up'} conditionalRender={props.isMouseOn} />

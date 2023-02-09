@@ -10,7 +10,6 @@ export const getUserPosts = (userId, criteria, offset, size) => {
     },
   })
     .then((res) => {
-      console.log("res", res);
       return res.data.data;
     })
     .catch((err) => {

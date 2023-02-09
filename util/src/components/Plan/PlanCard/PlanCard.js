@@ -20,6 +20,7 @@ const PlanCard = (props) => {
 
   return (
     <div className={styles['plan-card-wrapper']}>
+      
       <FixedModal modalState={modalState} stateHandler={setModalState} content={<PlanCardPlanCRUD />} width={'400px'} height={'auto'} />
       <div id={styles['header']} className={styles['header']}>
         <span className={styles['plan-string']}>목표</span>
@@ -29,8 +30,13 @@ const PlanCard = (props) => {
           </svg>
         </div>
       </div>
-      <PlanCardItem today={true} />
-      {plansRender}
+      <div className={styles['plan-card-inner-wrapper']}>
+        <PlanCardItem today={true} />
+        {plansRender}
+      </div>
+      
+
+      
     </div>
   )
 }
