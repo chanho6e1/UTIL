@@ -234,7 +234,14 @@
   display: flex;
 }
 
-
+.Detail-comments-contents-warpper {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: rgb(240, 241, 245);
+  border-radius: 5px;
+  box-sizing: border-box;
+  transition-property: border;
+  transition-duration: 0.1s;
+}
 
 .Detail-comments-contents-box {
   width: 100%;
@@ -294,9 +301,9 @@
 }
 
 .link-text {
-  font-size: 12px;
+  font-size: 13px;
   color: rgb(130,130,130);
-  margin: 4px;
+  margin: 6px;
   cursor: pointer;
   transition-property: color;
   transition-duration: 0.3s;

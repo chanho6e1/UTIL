@@ -358,12 +358,14 @@ const DetailItemShow = (props) => {
             <div className={classes["Detail-comments-private"]}>비공개
               <input type="checkbox" checked={newCommentIsPrivate} onChange={newCommentIsPrivateInputHandler} />
             </div>
-            <TextArea className={classes['Detail-comments-contents-box']} value={newCommentContent} onChange={newCommentContentInputHandler} placeholder="댓글을 작성해 주세요" onKeyPress={onEnterNewCommentHandler}/>
-            <div className={classes['comments-buttons-wrapper']}>
-              <span className={classes['link-text']} onClick={onClickNewCommentHandler}>등록</span>
-              {/* <Button className={classes["solid-button"]} onClick={onClickNewCommentHandler}>등록</Button> */}
+            <div className={classes["Detail-comments-contents-warpper"]}>
+              <TextArea className={classes['Detail-comments-contents-box']} value={newCommentContent} onChange={newCommentContentInputHandler} placeholder="댓글을 작성해 주세요" onKeyPress={onEnterNewCommentHandler}/>
+              <div className={classes['comments-buttons-wrapper']}>
+                <span className={classes['link-text']} onClick={onClickNewCommentHandler}>등록</span>
+                {/* <Button className={classes["solid-button"]} onClick={onClickNewCommentHandler}>등록</Button> */}
+              </div>
+              {/* <textarea className={classes['Detail-comments-contents-box']} value={newCommentContent} onChange={newCommentContentInputHandler} placeholder="댓글을 작성해 주세요" onKeyPress={onEnterNewCommentHandler}/> */}
             </div>
-            {/* <textarea className={classes['Detail-comments-contents-box']} value={newCommentContent} onChange={newCommentContentInputHandler} placeholder="댓글을 작성해 주세요" onKeyPress={onEnterNewCommentHandler}/> */}
           </div>
         </div>
       </div>
