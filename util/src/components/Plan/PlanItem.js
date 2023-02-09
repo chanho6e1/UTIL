@@ -130,14 +130,20 @@ const PlanItem = (props) => {
   return (
     <React.Fragment>
       <FixedModal modalState={askDeleteState} stateHandler={setAskDeleteState} content={<AskDeleteForm />} width={'300px'} height={'310px'} />
-      <div  id={`${props.plan.goalId}`} className={`${styles['plan-title-bar']} ${props.idx % 2 ? styles['title-odd'] : styles['title-even']}`}>
+      <div  id={`${props.plan.goalId}`} className={`${styles['plan-title-bar']} ${props.idx % 2 ? styles['title-odd'] : styles['title-even']}`} style={{width: `${props.contracted === true ? '160px' : '240px'}`}}>
           {props.contracted === true ? null : arrowRender}
           {isEditMode ? titleEditInput : titleReadMode }
-          {/* <div>
-            <Link to={`index/goal/${props.plan.goalId}`}>
-              <img src={extension} alt="extension" className={styles['go-to-detail']}/>
-            </Link>
-          </div> */}
+          <div>
+            
+              <div onClick={() => navigate(`/index/goal/${props.plan.goalId}`)} className={styles['plan-title-bar-icon-wrapper']}>
+                <svg className={styles['link-icons']} xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.854 10.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707l-4.096 4.096z"/>
+                </svg>
+              </div>
+              
+              {/* <img src={extension} alt="extension" className={styles['go-to-detail']}/> */}
+           
+          </div>
       </div>
       {props.todoFormVisibility[props.idx] && <PlanTodoListLeft applyTodoData={props.applyTodoData} getInputTodoData={props.getInputTodoData} plan={props.plan} todos={props.todos} getNewTodoIdx={props.getNewTodoIdx} newTodoGoalId={props.newTodoGoalId} />}
   </React.Fragment>
