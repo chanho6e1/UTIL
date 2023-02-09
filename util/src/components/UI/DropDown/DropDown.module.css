@@ -9,14 +9,14 @@
     transition-property: height box-shadow;
     transition-duration: 0.3s;
     background-color: rgba(255, 255, 255, 1);
-    border-radius: 30px;
+    border-radius: 5px;
     z-index: 10;
 
 }
 
 .dropdown-item {
     width: 100%;
-    height: 53px;
+    /* height: 53px; */
     display: flex;
     justify-content: left;
     align-items: center;

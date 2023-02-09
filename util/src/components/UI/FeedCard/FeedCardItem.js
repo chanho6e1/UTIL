@@ -67,11 +67,13 @@ const FeedCardItem = (props) => {
     console.log(props.id);
   };
 
+  const location = useLocation()
+  const url = location.pathname.split('/')[1]
   const postClickHandler = () => {
     if (document.body.clientWidth > 1080) {
       navigate(`/index/post/${props.id}`)
     } else {
-      navigate(`/index/m/modal/post/${props.id}`)
+      navigate(`/${url}/m/modal/post/${props.id}`)
       setShowModal(true)
     }
     
@@ -79,15 +81,15 @@ const FeedCardItem = (props) => {
 
 
   const ShowModalHandler = (boolean) => {
-    navigate(`/index/m/modal/post/${props.id}`);
+    navigate(`/${url}/m/modal/post/${props.id}`);
     setShowModal(boolean)
   }
 
-  const location = useLocation()
-
+  
+  
   const cardRef = useRef()
   const [showModal, setShowModal] = useState(false)
-  const modal = <AnimatedModal rootId={'inner-overlay-root'} fadeOut={true} component={<DetailItem id={props.id} />} id={props.id} name={props.title} parentId={`modal-parent-${props.title}-${props.id}`} parentRef={cardRef} toggleFunction={ShowModalHandler} toggleBoolean={showModal} url={`index/m/modal/post/${props.id}`} prevUrl={`${location.pathname}`} />
+  const modal = <AnimatedModal rootId={`${url}-overlay-root`} fadeOut={true} component={<DetailItem id={props.id} />} id={props.id} name={props.title} parentId={`modal-parent-${props.title}-${props.id}`} parentRef={cardRef} toggleFunction={ShowModalHandler} toggleBoolean={showModal} url={`/${url}/m/modal/post/${props.id}`} prevUrl={`${location.pathname}`} />
 
   return (
 
