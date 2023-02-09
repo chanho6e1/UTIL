@@ -1,0 +1,43 @@
+.explore-container {
+  height: 100%;
+  overflow: hidden;
+}
+
+.alt-text {
+  display: flex;
+  width: 100%;
+  height: 90%;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: #aaacae;
+  white-space: pre-line;
+  line-height: 1.3rem;
+}
+
+.explore-feed {
+  height: 90%;
+  overflow: hidden;
+}
+
+.dropdown-container {
+  display: block;
+}
+
+.dropdown {
+  position: relative;
+  margin-right: 0px;
+}
+
+.dropdown-item {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.dropdown-sort {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: absolute;
+  right: 20px;
+}
