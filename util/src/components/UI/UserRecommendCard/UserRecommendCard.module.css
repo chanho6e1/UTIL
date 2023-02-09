@@ -1,0 +1,106 @@
+.card {
+  display: flex;
+  width: 50%;
+  box-sizing: border-box;
+  margin: 10px;
+}
+
+.card-inner-wrapper {
+  display: flex;
+  width: 100%;
+  padding: 10px;
+}
+
+.avatar-userdata {
+  display: flex;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  margin: 10px 10px 10px 8px;
+  cursor: pointer;
+}
+
+.user-wrapper {
+  display: flex;
+  width: 70%;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.nickname {
+  padding-left: 4px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+  height: 30%;
+  margin-top: 4px;
+  margin-left: 0px;
+  min-height: 24px;
+}
+
+.follow-btn-true {
+  background-color: #fbfbfb;
+  font-weight: 500;
+  font-size: 14px;
+  border: 2px solid #d4d4d5;
+  /* margin-left: 10px; */
+}
+
+.follow-btn-false {
+  background-color: #e8def8;
+  font-weight: 500;
+  font-size: 14px;
+  border: 2px solid #dac6f9;
+  /* margin-left: 10px; */
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: clip;
+  font-size: 1rem;
+  font-weight: 300;
+  margin-top: 8px;
+  margin-bottom: 6px;
+  padding: 0 0 0 0;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    width: 95%;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1000px) {
+  .card {
+    width: 80%;
+  }
+}
+
+@media screen and (min-width: 1001px) and (max-width: 1200px) {
+  .card {
+    width: 70%;
+  }
+}
+
+@media screen and (min-width: 1201px) and (max-width: 1500px) {
+  .card {
+    width: 60%;
+  }
+}
