@@ -206,7 +206,7 @@ const Plan = (props) => {
             //     </div>
             //     {todoFormVisibility[idx] && <PlanTodoListLeft goalId={plans[idx].goalId} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoGoalId={newTodoGoalId} />}
             // </React.Fragment>
-            <PlanItem plans={plans} plan={plans[el]} idx={idx} key={`month-title-bar-${idx}`} applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} todoFormToggleHandler={todoFormToggleHandler} todoFormVisibility={todoFormVisibility} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoGoalId={newTodoGoalId}/>
+            <PlanItem contracted={props.contracted} plans={plans} plan={plans[el]} idx={idx} key={`month-title-bar-${idx}`} applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} todoFormToggleHandler={todoFormToggleHandler} todoFormVisibility={todoFormVisibility} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoGoalId={newTodoGoalId}/>
         )
     })
 
@@ -263,7 +263,7 @@ const Plan = (props) => {
         </div>
     )
     
-    const planCalender = <PlanCalendar applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} todoFormVisibility={todoFormVisibility} todos={todos} newTodoGoalId={newTodoGoalId} />
+    const planCalender = <PlanCalendar contracted={props.contracted} applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} todoFormVisibility={todoFormVisibility} todos={todos} newTodoGoalId={newTodoGoalId} />
     
 
     const errorMessage = (
@@ -281,7 +281,7 @@ const Plan = (props) => {
 
 
     return (
-        <div className={styles['plans-wrapper']} onMouseMove={console.log(todos)}>
+        <div className={styles['plans-wrapper']}>
             {notiState && <NotiDeliverer content={errorMessage} stateHandler={setNotiState} duration={5000} width={400} />}
             <div className={styles['plans-title-wrapper']} > 
                 <div className={styles['plan-title-bar-space']} />
@@ -291,7 +291,7 @@ const Plan = (props) => {
                         {props.columns? null : newPlanDummy}
                     </div>    
                 </div>
-                <div ref={planSpaceRef} className={styles['plan-space']} />
+                {props.contracted === true ? null : <div ref={planSpaceRef} className={styles['plan-space']} />}
             </div>
             {planCalender}
         </div>

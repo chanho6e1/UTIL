@@ -65,24 +65,11 @@
     display: none;
   }
 
-  /* .postcard-container {
-    display: none;
-  } */
 
   .pagination {
     display: none;
   }
 
-  .postcard-container {
-    width: 100%;
-    overflow-x: hidden;
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* align-items: center; */
-    /* justify-content: center; */
-    box-sizing: border-box;
-    padding-bottom: 64px;
-  }
 
   .plan-card-wrapper {
     
@@ -91,28 +78,8 @@
 
   
 
-  .user-page {
-    display: flex;
-    /* justify-content: center; */
-    flex-direction: column;
-    width: 100%;
-    
-    margin-bottom: 20px;
-    background-color: #F8F9FA;
 
-  }
 
-  /* .postcard-inner {
-    padding-bottom: 64px;
-  } */
-
-  /* .user-page-upper {
-    display: flex;
-
-    width: 100%;
-    margin: 20px;
-
-  } */
   .line {
     width: 100%;
     height: 1px;
@@ -137,6 +104,10 @@
 
 @media all and (min-width: 1080px) {
 
+  .article-list-wrapper {
+    /* margin-right: 14px; */
+  }
+
   .tag-wrapper-mobile {
     display: none;
   }
@@ -158,44 +129,31 @@
     /* justify-content: center; */
     /* align-items: flex-end; */
     width: 100%;
+    justify-content: center;
     box-sizing: border-box;
     margin:10px;
-    margin-top:48px;
-    margin-bottom: 48px;
+    /* margin-top:48px; */
+    margin-bottom: 20px;
     /* margin: 0 auto; */
     /* justify-content: space-evenly; */
   }
 
-  .postcard-container {
-    /* width: 100%; */
-    display: flex;
-    box-sizing: border-box;
-    justify-content: center;
-    width: 100%;
-    
-  }
-
-  .postcard-inner {
-    width: 60%;
+  .user-page-upper-inner {
+    /* width: 70%; */
+    /* overflow: hidden; */
   }
 
 
-  .user-page {
-    display: flex;
-    align-items: center;
-    /* justify-content: center; */
-    flex-direction: column;
-    width: 100%;
-    background-color: #F8F9FA;
-    
-    /* margin: 30px auto 20px auto; */
-  }
+
+
+
 
   .line {
-    width: 100%;
+    /* width: 100%; */
     height: 1px;
     border-bottom: 1px solid rgb(210,210,210);
-    margin-bottom: 32px;
+    margin-bottom: 6px;
+    margin-left: 14px;
   }
   
   .follow {
@@ -223,30 +181,7 @@
 
 
 
-.user-page {
-  width: 100%;
-  height: 100vh;
-  overflow: scroll;
-  
-}
 
-
-/* .main-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  margin: 30px auto 20px auto;
-} */
-
-
-
-
-.postcard-inner {
-  padding: 14px;
-
-}
 
 
 .follow-text-wrapper {
@@ -272,6 +207,7 @@
 
 .user-description {
   margin-top: 8px;
+  text-align: left;
 }
 
 .avatar-username {
@@ -289,9 +225,6 @@
 
 .follow-text-wrapper {
   display: flex;
-}
-
-.follow-userdata {
 }
 
 
@@ -328,27 +261,13 @@
   /* margin-left: 10px; */
 }
 
-.username-department {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
+
 
 .username {
   font-size: 14px;
   margin-right: 20px;
 }
 
-.department-text {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-right: 10px;
-}
-
-.department-data {
-  font-size: 1rem;
-  font-weight: 400;
-}
 
 .tags {
   display: flex;
@@ -372,16 +291,82 @@
 
 
 
-.postcard-container ul {
+.ul {
 
   list-style-type: none;
   padding: 0;
 }
 
-.plan-card-wrapper {
-  margin-top: 261px;
-}
+
 
 .pagination {
   margin-bottom: 48px;;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.user-page {
+  width: 100%;
+  height: 100vh;
+  overflow: scroll;
+  overflow-x: hidden;
+  padding: 10px 10vw 10px 10vw;
+  box-sizing: border-box;
+  
+}
+
+.contents {
+  width: 100%;
+  height: auto;
+  /* background-color: red; */
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+}
+
+.body {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  padding-right: 14px;
+  /* overflow: auto; */
+}
+
+.article-list-wrapper {
+  display:flex;
+  flex-direction: column;
+  flex-grow:1 !important;
+  overflow: hidden;
+  padding: 14px;
+
+  box-sizing: border-box;
+}
+
+.plan-card-wrapper {
+  /* margin-top: 261px; */
+  width: auto;
+  margin-top: 14px;
+}
+
+.plan-kanban {
+  /* width: 100%; */
+  height:auto;
+  margin-bottom: 14px;
+}
+
+.kanban-wrapper {
+  width: 100%;
 }

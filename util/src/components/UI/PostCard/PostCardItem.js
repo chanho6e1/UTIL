@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import classes from "./PostCardItem.module.css";
 import TagDataList from "../Tag/TagDataList";
 import { IconButton, createTheme, ThemeProvider, Avatar } from "@mui/material";
@@ -71,53 +71,86 @@ const PostCardItem = (props) => {
     navigate(`/index/post/${props.id}`);
   };
 
-  return (
-    <Card className={classes.card}>
-      <div className={classes.postcarditem} style={{ width: "100%", height: "100%" }}>
-        <div className={classes[`card-text`]}>
-          <div>
-            <div className={classes.title} onClick={postClickHandler}>
-              {props.title}
-            </div>
-            <div className={classes.contents} onClick={postClickHandler}>
-              {props.content}
-            </div>
-          </div>
-          
-          <div>
-            <Swipe onSwipeStart={(event) => {event.stopPropagation()}}>
-              <div className={classes.tags}>
-                <TagDataList tagList={tagList} onClick={tagOnClickHandler} />
-              </div>
-            </Swipe>
-            <div className={classes[`icon-user`]}>
-              <div className={classes.iconbutton}>
-                <IconButton
-                  onClick={bookmarkClickHandler}
-                  style={{
-                    paddingTop: 0,
-                    paddingRight: 0,
-                    paddingBottom: 0,
-                    paddingLeft: 0,
-                    marginRight: 10,
-                  }}
-                >
-                  <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
-                </IconButton>
-                <IconButton
-                  onClick={likeClickHandler}
-                  style={{
-                    paddingTop: 0,
-                    paddingRight: 0,
-                    paddingBottom: 0,
-                    paddingLeft: 0,
-                  }}
-                >
-                  <img src={isLike ? likeIconFill : likeIconFlat} />
-                </IconButton>
-                <div className={classes.likecount}>{props.likeCount}</div>
-              </div>
-              <div className={classes.user}>
+
+  const temp = (
+    <React.Fragment>
+
+            
+
+
+            
+
+<div className={classes.iconbutton}>
+<IconButton
+  onClick={bookmarkClickHandler}
+  style={{
+    paddingTop: 0,
+    paddingRight: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+    marginRight: 10,
+  }}
+>
+  <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
+</IconButton>
+<IconButton
+  onClick={likeClickHandler}
+  style={{
+    paddingTop: 0,
+    paddingRight: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+  }}
+>
+  <img src={isLike ? likeIconFill : likeIconFlat} />
+</IconButton>
+<div className={classes.likecount}>{props.likeCount}</div>
+</div>
+
+
+
+              
+
+
+
+              
+
+</React.Fragment>
+  )
+
+
+  const buttons = (
+    <div className={classes.iconbutton}>
+<IconButton
+  onClick={bookmarkClickHandler}
+  style={{
+    paddingTop: 0,
+    paddingRight: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+    marginRight: 10,
+  }}
+>
+  <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
+</IconButton>
+<IconButton
+  onClick={likeClickHandler}
+  style={{
+    paddingTop: 0,
+    paddingRight: 0,
+    paddingBottom: 0,
+    paddingLeft: 0,
+  }}
+>
+  <img src={isLike ? likeIconFill : likeIconFlat} />
+</IconButton>
+<div className={classes.likecount}>{props.likeCount}</div>
+</div>
+  )
+
+
+  const userInfo = (
+    <div className={classes.user}>
                 <ThemeProvider theme={avatarTheme}>
                   <Avatar
                     src={props.profileImg}
@@ -132,14 +165,47 @@ const PostCardItem = (props) => {
                 <div className={classes.nickname}>{props.nickname} ·</div>
                 <div className={classes.date}>{props.createdDate}</div>
               </div>
-            </div>
-          </div>
+  )
+  
+  return (
+    <Card className={classes.card}>
+      <div className={classes['left-wrapper']}>
 
+
+
+        <div className={classes['left-top']}>
+          <div className={classes.title} onClick={postClickHandler}>
+            {props.title}
+          </div>
+          <div className={classes.contents} onClick={postClickHandler}>
+            {props.content}
+          </div>
         </div>
-        <div className={classes[`card-image`]} onClick={postClickHandler}>
+
+        <div className={classes['left-bottom']}>
+          <div className={classes['function-wrapper']}>
+            {buttons}
+            {/* <Swipe onSwipeStart={(event) => {event.stopPropagation()}}>
+              <div className={classes.tags}>
+                <TagDataList tagList={tagList} onClick={tagOnClickHandler} />
+              </div>
+            </Swipe> */}
+          </div>
+          
+          {userInfo}
+        </div>
+        
+
+
+
+      </div>
+
+      <div className={classes['right-wrapper']}>
+        <div className={classes[`card-image-wrapper`]} onClick={postClickHandler}>
           <img src={props.thumbnail} onError={imgErrorHandler} />
         </div>
       </div>
+      
     </Card>
   );
 };
