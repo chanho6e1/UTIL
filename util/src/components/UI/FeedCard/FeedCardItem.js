@@ -68,13 +68,13 @@ const FeedCardItem = (props) => {
   };
 
   const postClickHandler = () => {
-    navigate(`m/modal/post/${props.id}`)
+    navigate(`/index/m/modal/post/${props.id}`)
     setShowModal(true)
   };
 
 
   const ShowModalHandler = (boolean) => {
-    navigate(`m/modal/post/${props.id}`);
+    navigate(`/index/m/modal/post/${props.id}`);
     setShowModal(boolean)
   }
 

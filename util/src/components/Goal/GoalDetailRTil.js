@@ -18,11 +18,11 @@ const GoalDetailRTil = (props) => {
       <div className={classes["goal-detail-r-tils-title"]}>
         TIL
       </div>
-      <ol className={classes["goal-detail-r-tils-item"]}>
+      <div className={classes["goal-detail-r-tils-item"]}>
         {tilsArr.map((til) => (
           <GoalDetailRTilItem key={`tilId${til.todoId}`} til={til}/>
         ))}
-      </ol>
+      </div>
       <div className={classes["goal-detail-r-tils-page"]}>
         <span className={classes["goal-detail-r-tils-page-button"]} onClick={props.prevPage}>prev</span>
         <span className={classes["goal-detail-r-tils-page-num"]}>{props.tilPage}</span>
