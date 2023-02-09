@@ -9,6 +9,7 @@ import { Fragment, useState, useEffect, useRef, useCallback } from "react";
 import { modifyPostDetailSliceActions } from '../../redux/postDetailSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import TextArea from "../UI/TextArea/TextArea";
+import Button from "../UI/Button/Button";
 
 
 const DetailComment = (props) => {
@@ -49,9 +50,15 @@ const DetailComment = (props) => {
 
   const onEnterNewDepthCommentHandlerAndClose = (event) => {
     if (event.key === 'Enter') {
+      event.preventDefault()
       props.onEnterNewDepthCommentHandler()
       setdepthComment(false)
     }
+  }
+
+  const onClickNewDepthCommentHandlerAndClose = (event) => {
+      props.onEnterNewDepthCommentHandler()
+      setdepthComment(false)
   }
   
   const delComment = () => {
@@ -99,9 +106,15 @@ const DetailComment = (props) => {
 
   const onEnterEditCommentHandler = (event) => {
     if (event.key === 'Enter') {
+      event.preventDefault()
       editComment()
       seteditCommentOpen(false)
     }
+  }
+
+  const onClickEditCommentHandler = (event) => {
+      editComment()
+      seteditCommentOpen(false)
   }
   
   useEffect(() => {
@@ -113,7 +126,7 @@ const DetailComment = (props) => {
   const parentDelete = props.comment.isDelete
 
   const depthImg = (props.comment.depth === 1 ? (
-      <img className={classes["depth"]} src={depth} alt="depth" />
+      <div className={classes['depth-margin']} />
     ) : null)
   
   const userImg = (props.comment.writerInfo.profileImg === null
@@ -137,18 +150,28 @@ const DetailComment = (props) => {
     ?
     <Fragment>
       <div className={classes["Detail-comments-input"]}>
-        <div className={classes["Detail-comments-private"]}>비공개 : 
+        <div className={classes["Detail-comments-private"]}>비공개
             <input type="checkbox" checked={props.newDepthCommentIsPrivate} onChange={props.newDepthCommentIsPrivateInputHandler} />
-            <span className={classes['link-text']} onClick={closeAllHandler}>취소</span>
+            
         </div>
         <TextArea className={classes['Detail-comments-contents-box']} value={props.newDepthCommentContent} onChange={props.newDepthCommentContentInputHandler} placeholder="답글을 작성해 주세요" onKeyPress={onEnterNewDepthCommentHandlerAndClose}/>
+        <div className={classes['comments-buttons-wrapper']}>
+          {/* <Button className={classes["solid-button"]} onClick={closeAllHandler}>취소</Button>
+          <Button className={classes["solid-button"]} onClick={onClickNewDepthCommentHandlerAndClose}>등록</Button> */}
+          <span className={classes['link-text']} onClick={closeAllHandler}>취소</span>
+          <span className={classes['link-text']} onClick={onClickNewDepthCommentHandlerAndClose}>등록</span>
+        </div>
+        
         {/* <textarea className={classes['Detail-comments-contents-box']} value={props.newDepthCommentContent} onChange={props.newDepthCommentContentInputHandler} placeholder="답글을 작성해 주세요" onKeyPress={onEnterNewDepthCommentHandlerAndClose}/> */}
       </div>
-      <hr />
+
     </Fragment>
     :
     null
   )
+
+  const createdDate = new Date(props.comment.createdDate)
+  const createdDateString = `${createdDate.getFullYear()}년 ${createdDate.getMonth() + 1}월 ${createdDate.getDate()}일`
 
   const commentItem = (
     <Fragment>
@@ -157,12 +180,12 @@ const DetailComment = (props) => {
         <div className={classes["Detail-comments-contents"]}>
           <div className={classes["Comment-user"]}>
             <img className={classes["user-picture"]} src={userImg} alt="user" />
-            <div>
+            <div  className={classes["Comment-user-text"]}>
               <div className={classes.commentUser}>
                 {props.comment.writerInfo.nickname}
               </div>
               <div className={classes.commentUpdated}>
-                {props.comment.createdDate}
+                {createdDateString}
               </div>
             </div>
           </div>
@@ -182,7 +205,7 @@ const DetailComment = (props) => {
           </div>
         </div>
       </div>
-      <hr />
+
       {depthNewComment}   
       {props.comment.children.map((comment) => (
         <DetailComment key={`commentId${comment.commentId}`} comment={comment} postWriterInfo={props.postWriterInfo} userInfo={props.userInfo} newDepthCommentContent={props.newDepthCommentContent} newDepthCommentContentInputHandler={props.newDepthCommentContentInputHandler} setnewDepthCommentContent={props.setnewDepthCommentContent} onEnterNewDepthCommentHandler={props.onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={props.newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={props.newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={props.setnewDepthCommentIsPrivate} newDepthCommentParentId={props.newDepthCommentParentId} newDepthCommentParentIdInputHandler={props.newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={props.setnewDepthCommentParentId} newDepthComment={props.newDepthComment} depthCommentIdx={props.depthCommentIdx} setdepthCommentIdx={props.setdepthCommentIdx} newdepthCommentIdx={props.newdepthCommentIdx} postId={props.postId} parentDelete={parentDelete}/>
@@ -198,7 +221,7 @@ const DetailComment = (props) => {
           <div className={classes.commentContent}>{props.comment.content}</div>
         </div>
       </div>
-      <hr />
+
       {props.comment.children.map((comment) => (
         <DetailComment key={`commentId${comment.commentId}`} comment={comment} postWriterInfo={props.postWriterInfo} userInfo={props.userInfo} newDepthCommentContent={props.newDepthCommentContent} newDepthCommentContentInputHandler={props.newDepthCommentContentInputHandler} setnewDepthCommentContent={props.setnewDepthCommentContent} onEnterNewDepthCommentHandler={props.onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={props.newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={props.newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={props.setnewDepthCommentIsPrivate} newDepthCommentParentId={props.newDepthCommentParentId} newDepthCommentParentIdInputHandler={props.newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={props.setnewDepthCommentParentId} newDepthComment={props.newDepthComment} depthCommentIdx={props.depthCommentIdx} setdepthCommentIdx={props.setdepthCommentIdx} newdepthCommentIdx={props.newdepthCommentIdx} postId={props.postId} parentDelete={parentDelete}/>
       ))}
@@ -213,7 +236,7 @@ const DetailComment = (props) => {
         <div className={classes["Detail-comments-contents"]}>
           <div className={classes["Comment-user"]}>
             <img className={classes["user-picture"]} src={userImg} alt="user" />
-            <div>
+            <div className={classes["Comment-user-text"]}>
               <div className={classes.commentUser}>
                 {props.comment.writerInfo.nickname}
               </div>
@@ -225,17 +248,23 @@ const DetailComment = (props) => {
           {depthMessage}
           <div className={props.comment.depth === 1 ? classes["Detail-comments-depth"] : null}>
             <div className={classes["Detail-comments-input"]}>
-              <div className={classes["Detail-comments-private"]}>비공개 : 
+              <div className={classes["Detail-comments-private"]}>비공개
                 <input type="checkbox" checked={editCommentIsPrivate} onChange={editCommentIsPrivateInputHandler} />
-                <span className={classes['link-text']} onClick={closeAllHandler}>취소</span>
+                
               </div>
               <TextArea className={classes['Detail-comments-contents-box']} value={editCommentContent} onChange={editCommentContentInputHandler} onKeyPress={onEnterEditCommentHandler}/>
+              <div className={classes['comments-buttons-wrapper']}>
+                {/* <Button className={classes["solid-button"]} onClick={closeAllHandler}>취소</Button>
+                <Button className={classes["solid-button"]} onClick={onClickEditCommentHandler}>등록</Button> */}
+                <span className={classes['link-text']} onClick={closeAllHandler}>취소</span>
+                <span className={classes['link-text']} onClick={onClickEditCommentHandler}>등록</span>
+              </div>
               {/* <textarea className={classes['Detail-comments-contents-box']} value={editCommentContent} onChange={editCommentContentInputHandler} onKeyPress={onEnterEditCommentHandler}/> */}
             </div>
           </div>
         </div>
       </div>
-      <hr />
+      {/* <hr /> */}
       {props.comment.children.map((comment) => (
         <DetailComment key={`commentId${comment.commentId}`} comment={comment} postWriterInfo={props.postWriterInfo} userInfo={props.userInfo} newDepthCommentContent={props.newDepthCommentContent} newDepthCommentContentInputHandler={props.newDepthCommentContentInputHandler} setnewDepthCommentContent={props.setnewDepthCommentContent} onEnterNewDepthCommentHandler={props.onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={props.newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={props.newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={props.setnewDepthCommentIsPrivate} newDepthCommentParentId={props.newDepthCommentParentId} newDepthCommentParentIdInputHandler={props.newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={props.setnewDepthCommentParentId} newDepthComment={props.newDepthComment} depthCommentIdx={props.depthCommentIdx} setdepthCommentIdx={props.setdepthCommentIdx} newdepthCommentIdx={props.newdepthCommentIdx} postId={props.postId} parentDelete={parentDelete}/>
       ))}
@@ -255,7 +284,7 @@ const DetailComment = (props) => {
           <div className={classes.commentContent}>비공개 댓글입니다.</div>
         </div>
       </div>
-      <hr />
+      {/* <hr /> */}
       {props.comment.children.map((comment) => (
         <DetailComment key={`commentId${comment.commentId}`} comment={comment} postWriterInfo={props.postWriterInfo} userInfo={props.userInfo} newDepthCommentContent={props.newDepthCommentContent} newDepthCommentContentInputHandler={props.newDepthCommentContentInputHandler} setnewDepthCommentContent={props.setnewDepthCommentContent} onEnterNewDepthCommentHandler={props.onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={props.newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={props.newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={props.setnewDepthCommentIsPrivate} newDepthCommentParentId={props.newDepthCommentParentId} newDepthCommentParentIdInputHandler={props.newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={props.setnewDepthCommentParentId} newDepthComment={props.newDepthComment} depthCommentIdx={props.depthCommentIdx} setdepthCommentIdx={props.setdepthCommentIdx} newdepthCommentIdx={props.newdepthCommentIdx} postId={props.postId} parentDelete={parentDelete}/>
       ))}

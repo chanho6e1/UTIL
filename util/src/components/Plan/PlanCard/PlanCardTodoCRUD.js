@@ -51,11 +51,12 @@ const PlanCardTodoCRUD = (props) => {
     }
 
 
-    const startDate = toStringByFormatting(new Date(props.plan.startDate))
+
+
 
     const [title, setTitle] = useState(props.todo ? props.todo.title : null)
     const [description, setDescription] = useState(props.todo ? props.todo.description : null)
-    const [dueDate, setDueDate] = useState(props.todo ? toStringByFormatting(new Date(props.todo.dueDate)) : startDate)
+    const [dueDate, setDueDate] = useState(props.todo ? new Date(props?.todo?.dueDate) : new Date(props.plan.startDate))
 
     const titleChangeHandler = (event) => {
         setTitle(() => event.target.value)
@@ -211,7 +212,9 @@ const PlanCardTodoCRUD = (props) => {
                         minDate={toStringByFormatting(new Date(props.plan.startDate))}
                         maxDate={toStringByFormatting(new Date(props.plan.endDate))}
                         value={dueDate}
+                        // `${dueDate.getFullYear()}-${dueDate.getMonth() + 1}-${dueDate.getDate() - 1}`
                         onChange={dueDateChangeHandler}
+                        // onAccept={}
                         
                         renderInput={(params) => <TextField {...params} sx={{width:'100%', paddingBottom:'24px'}} />}
                         />

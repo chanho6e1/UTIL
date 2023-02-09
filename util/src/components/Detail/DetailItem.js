@@ -26,6 +26,8 @@ import { getPostTag } from "../../api/Post/getPostTag"
 import TextArea from "../UI/TextArea/TextArea";
 import DetailItemLoading from "./DetailItemLoading";
 import TagDataList from "../UI/Tag/TagDataList";
+import Button from "../UI/Button/Button";
+import Swipe from "react-easy-swipe";
 
 import { Viewer } from '@toast-ui/react-editor';
 
@@ -138,10 +140,19 @@ const DetailItemShow = (props) => {
 
   const onEnterNewCommentHandler = (event) => {
     if (event.key === 'Enter') {
+      event.preventDefault()
       newComment()
       setnewCommentContent('')
       setnewCommentIsPrivate(false)
     }
+  }
+
+  const onClickNewCommentHandler = (event) => {
+
+      newComment()
+      setnewCommentContent('')
+      setnewCommentIsPrivate(false)
+
   }
 
   const onEnterNewDepthCommentHandler = () => {
@@ -220,9 +231,24 @@ const DetailItemShow = (props) => {
     })
   }
 
+  const commentsRender = (
+    userInfo &&
+      comments[post.postId]?.map((comment) => (
+        <DetailComment key={`commentId${comment.commentId}`} comment={comment} postWriterInfo={post.writerInfo} userInfo={userInfo} newDepthCommentContent={newDepthCommentContent} newDepthCommentContentInputHandler={newDepthCommentContentInputHandler} setnewDepthCommentContent={setnewDepthCommentContent} onEnterNewDepthCommentHandler={onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={setnewDepthCommentIsPrivate} newDepthCommentParentId={newDepthCommentParentId} newDepthCommentParentIdInputHandler={newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={setnewDepthCommentParentId} newDepthComment={newDepthComment} depthCommentIdx={depthCommentIdx} setdepthCommentIdx={setdepthCommentIdx} newdepthCommentIdx={newdepthCommentIdx} postId={post.postId} praentDelete={comment.isDelete}/>
+      ))
+  )
+
+  const noComment = (
+    <div className={classes['no-comment']}>
+      댓글을 작성해 주세요!
+    </div>
+  )
+
   return (
     <div className={classes.Detail}>
+      {/* <div className={classes.header}>
 
+      </div> */}
       <div className={classes.DetailItem}>
         <div className={classes["Detail-text-contents"]}>
           <div className={classes.title}>{post.title}</div>
@@ -231,7 +257,7 @@ const DetailItemShow = (props) => {
             
             <div className={classes["Detail-info-inner"]}>
               <img
-                  className={classes["user-picture"]}
+                  className={classes["detail-user-picture"]}
                   // src={defaultUserPicture}
                   src={
                     post.writerInfo.profileImg === ""
@@ -260,6 +286,7 @@ const DetailItemShow = (props) => {
             
             
           </div>
+          
           <div className={classes.contents}>
             <Viewer initialValue={post.content} />
             {/* {post.content} */}
@@ -273,57 +300,68 @@ const DetailItemShow = (props) => {
         <div className={classes["tag-div"]}>
           {/* <span className={classes.tag}>{props.tag}</span> */}
           <div className={classes[`icons-div`]}>
-            <IconButton
-              onClick={bookmarkClickHandler}
-              style={{
-                paddingTop: 0,
-                paddingRight: 0,
-                paddingBottom: 0,
-                paddingLeft: 0,
-                marginRight: 10,
-              }}
-            >
-              <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
-            </IconButton>
-            <div className={classes['icons-like']}>
-              <IconButton
-                onClick={likeClickHandler}
-                style={{
-                  paddingTop: 0,
-                  paddingRight: 0,
-                  paddingBottom: 0,
-                  paddingLeft: 0,
-                }}
-              >
-                <img src={isLike ? likeIconFill : likeIconFlat} />
-              </IconButton>
-              <div className={classes[`like-count`]}>{displayLikeStatusSize(likeStatusSize)}</div>
+            <div className={classes[`icons-inner-wrapper`]}>
+              <div className={classes['icons-bookmark']}>
+                <IconButton
+                  onClick={bookmarkClickHandler}
+                  style={{
+                    paddingTop: 0,
+                    paddingRight: 0,
+                    paddingBottom: 0,
+                    paddingLeft: 0,
+                    marginRight: 10,
+                  }}
+                >
+                  <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
+                </IconButton>
+              </div>
+              <div className={classes['icons-like']}>
+                <IconButton
+                  onClick={likeClickHandler}
+                  style={{
+                    paddingTop: 0,
+                    paddingRight: 0,
+                    paddingBottom: 0,
+                    paddingLeft: 0,
+                  }}
+                >
+                  <img src={isLike ? likeIconFill : likeIconFlat} />
+                </IconButton>
+                <div className={classes[`like-count`]}>{displayLikeStatusSize(likeStatusSize)}</div>
+              </div>
             </div>
+
+            
             <div className={classes['icons-tag']}>
+            <Swipe onSwipeStart={(event) => {event.stopPropagation()}}>
               <TagDataList tagList={tagList} onClick={tagOnClickHandler} />
+              </Swipe>
             </div>
+            
           </div>
         </div>
 
 
 
-
+        
 
         <div  className={classes["Detail-comments"]}>
-       
+          {comments[post.postId]?.length !== 0 ? <div className={classes["comment-title"]}>댓글 목록</div> : null}
+          
           <div>
-            {userInfo &&
-              comments[post.postId]?.map((comment) => (
-                <DetailComment key={`commentId${comment.commentId}`} comment={comment} postWriterInfo={post.writerInfo} userInfo={userInfo} newDepthCommentContent={newDepthCommentContent} newDepthCommentContentInputHandler={newDepthCommentContentInputHandler} setnewDepthCommentContent={setnewDepthCommentContent} onEnterNewDepthCommentHandler={onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={setnewDepthCommentIsPrivate} newDepthCommentParentId={newDepthCommentParentId} newDepthCommentParentIdInputHandler={newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={setnewDepthCommentParentId} newDepthComment={newDepthComment} depthCommentIdx={depthCommentIdx} setdepthCommentIdx={setdepthCommentIdx} newdepthCommentIdx={newdepthCommentIdx} postId={post.postId} praentDelete={comment.isDelete}/>
-              ))
-            }
+            {comments[post.postId]?.length !== 0 ? commentsRender : noComment}
           </div>
+
           {/* <DetailComment comments={comments[posts?.postId]} newDepthCommentContent={newDepthCommentContent} newDepthCommentContentInputHandler={newDepthCommentContentInputHandler} setnewDepthCommentContent={setnewDepthCommentContent} onEnterNewDepthCommentHandler={onEnterNewDepthCommentHandler} newDepthCommentIsPrivate={newDepthCommentIsPrivate} newDepthCommentIsPrivateInputHandler={newDepthCommentIsPrivateInputHandler} setnewDepthCommentIsPrivate={setnewDepthCommentIsPrivate} newDepthCommentParentId={newDepthCommentParentId} newDepthCommentParentIdInputHandler={newDepthCommentParentIdInputHandler} setnewDepthCommentParentId={setnewDepthCommentParentId} newDepthComment={newDepthComment} depthCommentIdx={depthCommentIdx} setdepthCommentIdx={setdepthCommentIdx} newdepthCommentIdx={newdepthCommentIdx}/> */}
           <div className={classes["Detail-comments-input"]}>
-            <div className={classes["Detail-comments-private"]}>비공개 : 
+            <div className={classes["Detail-comments-private"]}>비공개
               <input type="checkbox" checked={newCommentIsPrivate} onChange={newCommentIsPrivateInputHandler} />
             </div>
             <TextArea className={classes['Detail-comments-contents-box']} value={newCommentContent} onChange={newCommentContentInputHandler} placeholder="댓글을 작성해 주세요" onKeyPress={onEnterNewCommentHandler}/>
+            <div className={classes['comments-buttons-wrapper']}>
+              <span className={classes['link-text']} onClick={onClickNewCommentHandler}>등록</span>
+              {/* <Button className={classes["solid-button"]} onClick={onClickNewCommentHandler}>등록</Button> */}
+            </div>
             {/* <textarea className={classes['Detail-comments-contents-box']} value={newCommentContent} onChange={newCommentContentInputHandler} placeholder="댓글을 작성해 주세요" onKeyPress={onEnterNewCommentHandler}/> */}
           </div>
         </div>
