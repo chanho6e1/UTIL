@@ -22,7 +22,6 @@ import useDidMountEffect from "../../hooks/useDidMountEffect";
 import PlanCard from "../Plan/PlanCard/PlanCard";
 
 const postCardItemList = (postList) => {
-  console.log("post", postList);
   return postList?.map((post) => {
     return (
       <UserPageResponsive
@@ -131,13 +130,11 @@ const UserPage = (props) => {
     // My Data API
     getMyData().then((res) => {
       setMyData(() => res);
-      console.log("ssafy me", res);
     });
 
     // User Data API
     getUserData(props.id).then((res) => {
       setUserData(() => res);
-      console.log("ssafy user", res);
     });
 
     // Tag Data API
@@ -223,7 +220,6 @@ const UserPage = (props) => {
     const scrollHeight = containerRef.current.scrollHeight;
     const scrollTop = containerRef.current.scrollTop;
     const clientHeight = containerRef.current.clientHeight;
-    console.log("SSAFY st", scrollTop, "ch", clientHeight, "sh", scrollHeight);
     if (scrollTop + clientHeight >= scrollHeight - 1 && isLoading === false) {
       if (offset < totalPage) {
         setFetchStart(() => true);

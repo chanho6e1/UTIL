@@ -177,7 +177,7 @@ const PlanCalendar = (props) => {
 
 
   return (
-      <div id="date-range" ref={dateRangeWrapperRef} onClick={() => console.log(planGridRef)} className={styles['date-range-wrapper']}>
+      <div id="date-range" ref={dateRangeWrapperRef} className={styles['date-range-wrapper']}>
         <div ref={monthTitleWrapperRef}  className={styles['month-title-container']} style={{width: `${containerRef?.current?.scrollWidth}px`}}>
           {monthTitleGrid}
         </div>

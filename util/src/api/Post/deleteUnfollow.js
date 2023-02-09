@@ -2,7 +2,6 @@ import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
 export const deleteFollow = (toUserId) => {
-  console.log("unfollow", toUserId);
   return axios({
     method: "delete",
     url: `${API_BASE_URL}/follows/${toUserId}`,
