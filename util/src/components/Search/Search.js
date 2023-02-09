@@ -81,7 +81,7 @@ const Search = (props) => {
         />
       </div>
       <div className={classes[`searchfeed`]}>
-        {searchInput === "" ? (
+        {searchInput === "" || searchInput === null ? (
           <div className={classes[`enter-search`]}>검색어를 입력하세요</div>
         ) : (
           <SearchFeed api={api} searchInput={searchInput} criteria={criteria} />
@@ -92,5 +92,3 @@ const Search = (props) => {
 };
 
 export default Search;
-
-// searchInput !== "" &&
