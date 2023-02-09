@@ -1,5 +1,7 @@
 package com.youtil.server.domain.user;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
+import com.youtil.server.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -14,7 +16,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @DynamicUpdate
-public class Follow {
+public class Follow extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
