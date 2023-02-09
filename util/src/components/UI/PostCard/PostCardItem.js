@@ -68,7 +68,6 @@ const PostCardItem = (props) => {
   const postClickHandler = () => {
     // props.id로 해당 글로 이동
     // navigate(`/post/${props.id}`)
-    // console.log("clicked", props.id);
     navigate(`/post/${props.id}`);
   };
 

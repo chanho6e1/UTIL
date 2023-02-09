@@ -1,6 +1,7 @@
 import classes from "../Goal/GoalDetail.module.css";
 import GoalDetailRTilItem from "./GoalDetailRTilItem";
 import { Fragment, useState, useEffect, useRef, useCallback } from "react";
+import Card from "../UI/Card/Card";
 
 
 const GoalDetailRTil = (props) => {
@@ -13,7 +14,7 @@ const GoalDetailRTil = (props) => {
   }, [props.tils])
 
   return (
-    <div className={classes["goal-detail-r-tils"]}>
+    <Card className={classes["goal-detail-r-tils"]}>
       <div className={classes["goal-detail-r-tils-title"]}>
         TIL
       </div>
@@ -27,7 +28,7 @@ const GoalDetailRTil = (props) => {
         <span className={classes["goal-detail-r-tils-page-num"]}>{props.tilPage}</span>
         <span className={classes["goal-detail-r-tils-page-button"]} onClick={props.nextPage}>next</span>
       </div>
-    </div>
+    </Card>
   );
 };
 

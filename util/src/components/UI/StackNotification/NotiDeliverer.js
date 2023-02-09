@@ -23,7 +23,6 @@ const NotiDeliverer = (props) => {
         height: props.height
       }
     }
-    console.log(data)
     dispatch(notificationSliceActions.push(data))
     props.stateHandler(false)
   }, [])
