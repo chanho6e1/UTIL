@@ -25,8 +25,7 @@ const PlanCardItemForm = (props) => {
 
   const todoList = todos && todos.map((todo, idx) => {
     return (
-      
-      <PlanCardItemTodo todo={todo} plan={props.plan} className={idx % 2 ? 'odd' : 'even'} />
+      <PlanCardItemTodo key={`plan-card-${todo.todoId}`} todo={todo} plan={props.plan} className={idx % 2 ? 'odd' : 'even'} />
     )
   })
 
@@ -83,6 +82,17 @@ const PlanCardItem = (props) => {
   const dispatch = useDispatch()
   const todos = useSelector(state => {return props.today === true ? state.planSlice.todayTodos : state.planSlice.todos[props?.plan?.goalId]})
 
+
+  useEffect(() => {
+    recvTodayTodosAPI()
+    .then((res) => {
+      dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
+      console.log('ssafy4 ', res)
+    })
+    .catch((err) => {
+      console.log('PlanCardItem : recvTodayTodosAPI => ', err)
+    })
+  }, [todos])
 
   useEffect(() => {
     if (props.today === true) {

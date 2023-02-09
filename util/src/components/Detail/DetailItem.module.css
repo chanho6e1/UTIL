@@ -55,7 +55,10 @@
   .detail-wrapper {
     width: 100%;
   }
-
+  
+  .Detail-info {
+    margin-top: 24px;
+  }
 
   
 }
@@ -104,6 +107,7 @@
   padding-bottom:15px;
   border-bottom: 1px solid rgb(220, 220, 220);
   margin-bottom: 50px;
+
 }
 
 .Detail-info-inner {
@@ -401,4 +405,11 @@
 
 .solid-button {
   margin-left:8px;
+}
+
+.detail-user-picture {
+  height: 24px;
+  width: auto;
+  border-radius: 100px;
+  margin-right: 8px;
 }
