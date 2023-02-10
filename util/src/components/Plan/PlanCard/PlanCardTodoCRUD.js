@@ -119,6 +119,7 @@ const PlanCardTodoCRUD = (props) => {
                     goalId: props.plan.goalId,
                     data: res
                 }
+                console.log('PlanCardTodoCRUD : newTodoAPI')
                 dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
             })
             .then((res) => {

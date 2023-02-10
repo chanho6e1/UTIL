@@ -40,7 +40,7 @@ const PostTag = (props) => {
 
   const createLine = (idx) => {
     return (
-      <div  className={styles[`line-wrapper`]}>
+      <div key={`line-${idx}`} className={styles[`line-wrapper`]}>
         <div ref={el => (lineRef.current[idx] = el)}   id={idx} className={styles[`line`]} contentEditable="true" placeholder="태그를 입력하세요." onInput={inputToArray.bind(this, idx)} onKeyDown={(event) => {deleteLine(idx, event); pushLine(idx, event); preventSpace(idx, event); }} ></div>
       </div>
     )

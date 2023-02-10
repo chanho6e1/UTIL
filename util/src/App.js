@@ -33,12 +33,13 @@ const App = () => {
 
   useEffect(() => {
     loadCurrentlyLoggedInUser()
-  })
+  }, [])
 
 
   const loadCurrentlyLoggedInUser = () => {
     getCurrentUser()
     .then(response => {
+      console.log('getMy!!!')
       dispatch(userAuthSliceActions.changeAuthenticated('true'))
       dispatch(userAuthSliceActions.changeCurrentUser(JSON.stringify(response.data)))
       dispatch(userAuthSliceActions.changeLoading('false'))

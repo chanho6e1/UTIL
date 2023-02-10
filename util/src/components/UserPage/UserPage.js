@@ -43,6 +43,7 @@ const postCardItemList = (postList) => {
         profileImg={post.writerInfo.profileImg}
         nickname={post.writerInfo.nickname}
         createdDate={post.createdDate}
+        tagList={post.tags}
       />
     );
   });
@@ -408,11 +409,12 @@ const UserPage = (props) => {
   return (
     <div>
       <div id="index-overlay-root"></div>
+
       <Routes>
-      <Route path="/*" element={<UserPageForm id={props.id} />} /> 
+        <Route path="*" element={<UserPageForm id={props.id} />} /> 
         <Route path="index/*" element={<UserPageForm id={props.id} />} /> 
-        <Route path="index/goal/:id" element={<GoalDetail />} /> 
-        <Route path="index/post/:id" element={<DetailItem />} />
+        <Route path="goal/:id" element={<GoalDetail />} /> 
+        <Route path="post/:id" element={<DetailItem />} />
       </Routes>
     </div>
   )

@@ -175,7 +175,7 @@ const SwipeableDock = (props) => {
 
 
                   // return <div className={styles.content} style={{width: width + 'px', height: height + 'px'}}><Routes><Route path={`${postData.url[idx]}/*`} element={el} /></Routes></div>
-                  return <div key={`dock-content-${idx}`} ref={el => (wrapRef.current[idx] = el)} className={`${styles.content} loaded`} style={{width: width + 'px', height: height + 'px'}}>{el}</div>
+                  return <div key={`dock-content-${idx}`} ref={el => (wrapRef.current[idx] = el)} className={`${styles.content} loaded`} style={{width: width + 'px', height: height + 'px'}}><Routes><Route path={`${postData.url[idx]}/*`} element={el} /></Routes></div>
               })}
             </div>
           </div>
