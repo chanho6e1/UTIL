@@ -29,9 +29,9 @@ import UserProfileChange from "./components/UserProfileChangePage/UserProfileCha
 import ToastEditor from "./components/MarkdownEditor/ToastEditor";
 // import OAuth2RedirectHandler from './components/UserAuth/OAuth/OAuth2RedirectHandler';
 
-import { modifyPlanSliceActions } from "./redux/planSlice";
-import { recvIngPlanAPI } from "./api/Plan/recvIngPlanAPI";
-import UserRecommend from "./components/UserRecommend/UserRecommend";
+import { modifyPlanSliceActions } from './redux/planSlice';
+import { recvIngPlanAPI } from './api/Plan/recvIngPlanAPI';
+import { recvIngAllPlanAPI } from './api/Plan/recvIngAllPlanAPI';
 
 const App = () => {
   const navigate = useNavigate();
@@ -60,9 +60,16 @@ const App = () => {
         navigate("/login");
       })
       .then((res) => {
-        dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)));
-      });
-  }, []);
+          dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+      })
+    recvIngAllPlanAPI()
+      .catch((err) => {
+          navigate('/login');
+      })
+      .then((res) => {
+          dispatch(modifyPlanSliceActions.responseAllPlans(JSON.stringify(res)))
+      })
+  }, [])
 
   const { pathname } = useLocation();
   const wrapRef = useRef(null);
@@ -107,7 +114,7 @@ const App = () => {
 
       </Routes>
       
-    
+      </div>
     </div>
   );
 };

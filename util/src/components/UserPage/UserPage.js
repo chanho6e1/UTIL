@@ -27,6 +27,9 @@ import Card from "../UI/Card/Card";
 import PlanCard from "../Plan/PlanCard/PlanCard";
 import PlanExpanded from "../Plan/PlanExpanded";
 import DropDown from "../UI/DropDown/DropDown";
+import PlanList from "../UI/PlanList/PlanList.js"
+import { Fragment } from "react";
+
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -47,6 +50,8 @@ const postCardItemList = (postList) => {
     );
   });
 };
+
+
 
 const UserPageForm = (props) => {
   const containerRef = useRef();
@@ -69,6 +74,16 @@ const UserPageForm = (props) => {
   const postWrapperRef = useRef()
 
   const navigate = useNavigate();
+
+
+  const plans = useSelector(state => state.planSlice.allPlans)
+  const PlanCardItemList = () => {
+    return Object.keys(plans).map((id, arrIdx) => {
+      return (
+        <PlanList plan={plans[id]}/>
+      )
+    })
+  }
 
   const fetchUserPostData = (criteriaIdx, page, size) => {
     setIsLoading(true);
@@ -335,18 +350,35 @@ const UserPageForm = (props) => {
 
   const categoryDropDownItems = {
     label: ['전체 글', '전체 목표'],
-    function: [null, null],
+    function: [() => {setCategory('전체 글')}, () => {setCategory('전체 목표')}],
   }
-  const [categoryDropDownState, setCategoryDropDownState] = useState(false)
 
+  const [categoryDropDownState, setCategoryDropDownState] = useState(false)
 
   const postDropDownItems = {
     label: ['포스트 작성', '회고록 작성'],
     function: [() => {navigate('/create/post')}, () => {navigate('/create/review')}],
   }
+
   const [postDropDownState, setPostDropDownState] = useState(false)
 
-
+  const categoryView = (category === '전체 글'
+    ?
+      <Fragment>
+        
+        <div ref={postWrapperRef}>
+          {postCardContainer(postList)}
+        </div>
+        
+        <div className={classes[`pagination`]}>
+          <Pagination count={totalPage} onChange={pageChangeHandler} />
+        </div>
+      </Fragment>
+    :
+      <Fragment>
+        {PlanCardItemList()}
+      </Fragment>
+  )
   
 
   return (
@@ -377,19 +409,12 @@ const UserPageForm = (props) => {
         <div className={classes['body']}>
         
           <div className={classes['article-list-wrapper']}>
-            
             <div className={classes['kanban-wrapper']}>
               <Card className={classes["plan-kanban"]}>
                 <PlanExpanded contracted={true} />
               </Card>
             </div>
-            <div ref={postWrapperRef}>
-              {postCardContainer(postList)}
-            </div>
-            
-            <div className={classes[`pagination`]}>
-              <Pagination count={totalPage} onChange={pageChangeHandler} />
-            </div>
+            {categoryView}
           </div>
           <div className={classes["plan-card-wrapper"]}>
             <PlanCard />
