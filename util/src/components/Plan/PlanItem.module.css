@@ -105,7 +105,7 @@
 }
 
 .plan-title-bar-button {
-    width:64%;
+    width:75%;
     height:32px;
     display: flex;
     padding-left: 8px;;
@@ -214,7 +214,7 @@
 .edit-todo-input {
     padding-left:8px;
     padding-right:8px;
-    width: 60%;
+    width: 75%;
     margin-right: 10px;
     background-color: rgb(220, 220, 228);
     border-radius: 5px;

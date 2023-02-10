@@ -124,3 +124,7 @@
 .header-buttons-wrapper {
     display: flex;
 }
+
+.noti-button {
+    width: 45%;
+}

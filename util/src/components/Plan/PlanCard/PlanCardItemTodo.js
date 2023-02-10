@@ -22,7 +22,7 @@ const PlanCardItemTodo = (props) => {
       </div>
       
       <div onClick={(event) => {event.stopPropagation();}} style={{marginLeft: '12px'}}>
-        <PlanIsDoneToggle plan={props.plan} todo={props.todo} />
+        <PlanIsDoneToggle key={`${props.today === true ? 'today' : 'per-plan' }`} plan={props.plan} todo={props.todo} today={props.today} />
       </div>
     </div>
   )

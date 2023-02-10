@@ -10,17 +10,19 @@ const NotiDeliverer = (props) => {
 
   // const randNum = Math.floor(Math.random() * 100)
   useEffect(() => {
-
-    const key = Object.keys(stack)[Object.keys(stack).length - 1] + 1
+    console.log(stack)
+    let key = Object.keys(stack).length !== 0 ? parseInt(Object.keys(stack)[Object.keys(stack).length - 1]) + 1 : 0
     // const key = (Object.keys(stack).length * 100) + randNum
 
+    
     const data = {
       key: key,
       value: {
         content: props.content,
         duration: props.duration,
         width: props.width,
-        height: props.height
+        height: props.height,
+        passToFixed: props.passToFixed ? props.passToFixed : false
       }
     }
     dispatch(notificationSliceActions.push(data))

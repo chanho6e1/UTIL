@@ -20,6 +20,7 @@ const UserPageResponsive = (props) => {
                     profileImg={props.profileImg}
                     nickname={props.nickname}
                     createdDate={props.createdDate}
+                    tagList={props.tagList}
                 />
             </div>
             <div className={styles['mobile']}>
@@ -34,6 +35,7 @@ const UserPageResponsive = (props) => {
                     profileImg={props.profileImg}
                     nickname={props.nickname}
                     createdDate={props.createdDate}
+                    tagList={props.tagList}
                 />
             </div>
         </React.Fragment>
