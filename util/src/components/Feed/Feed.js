@@ -81,6 +81,7 @@ const Feed = (props) => {
 
   return (
     <Fragment>
+      <div id="feed-overlay-root"></div>
       <div className={classes.feed} ref={feedRef}>
         {<ul>{feedCardItemList(feedList)}</ul>}
         {isLoading && <div className={classes.loading}>{Loading()}</div>}
