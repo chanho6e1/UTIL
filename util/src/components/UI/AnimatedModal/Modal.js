@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react'
-import { useNavigate, useMatch, Routes, Route } from "react-router-dom";
+import { useNavigate, useMatch, Routes, Route, useLocation } from "react-router-dom";
 import styles from './Modal.module.css'
 import ReactDOM from 'react-dom'
 
@@ -17,13 +17,13 @@ const ModalOverlay = (props) => {
   const propsRef = useRef()
   const navigate = useNavigate()
   
-
+  
 
 
 
   useEffect(() => {
     mountModalHandler()
-
+    console.log('떴다!!!')
     if (!match) {
       unmountModalHandler()
     }
@@ -179,8 +179,10 @@ const Modal = (props) => {
   
 
   const match = useMatch(`${props.url}`);
+  
+  const rootElement = document.getElementById(`${props.rootId}`)
   const condition = (match || props.toggleBoolean)
-  const modal = ReactDOM.createPortal(<ModalOverlay component={props.component} id={props.id} name={props.name} parentId={props.parentId} parentRef={props.parentRef} toggleFunction={props.toggleFunction} toggleBoolean={props.toggleBoolean} url={props.url} prevUrl={props.prevUrl} fadeOut={props.fadeOut} />, document.getElementById(`${props.rootId}`))
+  const modal = rootElement && ReactDOM.createPortal(<ModalOverlay component={props.component} id={props.id} name={props.name} parentId={props.parentId} parentRef={props.parentRef} toggleFunction={props.toggleFunction} toggleBoolean={props.toggleBoolean} url={props.url} prevUrl={props.prevUrl} fadeOut={props.fadeOut} />, document.getElementById(`${props.rootId}`))
   const result = condition && modal
 
   return (

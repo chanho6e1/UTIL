@@ -244,93 +244,120 @@ const Plan = (props) => {
             setNewPlan(false);
           }
         })
-        .then((res) => {
-          dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)));
-          setNewPlanValue("");
-          setNewPlan(false);
-        });
+
+
+    
+
     }
-  };
+    
 
-  const newPlanDummy = (
-    <div
-      onClick={newPlanClickShow}
-      className={`${styles["new-plan-button"]} ${styles["plan-title-bar"]} ${
-        plans.length % 2 ? styles["title-odd"] : styles["title-even"]
-      }`}
-    >
-      {newPlan ? (
-        <input
-          type="text"
-          onChange={newPlanValueHandler}
-          value={newPlanValue}
-          onKeyPress={(event) => {
-            addNewPlan(event);
-          }}
-          onBlur={newPlanClickHide}
-          placeholder="목표를 입력해 주세요."
-          autoFocus
-          className={styles["new-plan-input"]}
-        />
-      ) : (
-        <div className={styles["new-plan"]}>{plusImg} 목표 작성</div>
-      )}
-    </div>
-  );
+    const planTitleGrid = Object.keys(plans).map((el, idx) => {
+        return (
+            // <React.Fragment>
+            //     <div  id={`${plans[idx].goalId}`} className={`${styles['plan-title-bar']} ${idx % 2 ? styles['title-odd'] : styles['title-even']}`} key={`month-title-bar-${idx}`}>
+            //         <div onClick={todoFormToggleHandler.bind(this, idx)} className={styles['plan-title-bar-icon-wrapper']}>
+            //             <img className={styles['arrow-icon']} src={arrow} style={{transform: todoFormVisibility[idx] ? 'rotate(90deg)' : 'none', marginLeft:'13px', width: '12px', height: 'auto'}}/>
+            //         </div>
+            //         <div className={styles['plan-title-bar-button']}> 
+            //             {plans[idx].title}
+            //             <svg className={styles['delete-icon']} xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"  viewBox="0 0 16 16" style={{color:"rgb(100, 100, 100)"}}>
+            //                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            //                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            //             </svg>
+            //         </div>
+            //     </div>
+            //     {todoFormVisibility[idx] && <PlanTodoListLeft goalId={plans[idx].goalId} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoGoalId={newTodoGoalId} />}
+            // </React.Fragment>
+            <PlanItem contracted={props.contracted} plans={plans} plan={plans[el]} idx={idx} key={`month-title-bar-${idx}`} applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} todoFormToggleHandler={todoFormToggleHandler} todoFormVisibility={todoFormVisibility} todos={todos} getNewTodoIdx={getNewTodoIdx} newTodoGoalId={newTodoGoalId}/>
+        )
+    })
 
-  const planCalender = (
-    <PlanCalendar
-      applyTodoData={applyTodoData}
-      getInputTodoData={getInputTodoData}
-      columns={props.columns}
-      startRange={startRange}
-      endRange={endRange}
-      extendStartRange={extendStartRange}
-      extendEndRange={extendEndRange}
-      plansTitleWrapperRef={plansTitleWrapperRef}
-      plansTitleInnerRef={plansTitleInnerRef}
-      plans={plans}
-      todoFormVisibility={todoFormVisibility}
-      todos={todos}
-      newTodoGoalId={newTodoGoalId}
-    />
-  );
+    
 
-  const errorMessage = (
-    <div style={{ display: "flex", justifyContent: "space-evenly", alignItems: "center" }}>
-      <img style={{ width: "40px", height: "40px", marginRight: "12px" }} src={warning} />
-      <div>
-        <p style={{ lineHeight: "40%" }}>TODO의 날짜는 현재 작성중인 TODO 목표의</p>
-        <p style={{ lineHeight: "40%" }}>날짜 범위를 미만 & 초과할 수 없습니다.</p>
-      </div>
-    </div>
-  );
 
-  const [notiState, setNotiState] = useState(false);
+    const [newPlan, setNewPlan] = useState(false)
 
-  return (
-    <div className={styles["plans-wrapper"]}>
-      {notiState && (
-        <NotiDeliverer
-          content={errorMessage}
-          stateHandler={setNotiState}
-          duration={5000}
-          width={400}
-        />
-      )}
-      <div className={styles["plans-title-wrapper"]}>
-        <div className={styles["plan-title-bar-space"]} />
-        <div className={styles["plans-titles"]} ref={plansTitleWrapperRef}>
-          <div className={styles["plans-titles-inner"]} ref={plansTitleInnerRef}>
-            {planTitleGrid}
-            {props.columns ? null : newPlanDummy}
-          </div>
+    const newPlanClickShow = () => {
+        setNewPlan(true)
+    }
+
+    const newPlanClickHide = () => {
+        setNewPlan(false)
+    }
+
+    const plusImg = (
+        <svg xmlns="http://www.w3.org/2000/svg" style={{color:'rgb(100,100,100)', marginLeft:'-5px', marginRight:'7px'}} width="24" height="24" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
+            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+        </svg>
+    )
+    
+
+    const [newPlanValue, setNewPlanValue] = useState()
+    const newPlanValueHandler = (event) => {
+        setNewPlanValue(event.target.value)
+    }
+
+    const addNewPlan = (event) => {
+        const endDate = new Date(new Date().setDate(new Date().getDate() + 5))
+        if (event.key === "Enter") {
+          
+            newPlanAPI(new Date(), endDate, newPlanValue)
+            .catch((err) => {
+                // navigate('/login');
+                console.log('Plan : newPlanAPI => ', err)
+                if (err.response.data[0].message == "목표 내용이 없습니다.") {
+                    setNewPlan(false)
+                }
+            })
+            .then((res) => {
+                dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+                setNewPlanValue('')
+                setNewPlan(false)
+                
+            })
+        }
+        
+    }
+
+    const newPlanDummy = (
+        <div onClick={newPlanClickShow} className={`${styles['new-plan-button']} ${styles['plan-title-bar']} ${plans.length % 2 ? styles['title-odd'] : styles['title-even']}`} style={{width: `${props.contracted === true ? '160px' : '240px'}`}}>
+            {newPlan ? <input type="text" onChange={newPlanValueHandler} value={newPlanValue} onKeyPress={(event) => {addNewPlan(event)}} onBlur={newPlanClickHide} placeholder="목표를 입력해 주세요." autoFocus className={styles['new-plan-input']} /> : <div className={styles['new-plan']}>{plusImg} 목표 작성</div> }
         </div>
-        <div ref={planSpaceRef} className={styles["plan-space"]} />
-      </div>
-      {planCalender}
-    </div>
-  );
-};
+    )
+    
+    const planCalender = <PlanCalendar contracted={props.contracted} applyTodoData={applyTodoData} getInputTodoData={getInputTodoData} columns={props.columns} startRange={startRange} endRange={endRange} extendStartRange={extendStartRange} extendEndRange={extendEndRange} plansTitleWrapperRef={plansTitleWrapperRef} plansTitleInnerRef={plansTitleInnerRef} plans={plans} todoFormVisibility={todoFormVisibility} todos={todos} newTodoGoalId={newTodoGoalId} />
+    
 
-export default Plan;
+    const errorMessage = (
+        <div style={{display:'flex', justifyContent:'space-evenly', alignItems:'center'}}>
+            <img style={{width:'40px', height:'40px', marginRight:'12px'}} src={warning} />
+            <div>
+                <p style={{lineHeight: '40%'}}>TODO의 날짜는 현재 작성중인 TODO 목표의</p>
+                <p style={{lineHeight: '40%'}}>날짜 범위를 미만 & 초과할 수 없습니다.</p>
+            </div>
+        </div>
+    )
+
+
+    const [notiState, setNotiState] = useState(false)
+
+
+    return (
+        <div className={styles['plans-wrapper']}>
+            {notiState && <NotiDeliverer content={errorMessage} stateHandler={setNotiState} duration={5000} width={400} />}
+            <div className={styles['plans-title-wrapper']} > 
+                <div className={styles['plan-title-bar-space']} style={{width: `${props.contracted === true ? '170px' : '250px'}`}} />
+                <div className={styles['plans-titles']} ref={plansTitleWrapperRef}>
+                    <div className={styles['plans-titles-inner']} ref={plansTitleInnerRef}>
+                        {planTitleGrid}
+                        {props.columns? null : newPlanDummy}
+                    </div>    
+                </div>
+                {props.contracted === true ? null : <div ref={planSpaceRef} className={styles['plan-space']} />}
+            </div>
+            {planCalender}
+        </div>
+    )
+}
+
+export default Plan

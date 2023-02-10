@@ -135,15 +135,15 @@ const PlanCardPlanCRUD = (props) => {
         delPlanAPI(props.plan.goalId)
         .then((res) => {
           dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
-
-          recvTodayTodosAPI()
-            .then((res) => {
-            dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
-            props.modalHandler()
-            })
-            .catch((err) => {
-            console.log('PlanCardPlanCRUD : recvTodayTodosAPI => ', err)
-            })
+          props.modalHandler()
+        //   recvTodayTodosAPI()
+        //     .then((res) => {
+        //     dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
+        //     props.modalHandler()
+        //     })
+        //     .catch((err) => {
+        //     console.log('PlanCardPlanCRUD : recvTodayTodosAPI => ', err)
+        //     })
 
         })
         .catch((err) => {

@@ -205,6 +205,8 @@
 
 .goal-detail-r-tils-item {
   width: 230px;
+  margin-inline: auto;
+  margin-top: 10px;
 }
 
 .goal-detail-r-tils-item-title {
@@ -216,11 +218,13 @@
 }
 
 .goal-detail-r-tils-item-link {
+  font-size: 16px;
   text-decoration: none;
   color: black;
 }
 
 .goal-detail-r-tils-item-link:hover {
+  font-size: 16px;
   text-decoration: none;
   color: rgb(154, 76, 249);
 }
