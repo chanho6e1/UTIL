@@ -19,7 +19,7 @@ import { getMyData } from "../../api/UserProfile/getMyData";
 import { useNavigate } from "react-router-dom";
 import UserPageResponsive from "./UserPageResponsive";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 import Swipe from "react-easy-swipe";
 import GoalDetail from "../Goal/GoalDetail";
 import DetailItem from "../Detail/DetailItem";
@@ -64,7 +64,7 @@ const UserPageForm = (props) => {
   const [followingList, setFollowingList] = useState(null);
   const [followingListCnt, setFollowingListCnt] = useState(null);
   const [userTagList, setUserTagList] = useState([]);
-  const myData = useSelector(state => state.userAuthSlice.userAuth.currentUser)
+  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
   const criteria = ["date", "view", "like"];
   const [criteriaIdx, setCriteriaIdx] = useState(0);
   const [offset, setOffset] = useState(1);
@@ -129,7 +129,7 @@ const UserPageForm = (props) => {
           setFetchStart(() => false);
         }, 500);
       });
-    } 
+    }
   };
 
   const [fetchStart, setFetchStart] = useState(false);
@@ -140,11 +140,8 @@ const UserPageForm = (props) => {
     }
   }, [fetchStart]);
 
-
-
   // 초기 데이터
   useEffect(() => {
-    console.log('ssafy myData', myData)
     // Post API
     setIsLoading(true);
 
@@ -161,8 +158,6 @@ const UserPageForm = (props) => {
         setIsLoading(false);
       });
     }
-    
-  
 
     // My Data API
     // getMyData().then((res) => {
@@ -222,13 +217,19 @@ const UserPageForm = (props) => {
   const followBtn = (isFollowing) => {
     if (isFollowing) {
       return (
-        <Button className={`${classes[`follow-btn-true`]} ${classes[`button`]}`} onClick={followBtnHandler}>
+        <Button
+          className={`${classes[`follow-btn-true`]} ${classes[`button`]}`}
+          onClick={followBtnHandler}
+        >
           팔로잉
         </Button>
       );
     } else {
       return (
-        <Button className={`${classes[`follow-btn-false`]} ${classes[`button`]}`} onClick={followBtnHandler}>
+        <Button
+          className={`${classes[`follow-btn-false`]} ${classes[`button`]}`}
+          onClick={followBtnHandler}
+        >
           팔로우
         </Button>
       );
@@ -307,15 +308,15 @@ const UserPageForm = (props) => {
               <div className={classes["user-column"]}>
                 <div className={classes.nickname}>{userData.nickname}</div>
                 <div className={classes.follow}>
-                  <div className={classes['follow-text-wrapper']}>
+                  <div className={classes["follow-text-wrapper"]}>
                     <div className={classes[`follow-text`]}>팔로워</div>
                     <div className={classes[`follow-number`]}>{followerListCnt}명</div>
                     <div className={classes[`follow-text`]}>팔로우</div>
                     <div className={classes[`follow-number`]}>{followingListCnt}명</div>
                   </div>
-  
-                    {myData.userId !== props.id && followBtn(isFollowing)}
 
+                  {myData.userId !== props.id && followBtn(isFollowing)}
+                  {followBtn(isFollowing)}
                 </div>
               </div>
               <div className={classes["user-column"]}>
@@ -426,20 +427,17 @@ const UserPageForm = (props) => {
 
 };
 
-
-
 const UserPage = (props) => {
-
   return (
     <div>
       <div id="index-overlay-root"></div>
       <Routes>
-      <Route path="/*" element={<UserPageForm id={props.id} />} /> 
-        <Route path="index/*" element={<UserPageForm id={props.id} />} /> 
-        <Route path="index/goal/:id" element={<GoalDetail />} /> 
+        <Route path="/*" element={<UserPageForm id={props.id} />} />
+        <Route path="index/*" element={<UserPageForm id={props.id} />} />
+        <Route path="index/goal/:id" element={<GoalDetail />} />
         <Route path="index/post/:id" element={<DetailItem />} />
       </Routes>
     </div>
-  )
-}
+  );
+};
 export default UserPage;
