@@ -27,16 +27,16 @@ const avatarTheme = createTheme({
 });
 
 const PostCardItem = (props) => {
-  const [tagList, setTagList] = useState(null);
+  // const [tagList, setTagList] = useState(null);
   const [isBookmark, setIsBookmark] = useState(props.bookmarkStatus);
   const [isLike, setIsLike] = useState(props.likeStatus);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    getPostTag(props.id).then((res) => {
-      setTagList(() => res);
-    });
-  }, []);
+  // useEffect(() => {
+  //   getPostTag(props.id).then((res) => {
+  //     setTagList(() => res);
+  //   });
+  // }, []);
 
   const imgErrorHandler = (event) => {
     event.target.src = PhotoCameraIcon;
@@ -187,7 +187,7 @@ const PostCardItem = (props) => {
             {buttons}
             {/* <Swipe onSwipeStart={(event) => {event.stopPropagation()}}>
               <div className={classes.tags}>
-                <TagDataList tagList={tagList} onClick={tagOnClickHandler} />
+                <TagDataList tagList={props.tagList} onClick={tagOnClickHandler} />
               </div>
             </Swipe> */}
           </div>

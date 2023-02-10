@@ -109,21 +109,24 @@ const PlanCalendarDateSelector = (props) => {
 
 
   useDidMountEffect(() => {
-    const processing = {
-      title: props.plan.title,
-      startDate: initialStartDate,
-      endDate: initialEndDate
+    if (new Date(props.plan.startDate) != initialStartDate || new Date(props.plan.endDate) != initialEndDate) {
+      const processing = {
+        title: props.plan.title,
+        startDate: initialStartDate,
+        endDate: initialEndDate
+      }
+      editPlanAPI(props.plan.goalId, processing)
+      .then((res) => {
+        console.log('PlanCalendarDateSelector : editPlanAPI')
+          dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+      })
+      .catch((err) => {
+        console.log('PlanCalendarDateSelector : editPlanAPI => ', err)
+      })
     }
-    editPlanAPI(props.plan.goalId, processing)
-    .then((res) => {
-        dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
-    })
-    .catch((err) => {
-      console.log('PlanCalendarDateSelector : editPlanAPI => ', err)
-    })
 
 
-  }, [initialStartDate, initialEndDate])
+  }, [new Date(props.plan.startDate) != initialStartDate, new Date(props.plan.endDate) != initialEndDate])
 
 
   const transferMoveTodo = (distance, reverse) => {
@@ -145,6 +148,7 @@ const PlanCalendarDateSelector = (props) => {
           goalId: props.plan.goalId,
           data: res
         }
+        console.log('PlanCalendarDateSelector : editTodosAPI')
         dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
       })
       .then((res) => {
