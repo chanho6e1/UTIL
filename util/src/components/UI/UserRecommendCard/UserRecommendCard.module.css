@@ -1,0 +1,129 @@
+.card {
+  display: flex;
+  box-sizing: border-box;
+  margin: 10px;
+  width: 90%;
+}
+
+.card-inner-wrapper {
+  display: flex;
+  width: 90%;
+  padding: 10px;
+  margin: 0 auto;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.avatar-userdata {
+  display: flex;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  margin: 10px 10px 10px 8px;
+  cursor: pointer;
+}
+
+.user-wrapper {
+  display: flex;
+  width: 70%;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.nickname-btn {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+}
+
+.nickname {
+  padding-left: 4px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-wrapper {
+}
+
+.button {
+  margin-top: 4px;
+  margin-left: 8px;
+  min-height: 24px;
+  width: 10vh;
+}
+
+.follow-btn-true {
+  background-color: #fbfbfb;
+  font-weight: 500;
+  font-size: 14px;
+  border: 2px solid #d4d4d5;
+  /* margin-left: 10px; */
+}
+
+.follow-btn-false {
+  background-color: #e8def8;
+  font-weight: 500;
+  font-size: 14px;
+  border: 2px solid #dac6f9;
+  /* margin-left: 10px; */
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: clip;
+  font-size: 1rem;
+  font-weight: 300;
+  margin-top: 8px;
+  margin-bottom: 6px;
+  padding: 0 0 0 0;
+  cursor: pointer;
+}
+
+.tags {
+  display: flex;
+  width: 30vw;
+  box-sizing: border-box;
+  overflow: scroll;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  margin-left: -20px;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 5%,
+    rgba(0, 0, 0, 1) 95%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 5%,
+    rgba(0, 0, 0, 1) 95%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.tags::-webkit-scrollbar {
+  display: none;
+}
+
+.tags {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@media screen and (max-width: 486px) {
+  .nickname {
+    padding-left: 4px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,50 @@
+.recommend-modal {
+  width: 100%;
+  height: 100%;
+}
+
+.recommend-upper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 90%;
+  margin: 0 auto;
+  padding: 10px 10px 0 10px;
+  justify-content: space-between;
+}
+
+.recommend-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.recommend-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 90%;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.loading {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 45%;
+  bottom: 0;
+}
+
+@media screen and (max-width: 486px) {
+  .recommend-text {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}
