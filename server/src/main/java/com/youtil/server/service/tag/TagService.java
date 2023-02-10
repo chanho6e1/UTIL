@@ -156,7 +156,7 @@ public class TagService {
 //        return tagQueryRepository.findPostListByTag(userId, tagId, criteria, PageRequest.of(offset-1, size))
 //                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
         Page<Post> page =tagQueryRepository.findPostListByTag(userId, tagId, criteria, PageRequest.of(offset-1, size));
-        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user, getTagByPost(post.getPostId()))).collect(Collectors.toList());
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
                 page.getTotalPages(), page.isLast());
 
@@ -166,7 +166,7 @@ public class TagService {
 //        return tagQueryRepository.findPostListByTag(userId, tagId, criteria, PageRequest.of(offset-1, size))
 //                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
         Page<Post> page =tagQueryRepository.findPostListByTagName(userId, tagName, criteria, PageRequest.of(offset-1, size));
-        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user, getTagByPost(post.getPostId()))).collect(Collectors.toList());
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
                 page.getTotalPages(), page.isLast());
 
@@ -178,7 +178,7 @@ public class TagService {
 //        return tagQueryRepository.findPostListByMyTag(userId, criteria, PageRequest.of(offset-1, size))
 //                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
         Page<Post> page = tagQueryRepository.findPostListByMyTag(userId, criteria, PageRequest.of(offset-1, size));
-        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user, getTagByPost(post.getPostId()))).collect(Collectors.toList());
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
                 page.getTotalPages(), page.isLast());
     }
