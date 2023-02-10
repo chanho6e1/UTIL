@@ -4,8 +4,10 @@ import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.config.s3.S3Uploader;
 import com.youtil.server.domain.user.User;
+import com.youtil.server.dto.tag.TagResponse;
 import com.youtil.server.dto.user.UserResponse;
 import com.youtil.server.dto.user.UserUpdateRequest;
+import com.youtil.server.repository.tag.UserOfTagRepository;
 import com.youtil.server.repository.user.UserRepository;
 import com.youtil.server.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,12 +28,17 @@ import java.net.URLDecoder;
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
+    private final UserOfTagRepository userOfTagRepository;
     private final S3Uploader s3Uploader;
     private final String baseImg = "cef3494f-5acf-4d8b-95d7-a9d710722788Pic.jpg";
 
-
+    public List<TagResponse> getTagLike(Long userId) { // 관심 테그 조회
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        return userOfTagRepository.findByUser(user)
+                .stream().map(TagResponse::new).collect(Collectors.toList());
+    }
     public UserResponse getCurrentUser(Long userId) {
-        UserResponse user = UserResponse.from(userRepository.findByUserId(userId));
+        UserResponse user = UserResponse.from(userRepository.findByUserId(userId), getTagLike(userId));
 //        String ImgUrl = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/" + user.getImageUrl();
 //        user.setImageUrl(ImgUrl);
         return user;
