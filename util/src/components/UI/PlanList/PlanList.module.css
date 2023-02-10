@@ -1,0 +1,97 @@
+.plan {
+  display: grid;
+  grid-template-columns: 1fr 150px;
+  padding: 20px;
+  margin-bottom: 14px;
+  cursor: pointer;
+}
+
+.plan-title {
+  font-size: 22px;
+  font-weight: 700;
+  overflow: hidden;
+  margin-bottom: 10px;
+  text-overflow: clip;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.plan-date {
+
+}
+
+.plan-state {
+  margin: auto;
+}
+
+.planComplete-wrapper {
+  background-color: rgb(190, 240, 210);
+  color: rgb(0, 120, 40);
+
+  height: 52px;
+  width: 96px;
+  /* padding:4px; */
+  border-radius: 5px;;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  /* cursor: pointer; */
+}
+
+/* .planComplete-wrapper:hover {
+  background-color: rgb(170, 220, 190);
+} */
+
+.planUnComplete-wrapper {
+  background-color: rgb(241, 191, 163);
+  color: rgb(149, 16, 16);
+
+  height: 52px;
+  width: 96px;
+  border-radius: 5px;;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  /* cursor: pointer; */
+}
+
+.planRunning-wrapper {
+  background-color: rgb(220, 220, 228);
+  color: rgb(50, 50, 50);
+
+  height: 52px;
+  width: 96px;
+  border-radius: 5px;;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  /* cursor: pointer; */
+}
+
+.plancomming-wrapper {
+  background-color: rgb(220, 220, 228);
+  color: rgb(50, 50, 50);
+  /* background-color: rgb(154, 154, 241);
+  color: rgb(32, 23, 130); */
+
+  height: 52px;
+  width: 96px;
+  border-radius: 5px;;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  /* cursor: pointer; */
+}
