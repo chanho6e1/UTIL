@@ -317,7 +317,6 @@ const UserPageForm = (props) => {
                   </div>
 
                   {myData.userId !== props.id && followBtn(isFollowing)}
-                  {followBtn(isFollowing)}
                 </div>
               </div>
               <div className={classes["user-column"]}>
