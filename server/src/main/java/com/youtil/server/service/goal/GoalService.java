@@ -73,9 +73,12 @@ public class GoalService {
         return goal.getGoalId();
     }
 
-    public List<GoalResponse> getGoalList(Long userId) {
-
-        return goalQueryRepository.findGoalListByUser(userId).stream().map((goal) -> new GoalResponse(goal)).collect(Collectors.toList());
+    public Map<Long, GoalResponse> getGoalList(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        Map<Long, GoalResponse> responseMap = new HashMap<>();
+        goalQueryRepository.findGoalListByUser(userId).stream().map((goal) -> responseMap.put(goal.getGoalId(), new GoalResponse(goal))).collect(Collectors.toList());
+//        return goalQueryRepository.findGoalListByUser(userId).stream().map((goal) -> new GoalResponse(goal)).collect(Collectors.toList());
+        return responseMap;
     }
 
     public GoalResponse getGoal(Long userId, Long goalId) {
