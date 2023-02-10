@@ -188,7 +188,6 @@ public class PostService {
         postRepository.deletePostTag(postId);
         postRepository.deletePostLike(postId);
         postRepository.deletePostBookmark(postId);
-
         postCommentRepository.deleteByPostId(postId);
         postRepository.deleteById(postId);
         return postId;
