@@ -87,9 +87,7 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
                 .fetchResults();
         return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
     }
-    public Page<User> findUserListByMyTag(Long userId, PageRequest pageRequest) { // 나의 관심 유저의 글 조회
-
-//        return jpaQueryFactory.select(tagOfPost.post).distinct().from(tagOfPost)
+    public Page<User> findUserListByMyTag(Long userId, PageRequest pageRequest) { // 나의 관심 테그별 유저 리스트 조회
         QueryResults<User> content = jpaQueryFactory.select(userOfTag.user).distinct().from(userOfTag)
                 .innerJoin(userOfTag.user)
                 .where(
@@ -97,7 +95,13 @@ public class TagQueryRepository { //태그 눌렀을 시 포스트 검색
                                 JPAExpressions
                                         .select(userOfTag.tag).from(userOfTag)
                                         .where( userOfTag.user.userId.eq(userId)
-                                        )), userOfTag.user.userId.ne(userId)
+                                        )), userOfTag.user.userId.ne(userId),
+                        userOfTag.user.notIn(
+                                JPAExpressions
+                                        .select(follow.toUser).from(follow)
+                                        .where(follow.fromUser.userId.eq(userId)
+                                        )
+                        )
                 )
                 .offset(pageRequest.getOffset())
                 .limit(pageRequest.getPageSize())
