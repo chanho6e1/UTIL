@@ -56,13 +56,13 @@ const BlogPostFormRender = (props) => {
         
     }
 
-    const plansRender = plans?.map((el, idx) => {
-        const startDate = new Date(el.startDate)
-        const endDate = new Date(el.endDate)
-        if (el.state === false) {
+    const plansRender = Object.keys(plans).map((el, idx) => {
+        const startDate = new Date(plans[el].startDate)
+        const endDate = new Date(plans[el].endDate)
+        if (plans[el].state === false) {
             return (
-                <div onClick={() => {selectPlan(el); planPickerHandler() }} className={styles['item']} style={{backgroundColor: el.goalId === selectedPlan?.goalId ? 'rgb(235, 236, 239)' : '', }}>
-                    <b>{el.title}</b>
+                <div onClick={() => {selectPlan(plans[el]); planPickerHandler() }} className={styles['item']} style={{backgroundColor: plans[el].goalId === selectedPlan?.goalId ? 'rgb(235, 236, 239)' : '', }}>
+                    <b>{plans[el].title}</b>
                     <div className={styles['small-text']}>
                         {startDate.getFullYear()}년 {startDate.getMonth()}월 {startDate.getDate()}일 ~ {endDate.getFullYear()}년 {endDate.getMonth()}월 {endDate.getDate()}일
                     </div>
