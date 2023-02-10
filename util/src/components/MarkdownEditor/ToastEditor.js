@@ -43,7 +43,7 @@ const ToastEditorForm = (props) => {
   const editorWrapperRef = useRef()
   const [searchParams, setSearchParams] = useSearchParams();
   const today = new Date()
-  const dateString = `${today.getFullYear()}년 ${today.getMonth()}월 ${today.getDate()}일 회고록`
+  const dateString = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일 회고록`
   const [images, setImages] = useState([])
   const [tags, setTags] = useState([])
   const [title, setTitle] = useState(props.forReview ? (props.editContent ? props.editContent.createdDate : dateString) : (props.editContent ? props.editContent.title : ''))
@@ -186,12 +186,7 @@ const ToastEditorForm = (props) => {
     
   }
 
-  const skipHandler = () => {
-    setQueryString((prev) => { return {...prev, takeStep: null}})
-    
-    navigate(`/create/review?goal_id=${queryString.goal.goalId}${queryString.askDone ? '&ask_done=true' : ''}`);
-    window.location.reload()
-  }
+
 
   const [alertText, setAlertText] = useState()
   const [alertNotiState, setAlertNotiState] = useState(false)
@@ -242,9 +237,7 @@ const ToastEditorForm = (props) => {
         <div className={styles['header']}>
           {props.forReview ? dateRender : titleInput}
           <div className={styles['header-buttons-wrapper']}>
-            {queryString.takeStep && <Button onClick={skipHandler} className={`${styles['button']} ${styles['skip-button']}`}>건너뛰기</Button>}
-            {queryString.takeStep && <Button onClick={clickSubmitHandler} className={`${styles['button']} ${styles['next-button']}`}>다음</Button>}
-            {!queryString.takeStep && <Button onClick={clickSubmitHandler} className={`${styles['button']}`}>글 작성</Button>}
+            <Button onClick={clickSubmitHandler} className={`${styles['button']}`}>글 작성</Button>
           </div>
           
           

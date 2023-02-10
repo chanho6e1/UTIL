@@ -68,7 +68,7 @@
     border-bottom: 1px solid transparent;
 
     background-color: rgb(244, 245, 247);
-    width: 240px;
+    /* width: 240px; */
     padding-left: 10px;
     min-height: 48px;
     /* background-color: rgb(235, 235, 240); */
@@ -152,7 +152,7 @@
     border-top: 1px solid transparent;
     border-bottom: 2px solid rgba(230, 230, 235);
     background-color: rgb(244, 245, 247);
-    width: 250px;
+    /* width: 250px; */
     min-height: 48px;
     /* background-color: rgb(235, 235, 240); */
     /* box-shadow: 2px -5px 10px 0px rgb(77, 71, 71, 0.2); */

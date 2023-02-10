@@ -3,12 +3,12 @@ import classes from "./PostCardContainerLoading.module.css";
 
 const PostCardLoadingItem = (key) => {
   return (
-    <li key={key}>
+    // <li className={classes['li-tag']} key={key}>
       <div className={classes.item}>
         <div className={classes[`text-area`]}> </div>
         <div className={classes[`thumbnail-area`]}> </div>
       </div>
-    </li>
+    // </li>
   );
 };
 
@@ -35,7 +35,7 @@ const PostCardContainerLoading = (props) => {
 
   return (
     <div className={classes["ani-wrapper"]} ref={aniWrapperRef}>
-      <ul>{PostCardLoadingList(props.count)}</ul>
+      {PostCardLoadingList(props.count)}
     </div>
   );
 };
