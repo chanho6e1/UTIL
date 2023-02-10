@@ -61,7 +61,6 @@ const UserRecommendCard = (props) => {
 
   const profileOnClickHandler = (event) => {
     // 클릭 시 유저 페이지로 이동
-    console.log(props.userData.userId);
   };
 
   useEffect(() => {
