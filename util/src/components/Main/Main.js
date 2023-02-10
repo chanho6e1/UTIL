@@ -28,7 +28,7 @@ const Main = (props) => {
     content: [
       userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />,
       <Feed api={getSubscribePosts} />,
-      <UserRecommend />,
+      <Search />,
       <Explore />,
       <PlanResponsive />,
     ],
