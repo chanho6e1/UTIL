@@ -54,12 +54,15 @@ const Search = (props) => {
   };
 
   useEffect(() => {
-    if (location.key !== "default") {
+    if (location.search !== "") {
       const searchParams = new URLSearchParams(location.search);
       const tagName = searchParams.get("tag");
       setSearchInput(() => tagName);
       setApi(() => 1);
       setDropDownLabel(() => apiLabelList[1]);
+    } else {
+      setApi(() => 0);
+      setDropDownLabel(() => apiLabelList[0]);
     }
   }, [location]);
 
