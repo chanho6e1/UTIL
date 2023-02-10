@@ -19,7 +19,7 @@ import { getMyData } from "../../api/UserProfile/getMyData";
 import { useNavigate } from "react-router-dom";
 import UserPageResponsive from "./UserPageResponsive";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 import Swipe from "react-easy-swipe";
 import GoalDetail from "../Goal/GoalDetail";
 import DetailItem from "../Detail/DetailItem";
@@ -27,6 +27,9 @@ import Card from "../UI/Card/Card";
 import PlanCard from "../Plan/PlanCard/PlanCard";
 import PlanExpanded from "../Plan/PlanExpanded";
 import DropDown from "../UI/DropDown/DropDown";
+import PlanList from "../UI/PlanList/PlanList.js"
+import { Fragment } from "react";
+
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -49,6 +52,8 @@ const postCardItemList = (postList) => {
   });
 };
 
+
+
 const UserPageForm = (props) => {
   const containerRef = useRef();
   const [postList, setPostList] = useState(null);
@@ -60,7 +65,7 @@ const UserPageForm = (props) => {
   const [followingList, setFollowingList] = useState(null);
   const [followingListCnt, setFollowingListCnt] = useState(null);
   const [userTagList, setUserTagList] = useState([]);
-  const myData = useSelector(state => state.userAuthSlice.userAuth.currentUser)
+  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
   const criteria = ["date", "view", "like"];
   const [criteriaIdx, setCriteriaIdx] = useState(0);
   const [offset, setOffset] = useState(1);
@@ -70,6 +75,16 @@ const UserPageForm = (props) => {
   const postWrapperRef = useRef()
 
   const navigate = useNavigate();
+
+
+  const plans = useSelector(state => state.planSlice.allPlans)
+  const PlanCardItemList = () => {
+    return Object.keys(plans).map((id, arrIdx) => {
+      return (
+        <PlanList plan={plans[id]}/>
+      )
+    })
+  }
 
   const fetchUserPostData = (criteriaIdx, page, size) => {
     setIsLoading(true);
@@ -115,7 +130,7 @@ const UserPageForm = (props) => {
           setFetchStart(() => false);
         }, 500);
       });
-    } 
+    }
   };
 
   const [fetchStart, setFetchStart] = useState(false);
@@ -126,11 +141,8 @@ const UserPageForm = (props) => {
     }
   }, [fetchStart]);
 
-
-
   // 초기 데이터
   useEffect(() => {
-    console.log('ssafy myData', myData)
     // Post API
     setIsLoading(true);
 
@@ -147,8 +159,6 @@ const UserPageForm = (props) => {
         setIsLoading(false);
       });
     }
-    
-  
 
     // My Data API
     // getMyData().then((res) => {
@@ -208,13 +218,19 @@ const UserPageForm = (props) => {
   const followBtn = (isFollowing) => {
     if (isFollowing) {
       return (
-        <Button className={`${classes[`follow-btn-true`]} ${classes[`button`]}`} onClick={followBtnHandler}>
+        <Button
+          className={`${classes[`follow-btn-true`]} ${classes[`button`]}`}
+          onClick={followBtnHandler}
+        >
           팔로잉
         </Button>
       );
     } else {
       return (
-        <Button className={`${classes[`follow-btn-false`]} ${classes[`button`]}`} onClick={followBtnHandler}>
+        <Button
+          className={`${classes[`follow-btn-false`]} ${classes[`button`]}`}
+          onClick={followBtnHandler}
+        >
           팔로우
         </Button>
       );
@@ -293,15 +309,15 @@ const UserPageForm = (props) => {
               <div className={classes["user-column"]}>
                 <div className={classes.nickname}>{userData.nickname}</div>
                 <div className={classes.follow}>
-                  <div className={classes['follow-text-wrapper']}>
+                  <div className={classes["follow-text-wrapper"]}>
                     <div className={classes[`follow-text`]}>팔로워</div>
                     <div className={classes[`follow-number`]}>{followerListCnt}명</div>
                     <div className={classes[`follow-text`]}>팔로우</div>
                     <div className={classes[`follow-number`]}>{followingListCnt}명</div>
                   </div>
-  
-                    {myData.userId !== props.id && followBtn(isFollowing)}
 
+                  {myData.userId !== props.id && followBtn(isFollowing)}
+                  {followBtn(isFollowing)}
                 </div>
               </div>
               <div className={classes["user-column"]}>
@@ -335,18 +351,35 @@ const UserPageForm = (props) => {
 
   const categoryDropDownItems = {
     label: ['전체 글', '전체 목표'],
-    function: [null, null],
+    function: [() => {setCategory('전체 글')}, () => {setCategory('전체 목표')}],
   }
-  const [categoryDropDownState, setCategoryDropDownState] = useState(false)
 
+  const [categoryDropDownState, setCategoryDropDownState] = useState(false)
 
   const postDropDownItems = {
     label: ['포스트 작성', '회고록 작성'],
     function: [() => {navigate('/create/post')}, () => {navigate('/create/review')}],
   }
+
   const [postDropDownState, setPostDropDownState] = useState(false)
 
-
+  const categoryView = (category === '전체 글'
+    ?
+      <Fragment>
+        
+        <div ref={postWrapperRef}>
+          {postCardContainer(postList)}
+        </div>
+        
+        <div className={classes[`pagination`]}>
+          <Pagination count={totalPage} onChange={pageChangeHandler} />
+        </div>
+      </Fragment>
+    :
+      <Fragment>
+        {PlanCardItemList()}
+      </Fragment>
+  )
   
 
   return (
@@ -377,19 +410,12 @@ const UserPageForm = (props) => {
         <div className={classes['body']}>
         
           <div className={classes['article-list-wrapper']}>
-            
             <div className={classes['kanban-wrapper']}>
               <Card className={classes["plan-kanban"]}>
                 <PlanExpanded contracted={true} />
               </Card>
             </div>
-            <div ref={postWrapperRef}>
-              {postCardContainer(postList)}
-            </div>
-            
-            <div className={classes[`pagination`]}>
-              <Pagination count={totalPage} onChange={pageChangeHandler} />
-            </div>
+            {categoryView}
           </div>
           <div className={classes["plan-card-wrapper"]}>
             <PlanCard />
@@ -402,10 +428,7 @@ const UserPageForm = (props) => {
 
 };
 
-
-
 const UserPage = (props) => {
-
   return (
     <div>
       <div id="index-overlay-root"></div>
@@ -417,6 +440,6 @@ const UserPage = (props) => {
         <Route path="post/:id" element={<DetailItem />} />
       </Routes>
     </div>
-  )
-}
+  );
+};
 export default UserPage;

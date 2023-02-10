@@ -1,5 +1,4 @@
 @media all and (max-width: 1080px) {
-
   .tag-wrapper-pc {
     display: none;
   }
@@ -16,7 +15,7 @@
     font-weight: 700;
     margin-right: 10px;
   }
-  
+
   .follow-number {
     margin-top: 12px;
     font-size: 14px;
@@ -31,9 +30,20 @@
     padding-left: 5px;
     /* padding-right: -20px; */
     margin-left: -5px;
-    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 5%, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0) 100%);
-    mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 5%, rgba(0, 0, 0, 1) 95%, rgba(0, 0, 0, 0) 100%);
-
+    -webkit-mask-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 5%,
+      rgba(0, 0, 0, 1) 95%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 5%,
+      rgba(0, 0, 0, 1) 95%,
+      rgba(0, 0, 0, 0) 100%
+    );
   }
 
   .tag-wrapper-mobile::-webkit-scrollbar {
@@ -73,7 +83,6 @@
 
 
   .plan-card-wrapper {
-    
     display: none;
   }
 
@@ -98,7 +107,7 @@
   .button {
     margin-top: 4px;
     margin-left: 0px;
-    min-width: 90%;;
+    min-width: 90%;
     min-height: 24px;
   }
 
@@ -131,7 +140,7 @@
     font-weight: 700;
     margin-right: 10px;
   }
-  
+
   .follow-number {
     font-size: 1.2rem;
     font-weight: 400;
@@ -169,12 +178,11 @@
     margin-bottom: 6px;
     margin-left: 14px;
   }
-  
+
   .follow {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  
   }
 
   .user-page {
@@ -215,10 +223,8 @@
 
 
 
-
 .follow-text-wrapper {
   display: flex;
-
 }
 
 .user-outer-wrapper {
@@ -234,7 +240,6 @@
 
   display: flex;
   flex-direction: column;
-
 }
 
 .user-description {
@@ -250,7 +255,6 @@
 }
 
 .nickname {
-
   font-size: 1.5rem;
   font-weight: 700;
 }
@@ -271,17 +275,11 @@
   justify-content: space-between;
 }
 
-
-
-
-
-
-
 .follow-btn-true {
   background-color: #fbfbfb;
   font-weight: 500;
   font-size: 14px;
-  border: 3px solid #e0d3f5;
+  border: 2px solid #d4d4d5;
   /* margin-left: 10px; */
 }
 
@@ -289,7 +287,7 @@
   background-color: #e8def8;
   font-weight: 500;
   font-size: 14px;
-  border: 3px solid #e0d3f5;
+  border: 2px solid #dac6f9;
   /* margin-left: 10px; */
 }
 

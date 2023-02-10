@@ -3,6 +3,7 @@ import Button from "../UI/Button/Button";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 import { chkTodoAPI } from "../../api/Plan/chkTodoAPI";
+import { editIsPlanDoneAPI } from "../../api/Plan/editIsPlanDoneAPI";
 import { recvIsAllTodosDoneAPI } from "../../api/Plan/recvIsAllTodosDoneAPI";
 import { useSelector, useDispatch } from 'react-redux'
 import { modifyPlanSliceActions } from '../../redux/planSlice'
@@ -23,7 +24,7 @@ const DoneModalForm = (props) => {
             </div>  
             <div style={{width:'100%', display:'flex', flexDirection:'column', alignItems:'center', marginTop:'12px'}}>
                 <Button className={styles['button']} onClick={() => {props.redirectToPost(true)}}>글 작성</Button>
-                <Button className={styles['button']}>목표 완료</Button>
+                <Button className={styles['button']} onClick={() => {props.planDone(); props.modalHandler()}}>목표 완료</Button>
                 <Button className={styles['button']} onClick={props.modalHandler}>취소</Button>
             </div>
         </div>
@@ -80,6 +81,10 @@ const PlanIsDoneToggle = (props) => {
         
     }
 
+    const planDone = () => {
+        editIsPlanDoneAPI(props.plan.goalId)
+        
+    }
 
     const redirectToPost = (isPlanDone) => {
         const url = `/create/post?goal_id=${props.plan.goalId}${isPlanDone ? '&ask_done=true' : ''}&step=true`
@@ -104,7 +109,7 @@ const PlanIsDoneToggle = (props) => {
             <div>목표를 완료하거나 새 TODO를 작성하세요.</div>
             <div style={{width: '100%', display:'flex', justifyContent:'space-around', marginTop: '16px'}}>
                 <Button className={styles['noti-button']} onClick={() => {redirectToPost(true)}}>글 작성</Button>
-                <Button className={styles['noti-button']} >목표 완료</Button>
+                <Button className={styles['noti-button']} onClick={() => {planDone()}}>목표 완료</Button>
             </div>
         </div>
     )
@@ -134,8 +139,15 @@ const PlanIsDoneToggle = (props) => {
 
     return (
         <React.Fragment>
-            <FixedModal modalState={doneModalState} stateHandler={setDoneModalState} content={<DoneModalForm redirectToPost={redirectToPost} />} width={'350px'} height={'auto'} />
-            {doneNotiState && <NotiDeliverer content={notiContent} stateHandler={setDoneNotiState} passToFixed={true} duration={5000} width={400} />}
+            <FixedModal 
+                modalState={doneModalState}
+                stateHandler={setDoneModalState} 
+                content={<DoneModalForm redirectToPost={redirectToPost} planDone={planDone}/>}
+                width={'350px'} 
+                height={'auto'}
+            />
+        {doneNotiState && <NotiDeliverer content={notiContent} stateHandler={setDoneNotiState} passToFixed={true} duration={5000} width={400} />}
+
             {props.todo.state ? isDoneTrue : isDoneFalse}
         </React.Fragment>
         
