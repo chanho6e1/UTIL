@@ -6,7 +6,6 @@ import useDidMountEffect from "../../../hooks/useDidMountEffect";
 
 
 
-
 const SwipeableDock = (props) => {
   
   
@@ -35,6 +34,11 @@ const SwipeableDock = (props) => {
     })
   }, [])
 
+
+
+  useEffect(() => {
+    navigate(postData.url[contentCount -1], { replace: true });
+  }, [location.pathname && contentCount])
 
   // useEffect(() => {
 
@@ -119,7 +123,7 @@ const SwipeableDock = (props) => {
   useEffect(() => {
     movingDiv.current.style.transitionDuration = '0.3s'
     movingDiv.current.style.transform = `translateX(${-width * (contentCount - 1)}px)`
-    // navigate(postData.url[contentCount - 1], { replace: true });
+    
   }, [contentCount])
 
 
@@ -137,22 +141,20 @@ const SwipeableDock = (props) => {
 
   const { pathname } = useLocation();
   const wrapRef = useRef([]);
+
+  
   const movePage = (url) =>{
-    if(pathname !== `/${url}` && !pathname.includes('modal')) {
-      
       wrapRef?.current[contentCount - 1]?.classList?.replace('loaded', 'unloaded');
       setTimeout(()=> { 
         // navigate(url);
         wrapRef?.current[contentCount - 1]?.classList?.replace('unloaded', 'loaded');
       } , 10)
-    }
   }
 
   useEffect(() => {
     if (wrapRef?.current[0]) {
       movePage(pathname)
     }
-    
   }, [pathname])
 
 

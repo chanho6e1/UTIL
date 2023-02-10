@@ -102,7 +102,7 @@ const PlanCalendar = (props) => {
   const monthGridDummy = monthRange.map((el, idx) => {
     return (
       <div key={`month-plan-bar-${idx}`}>
-        <div id={`month-${props.startRange.getMonth() + idx + 1}`} className={`${styles['month-plan-bar']} ${plans.length % 2 ? styles['container-odd'] : styles['container-even']}`}>
+        <div id={`month-${props.startRange.getMonth() + idx + 1}`} className={`${styles['month-plan-bar']} ${plans.length % 2 ? styles['container-odd'] : styles['container-even']}`} style={{width: `${props.contracted === true ? '170px' : '250px'}`}}>
           
           
         </div> 
@@ -116,7 +116,7 @@ const PlanCalendar = (props) => {
     const exec = monthRange.map((el, idx) => {
       return (
         <div key={`month-plan-bar-${idx}`}>
-          <div ref={el => (planGridRef[rowIdx].current[idx] = el)} id={`month-${props.startRange.getMonth() + idx + 1}`} className={`${styles['month-plan-bar']} ${rowIdx % 2 ? styles['container-odd'] : styles['container-even']}`}>
+          <div ref={el => (planGridRef[rowIdx].current[idx] = el)} id={`month-${props.startRange.getMonth() + idx + 1}`} className={`${styles['month-plan-bar']} ${rowIdx % 2 ? styles['container-odd'] : styles['container-even']}`} style={{width: `${props.contracted === true ? '170px' : '250px'}`}}>
           </div> 
         </div>
       )
@@ -131,7 +131,7 @@ const PlanCalendar = (props) => {
     const tempMonth = new Date(tempDate.getFullYear(), tempDate.getMonth() + idx, 1)
     return (
       <div key={`month-title-bar-${idx}`}>
-        <div className={styles['month-title-bar']}>{tempMonth.getFullYear()}년 {tempMonth.getMonth() + 1}월</div>
+        <div className={styles['month-title-bar']} style={{width: `${props.contracted === true ? '170px' : '250px'}`}}>{tempMonth.getFullYear()}년 {tempMonth.getMonth() + 1}월</div>
       </div>
     )
   })

@@ -57,8 +57,9 @@
     box-sizing: border-box;
     /* margin: 0 auto; */
     /* justify-content: space-evenly; */
-    margin-top:12px;
+    margin-top:18px;
     margin-bottom: 24px;
+    padding-left: 14px;
   }
 
   .user-description {
@@ -84,7 +85,7 @@
     width: 100%;
     height: 1px;
     border-bottom: 1px solid rgb(210,210,210);
-    margin-bottom: 24px;
+    /* margin-bottom: 24px; */
   }
 
   .follow {
@@ -99,6 +100,19 @@
     margin-left: 0px;
     min-width: 90%;;
     min-height: 24px;
+  }
+
+  .kanban-wrapper {
+    display: none;
+  }
+
+  .user-page {
+    /* padding: 10px 8px 10px 8px; */
+    padding-bottom: 48px;
+  }
+
+  .article-list-wrapper {
+    padding: 14px 14px 14px 14px ;
   }
 }
 
@@ -162,6 +176,24 @@
     align-items: center;
   
   }
+
+  .user-page {
+    padding: 10px 10vw 10px 10vw;
+  }
+
+  
+  .article-list-wrapper {
+    padding : 14px 14px 14px 14px;
+  }
+
+  .pagination {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 48px;;
+  }
+  
+  
 
 }
 
@@ -299,10 +331,6 @@
 
 
 
-.pagination {
-  margin-bottom: 48px;;
-}
-
 
 
 
@@ -323,9 +351,8 @@
   height: 100vh;
   overflow: scroll;
   overflow-x: hidden;
-  padding: 10px 10vw 10px 10vw;
-  box-sizing: border-box;
   
+  box-sizing: border-box;
 }
 
 .contents {
@@ -346,13 +373,14 @@
 }
 
 .article-list-wrapper {
-  display:flex;
-  flex-direction: column;
-  flex-grow:1 !important;
+  /* display:flex;
+  flex-direction: column; */
+  flex-grow:1;
   overflow: hidden;
-  padding: 14px;
-
-  box-sizing: border-box;
+  /* align-items: center; */
+  /* width: 100%; */
+  /* padding: 14px; */
+  /* box-sizing: border-box; */
 }
 
 .plan-card-wrapper {
@@ -369,4 +397,46 @@
 
 .kanban-wrapper {
   width: 100%;
+}
+
+.body-header {
+  width: 100%;
+  display: flex;
+  /* margin-bottom: 14px; */
+  margin-left:14px;
+  margin-top:14px;
+}
+
+.dropdown {
+  width: 150px;
+  height: 48px;
+  /* box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1); */
+  border: 1px solid rgb(220, 220, 220);
+  background-color: white;
+  border-radius: 5px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  cursor: pointer;
+  transition-property: background-color color;
+    transition-duration: 0.2s;
+    user-select: none;
+  margin-right: 8px;
+}
+
+.dropdown:hover {
+  background-color: rgba(154, 76, 249, 0.05);;
+}
+
+.drop-down-li-tag {
+  color: rgb(220, 220, 220);
+  margin-left: 24px;
+  font-size: 24px;;
+  margin-right: -10px;
+}
+
+.body-header-button {
+  width: 150px;
+  height: 50px;
+  background-color: white;
 }
