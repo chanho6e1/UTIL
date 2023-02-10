@@ -108,4 +108,7 @@ public class PostComment extends BaseEntity {
         }
     }
 
+    public void setParentNull() {
+        this.parent = null;
+    }
 }
