@@ -18,7 +18,7 @@ public interface PostCommentRepository extends JpaRepository<PostComment, Long> 
 
     @Transactional
     @Modifying(clearAutomatically = true) // 영속성 컨텍스트 초기화
-    @Query("delete from PostComment c where c.post.postId = :postId")
+    @Query(value= "delete from post_comment c where c.post_id = :postId order by c.parent_id desc" , nativeQuery =true)
     void deleteByPostId(@Param("postId") Long postId);
 
     @Query("select c from PostComment c where c.commentId = :commentId")
@@ -40,5 +40,10 @@ public interface PostCommentRepository extends JpaRepository<PostComment, Long> 
 
     @Query("SELECT c FROM PostComment c WHERE c.post.postId = :postId")
     List<PostComment> findCommentByPostId(@Param("postId")Long postId);
+
+    @Transactional
+    @Modifying
+    @Query("update PostComment c set c.parent = null where c.post.postId = :postId")
+    void setParentNull(@Param("postId")Long postId);
 }
 
