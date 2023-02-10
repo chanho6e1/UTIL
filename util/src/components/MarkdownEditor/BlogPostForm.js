@@ -5,20 +5,24 @@ import { recvPlansAPI } from "../../api/Plan/recvPlansAPI";
 import arrow from '../../img/arrow.png'
 import Button from "../UI/Button/Button";
 
-const BlogPostForm = (props) => {
-    const [plans, setPlans] = useState([])
+const BlogPostFormRender = (props) => {
+    // const [plans, setPlans] = useState([])
+    const plans = props.plans
     const [showPlansPicker, setShowPlansPicker] = useState(props.forReview ? true : false)
     const [showScopePicker, setShowScopePicker] = useState(true)
     const [selectedPlan, setSelectedPlan] = useState(props.queryString.goal ? props.queryString.goal : null)
     const [selectedScope, setSelectedScope] = useState(2)
 
-    useEffect(() => {
-        recvPlansAPI()
-        .then((res) => {
-            setPlans(res)
+    // useEffect(() => {
+    //     recvPlansAPI()
+    //     .then((res) => {
+    //         setPlans(res)
             
-        })
-    }, [])
+    //     })
+    // }, [])
+ 
+        console.log('ttttt', plans)
+
 
     const planPickerHandler = () => {
         if (props.forReview === true) {
@@ -136,6 +140,25 @@ const BlogPostForm = (props) => {
             </div>
         </div>
         
+    )
+}
+
+
+const BlogPostForm = (props) => {
+    const [plans, setPlans] = useState(null)
+    useEffect(() => {
+        recvPlansAPI()
+        .then((res) => {
+            console.log(res)
+            setPlans(res)
+            
+        })
+    }, [])
+
+    return (
+        <React.Fragment>
+            {plans && <BlogPostFormRender plans={plans} postSubmitHandler={props.postSubmitHandler} reviewSubmitHandler={props.reviewSubmitHandler} forReview={props.forReview} edit={props.edit} queryString={props.queryString}/>}
+        </React.Fragment>
     )
 }
 

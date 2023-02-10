@@ -293,7 +293,7 @@ const ToastEditorForm = (props) => {
     <div ref={editorWrapperRef} className={styles['editor-wrapper']}>
       {doneNotiState && <NotiDeliverer content={doneNotiContent} stateHandler={setDoneNotiState} duration={5000} width={350} />}
       {alertNotiState && <NotiDeliverer content={alert} stateHandler={setAlertNotiState} duration={5000} width={350} height={100} />}
-      <FixedModal edit={props.edit} queryString={queryString} modalState={modalState} stateHandler={setModalState} content={<BlogPostForm postSubmitHandler={postSubmitHandler} reviewSubmitHandler={reviewSubmitHandler} forReview={props.forReview} />} noBtn={true} width={'10px'} height={'170px'} />
+      <FixedModal edit={props.edit} queryString={queryString} modalState={modalState} stateHandler={setModalState} content={<BlogPostForm postSubmitHandler={postSubmitHandler} reviewSubmitHandler={reviewSubmitHandler} forReview={props.forReview} edit={props.edit} queryString={queryString}/>} noBtn={true} width={'10px'} height={'170px'} />
       <div className={styles['additional-info-wrapper']}>
         <div className={styles['header']}>
           {props.forReview ? dateRender : titleInput}
