@@ -7,19 +7,21 @@ import Loading from "../UI/Loading/Loading";
 const feedCardItemList = (postList) => {
   return postList?.map((post) => {
     return (
-      <FeedCardItem
-        id={post.postId}
-        key={post.postId}
-        thumbnail={post.thumbnail}
-        title={post.title}
-        contents={post.contents}
-        likeStatusSize={post.likeStatusSize}
-        likeStatus={post.likeStatus}
-        bookmarkStatus={post.bookmarkStatus}
-        profileImg={post.writerInfo.profileImg}
-        nickname={post.writerInfo.nickname}
-        createdDate={post.createdDate}
-      />
+      <div key={`explore-feed-card-${post.postId}`} className={classes["card-wrapper"]}>
+        <FeedCardItem
+          id={post.postId}
+          key={post.postId}
+          thumbnail={post.thumbnail}
+          title={post.title}
+          contents={post.contents}
+          likeStatusSize={post.likeStatusSize}
+          likeStatus={post.likeStatus}
+          bookmarkStatus={post.bookmarkStatus}
+          profileImg={post.writerInfo.profileImg}
+          nickname={post.writerInfo.nickname}
+          createdDate={post.createdDate}
+        />
+      </div>
     );
   });
 };

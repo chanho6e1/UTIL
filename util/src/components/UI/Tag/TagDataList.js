@@ -24,7 +24,6 @@ const chipTheme = createTheme({
 
 const TagDataList = (props) => {
   const TagDataItem = [];
-
   const maxIndex = (list) => {
     if (list) {
       return list.length < 5 ? list.length : 5;
@@ -33,10 +32,34 @@ const TagDataList = (props) => {
     }
   };
 
-  const bgColorList = ["#f9f5fc", "#f5f5fc", "#fcf5eb", "#f5fceb", "#fcfceb"];
-  const colorList = ["#381E72", "#013ab1", "#622100", "#1c663c", "#754502"];
+  // const bgColorList = ["#f9f5fc", "#f5f5fc", "#fcf5eb", "#f5fceb", "#fcfceb"];
+  // const colorList = ["#381E72", "#013ab1", "#622100", "#1c663c", "#754502"];
+
+  const colorList = [
+    "#ff3b30",
+    "#ff9500",
+    "#ffcc00",
+    "#34c759",
+    "#5ac8fa",
+    "#007aff",
+    "#5856d6",
+    "#af52de",
+    "#ff2d55",
+  ];
+  const bgColorList = [
+    "#ffdcdb",
+    "#fff6e8",
+    "#fffbe9",
+    "#e1ffe9",
+    "#edf9ff",
+    "#dcedff",
+    "#e0e0ff",
+    "#f5e1ff",
+    "#fee2e7",
+  ];
 
   for (var i = 0; i < maxIndex(props.tagList); i++) {
+    const idx = Math.floor(Math.random() * 9);
     TagDataItem.push(
       <TagList key={i}>
         <ThemeProvider theme={chipTheme}>
@@ -47,8 +70,8 @@ const TagDataList = (props) => {
             size="medium"
             sx={{
               // outline: 'rgb(255,0,0)',
-              bgcolor: bgColorList[i],
-              color: colorList[i],
+              bgcolor: bgColorList[idx],
+              color: colorList[idx],
               "& .MuiButtonBase-root": {
                 borderRadius: "1px",
               },
