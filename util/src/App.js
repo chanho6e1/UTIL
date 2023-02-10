@@ -94,7 +94,7 @@ const App = () => {
       <div ref={wrapRef} className="wrap loaded">
 
       <Routes>
-      
+
         {/* <Route path="/goal/:id" element={<GoalDetail />} /> 
         <Route path="/post/:id" element={<DetailItem />} />  */}
 
@@ -111,6 +111,7 @@ const App = () => {
           <Route path="review/:id" element={<ToastEditor key={'review'} edit={true} forReview={true}/>} />
           <Route path="post/:id" element={<ToastEditor key={'post'} edit={true} />} />
         </ Route>
+
       </Routes>
       
     
