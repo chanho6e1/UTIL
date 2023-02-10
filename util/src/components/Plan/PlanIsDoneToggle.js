@@ -9,6 +9,8 @@ import { modifyPlanSliceActions } from '../../redux/planSlice'
 import { useNavigate } from "react-router-dom";
 import complete from "../../img/Complete.png"
 import styles from './PlanIsDoneToggle.module.css'
+import { recvTodayTodosAPI } from "../../api/Plan/recvTodayTodosAPI";
+
 
 const DoneModalForm = (props) => {
     
@@ -46,6 +48,13 @@ const PlanIsDoneToggle = (props) => {
         })
         .then((res) => {
             
+            recvTodayTodosAPI()
+            .then((res) => {
+                dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
+            })
+            .catch((err) => {
+                console.log('PlanCardItem : recvTodayTodosAPI => ', err)
+            })
 
             recvIsAllTodosDoneAPI(props.plan.goalId)
             .then((res) => {
@@ -126,7 +135,7 @@ const PlanIsDoneToggle = (props) => {
     return (
         <React.Fragment>
             <FixedModal modalState={doneModalState} stateHandler={setDoneModalState} content={<DoneModalForm redirectToPost={redirectToPost} />} width={'350px'} height={'auto'} />
-            {doneNotiState && <NotiDeliverer content={notiContent} stateHandler={setDoneNotiState} duration={5000} width={400} />}
+            {doneNotiState && <NotiDeliverer content={notiContent} stateHandler={setDoneNotiState} passToFixed={true} duration={5000} width={400} />}
             {props.todo.state ? isDoneTrue : isDoneFalse}
         </React.Fragment>
         

@@ -3,8 +3,10 @@
 
 import { createStore } from 'redux'
 
+
+
 // Redux toolkit을 import
-import { createSlice, configureStore } from '@reduxjs/toolkit'
+import { createSlice, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 
 
 // -------------------------------------------------------------------------------------------------------
@@ -30,8 +32,10 @@ const store = configureStore({
     userAuthSlice: userAuthReducer,
     notificationSlice: notificationSliceReducer,
     postDetailSlice: postDetailSliceReducer,
-  }
-
+  },
+  middleware: getDefaultMiddleware({
+    serializableCheck: false,
+  }),
 
 })
 
