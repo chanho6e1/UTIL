@@ -10,8 +10,10 @@ import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.post.*;
 import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.post.*;
+import com.youtil.server.dto.tag.TagResponse;
 import com.youtil.server.repository.goal.GoalRepository;
 import com.youtil.server.repository.post.*;
+import com.youtil.server.repository.tag.TagOfPostRepository;
 import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +45,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final PostBookmarkRepository postBookmarkRepository;
     private final GoalRepository goalRepository;
+    private final TagOfPostRepository tagOfPostRepository;
     private final S3Uploader s3Uploader;
     private final String baseImg = "21ef9957-c12f-4bd8-a098-e0c75fe2b7c3ogo.png";
 
@@ -67,7 +70,7 @@ public class PostService {
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Page<Post> page =  postQueryRepository.findPostListByUser(userId, criteria, PageRequest.of(offset - 1, size));
 
-        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user, getTagByPost(post.getPostId()))).collect(Collectors.toList());
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
                 page.getTotalPages(), page.isLast());
     }
@@ -77,7 +80,7 @@ public class PostService {
         User me = userRepository.findUser(myId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", myId)); //접속 중인 나
 
         Page<Post> page = postQueryRepository.findPostListBySpecUser(userId, criteria, PageRequest.of(offset - 1, size), me);
-        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, me)).collect(Collectors.toList());
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, me, getTagByPost(post.getPostId()))).collect(Collectors.toList());
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
                 page.getTotalPages(), page.isLast());
     }
@@ -87,7 +90,7 @@ public class PostService {
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
         Page<Post> page =  postQueryRepository.findPostList(userId, criteria, PageRequest.of(offset - 1, size));
-        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user, getTagByPost(post.getPostId()))).collect(Collectors.toList());
 
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
                 page.getTotalPages(), page.isLast());
@@ -97,7 +100,7 @@ public class PostService {
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
         Page<Post> page =  postQueryRepository.findByTitleContaining(userId, search, PageRequest.of(offset - 1, size));
-        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user, getTagByPost(post.getPostId()))).collect(Collectors.toList());
 
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
                 page.getTotalPages(), page.isLast());
@@ -107,7 +110,7 @@ public class PostService {
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
         Page<Post> page =  postQueryRepository.findByNickNameContaining(userId, search, PageRequest.of(offset - 1, size));
-        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user, getTagByPost(post.getPostId()))).collect(Collectors.toList());
 
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
                 page.getTotalPages(), page.isLast());
@@ -125,7 +128,7 @@ public class PostService {
 
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Page<Post> page = postQueryRepository.findByPostSubscribes(search, user, PageRequest.of(offset - 1, size));
-        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user, getTagByPost(post.getPostId()))).collect(Collectors.toList());
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
                 page.getTotalPages(), page.isLast());
     }
@@ -133,16 +136,21 @@ public class PostService {
     public PagedResponse<PostResponse> findByLikePostList(Long userId, String criteria, int offset, int size) {
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Page<Post> page =  postQueryRepository.findByLikePostList(criteria, user, PageRequest.of(offset - 1, size));
-        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
+
+        List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user, getTagByPost(post.getPostId()))).collect(Collectors.toList());
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
                 page.getTotalPages(), page.isLast());
     }
-
+    public List<TagResponse> getTagByPost(Long postId) { // 포스트로 테그 조회
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
+        return tagOfPostRepository.findByPost(post)
+                .stream().map(TagResponse::new).collect(Collectors.toList());
+    }
     public PagedResponse<PostResponse> findByBookmarkPostList(Long userId, String criteria, int offset, int size) {
         User user = userRepository.findUser(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Page<Post> page = postQueryRepository.findByBookmarkPostList(criteria, user, PageRequest.of(offset - 1, size));
 
-        List<PostResponse> responses = page.stream().map((post) -> new PostResponse(post, user)).collect(Collectors.toList());
+        List<PostResponse> responses = page.stream().map((post) -> new PostResponse(post, user, getTagByPost(post.getPostId()))).collect(Collectors.toList());
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
                 page.getTotalPages(), page.isLast());
 
