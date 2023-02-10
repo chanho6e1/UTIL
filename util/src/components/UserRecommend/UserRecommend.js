@@ -21,7 +21,6 @@ const UserRecommend = (props) => {
   const fetchMoreData = () => {
     setIsLoading(true);
     getRecommendUser(offset + 1, size).then((res) => {
-      console.log("load", res.content);
       if (res.content.length > 0) {
         setUserList((prevState) => [...prevState, ...res.content]);
         setOffset((prevState) => prevState + 1);
