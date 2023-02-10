@@ -23,8 +23,10 @@ import { useSelector, useDispatch } from "react-redux";
 import Swipe from "react-easy-swipe";
 import GoalDetail from "../Goal/GoalDetail";
 import DetailItem from "../Detail/DetailItem";
-
+import Card from "../UI/Card/Card";
 import PlanCard from "../Plan/PlanCard/PlanCard";
+import PlanExpanded from "../Plan/PlanExpanded";
+import DropDown from "../UI/DropDown/DropDown";
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -64,6 +66,7 @@ const UserPageForm = (props) => {
   const [totalPage, setTotalPage] = useState(10);
   const size = 8;
   const [isLoading, setIsLoading] = useState(true);
+  const postWrapperRef = useRef()
 
   const navigate = useNavigate();
 
@@ -76,6 +79,7 @@ const UserPageForm = (props) => {
         setTimeout(() => {
           setIsLoading(false);
         }, 500);
+        containerRef.current.scrollTo({ left: 0, top: postWrapperRef.current.offsetTop - 14, behavior: "smooth" })
       });
     } else {
       getUserPosts(props.id, criteria[criteriaIdx], page, size).then((res) => {
@@ -84,6 +88,7 @@ const UserPageForm = (props) => {
         setTimeout(() => {
           setIsLoading(false);
         }, 500);
+        containerRef.current.scrollTo({ left: 0, top: postWrapperRef.current.offsetTop - 14, behavior: "smooth" })
       });
     }
   };
@@ -232,7 +237,7 @@ const UserPageForm = (props) => {
     fetchUserPostData(criteriaIdx, page, size);
   };
 
-  const wrapperDiv = useRef();
+
 
   // scroll event handler
   const handleScroll = () => {
@@ -241,7 +246,9 @@ const UserPageForm = (props) => {
     const clientHeight = containerRef.current.clientHeight;
     if (scrollTop + clientHeight >= scrollHeight - 1 && isLoading === false) {
       if (offset < totalPage) {
-        setFetchStart(() => true);
+        if (document.body.clientWidth < 1080) {
+          setFetchStart(() => true);
+        }
       }
 
       // 페이지 끝에 도달하면 추가 데이터를 받아온다
@@ -261,21 +268,21 @@ const UserPageForm = (props) => {
     };
   });
 
-  const userPageUpper = (
+  const userInformation = (
     <div className={classes[`user-page-upper`]}>
       <div className={classes[`user-page-upper-inner`]}>
         <div className={classes[`avatar-username`]}>
           <Avatar
             src={userData.imageUrl}
             sx={{
-              width: "15vw",
-              height: "15vw",
-              minWidth: "96px",
-              minHeight: "96px",
+              width: "5vw",
+              height: "5vw",
+              minWidth: "56px",
+              minHeight: "56px",
               maxWidth: "128px",
               maxHeight: "128px",
               border: "1px solid lightgray",
-              marginRight: "12px",
+              marginRight: '6px',
               objectFit: "scale-down",
             }}
           />
@@ -307,43 +314,98 @@ const UserPageForm = (props) => {
           </div>
         </div>
       </div>
-      <Swipe
-        onSwipeStart={(event) => {
-          event.stopPropagation();
-        }}
-      >
-        <div className={classes["tag-wrapper-mobile"]}>
-          <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
-        </div>
+      <Swipe onSwipeStart={(event) => {event.stopPropagation()}}>
+          <div className={classes["tag-wrapper-mobile"]}>
+            <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
+          </div>
       </Swipe>
     </div>
   );
 
+  const header = (
+    <React.Fragment>
+      {userInformation}
+      <div className={classes["line"]} />
+      
+    </React.Fragment>
+  )
+
+  
+  const [category, setCategory] = useState('전체 글')
+
+  const categoryDropDownItems = {
+    label: ['전체 글', '전체 목표'],
+    function: [null, null],
+  }
+  const [categoryDropDownState, setCategoryDropDownState] = useState(false)
+
+
+  const postDropDownItems = {
+    label: ['포스트 작성', '회고록 작성'],
+    function: [() => {navigate('/create/post')}, () => {navigate('/create/review')}],
+  }
+  const [postDropDownState, setPostDropDownState] = useState(false)
+
+
+  
+
   return (
-    <div ref={wrapperDiv} className={classes[`user-page`]}>
-      <div ref={containerRef} className={classes[`postcard-container`]}>
-        <div className={classes[`postcard-inner`]}>
-          {userPageUpper}
-          <div className={classes["line"]} />
-          {postCardContainer(postList)}
-        </div>
+    <div ref={containerRef} className={classes['user-page']}>
+      <div className={classes['contents']}>
+        {header}
 
-        <div className={classes["plan-card-wrapper"]}>
-          <PlanCard />
-        </div>
-      </div>
+        <div className={classes['body-header']}>
+          <div>
+            <DropDown dropDownItems={categoryDropDownItems} dropDownState={categoryDropDownState} setDropDownState={setCategoryDropDownState} width={'152px'} itemHeight={'48px'} direction={'down'} borderRadius={'5px'} />
+            <div className={classes['dropdown']} onClick={() => {setCategoryDropDownState(() => true)}}>
+            <li className={classes['drop-down-li-tag']} />
+            {category}
+            </div>
+          </div>
 
-      <div className={classes[`pagination`]}>
-        <Pagination count={totalPage} onChange={pageChangeHandler} />
+          <div>
+            <DropDown dropDownItems={postDropDownItems} dropDownState={postDropDownState} setDropDownState={setPostDropDownState} width={'152px'} itemHeight={'48px'} direction={'down'} borderRadius={'5px'} />
+            <div className={classes['dropdown']} onClick={() => {setPostDropDownState(() => true)}}>
+            <li className={classes['drop-down-li-tag']} />
+            글 작성
+            </div>
+          </div>
+          
+
+
+        </div>
+        <div className={classes['body']}>
+        
+          <div className={classes['article-list-wrapper']}>
+            
+            <div className={classes['kanban-wrapper']}>
+              <Card className={classes["plan-kanban"]}>
+                <PlanExpanded contracted={true} />
+              </Card>
+            </div>
+            <div ref={postWrapperRef}>
+              {postCardContainer(postList)}
+            </div>
+            
+            <div className={classes[`pagination`]}>
+              <Pagination count={totalPage} onChange={pageChangeHandler} />
+            </div>
+          </div>
+          <div className={classes["plan-card-wrapper"]}>
+            <PlanCard />
+          </div>
+        </div>
       </div>
     </div>
+
   );
+
 };
 
 const UserPage = (props) => {
   return (
     <div>
-      <div id="inner-overlay-root"></div>
+      <div id="index-overlay-root"></div>
       <Routes>
         <Route path="/*" element={<UserPageForm id={props.id} />} />
         <Route path="index/*" element={<UserPageForm id={props.id} />} />

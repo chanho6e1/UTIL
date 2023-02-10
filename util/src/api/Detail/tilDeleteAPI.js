@@ -13,4 +13,7 @@ export const tilDeleteAPI = (postId) => {
     .then((res) => {
         return res.data.data
     })
+    .catch((err) => {
+        throw(err)
+    })
 }

@@ -85,28 +85,29 @@ const App = () => {
       {/* <div id="overlay-root" style={{zIndex: '9999'}}></div> */}
       <StackNotification />
       <div ref={wrapRef} className="wrap loaded">
-        <Routes>
-          {/* <Route path="/goal/:id" element={<GoalDetail />} />
+
+      <Routes>
+
+        {/* <Route path="/goal/:id" element={<GoalDetail />} /> 
         <Route path="/post/:id" element={<DetailItem />} />  */}
 
-          <Route path="/*" element={plans && <Main />} />
-          <Route path="/login" element={<SocialLogin />} />
-          <Route path="/oauth2/redirect" element={<OAuthRedirectHandler />} />
-          <Route path="/profile" element={<UserProfileChange />} />
-          <Route path="/create">
-            <Route path="review" element={<ToastEditor key={"review"} forReview={true} />} />
-            <Route path="post" element={<ToastEditor key={"post"} />} />
-          </Route>
-          <Route path="/edit">
-            <Route
-              path="review/:id"
-              element={<ToastEditor key={"review"} edit={true} forReview={true} />}
-            />
-            <Route path="post/:id" element={<ToastEditor key={"post"} edit={true} />} />
-          </Route>
-          <Route path="/recommend" element={<UserRecommend />} />
-        </Routes>
-      </div>
+
+        <Route path="/*" element={plans && <Main />} />
+        <Route path="/login" element={<SocialLogin />} />
+        <Route path="/oauth2/redirect" element={<OAuthRedirectHandler />} /> 
+        <Route path="/profile" element={<UserProfileChange />} />
+        <Route path="/create" >
+          <Route path="review" element={<ToastEditor key={'review'} forReview={true}/>} />
+          <Route path="post" element={<ToastEditor key={'post'} />} />
+        </ Route>
+        <Route path="/edit" >
+          <Route path="review/:id" element={<ToastEditor key={'review'} edit={true} forReview={true}/>} />
+          <Route path="post/:id" element={<ToastEditor key={'post'} edit={true} />} />
+        </ Route>
+
+      </Routes>
+      
+    
     </div>
   );
 };

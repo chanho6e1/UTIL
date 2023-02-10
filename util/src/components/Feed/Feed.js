@@ -115,6 +115,7 @@ const Feed = (props) => {
 
   return (
     <Fragment>
+      <div id="feed-overlay-root"></div>
       <FixedModal
         modalState={modalState}
         stateHandler={setModalState}

@@ -10,6 +10,9 @@ const DropDown = (props) => {
     
     dropDownRef.current.style.marginLeft = props.marginLeft
     dropDownRef.current.style.width = props.width
+    dropDownRef.current.style.marginTop = props.marginTop
+    dropDownRef.current.style.borderRadius = props.borderRadius ? props.borderRadius : '30px'
+
     if (props.direction === 'up') {
       dropDownRef.current.style.transform = `translateY(${-50 * dropDownItemRef.current.length}%)`
     }
@@ -48,7 +51,7 @@ const DropDown = (props) => {
   const dropDownItems = props.dropDownItems.label.map((el,idx) => {
 
     return (
-      <div key={`drop-down-${idx}`} ref={el => (dropDownItemRef.current[idx] = el)} onClick={(event) => {event.stopPropagation(); props.dropDownItems.function[idx](); props.setDropDownState(false);}} className={styles['dropdown-item']} >
+      <div key={`drop-down-${idx}`} ref={el => (dropDownItemRef.current[idx] = el)} onClick={(event) => {event.stopPropagation(); props.dropDownItems.function[idx](); props.setDropDownState(false);}} className={styles['dropdown-item']} style={{height: `${props.itemHeight ? `${props.itemHeight}` : '53px'}`}} >
         <li className={styles['li-tag']} />
         <div className={styles['text-wrapper']}>
 
