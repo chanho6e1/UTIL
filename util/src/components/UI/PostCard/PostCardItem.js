@@ -170,14 +170,14 @@ const PostCardItem = (props) => {
   return (
     <Card className={classes.card}>
       <div className={classes['left-wrapper']}>
+        
 
 
-
-        <div className={classes['left-top']}>
-          <div className={classes.title} onClick={postClickHandler}>
+        <div className={classes['left-top']} onClick={postClickHandler}>
+          <div className={classes.title}>
             {props.title}
           </div>
-          <div className={classes.contents} onClick={postClickHandler}>
+          <div className={classes.contents}>
             {props.content}
           </div>
         </div>
