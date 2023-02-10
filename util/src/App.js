@@ -39,20 +39,22 @@ const App = () => {
   const plans = useSelector((state) => state.planSlice.plans);
 
   useEffect(() => {
-    loadCurrentlyLoggedInUser();
-  });
+    loadCurrentlyLoggedInUser()
+  }, [])
+
 
   const loadCurrentlyLoggedInUser = () => {
     getCurrentUser()
-      .then((response) => {
-        dispatch(userAuthSliceActions.changeAuthenticated("true"));
-        dispatch(userAuthSliceActions.changeCurrentUser(JSON.stringify(response.data)));
-        dispatch(userAuthSliceActions.changeLoading("false"));
-      })
-      .catch((error) => {
-        dispatch(userAuthSliceActions.changeLoading("false"));
-      });
-  };
+    .then(response => {
+      console.log('getMy!!!')
+      dispatch(userAuthSliceActions.changeAuthenticated('true'))
+      dispatch(userAuthSliceActions.changeCurrentUser(JSON.stringify(response.data)))
+      dispatch(userAuthSliceActions.changeLoading('false'))
+    }).catch(error => {
+      dispatch(userAuthSliceActions.changeLoading('false'))
+    });    
+  }
+
 
   useEffect(() => {
     recvIngPlanAPI()

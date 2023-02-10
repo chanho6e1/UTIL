@@ -35,42 +35,77 @@ import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 import { recvIngPlanAPI } from "../../api/Plan/recvIngPlanAPI";
 
 const Plan = (props) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-  // useEffect(() => {
-  //     recvIngPlanAPI()
-  //     .catch((err) => {
-  //         navigate('/login');
-  //     })
-  //     .then((res) => {
-  //         dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
-  //     })
-  // }, [])
+    // useEffect(() => {
+    //     recvIngPlanAPI()
+    //     .catch((err) => {
+    //         navigate('/login');
+    //     })
+    //     .then((res) => {
+    //         dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+    //     })
+    // }, [])
 
-  const plans = useSelector((state) => state.planSlice.plans);
-  const todos = useSelector((state) => state.planSlice.todos);
 
-  // const [startRange, setStartRange] = useState(new Date(prototypeDate.getFullYear(),0,1))
-  // const [endRange, setEndRange] = useState(new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),12,0)))
-  const [startRange, setStartRange] = useState(props.startRange);
-  const [endRange, setEndRange] = useState(props.endRange);
+    const plans = useSelector(state => state.planSlice.plans)
+    const todos = useSelector(state => state.planSlice.todos)
+    
 
-  const planSpaceRef = useRef();
-  const plansTitleWrapperRef = useRef();
-  const plansTitleInnerRef = useRef();
-  const [todoFormVisibility, setTodoFormVisibility] = useState(Array(plans.length).fill(false));
 
-  const todoFormToggleHandler = (idx, goalId) => {
-    const copyArr = [...todoFormVisibility];
 
-    if (copyArr[idx] === false) {
-      recvTodosAPI(goalId)
-        .then((res) => {
-          const processing = {
-            goalId: goalId,
-            data: res,
-          };
+    // const [startRange, setStartRange] = useState(new Date(prototypeDate.getFullYear(),0,1))
+    // const [endRange, setEndRange] = useState(new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),12,0)))
+    const [startRange, setStartRange] = useState(props.startRange)
+    const [endRange, setEndRange] = useState(props.endRange)
+    
+
+    const planSpaceRef = useRef()
+    const plansTitleWrapperRef = useRef()
+    const plansTitleInnerRef = useRef()
+    const [todoFormVisibility, setTodoFormVisibility] = useState(Array(plans.length).fill(false))
+
+    const todoFormToggleHandler = (idx, goalId) => {
+
+        const copyArr = [...todoFormVisibility]
+
+        if (copyArr[idx] === false) {
+            recvTodosAPI(goalId)
+            .then((res) => {
+                const processing = {
+                    goalId: goalId,
+                    data: res
+                }
+                console.log('Plan : recvTodosAPI')
+                dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
+                
+            })
+            .then((res) => {
+                copyArr[idx] = true
+                setTodoFormVisibility(() => copyArr)
+            })
+        } else {
+            copyArr[idx] = false
+            setTodoFormVisibility(() => copyArr)
+        }
+        
+    }
+
+
+
+
+
+    const extendStartRange = (amount) => {
+        const extendedDate = new Date(startRange.getFullYear(), startRange.getMonth() - amount, 1)
+        setStartRange(() => extendedDate)
+    }
+
+    const extendEndRange = (amount) => {
+        const extendedDate = new Date(endRange.getFullYear(), endRange.getMonth() + amount + 1, 0)
+        setEndRange(() => extendedDate)
+    }
+
 
           dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)));
         })
@@ -310,6 +345,7 @@ const Plan = (props) => {
                 }
             })
             .then((res) => {
+                console.log('Plan : newPlanAPI')
                 dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
                 setNewPlanValue('')
                 setNewPlan(false)

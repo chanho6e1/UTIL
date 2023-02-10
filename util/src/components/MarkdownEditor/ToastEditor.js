@@ -35,6 +35,7 @@ import { tilAPI } from '../../api/Detail/tilAPI';
 import { getPostTag } from '../../api/Post/getPostTag';
 import { editDetailReviewAPI } from '../../api/Goal/editDetailReviewAPI';
 import { editPostAPI } from '../../api/Post/editPostAPI';
+import { recvIsAllTodosDoneAPI } from '../../api/Plan/recvIsAllTodosDoneAPI';
 
 
 
@@ -51,7 +52,7 @@ const ToastEditorForm = (props) => {
   const [modalState, setModalState] = useState(false)
   const [scope, setScope] = useState()
   const [bindedGoal, setBindedGoal] = useState(searchParams.get('goal_id') ? searchParams.get('goal_id') : null)
-  const [queryString, setQueryString] = useState({goal:null, takeStep:null, askDone:null})
+  const [queryString, setQueryString] = useState({goal:null, takeStep:null})
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -61,11 +62,11 @@ const ToastEditorForm = (props) => {
   useEffect(() => {
     const goalId = searchParams.get('goal_id')
     const takeStep = searchParams.get('step')
-    const askDone = searchParams.get('ask_done')
+
     if (goalId) {
       recvPlanAPI(goalId)
       .then((res) => {
-        setQueryString((prev) => {return {...prev, goal:res, takeStep, askDone}})
+        setQueryString((prev) => {return {...prev, goal:res, takeStep}})
       })
     }
 
@@ -73,7 +74,9 @@ const ToastEditorForm = (props) => {
   }, [])
 
   
-
+  const navigateToReviewPost = () => {
+    navigate(`/create/review?goal_id=${queryString.goal.goalId}`, { replace: true });
+  }
 
 
   const postSubmitHandler = (selectedScope, selectedGoalId) => {
@@ -86,12 +89,28 @@ const ToastEditorForm = (props) => {
       goalId: selectedGoalId,
     }, {skill: tags})
     .then((res) => {
-      if (queryString.takeStep) {
-        navigate(`/create/review?goal_id=${queryString.goal.goalId}${queryString.askDone ? '&ask_done=true' : ''}`, { replace: true });
+      if (selectedGoalId) {
+        recvIsAllTodosDoneAPI(selectedGoalId)
+        .then((res) => {
+          if (res === true) {
+            setDoneNotiContent(message3)
+            setTimeout(function() {
+              navigate('/index', { replace: true }); 
+            }, 1000);
+          
+          } else {
+            setDoneNotiContent(message2)
+            setTimeout(function() {
+              navigate('/index', { replace: true }); 
+            }, 1000);
+          }
+          
+        })
       } else {
         navigate('/index', { replace: true });
       }
     })
+
     .catch((err) => {
       console.log(err)
     })
@@ -104,20 +123,32 @@ const ToastEditorForm = (props) => {
       content: editorRef.current.getInstance().getHTML(),
     })
     .then((res) => {
-      if (queryString.askDone) {
-        chkPlanAPI(queryString.goal.goalId,true)
+
+      if (selectedGoalId) {
+        recvIsAllTodosDoneAPI(selectedGoalId)
         .then((res) => {
-          setDoneNotiState(true)
+          if (res === true) {
+            chkPlanAPI(queryString.goal.goalId,true)
+            .then((res) => {
+              setDoneNotiContent(message1)
+              // setDoneNotiState(true)
+              
+            })
+            .then((res) => {
+              setTimeout(function() {
+                navigate('/index', { replace: true }); 
+              }, 1000);
+            })
+          } else {
+            navigate('/index', { replace: true });
+          }
           
-        })
-        .then((res) => {
-          setTimeout(function() {
-            navigate('/index', { replace: true }); 
-          }, 1000);
         })
       } else {
         navigate('/index', { replace: true });
       }
+      
+
       
     })
     .catch((err) => {
@@ -190,7 +221,14 @@ const ToastEditorForm = (props) => {
 
   const [alertText, setAlertText] = useState()
   const [alertNotiState, setAlertNotiState] = useState(false)
+  const [doneNotiContent, setDoneNotiContent] = useState(null)
   const [doneNotiState, setDoneNotiState] = useState(false)
+
+  useEffect(() => {
+    if (doneNotiContent !== null) {
+      setDoneNotiState(true)
+    }
+  }, [doneNotiContent])
 
   const alert = (
     <div style={{display:'flex', justifyContent:'space-evenly', alignItems:'center'}}>
@@ -212,6 +250,29 @@ const ToastEditorForm = (props) => {
   )
 
 
+  const message2 = (
+    <div style={{height: '100px', display:'flex', flexDirection:'column', justifyContent:'space-around'}}>
+        <div>글 작성을 완료하였습니다.</div>
+        <div>회고록을 작성 하시겠습니까?</div>
+        <div style={{width: '100%', display:'flex', justifyContent:'space-around', marginTop: '16px'}}>
+            <Button className={styles['noti-button']} onClick={() => {navigateToReviewPost()}}>회고록 작성</Button>
+        </div>
+    </div>
+  )
+
+  const message3 = (
+    <div style={{height: '100px', display:'flex', flexDirection:'column', justifyContent:'space-around'}}>
+        <div>글 작성을 완료하였습니다.</div>
+        <div>목표를 완료하거나 회고록을 작성하세요.</div>
+        <div style={{width: '100%', display:'flex', justifyContent:'space-around', marginTop: '16px'}}>
+            <Button className={styles['noti-button']} onClick={() => {navigateToReviewPost()}}>회고록 작성</Button>
+            <Button className={styles['noti-button']} >목표 완료</Button>
+        </div>
+    </div>
+  )
+
+
+
   const titleInput = (
     <input onChange={titleInputHandler} value={title} type="text" className={styles['title-input']} placeholder="제목을 입력하세요." />
   )
@@ -230,9 +291,9 @@ const ToastEditorForm = (props) => {
   return (
 
     <div ref={editorWrapperRef} className={styles['editor-wrapper']}>
-      {doneNotiState && <NotiDeliverer content={message1} stateHandler={setDoneNotiState} duration={5000} width={350} height={100} />}
+      {doneNotiState && <NotiDeliverer content={doneNotiContent} stateHandler={setDoneNotiState} duration={5000} width={350} />}
       {alertNotiState && <NotiDeliverer content={alert} stateHandler={setAlertNotiState} duration={5000} width={350} height={100} />}
-      <FixedModal edit={props.edit} queryString={queryString} modalState={modalState} stateHandler={setModalState} content={<BlogPostForm postSubmitHandler={postSubmitHandler} reviewSubmitHandler={reviewSubmitHandler} forReview={props.forReview} />} noBtn={true} width={'10px'} height={'170px'} />
+      <FixedModal edit={props.edit} queryString={queryString} modalState={modalState} stateHandler={setModalState} content={<BlogPostForm postSubmitHandler={postSubmitHandler} reviewSubmitHandler={reviewSubmitHandler} forReview={props.forReview} edit={props.edit} queryString={queryString}/>} noBtn={true} width={'10px'} height={'170px'} />
       <div className={styles['additional-info-wrapper']}>
         <div className={styles['header']}>
           {props.forReview ? dateRender : titleInput}

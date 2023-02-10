@@ -81,6 +81,7 @@ const PlanCardPlanCRUD = (props) => {
           }
           editPlanAPI(props.plan.goalId, processing)
           .then((res) => {
+            console.log('PlanCardPlanCRUD : editPlanAPI')
               dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
               props.modalHandler()
           })
@@ -106,6 +107,7 @@ const PlanCardPlanCRUD = (props) => {
                 }
             })
             .then((res) => {
+                console.log('PlanCardPlanCRUD : newPlanAPI')
                 dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
                 props.modalHandler()
 
@@ -134,6 +136,7 @@ const PlanCardPlanCRUD = (props) => {
     const deletePlan = () => {
         delPlanAPI(props.plan.goalId)
         .then((res) => {
+            console.log('PlanCardPlanCRUD : delPlanAPI')
           dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
           props.modalHandler()
         //   recvTodayTodosAPI()

@@ -22,7 +22,7 @@ const NotificationOverlay = (props) => {
   const notiProcessor = Object.keys(stack).map((key) => {
   
     return (
-      <Notification key={key} id={key} width={stack[key].width ? stack[key].width : 320} height={stack[key].height ? stack[key].height : 150} content={stack[key].content} duration={stack[key].duration ? stack[key].duration : 3000} state={stack}  />
+      <Notification passToFixed={stack[key].passToFixed} key={key} id={key} width={stack[key].width ? stack[key].width : 320} height={stack[key].height ? stack[key].height : 150} content={stack[key].content} duration={stack[key].duration ? stack[key].duration : 3000} state={stack}  />
     )
 
   })

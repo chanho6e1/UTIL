@@ -6,7 +6,10 @@ import { createSlice } from "@reduxjs/toolkit"
 const initialSliceState = {
   stack: {
 
-  }
+  },
+  fixed: [
+    
+  ]
 }
 
 const notificationSlice = createSlice({
@@ -20,6 +23,14 @@ const notificationSlice = createSlice({
     delete(state, action) {
       const parsedPayload = JSON.parse(action.payload)
       delete state.stack[parsedPayload]
+    },
+    fixedPush(state, action) {
+      const parsedPayload = action.payload
+      state.fixed.push(parsedPayload.value)
+    },
+    fixedDelete(state, action) {
+      const parsedPayload = JSON.parse(action.payload)
+      delete state.fixed[parsedPayload]
     }
 
   }

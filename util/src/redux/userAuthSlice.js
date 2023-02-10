@@ -6,7 +6,6 @@ const initialSliceState = {
     currentUser: null,
     token: null,
     loading: true,
-
   }
 }
 

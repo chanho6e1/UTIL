@@ -32,6 +32,7 @@ const PlanItem = (props) => {
     }
     editPlanAPI(props.plan.goalId, processing)
     .then((res) => {
+        console.log('PlanItem : editPlanAPI')
         dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
     })
     .then((res) => {
@@ -61,6 +62,7 @@ const PlanItem = (props) => {
   const deletePlan = () => {
     delPlanAPI(props.plan.goalId)
     .then((res) => {
+      console.log('PlanItem : delPlanAPI')
       dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
     })
     .catch((err) => {
@@ -112,7 +114,7 @@ const PlanItem = (props) => {
         
 
 
-        <svg onClick={(event) => {event.stopPropagation(); askDelete()}} className={styles['delete-icon']} xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"  viewBox="0 0 16 16">
+        <svg onClick={(event) => {event.stopPropagation(); askDelete()}} className={styles['delete-icon']} xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"  viewBox="0 0 16 16">
             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
         </svg>
@@ -135,11 +137,11 @@ const PlanItem = (props) => {
           {isEditMode ? titleEditInput : titleReadMode }
           <div>
             
-              <div onClick={() => navigate(`/index/goal/${props.plan.goalId}`)} className={styles['plan-title-bar-icon-wrapper']}>
+              {/* <div onClick={() => navigate(`/index/goal/${props.plan.goalId}`)} className={styles['plan-title-bar-icon-wrapper']}>
                 <svg className={styles['link-icons']} xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.854 10.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707l-4.096 4.096z"/>
+                  <path fillRule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.854 10.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707l-4.096 4.096z"/>
                 </svg>
-              </div>
+              </div> */}
               
               {/* <img src={extension} alt="extension" className={styles['go-to-detail']}/> */}
            

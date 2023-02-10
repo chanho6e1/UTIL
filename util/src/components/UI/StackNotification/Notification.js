@@ -10,8 +10,26 @@ const Notification = (props) => {
     const popUpRef = useRef()
     const contentWrapperRef = useRef()
     const dispatch = useDispatch()
+    const duration = props.duration
+    // const fixed = useSelector(state => state.notificationSlice.stack)
 
     useEffect(() => {
+        // if (props.passToFixed === true) {
+        //     let key = Object.keys(fixed)[Object.keys(fixed).length - 1] + 1
+        //     // const key = (Object.keys(stack).length * 100) + randNum
+  
+        //     const data = {
+                
+        //         content: props.content,
+        //         duration: props.duration,
+        //         width: props.width,
+        //         height: props.height,
+          
+        //     }
+        //     dispatch(notificationSliceActions.fixedPush(data))
+        //     console.log(data)
+        // }
+
         if (indicatorRef.current) {
             indicatorRef.current.style.transitionProperty = 'width'
             indicatorRef.current.style.transitionDuration = `${props.duration / 1000}s`
@@ -58,14 +76,19 @@ const Notification = (props) => {
                 popUpRef.current.style.right = `-90vw`
             }
             
-        }, props.duration + 300);
+        }, duration + 300);
         setTimeout(function() {
+            // if (props.passToFixed === true) {
+            //     alert('fawe')
+            //     dispatch(notificationSliceActions.fixedPush(JSON.stringify(props.id)))
+            // }
             popUpRef.current.style.height = '0px'
-        }, props.duration + 600);
+        }, duration + 600);
         setTimeout(function() {
+            
             dispatch(notificationSliceActions.delete(JSON.stringify(props.id)))
 
-        }, props.duration + 900);
+        }, duration + 900);
     }, [])
 
     const notiHandler = () => {
@@ -78,9 +101,9 @@ const Notification = (props) => {
         setTimeout(function() {
             popUpRef.current.style.height = '0px'
         }, 300);
-        setTimeout(function() {
-            dispatch(notificationSliceActions.delete(JSON.stringify(props.id)))
-        }, 600);
+        // setTimeout(function() {
+        //     dispatch(notificationSliceActions.delete(JSON.stringify(props.id)))
+        // }, 600);
     }
 
 

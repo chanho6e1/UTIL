@@ -5,20 +5,24 @@ import { recvPlansAPI } from "../../api/Plan/recvPlansAPI";
 import arrow from '../../img/arrow.png'
 import Button from "../UI/Button/Button";
 
-const BlogPostForm = (props) => {
-    const [plans, setPlans] = useState([])
+const BlogPostFormRender = (props) => {
+    // const [plans, setPlans] = useState([])
+    const plans = props.plans
     const [showPlansPicker, setShowPlansPicker] = useState(props.forReview ? true : false)
     const [showScopePicker, setShowScopePicker] = useState(true)
     const [selectedPlan, setSelectedPlan] = useState(props.queryString.goal ? props.queryString.goal : null)
     const [selectedScope, setSelectedScope] = useState(2)
 
-    useEffect(() => {
-        recvPlansAPI()
-        .then((res) => {
-            setPlans(res)
+    // useEffect(() => {
+    //     recvPlansAPI()
+    //     .then((res) => {
+    //         setPlans(res)
             
-        })
-    }, [])
+    //     })
+    // }, [])
+ 
+        console.log('ttttt', plans)
+
 
     const planPickerHandler = () => {
         if (props.forReview === true) {
@@ -52,13 +56,13 @@ const BlogPostForm = (props) => {
         
     }
 
-    const plansRender = plans?.map((el, idx) => {
-        const startDate = new Date(el.startDate)
-        const endDate = new Date(el.endDate)
-        if (el.state === false) {
+    const plansRender = Object.keys(plans).map((el, idx) => {
+        const startDate = new Date(plans[el].startDate)
+        const endDate = new Date(plans[el].endDate)
+        if (plans[el].state === false) {
             return (
-                <div onClick={() => {selectPlan(el); planPickerHandler() }} className={styles['item']} style={{backgroundColor: el.goalId === selectedPlan?.goalId ? 'rgb(235, 236, 239)' : '', }}>
-                    <b>{el.title}</b>
+                <div onClick={() => {selectPlan(plans[el]); planPickerHandler() }} className={styles['item']} style={{backgroundColor: plans[el].goalId === selectedPlan?.goalId ? 'rgb(235, 236, 239)' : '', }}>
+                    <b>{plans[el].title}</b>
                     <div className={styles['small-text']}>
                         {startDate.getFullYear()}년 {startDate.getMonth()}월 {startDate.getDate()}일 ~ {endDate.getFullYear()}년 {endDate.getMonth()}월 {endDate.getDate()}일
                     </div>
@@ -136,6 +140,25 @@ const BlogPostForm = (props) => {
             </div>
         </div>
         
+    )
+}
+
+
+const BlogPostForm = (props) => {
+    const [plans, setPlans] = useState(null)
+    useEffect(() => {
+        recvPlansAPI()
+        .then((res) => {
+            console.log(res)
+            setPlans(res)
+            
+        })
+    }, [])
+
+    return (
+        <React.Fragment>
+            {plans && <BlogPostFormRender plans={plans} postSubmitHandler={props.postSubmitHandler} reviewSubmitHandler={props.reviewSubmitHandler} forReview={props.forReview} edit={props.edit} queryString={props.queryString}/>}
+        </React.Fragment>
     )
 }
 
