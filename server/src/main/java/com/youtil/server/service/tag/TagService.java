@@ -186,7 +186,7 @@ public class TagService {
     public PagedResponse<UserResponse> findUserListByMyTag(Long userId, int offset, int size) { // 나의 관심 테그로 포스트 조회
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Page<User> page = tagQueryRepository.findUserListByMyTag(userId, PageRequest.of(offset-1, size));
-        List<UserResponse> responses = page.stream().map((u)-> UserResponse.from(u)).collect(Collectors.toList());
+        List<UserResponse> responses = page.stream().map((u)-> UserResponse.from(u, getTagLike(userId))).collect(Collectors.toList());
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
                 page.getTotalPages(), page.isLast());
     }
