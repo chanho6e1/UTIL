@@ -21,6 +21,7 @@ import ToastEditor from './components/MarkdownEditor/ToastEditor';
 
 import { modifyPlanSliceActions } from './redux/planSlice';
 import { recvIngPlanAPI } from './api/Plan/recvIngPlanAPI';
+import { recvIngAllPlanAPI } from './api/Plan/recvIngAllPlanAPI';
 
 
 
@@ -56,6 +57,14 @@ const App = () => {
       .then((res) => {
           dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
       })
+    recvIngAllPlanAPI()
+      .catch((err) => {
+          navigate('/login');
+      })
+      .then((res) => {
+          dispatch(modifyPlanSliceActions.responseAllPlans(JSON.stringify(res)))
+      })
+    
   }, [])
 
 
