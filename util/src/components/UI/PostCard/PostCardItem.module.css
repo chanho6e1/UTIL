@@ -11,10 +11,13 @@
   flex-grow:1;
   /* background-color: red; */
   
-  display: flex;
+  display: grid;
+  grid-template-rows: 8.375fr 1fr;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: baseline;
+  /* width: 100%; */
+  
 }
 
 .card-image-wrapper {
@@ -79,6 +82,9 @@
 
 .left-top {
   text-align: start;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
 }
 
 .title {

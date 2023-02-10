@@ -10,6 +10,8 @@ import { modifyPostDetailSliceActions } from '../../redux/postDetailSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import TextArea from "../UI/TextArea/TextArea";
 import Button from "../UI/Button/Button";
+import warning from "../../img/Warning.png"
+import FixedModal from "../UI/FixedModal/FixedModal";
 
 
 const DetailComment = (props) => {
@@ -117,6 +119,29 @@ const DetailComment = (props) => {
       seteditCommentOpen(false)
   }
   
+  const [askDeleteCommentState, setAskDeleteCommentState] = useState(false)
+
+
+  const AskDeleteCommentForm = (props) => {
+    return (
+      <div style={{width:'100%', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
+        <img style={{width:'140px', height:'auto', marginBottom: '12px'}} src={warning} />
+        <div>
+          <p style={{lineHeight: '40%'}}>삭제 시 복구할 수 없습니다.</p>
+          <p style={{lineHeight: '40%'}}>정말로 삭제 하시겠습니까?</p>
+        </div>
+        <div style={{width:'100%', display:'flex', justifyContent:'space-evenly', marginTop:'12px'}}>
+          <Button className={classes['button']} onClick={props.modalHandler}>취소</Button>
+          <Button className={`${classes['button']} ${classes['delete-button']}`} onClick={() => {delComment(); props.modalHandler()}}>삭제</Button>
+        </div>
+      </div>
+    )
+  }
+
+  const askDeleteComment = () => {
+    setAskDeleteCommentState(true)
+  }
+
   useEffect(() => {
     if (props.comment.children.length === 0 && props.comment.isDelete) {
       delComment()
@@ -177,6 +202,8 @@ const DetailComment = (props) => {
 
   const commentItem = (
     <Fragment>
+      <FixedModal modalState={askDeleteCommentState} stateHandler={setAskDeleteCommentState} content={<AskDeleteCommentForm />} width={'300px'} height={'310px'} />
+
       <div className={classes["Detail-comments-box"]}>
         {depthImg}
         <div className={classes["Detail-comments-contents"]}>
@@ -197,7 +224,7 @@ const DetailComment = (props) => {
             {props.userInfo.userId === props.comment.writerInfo.userId &&
               <Fragment>
                 <span className={classes['link-text']} onClick={openEditCommentHandler}>수정</span>
-                <span className={classes['link-text']} onClick={delComment}>삭제</span>
+                <span className={classes['link-text']} onClick={(event) => {event.stopPropagation(); askDeleteComment()}}>삭제</span>
               </Fragment>
             }
             <span className={classes['link-text']} onClick={openCommentHandler}>답글 쓰기</span>

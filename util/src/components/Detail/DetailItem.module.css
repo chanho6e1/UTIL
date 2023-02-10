@@ -100,7 +100,7 @@
 
 
 .Detail-info {
-  height: 20px;
+  height: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -108,6 +108,13 @@
   border-bottom: 1px solid rgb(220, 220, 220);
   margin-bottom: 50px;
 
+}
+
+.detail-user-picture {
+  height: 24px;
+  width: 24px;
+  border-radius: 100%;
+  margin-right: 8px;
 }
 
 .Detail-info-inner {
@@ -180,10 +187,11 @@
 } */
 
 .user-picture {
-  height: 100%;
-  width: auto;
-  padding: 0 8px 0 0px;
-  border-radius: 100px;;
+  height: 40px;
+  width: 40px;
+  margin-inline-end: 8px;
+  /* padding: 0 8px 0 8px; */
+  border-radius: 100%;;
 }
 
 .Detail-user {
@@ -258,10 +266,6 @@
   border-bottom: 1px solid rgb(220, 220, 220);
 }
 
-.Comment-user-picture {
-  padding: 0 8px 0 8px;
-}
-
 .Comment-user {
   width: 100%;
   display: flex;
@@ -311,6 +315,19 @@
 
 .link-text:hover {
   color: rgb(100,100,100);
+}
+
+.button {
+  width: 40%;
+}
+
+.delete-button {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+.delete-button:hover {
+  background-color: rgba(255, 0, 0, 0.3);
+  color: rgba(160, 0, 0, 1);
 }
 
 .icons-tag {
@@ -412,11 +429,4 @@
 
 .solid-button {
   margin-left:8px;
-}
-
-.detail-user-picture {
-  height: 24px;
-  width: auto;
-  border-radius: 100px;
-  margin-right: 8px;
 }

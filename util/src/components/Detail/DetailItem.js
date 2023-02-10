@@ -26,9 +26,10 @@ import { getPostTag } from "../../api/Post/getPostTag"
 import TextArea from "../UI/TextArea/TextArea";
 import DetailItemLoading from "./DetailItemLoading";
 import TagDataList from "../UI/Tag/TagDataList";
-import Button from "../UI/Button/Button";
 import Swipe from "react-easy-swipe";
-
+import Button from "../UI/Button/Button";
+import warning from "../../img/Warning.png"
+import FixedModal from "../UI/FixedModal/FixedModal";
 import { Viewer } from '@toast-ui/react-editor';
 
 
@@ -224,11 +225,16 @@ const DetailItemShow = (props) => {
   const postEditHandler = () => {
     navigate(`/edit/post/${post.postId}`)
   }
+  
 
   const postDeleteHandler = () => {
+    console.log(post.postId)
     tilDeleteAPI(post.postId)
     .then((res) => {
       navigate(`/`)
+    })
+    .catch((err) => {
+      console.log(err)
     })
   }
 
@@ -245,8 +251,33 @@ const DetailItemShow = (props) => {
     </div>
   )
 
+  const [askDeletePostState, setAskDeletePostState] = useState(false)
+
+
+  const AskDeletePostForm = (props) => {
+    return (
+      <div style={{width:'100%', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
+        <img style={{width:'140px', height:'auto', marginBottom: '12px'}} src={warning} />
+        <div>
+          <p style={{lineHeight: '40%'}}>삭제 시 복구할 수 없습니다.</p>
+          <p style={{lineHeight: '40%'}}>정말로 삭제 하시겠습니까?</p>
+        </div>
+        <div style={{width:'100%', display:'flex', justifyContent:'space-evenly', marginTop:'12px'}}>
+          <Button className={classes['button']} onClick={props.modalHandler}>취소</Button>
+          <Button className={`${classes['button']} ${classes['delete-button']}`} onClick={() => {postDeleteHandler(); props.modalHandler()}}>삭제</Button>
+        </div>
+      </div>
+    )
+  }
+
+  const askDeletePost = () => {
+    setAskDeletePostState(true)
+  }
+
   return (
     <div className={classes.Detail}>
+      <FixedModal modalState={askDeletePostState} stateHandler={setAskDeletePostState} content={<AskDeletePostForm />} width={'300px'} height={'310px'} />
+      
       {/* <div className={classes.header}>
 
       </div> */}
@@ -278,7 +309,7 @@ const DetailItemShow = (props) => {
                 <span onClick={postEditHandler} className={classes['link-text']}>
                   수정
                 </span>
-                <span onClick={postDeleteHandler} className={classes['link-text']}>
+                <span onClick={(event) => {event.stopPropagation(); askDeletePost()}} className={classes['link-text']}>
                   삭제
                 </span>
               </div>
