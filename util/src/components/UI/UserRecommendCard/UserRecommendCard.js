@@ -7,6 +7,8 @@ import { Avatar } from "@mui/material";
 import { deleteFollow } from "../../../api/Post/deleteUnfollow";
 import { postFollow } from "../../../api/Post/postFollow";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { getIsFollowing } from "../../../api/Post/getIsFollowing";
 
 const UserRecommendCard = (props) => {
   const [isFollowing, setIsFollowing] = useState(false);
@@ -38,13 +40,13 @@ const UserRecommendCard = (props) => {
   const followBtnHandler = () => {
     // 현재 팔로우 중이면 언팔
     if (isFollowing) {
-      deleteFollow(props.id).then((res) => {
+      deleteFollow(props.userData.userId).then((res) => {
         if (res === 200) {
           setIsFollowing((prevState) => !prevState);
         }
       });
     } else {
-      postFollow(props.id).then((res) => {
+      postFollow(props.userData.userId).then((res) => {
         if (res === 200) {
           setIsFollowing((prevState) => !prevState);
         }
@@ -59,8 +61,14 @@ const UserRecommendCard = (props) => {
 
   const profileOnClickHandler = (event) => {
     // 클릭 시 유저 페이지로 이동
-    console.log("click");
+    console.log(props.userData.userId);
   };
+
+  useEffect(() => {
+    getIsFollowing(props.userData.userId).then((res) => {
+      setIsFollowing(() => res);
+    });
+  }, []);
 
   return (
     <Card className={classes.card}>
@@ -70,10 +78,8 @@ const UserRecommendCard = (props) => {
             <Avatar
               src={props.userData.imageUrl}
               sx={{
-                width: "15vw",
-                height: "15vw",
-                minWidth: "96px",
-                minHeight: "96px",
+                width: "14vw",
+                height: "14vw",
                 maxWidth: "128px",
                 maxHeight: "128px",
                 border: "1px solid lightgray",
@@ -84,16 +90,20 @@ const UserRecommendCard = (props) => {
             />
           </div>
           <div className={classes[`user-wrapper`]}>
-            <div className={classes.nickname} onClick={profileOnClickHandler}>
-              {props.userData.nickname}
+            <div className={classes[`nickname-btn`]}>
+              <div className={classes.nickname} onClick={profileOnClickHandler}>
+                {props.userData.nickname}
+              </div>
+              <div className={classes[`btn-wrapper`]}>{followBtn(isFollowing)}</div>
             </div>
             <div className={classes.description} onClick={profileOnClickHandler}>
               {props.userData.discription}
             </div>
-            <TagDataList tagList={props.userTagList} onClick={tagOnClickHandler} />
+            <div className={classes.tags}>
+              <TagDataList tagList={props.userData.tags} onClick={tagOnClickHandler} />
+            </div>
           </div>
         </div>
-        <div className={classes[`btn-wrapper`]}>{followBtn(false)}</div>
       </div>
     </Card>
   );
