@@ -10,6 +10,9 @@
   overflow-x: hidden;
 }
 
+.user-recommend {
+}
+
 .loading {
   width: 100px;
   height: 100px;
@@ -24,21 +27,20 @@
   grid-template-columns: repeat(4, 314px);
   /* padding: 0px; */
   overflow: hidden;
-  padding-left: 14px
+  padding-left: 14px;
   /* width: 100%; */
-
 }
 
 .feed li {
   align-items: center;
   padding: 0 0 0 0;
-  
 }
 
-.alt-text {
-  margin: auto;
-  font-size: x-large;
-  color: #aaacae;
+.no-post {
+  margin: 150px auto;
+  color: #bdbdbd;
+  font-size: 1.4rem;
+  font-weight: 700;
 }
 
 @media screen and (max-width: 768px) {
@@ -47,12 +49,10 @@
     grid-template-columns: repeat(1, 100%);
     /* padding-left: 0px; */
     box-sizing: 0px;
-    padding:14px
-    
+    padding: 14px;
   }
 
   .card-wrapper {
-    
     min-width: 100%;
     /* margin: 14px; */
   }

@@ -39,13 +39,12 @@ const Explore = () => {
   // 내가 가진 태그 조회
   useEffect(() => {
     getMyTags().then((res) => {
-      console.log("my", res);
       setMyTagList(() => [...res]);
     });
   }, []);
 
   const content = (myTagList) => {
-    const altText = "관심 태그가 없어요\n마이 프로필에서 태그를 설정해 보세요";
+    const altText = "관심 태그가 없어요\n\n마이 프로필에서 태그를 설정해 보세요";
     if (myTagList.length > 0) {
       return (
         <Fragment>
@@ -78,9 +77,7 @@ const Explore = () => {
     } else {
       return (
         <Fragment>
-          <div className={classes[`alt-text`]}>
-            {"관심 태그가 없어요\n\n마이 프로필에서 태그를 설정해 보세요"}
-          </div>
+          <div className={classes[`alt-text`]}>{altText}</div>
         </Fragment>
       );
     }
