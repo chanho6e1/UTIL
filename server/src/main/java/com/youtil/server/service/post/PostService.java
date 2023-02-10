@@ -184,6 +184,11 @@ public class PostService {
         validPostUser(userId, post.getUser().getUserId());
         post.clearUser();
         deletePostFile(postId);  //2) 포스트별 저장하고 있는 포스트 파일 읽어와서 s3삭제  : 사용할것임!!!! 지금은 테스트 중이라 주석처리
+
+        postRepository.deletePostTag(postId);
+        postRepository.deletePostLike(postId);
+        postRepository.deletePostBookmark(postId);
+
         postCommentRepository.deleteByPostId(postId);
         postRepository.deleteById(postId);
         return postId;
