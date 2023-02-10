@@ -5,6 +5,7 @@ import { createSlice } from "@reduxjs/toolkit"
 // 초기 State 선언
 const initialSliceState = {
   plans: null,
+  allPlans: null,
   posts: null,
   todos: [],
   todayTodos: [],
@@ -29,6 +30,10 @@ const modifyPlanSlice = createSlice({
     responsePlans(state, action) {
       const parsedPayload = JSON.parse(action.payload)
       state.plans = parsedPayload
+    },
+    responseAllPlans(state, action) {
+      const parsedPayload = JSON.parse(action.payload)
+      state.allPlans = parsedPayload
     },
     responseTodos(state, action) {
       const parsedPayload = JSON.parse(action.payload)

@@ -13,7 +13,8 @@ export const editIsPlanDoneAPI = (goalId, data) => {
       },
     })
     .then((res) => {
-        return recvIngPlanAPI()
+        // return recvIngPlanAPI()
+        return res.data.data
     })
     .catch((err) => {
         throw err

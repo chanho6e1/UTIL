@@ -65,9 +65,7 @@ const GoalDetail = (props) => {
     })
   }, [tilPage])
 
-
-  const plans = useSelector(state => state.planSlice.plans)
-  const todos = useSelector(state => state.postDetailSlice.todos)
+  const plans = useSelector(state => state.planSlice.allPlans)
   const reviews = useSelector(state => state.postDetailSlice.reviews)
   const tils = useSelector(state => state.postDetailSlice.tils)
 
@@ -87,7 +85,7 @@ const GoalDetail = (props) => {
     <Fragment>
       <div className={classes["goal-detail-pc"]}>
         <div />
-        {plans && <GoalDetailL plan={plans[idx]} reviews={reviews}/>}
+        {plans && <GoalDetailL plan={plans[idx]} reviews={reviews} />}
         <div className={classes["goal-detail-line"]}/>
         {plans && <GoalDetailR plan={plans[idx]} tils={tils} nextPage={nextPage} prevPage={prevPage} tilPage={tilPage}/>}
         <div />

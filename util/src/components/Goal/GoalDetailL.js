@@ -1,7 +1,5 @@
 import classes from "../Goal/GoalDetail.module.css";
 import GoalDetailLReview from "./GoalDetailLReview";
-import GoalDetailLTodo from "./GoalDetailLTodo";
-import run from "../../img/run.png"
 import React, {useState, useEffect, useRef, useCallback} from "react";
 import PlanCardItem from "../Plan/PlanCard/PlanCardItem"
 import { useSelector, useDispatch } from 'react-redux'
