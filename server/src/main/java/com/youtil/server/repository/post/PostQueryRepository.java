@@ -1,6 +1,7 @@
 package com.youtil.server.repository.post;
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -17,15 +18,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Date;
 
-import static com.querydsl.core.types.dsl.DateTimeExpression.currentTimestamp;
+import static com.querydsl.core.types.dsl.Wildcard.count;
 import static com.youtil.server.domain.post.QPost.post;
 import static com.youtil.server.domain.post.QPostBookmark.postBookmark;
 import static com.youtil.server.domain.post.QPostLike.postLike;
 import static com.youtil.server.domain.user.QFollow.follow;
 import static com.youtil.server.domain.user.QUser.user;
+import static java.time.LocalTime.now;
 
 
 @RequiredArgsConstructor
@@ -47,7 +49,7 @@ public class PostQueryRepository {
         return new PageImpl<>(content.getResults(), pageRequest, content.getTotal());
     }
 
-    public  Page<Post> findPostListBySpecUser(Long userId, String criteria, PageRequest pageRequest, User user) { //유저별 글
+    public Page<Post> findPostListBySpecUser(Long userId, String criteria, PageRequest pageRequest, User user) { //유저별 글
         QueryResults<Post> content = jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
@@ -68,10 +70,9 @@ public class PostQueryRepository {
         QueryResults<Post> content = jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
+                .join(postLike).on(postLike.post.eq(post))
                 .where(
                         isPrivate(userId)
-//                        isPrivate2(userId)
-
                 )
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
@@ -124,19 +125,19 @@ public class PostQueryRepository {
     public Page<Post> findByPostSubscribes(PostSearch postSearch, User user, PageRequest pageRequest) {
 
         String criteria = postSearch.getCriteria();
+//        String period = postSearch.getPeriod();
 
         QueryResults<Post> content =  jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
+//                .innerJoin(postLike).fetchJoin()
                 .where(
                         post.user.in(
                                 JPAExpressions
                                 .select(follow.toUser).from(follow)
                                 .where(follow.fromUser.userId.eq(user.getUserId())
                                 )),
-
                         isPrivate(user.getUserId())
-//                .or(post.isPrivate.in(2))
                 )
                 .orderBy(findCriteria(criteria))
                 .offset(pageRequest.getOffset())
@@ -170,6 +171,7 @@ public class PostQueryRepository {
 
 
     public Page<Post> findByBookmarkPostList(String criteria, User user, PageRequest pageRequest) {
+
 
         QueryResults<Post> content = jpaQueryFactory.select(post)
                 .distinct().from(post)
@@ -224,22 +226,26 @@ public class PostQueryRepository {
                         )));
     }
 
-    private OrderSpecifier<?> findCriteria(String criteria){ //정렬 조건
-        if(criteria.contains("date")){
+    private OrderSpecifier<?> findCriteria(String criteria) { //정렬 조건
+        if (criteria.contains("date")) {
             return post.createdDate.desc();
-        } else if(criteria.contains("like")){
+        } else if (criteria.contains("like")) {
             return post.likeScore.desc();
-        } else if(criteria.contains("view")){
+        } else if (criteria.contains("view")) {
             return post.viewScore.desc();
-        } else if(criteria == null){
+        } else if (criteria == null) {
             return post.createdDate.desc();
         }
-        return post.createdDate.desc();
+//        }else if(criteria.contains("like") && period.contains("6month")){
+//            return
+//        }else if(criteria.contains("like") && period.contains("1week")){
+//
+//        }
+            return post.createdDate.desc();
+        }
+
     }
 
-
-
-}
 
 
 
