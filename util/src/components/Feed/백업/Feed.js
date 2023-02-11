@@ -1,12 +1,12 @@
-import FeedCardItem from "../UI/FeedCard/FeedCardItem";
+import FeedCardItem from "../../UI/FeedCard/FeedCardItem";
 import classes from "./Feed.module.css";
 import { useState, useEffect, useRef, Fragment } from "react";
-import Loading from "../UI/Loading/Loading";
+import Loading from "../../UI/Loading/Loading";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getUserFollowing } from "../../api/Post/getUserFollowing";
-import UserRecommend from "../UserRecommend/UserRecommend";
-import FixedModal from "../UI/FixedModal/FixedModal";
+import { getUserFollowing } from "../../../api/Post/getUserFollowing";
+import UserRecommend from "../../UserRecommend/UserRecommend";
+import FixedModal from "../../UI/FixedModal/FixedModal";
 
 const feedCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -115,7 +115,7 @@ const Feed = (props) => {
 
   return (
     <Fragment>
-      <div id="feed-overlay-root"></div>
+      {/* <div id="feed-overlay-root"></div> */}
       <FixedModal
         modalState={modalState}
         stateHandler={setModalState}

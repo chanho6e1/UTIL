@@ -11,7 +11,6 @@ import PlanExpanded from "../Plan/PlanExpanded";
 
 import Plan from "../Plan/Plan";
 import MyUtil from "../MyUtil/MyUtil";
-import Feed from "../Feed/Feed";
 import UserPage from "../UserPage/UserPage";
 import UserProfileChange from "../UserProfileChangePage/UserProfileChange";
 import PlanResponsive from "../Plan/PlanResponsive";
@@ -27,10 +26,9 @@ const Main = (props) => {
   const postData = {
     content: [
       userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />,
-      <Feed api={getSubscribePosts} />,
-      <Search />,
       <Explore />,
       <PlanResponsive />,
+      <Search />,
     ],
     //
     dock: {
@@ -38,19 +36,18 @@ const Main = (props) => {
         <img className={styles["logo-icon"]} src={logo} style={{ width: "96px", height: "auto" }} />
       ),
       logoExpanded: <div className={styles["logo-text"]}>util</div>,
-      dockContracted: [Icons.home, Icons.feed, Icons.search, Icons.compass, Icons.plus],
+      dockContracted: [Icons.home, Icons.feed, Icons.compass, Icons.search],
       dockExpanded: [
         <div>마이 유틸</div>,
-        <div>피드</div>,
-        <div>검색</div>,
         <div>탐색 탭</div>,
         <div>목표</div>,
+        <div>검색</div>,
       ],
       dockContractedBottom: [Icons.notification, <UserIcon />],
       dockExpandedBottom: [<div>알림</div>, <CurrentUser />],
       dockWrapperBottom: [<React.Fragment />, <UserDockWrapper />],
     },
-    url: ["/index", "/feed", "/search", "/setting", "/etc"],
+    url: ["/index", "/explore", "/search", "/etc"],
     bottomUrl: ["/notification", "/user"],
   };
 
