@@ -50,7 +50,7 @@ public class UserService {
         String path = originUser.getImageUrl();
 //        deleteImg(path);
 
-        logger.info("=============path : {}", path);
+//        logger.info("=============path : {}", path);
 //        String baseImg = "3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg";
 
         String newImg = request.getImageUrl();
@@ -68,10 +68,10 @@ public class UserService {
         }
         request.setImageUrl(newImg);
 
-        logger.info("=============newImg : {}", request.getImageUrl());
+//        logger.info("=============newImg : {}", request.getImageUrl());
 
         originUser.update(request);
-        logger.info("=============originUserImg : {}", originUser.getImageUrl());
+//        logger.info("=============originUserImg : {}", originUser.getImageUrl());
         return userId;
     }
 
@@ -107,6 +107,7 @@ public class UserService {
     }
 
     public UserResponse getUser(Long userId) {
-        return UserResponse.from(userRepository.findByUserId(userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        return UserResponse.from(user);
     }
 }
