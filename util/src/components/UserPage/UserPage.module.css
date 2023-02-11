@@ -14,6 +14,7 @@
     font-size: 16px;
     font-weight: 700;
     margin-right: 10px;
+    cursor: pointer;
   }
 
   .follow-number {
@@ -67,7 +68,7 @@
     box-sizing: border-box;
     /* margin: 0 auto; */
     /* justify-content: space-evenly; */
-    margin-top:18px;
+    margin-top: 18px;
     margin-bottom: 24px;
     padding-left: 14px;
   }
@@ -76,24 +77,18 @@
     display: none;
   }
 
-
   .pagination {
     display: none;
   }
-
 
   .plan-card-wrapper {
     display: none;
   }
 
-  
-
-
-
   .line {
     width: 100%;
     height: 1px;
-    border-bottom: 1px solid rgb(210,210,210);
+    border-bottom: 1px solid rgb(210, 210, 210);
     /* margin-bottom: 24px; */
   }
 
@@ -121,12 +116,11 @@
   }
 
   .article-list-wrapper {
-    padding: 14px 14px 14px 14px ;
+    padding: 14px 14px 14px 14px;
   }
 }
 
 @media all and (min-width: 1080px) {
-
   .article-list-wrapper {
     /* margin-right: 14px; */
   }
@@ -139,6 +133,7 @@
     font-size: 1.3rem;
     font-weight: 700;
     margin-right: 10px;
+    cursor: pointer;
   }
 
   .follow-number {
@@ -154,7 +149,7 @@
     width: 100%;
     justify-content: center;
     box-sizing: border-box;
-    margin:10px;
+    margin: 10px;
     /* margin-top:48px; */
     margin-bottom: 20px;
     /* margin: 0 auto; */
@@ -166,15 +161,10 @@
     /* overflow: hidden; */
   }
 
-
-
-
-
-
   .line {
     /* width: 100%; */
     height: 1px;
-    border-bottom: 1px solid rgb(210,210,210);
+    border-bottom: 1px solid rgb(210, 210, 210);
     margin-bottom: 6px;
     margin-left: 14px;
   }
@@ -189,39 +179,23 @@
     padding: 10px 10vw 10px 10vw;
   }
 
-  
   .article-list-wrapper {
-    padding : 14px 14px 14px 14px;
+    padding: 14px 14px 14px 14px;
   }
 
   .pagination {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: 48px;;
+    margin-bottom: 48px;
   }
-  
-  
-
 }
-
-
-
-
 
 .user-page-upper-inner {
   width: 100%;
-  
+
   display: flex;
 }
-
-
-
-
-
-
-
-
 
 .follow-text-wrapper {
   display: flex;
@@ -263,7 +237,6 @@
   display: flex;
 }
 
-
 .userdata {
   display: flex;
   flex-direction: column;
@@ -291,13 +264,10 @@
   /* margin-left: 10px; */
 }
 
-
-
 .username {
   font-size: 14px;
   margin-right: 20px;
 }
-
 
 .tags {
   display: flex;
@@ -319,37 +289,17 @@
   font-weight: 700;
 }
 
-
-
 .ul {
-
   list-style-type: none;
   padding: 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .user-page {
   width: 100%;
   height: 100vh;
   overflow: scroll;
   overflow-x: hidden;
-  
+
   box-sizing: border-box;
 }
 
@@ -373,7 +323,7 @@
 .article-list-wrapper {
   /* display:flex;
   flex-direction: column; */
-  flex-grow:1;
+  flex-grow: 1;
   overflow: hidden;
   /* align-items: center; */
   /* width: 100%; */
@@ -389,7 +339,7 @@
 
 .plan-kanban {
   /* width: 100%; */
-  height:auto;
+  height: auto;
   margin-bottom: 14px;
 }
 
@@ -401,8 +351,8 @@
   width: 100%;
   display: flex;
   /* margin-bottom: 14px; */
-  margin-left:14px;
-  margin-top:14px;
+  margin-left: 14px;
+  margin-top: 14px;
 }
 
 .dropdown {
@@ -417,19 +367,19 @@
   align-items: center;
   cursor: pointer;
   transition-property: background-color color;
-    transition-duration: 0.2s;
-    user-select: none;
+  transition-duration: 0.2s;
+  user-select: none;
   margin-right: 8px;
 }
 
 .dropdown:hover {
-  background-color: rgba(154, 76, 249, 0.05);;
+  background-color: rgba(154, 76, 249, 0.05);
 }
 
 .drop-down-li-tag {
   color: rgb(220, 220, 220);
   margin-left: 24px;
-  font-size: 24px;;
+  font-size: 24px;
   margin-right: -10px;
 }
 
@@ -438,4 +388,3 @@
   height: 50px;
   background-color: white;
 }
-
