@@ -21,6 +21,7 @@ const feedCardItemList = (postList) => {
           bookmarkStatus={post.bookmarkStatus}
           profileImg={post.writerInfo.profileImg}
           nickname={post.writerInfo.nickname}
+          userId={post.writerInfo.userId}
           createdDate={post.createdDate}
         />
       </div>

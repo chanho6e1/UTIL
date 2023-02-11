@@ -27,6 +27,7 @@
 }
 
 .indicator {
+    width: 0px;
     height: 2px;
     background-color: black;
     position: relative;

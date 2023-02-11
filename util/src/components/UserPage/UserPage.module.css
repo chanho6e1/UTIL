@@ -1,4 +1,8 @@
 @media all and (max-width: 1080px) {
+
+  .body-header {
+    padding-right: 14px;
+  }
   .tag-wrapper-pc {
     display: none;
   }
@@ -351,8 +355,11 @@
   width: 100%;
   display: flex;
   /* margin-bottom: 14px; */
-  margin-left: 14px;
+  padding-left: 14px;
+  /* padding-right: 14px; */
   margin-top: 14px;
+  box-sizing: border-box;
+  justify-content: space-between;
 }
 
 .dropdown {
@@ -369,7 +376,7 @@
   transition-property: background-color color;
   transition-duration: 0.2s;
   user-select: none;
-  margin-right: 8px;
+  /* margin-right: 8px; */
 }
 
 .dropdown:hover {

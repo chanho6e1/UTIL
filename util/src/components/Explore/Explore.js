@@ -16,6 +16,7 @@ import Tab from "../UI/Tab/Tab";
 import { useLocation } from "react-router-dom";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import UserRecommend from "../UserRecommend/UserRecommend";
+import UserPage from "../UserPage/UserPage";
 
 const ExploreForm = () => {
   const [criteria, setCriteria] = useState(0);
@@ -169,8 +170,9 @@ const Explore = (props) => {
 
       <Routes>
         <Route path="*" element={<ExploreForm />} /> 
-        <Route path="explore/*" element={<ExploreForm />} />  
+        {/* <Route path="explore/*" element={<ExploreForm />} />   */}
         <Route path="post/:id" element={<DetailItem />} />
+        {/* <Route path="*" element={<UserPage />} /> */}
       </Routes>
     </div>
   )

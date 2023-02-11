@@ -36,9 +36,9 @@ const SwipeableDock = (props) => {
 
 
 
-  useEffect(() => {
-    navigate(postData.url[contentCount -1], { replace: true });
-  }, [location.pathname && contentCount])
+  // useEffect(() => {
+  //   navigate(postData.url[contentCount -1], { replace: true });
+  // }, [location.pathname && contentCount])
 
   // useEffect(() => {
 
@@ -96,10 +96,13 @@ const SwipeableDock = (props) => {
 
   const onSwipeEnd = () => {
     movingDiv.current.style.transitionDuration = '0.3s'
+    
     if (positionx < -20 && contentCount < postData.content.length) {
+      navigate(postData.url[contentCount], { replace: true });
       setContentCount((prev) => prev + 1)
     }
     if (positionx > 20 && contentCount > -1) {
+      navigate(postData.url[contentCount - 2], { replace: true });
       setContentCount((prev) => prev - 1)
     }
     if (Math.abs(positionx) <= 20) {
@@ -107,6 +110,7 @@ const SwipeableDock = (props) => {
     }
     setPositionx(() => 0)
     setEndSwipe(true)
+    
   }
 
 
