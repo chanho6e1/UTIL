@@ -27,9 +27,10 @@ import Card from "../UI/Card/Card";
 import PlanCard from "../Plan/PlanCard/PlanCard";
 import PlanExpanded from "../Plan/PlanExpanded";
 import DropDown from "../UI/DropDown/DropDown";
-import PlanList from "../UI/PlanList/PlanList.js"
+import PlanList from "../UI/PlanList/PlanList.js";
 import { Fragment } from "react";
-
+import FollowModal from "../UI/FollowModal/FollowModal";
+import FixedModal from "../UI/FixedModal/FixedModal";
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -52,8 +53,6 @@ const postCardItemList = (postList) => {
   });
 };
 
-
-
 const UserPageForm = (props) => {
   const containerRef = useRef();
   const [postList, setPostList] = useState(null);
@@ -62,8 +61,10 @@ const UserPageForm = (props) => {
   const [isFollowing, setIsFollowing] = useState(null);
   const [followerList, setFollowerList] = useState(null);
   const [followerListCnt, setFollowerListCnt] = useState(null);
+  const [followerModalState, setFollowerModalState] = useState(false);
   const [followingList, setFollowingList] = useState(null);
   const [followingListCnt, setFollowingListCnt] = useState(null);
+  const [followingModalState, setFollowingModalState] = useState(false);
   const [userTagList, setUserTagList] = useState([]);
   const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
   const criteria = ["date", "view", "like"];
@@ -72,19 +73,16 @@ const UserPageForm = (props) => {
   const [totalPage, setTotalPage] = useState(10);
   const size = 8;
   const [isLoading, setIsLoading] = useState(true);
-  const postWrapperRef = useRef()
+  const postWrapperRef = useRef();
 
   const navigate = useNavigate();
 
-
-  const plans = useSelector(state => state.planSlice.allPlans)
+  const plans = useSelector((state) => state.planSlice.allPlans);
   const PlanCardItemList = () => {
     return Object.keys(plans).map((id, arrIdx) => {
-      return (
-        <PlanList plan={plans[id]}/>
-      )
-    })
-  }
+      return <PlanList plan={plans[id]} />;
+    });
+  };
 
   const fetchUserPostData = (criteriaIdx, page, size) => {
     setIsLoading(true);
@@ -95,7 +93,11 @@ const UserPageForm = (props) => {
         setTimeout(() => {
           setIsLoading(false);
         }, 500);
-        containerRef.current.scrollTo({ left: 0, top: postWrapperRef.current.offsetTop - 14, behavior: "smooth" })
+        containerRef.current.scrollTo({
+          left: 0,
+          top: postWrapperRef.current.offsetTop - 14,
+          behavior: "smooth",
+        });
       });
     } else {
       getUserPosts(props.id, criteria[criteriaIdx], page, size).then((res) => {
@@ -104,7 +106,11 @@ const UserPageForm = (props) => {
         setTimeout(() => {
           setIsLoading(false);
         }, 500);
-        containerRef.current.scrollTo({ left: 0, top: postWrapperRef.current.offsetTop - 14, behavior: "smooth" })
+        containerRef.current.scrollTo({
+          left: 0,
+          top: postWrapperRef.current.offsetTop - 14,
+          behavior: "smooth",
+        });
       });
     }
   };
@@ -178,18 +184,27 @@ const UserPageForm = (props) => {
   }, []);
 
   // Follow Data API
+
+  const fetchUserFollower = (id) => {
+    getUserFollower(id).then((res) => {
+      setFollowerList(() => res);
+      setFollowerListCnt(() => res.length);
+    });
+  };
+
+  const fetchUserFollowing = (id) => {
+    getUserFollowing(id).then((res) => {
+      setFollowingList(() => res);
+      setFollowingListCnt(() => res.length);
+    });
+  };
+
   useEffect(() => {
     getIsFollowing(props.id).then((res) => {
       setIsFollowing(() => res);
     });
-    getUserFollower(props.id).then((res) => {
-      setFollowerList(() => res);
-      setFollowerListCnt(() => res.length);
-    });
-    getUserFollowing(props.id).then((res) => {
-      setFollowingList(() => res);
-      setFollowingListCnt(() => res.length);
-    });
+    fetchUserFollower(props.id);
+    fetchUserFollowing(props.id);
   }, [isFollowing]);
 
   const tagOnClickHandler = (event) => {
@@ -253,8 +268,6 @@ const UserPageForm = (props) => {
     fetchUserPostData(criteriaIdx, page, size);
   };
 
-
-
   // scroll event handler
   const handleScroll = () => {
     const scrollHeight = containerRef.current.scrollHeight;
@@ -286,6 +299,40 @@ const UserPageForm = (props) => {
 
   const userInformation = (
     <div className={classes[`user-page-upper`]}>
+      <FixedModal
+        modalState={followerModalState}
+        stateHandler={setFollowerModalState}
+        content={
+          <FollowModal
+            title={"팔로워"}
+            followData={followerList}
+            onFollowModalClose={() => {
+              fetchUserFollower(props.id);
+              fetchUserFollowing(props.id);
+            }}
+          />
+        }
+        width={"400px"}
+        height={"400px"}
+        overflow={"hidden"}
+      />
+      <FixedModal
+        modalState={followingModalState}
+        stateHandler={setFollowingModalState}
+        content={
+          <FollowModal
+            title={"팔로우"}
+            followData={followingList}
+            onFollowModalClose={() => {
+              fetchUserFollower(props.id);
+              fetchUserFollowing(props.id);
+            }}
+          />
+        }
+        width={"400px"}
+        height={"400px"}
+        overflow={"hidden"}
+      />
       <div className={classes[`user-page-upper-inner`]}>
         <div className={classes[`avatar-username`]}>
           <Avatar
@@ -298,7 +345,7 @@ const UserPageForm = (props) => {
               maxWidth: "128px",
               maxHeight: "128px",
               border: "1px solid lightgray",
-              marginRight: '6px',
+              marginRight: "6px",
               objectFit: "scale-down",
             }}
           />
@@ -310,9 +357,21 @@ const UserPageForm = (props) => {
                 <div className={classes.nickname}>{userData.nickname}</div>
                 <div className={classes.follow}>
                   <div className={classes["follow-text-wrapper"]}>
-                    <div className={classes[`follow-text`]}>팔로워</div>
+                    <div
+                      className={classes[`follow-text`]}
+                      onClick={() => {
+                        setFollowerModalState(true);
+                      }}
+                    >
+                      팔로워
+                    </div>
                     <div className={classes[`follow-number`]}>{followerListCnt}명</div>
-                    <div className={classes[`follow-text`]}>팔로우</div>
+                    <div
+                      className={classes[`follow-text`]}
+                      onClick={() => setFollowingModalState(true)}
+                    >
+                      팔로우
+                    </div>
                     <div className={classes[`follow-number`]}>{followingListCnt}명</div>
                   </div>
 
@@ -329,10 +388,14 @@ const UserPageForm = (props) => {
           </div>
         </div>
       </div>
-      <Swipe onSwipeStart={(event) => {event.stopPropagation()}}>
-          <div className={classes["tag-wrapper-mobile"]}>
-            <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
-          </div>
+      <Swipe
+        onSwipeStart={(event) => {
+          event.stopPropagation();
+        }}
+      >
+        <div className={classes["tag-wrapper-mobile"]}>
+          <TagDataList tagList={userTagList} onClick={tagOnClickHandler} />
+        </div>
       </Swipe>
     </div>
   );
@@ -341,75 +404,102 @@ const UserPageForm = (props) => {
     <React.Fragment>
       {userInformation}
       <div className={classes["line"]} />
-      
     </React.Fragment>
-  )
+  );
 
-  
-  const [category, setCategory] = useState('전체 글')
+  const [category, setCategory] = useState("전체 글");
 
   const categoryDropDownItems = {
-    label: ['전체 글', '전체 목표'],
-    function: [() => {setCategory('전체 글')}, () => {setCategory('전체 목표')}],
-  }
+    label: ["전체 글", "전체 목표"],
+    function: [
+      () => {
+        setCategory("전체 글");
+      },
+      () => {
+        setCategory("전체 목표");
+      },
+    ],
+  };
 
-  const [categoryDropDownState, setCategoryDropDownState] = useState(false)
+  const [categoryDropDownState, setCategoryDropDownState] = useState(false);
 
   const postDropDownItems = {
-    label: ['포스트 작성', '회고록 작성'],
-    function: [() => {navigate('/create/post')}, () => {navigate('/create/review')}],
-  }
+    label: ["포스트 작성", "회고록 작성"],
+    function: [
+      () => {
+        navigate("/create/post");
+      },
+      () => {
+        navigate("/create/review");
+      },
+    ],
+  };
 
-  const [postDropDownState, setPostDropDownState] = useState(false)
+  const [postDropDownState, setPostDropDownState] = useState(false);
 
-  const categoryView = (category === '전체 글'
-    ?
+  const categoryView =
+    category === "전체 글" ? (
       <Fragment>
-        
-        <div ref={postWrapperRef}>
-          {postCardContainer(postList)}
-        </div>
-        
+        <div ref={postWrapperRef}>{postCardContainer(postList)}</div>
+
         <div className={classes[`pagination`]}>
           <Pagination count={totalPage} onChange={pageChangeHandler} />
         </div>
       </Fragment>
-    :
-      <Fragment>
-        {PlanCardItemList()}
-      </Fragment>
-  )
-  
+    ) : (
+      <Fragment>{PlanCardItemList()}</Fragment>
+    );
 
   return (
-    <div ref={containerRef} className={classes['user-page']}>
-      <div className={classes['contents']}>
+    <div ref={containerRef} className={classes["user-page"]}>
+      <div className={classes["contents"]}>
         {header}
 
-        <div className={classes['body-header']}>
+        <div className={classes["body-header"]}>
           <div>
-            <DropDown dropDownItems={categoryDropDownItems} dropDownState={categoryDropDownState} setDropDownState={setCategoryDropDownState} width={'152px'} itemHeight={'48px'} direction={'down'} borderRadius={'5px'} />
-            <div className={classes['dropdown']} onClick={() => {setCategoryDropDownState(() => true)}}>
-            <li className={classes['drop-down-li-tag']} />
-            {category}
+            <DropDown
+              dropDownItems={categoryDropDownItems}
+              dropDownState={categoryDropDownState}
+              setDropDownState={setCategoryDropDownState}
+              width={"152px"}
+              itemHeight={"48px"}
+              direction={"down"}
+              borderRadius={"5px"}
+            />
+            <div
+              className={classes["dropdown"]}
+              onClick={() => {
+                setCategoryDropDownState(() => true);
+              }}
+            >
+              <li className={classes["drop-down-li-tag"]} />
+              {category}
             </div>
           </div>
 
           <div>
-            <DropDown dropDownItems={postDropDownItems} dropDownState={postDropDownState} setDropDownState={setPostDropDownState} width={'152px'} itemHeight={'48px'} direction={'down'} borderRadius={'5px'} />
-            <div className={classes['dropdown']} onClick={() => {setPostDropDownState(() => true)}}>
-            <li className={classes['drop-down-li-tag']} />
-            글 작성
+            <DropDown
+              dropDownItems={postDropDownItems}
+              dropDownState={postDropDownState}
+              setDropDownState={setPostDropDownState}
+              width={"152px"}
+              itemHeight={"48px"}
+              direction={"down"}
+              borderRadius={"5px"}
+            />
+            <div
+              className={classes["dropdown"]}
+              onClick={() => {
+                setPostDropDownState(() => true);
+              }}
+            >
+              <li className={classes["drop-down-li-tag"]} />글 작성
             </div>
           </div>
-          
-
-
         </div>
-        <div className={classes['body']}>
-        
-          <div className={classes['article-list-wrapper']}>
-            <div className={classes['kanban-wrapper']}>
+        <div className={classes["body"]}>
+          <div className={classes["article-list-wrapper"]}>
+            <div className={classes["kanban-wrapper"]}>
               <Card className={classes["plan-kanban"]}>
                 <PlanExpanded contracted={true} />
               </Card>
@@ -422,9 +512,7 @@ const UserPageForm = (props) => {
         </div>
       </div>
     </div>
-
   );
-
 };
 
 const UserPage = (props) => {
@@ -433,9 +521,9 @@ const UserPage = (props) => {
       <div id="index-overlay-root"></div>
 
       <Routes>
-        <Route path="*" element={<UserPageForm id={props.id} />} /> 
-        <Route path="index/*" element={<UserPageForm id={props.id} />} /> 
-        <Route path="goal/:id" element={<GoalDetail />} /> 
+        <Route path="*" element={<UserPageForm id={props.id} />} />
+        <Route path="index/*" element={<UserPageForm id={props.id} />} />
+        <Route path="goal/:id" element={<GoalDetail />} />
         <Route path="post/:id" element={<DetailItem />} />
       </Routes>
     </div>
