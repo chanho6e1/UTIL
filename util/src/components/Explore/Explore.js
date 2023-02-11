@@ -2,7 +2,6 @@ import { useState } from "react";
 import { getMyTags } from "../../api/UserProfile/getMyTags";
 import { getPostsByMyTag } from "../../api/Post/getPostsByMyTag";
 import { IconButton } from "@mui/material";
-import Feed from "../Feed/Feed";
 import { useSelector } from "react-redux";
 import ExploreFeed from "../Feed/ExploreFeed";
 import classes from "./Explore.module.css";
@@ -10,24 +9,33 @@ import ExpandIcon from "../../img/Expand40.svg";
 import DropDown from "../UI/DropDown/DropDown";
 import { useEffect } from "react";
 import { Fragment } from "react";
+import { getSubscribePosts } from "../../api/Post/getSubscribePosts";
+import { Routes, Route } from "react-router-dom";
+import DetailItem from "../Detail/DetailItem";
+import Tab from "../UI/Tab/Tab";
 
-const Explore = () => {
+const ExploreForm = () => {
   const [criteria, setCriteria] = useState(0);
-  const criteriaLabelList = ["최신", "조회수", "좋아요"];
+  const criteriaLabelList = ["피드", "최신", "조회수", "좋아요"];
   const [dropDownCriteriaState, setDropDownCriteriaState] = useState(false);
   const [myTagList, setMyTagList] = useState([]);
   const userAuth = useSelector((state) => state.userAuthSlice.userAuth);
 
-  const onDateClick = () => {
+  
+  const onFeedClick = () => {
     setCriteria(0);
   };
 
-  const onViewClick = () => {
+  const onDateClick = () => {
     setCriteria(1);
   };
 
-  const onLikeClick = () => {
+  const onViewClick = () => {
     setCriteria(2);
+  };
+
+  const onLikeClick = () => {
+    setCriteria(3);
   };
 
   const dropDownCriteriaItems = {
@@ -43,47 +51,85 @@ const Explore = () => {
     });
   }, []);
 
+  const tabItems = [
+    {content: '피드', function: onFeedClick},
+    {content: '탐색', function: onDateClick}
+  ]
+
+  const dropDown = (
+    <div>
+      <DropDown 
+        dropDownItems={dropDownCriteriaItems}
+        dropDownState={dropDownCriteriaState}
+        setDropDownState={setDropDownCriteriaState}
+        width={'152px'} itemHeight={'48px'} direction={'down'} borderRadius={'5px'}
+      />
+
+      <div className={classes['dropdown']} onClick={() => {setDropDownCriteriaState(() => true)}}>
+        <li className={classes['drop-down-li-tag']} />
+        {criteriaLabelList[criteria]}
+      </div>
+    </div>
+  )
+
   const content = (myTagList) => {
-    const altText = "관심 태그가 없어요\n\n마이 프로필에서 태그를 설정해 보세요";
-    if (myTagList.length > 0) {
-      return (
-        <Fragment>
-          <div className={classes[`dropdown-container`]}>
-            <div className={classes[`dropdown-sort`]}>
-              <div className={classes[`dropdown-item`]}>{criteriaLabelList[criteria]}</div>
-              <div className={classes[`dropdown`]}>
-                <IconButton
-                  sx={{ width: 40, height: 40 }}
-                  onClick={() => setDropDownCriteriaState(true)}
-                >
-                  <img src={ExpandIcon} />
-                </IconButton>
-                <DropDown
-                  dropDownItems={dropDownCriteriaItems}
-                  dropDownState={dropDownCriteriaState}
-                  setDropDownState={setDropDownCriteriaState}
-                  width={"120px"}
-                  marginLeft={"-80px"}
-                  direction={"down"}
-                />
-              </div>
-            </div>
+    
+    const header = (
+      <div className={classes[`dropdown-container`]}>
+        <div className={classes['tab-wrapper']}>
+          <Tab tabItems={tabItems} width={'200px'} height={'48px'} />
+        </div>
+        {criteria === 0 ? null : dropDown}
+      </div>
+    )
+
+    const exploreFeed = (
+      <div className={classes[`explore-feed`]}>
+   
+        {/* {header} */}
+        <ExploreFeed api={criteria === 0 ? getSubscribePosts : getPostsByMyTag} criteria={criteria} myTagList={myTagList} />
+
+        
+      </div>
+    )
+
+    
+
+    return (
+      <Fragment>
+        <div className={classes['explore-wrapper']}>
+          <div className={classes['explore-inner-wrapper']}>
+          {header}
+          {exploreFeed}
           </div>
-          <div className={classes[`explore-feed`]}>
-            <ExploreFeed api={getPostsByMyTag} criteria={criteria} />
-          </div>
-        </Fragment>
-      );
-    } else {
-      return (
-        <Fragment>
-          <div className={classes[`alt-text`]}>{altText}</div>
-        </Fragment>
-      );
-    }
-  };
+          
+        </div>
+          
+
+        
+      </Fragment>
+    )
+
+
+};
 
   return <div className={classes[`explore-container`]}>{content(myTagList)}</div>;
 };
+
+
+
+const Explore = (props) => {
+  return (
+    <div>
+      <div id="explore-overlay-root"></div>
+
+      <Routes>
+        <Route path="*" element={<ExploreForm />} /> 
+        <Route path="explore/*" element={<ExploreForm />} />  
+        <Route path="post/:id" element={<DetailItem />} />
+      </Routes>
+    </div>
+  )
+}
 
 export default Explore;
