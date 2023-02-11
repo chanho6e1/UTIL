@@ -10,10 +10,7 @@
 
 }
 
-.header {
-  margin: 24px 0px 24px 0px;
-  display: flex;
-}
+
 
 .alt-message-wrapper {
   margin-top: 100px;
@@ -23,7 +20,19 @@
 }
 
 
+@media all and (max-width: 480px) {
+  .header {
+    margin: 14px 0px 0px 0px;
+    display: flex;
+  }
+}
 
+@media all and (min-width: 480px) {
+  .header {
+    margin: 24px 0px 24px 0px;
+    display: flex;
+  }
+}
 
 
 

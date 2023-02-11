@@ -52,10 +52,11 @@ const DropDown = (props) => {
 
     return (
       <div key={`drop-down-${idx}`} ref={el => (dropDownItemRef.current[idx] = el)} onClick={(event) => {event.stopPropagation(); props.dropDownItems.function[idx](); props.setDropDownState(false);}} className={styles['dropdown-item']} style={{height: `${props.itemHeight ? `${props.itemHeight}` : '53px'}`}} >
-        <li className={styles['li-tag']} />
-        <div className={styles['text-wrapper']}>
+        
+        {props.noLiTag === true ? null : <li className={styles['li-tag']} />}
+        <div className={styles['text-wrapper']} style={{marginLeft: `${props.noLiTag === true ? '0px' : '-10px'}`}}>
 
-          <div className={styles['item-label']}>
+          <div className={styles['item-label']} style={{justifyContent: `${props.noLiTag === true ? 'center' : 'left'}`}}>
               {el}
           </div>
 
