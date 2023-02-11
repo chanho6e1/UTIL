@@ -66,7 +66,7 @@ const UserRecommend = (props) => {
         <div className={classes[`recommend-text`]}>관심 태그를 기반으로 추천해드려요!</div>
         <Button
           onClick={() => {
-            props.onDone();
+            // props.onDone();
             props.modalHandler();
           }}
         >

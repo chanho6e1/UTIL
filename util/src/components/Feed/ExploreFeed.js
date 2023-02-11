@@ -48,7 +48,7 @@ const ExploreFeed = (props) => {
   useEffect(() => {
     setIsLoading(true);
     // if (criteria !== 0) {
-      props.api(criteriaList[props.criteria], offset, size).then((res) => {
+      props.api(criteriaList[props.criteria], offset, 20).then((res) => {
         // setFeedList(() => res.content);
         // setIsLoading(false);
         console.log(res.content)
@@ -57,9 +57,6 @@ const ExploreFeed = (props) => {
           // setOffset((prevState) => prevState + 1);
           setFeedList(() => res.content);
           setIsLoading(false);
-
-          
-
         } else {
           setFeedList(() => [])
 
@@ -71,18 +68,8 @@ const ExploreFeed = (props) => {
             }
           }
         }
-        
-        
-
-
-
-
       });
-    // } else {
 
-    // }
-
-    
   }, [props.criteria]);
 
   const fetchMoreData = () => {
@@ -101,12 +88,13 @@ const ExploreFeed = (props) => {
 
   // scroll event handler
   const handleScroll = () => {
-    const scrollHeight = feedRef.current.scrollHeight;
-    const scrollTop = feedRef.current.scrollTop;
-    const clientHeight = feedRef.current.clientHeight;
-
+    const scrollHeight = props.exploreRef.current.scrollHeight;
+    const scrollTop = props.exploreRef.current.scrollTop;
+    const clientHeight = props.exploreRef.current.clientHeight;
+    
     if (scrollTop + clientHeight >= scrollHeight - 10 && isLoading === false) {
       // 페이지 끝에 도달하면 추가 데이터를 받아온다
+      
       fetchMoreData();
     }
   };
@@ -118,13 +106,14 @@ const ExploreFeed = (props) => {
 
   useEffect(() => {
     // scroll event listener 등록
-    if (feedRef.current !== null) {
-      feedRef.current.addEventListener("scroll", handleScroll);
+    if (props.exploreRef.current !== null) {
+      props.exploreRef.current.addEventListener("scroll", handleScroll);
+      console.log('ssafy', props.exploreRef.current.clientHeight, props.exploreRef.current.scrollHeight)
     }
     return () => {
       // scroll event listener 해제
-      if (feedRef.current !== null) {
-        feedRef.current.removeEventListener("scroll", handleScroll);
+      if (props.exploreRef.current !== null) {
+        props.exploreRef.current.removeEventListener("scroll", handleScroll);
       }
     };
   });
