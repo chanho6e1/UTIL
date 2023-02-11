@@ -59,7 +59,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             return;
         }
 
-        System.out.println(targetUrl);
+//        System.out.println(targetUrl);
 
         System.out.println("oauth Success");
 
@@ -101,7 +101,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         response.addCookie(cookie);
 
 //        targetUrl = "http://localhost:3000";
-        System.out.println(response.getHeader("code"));
+//        System.out.println(response.getHeader("code"));
 
 //        System.out.println(targetUrl + "/code=200");
 
@@ -158,7 +158,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private boolean isAuthorizedRedirectUri(String uri) {
         URI clientRedirectUri = URI.create(uri);
-        System.out.println(clientRedirectUri);
+//        System.out.println(clientRedirectUri);
 
         return appProperties.getOauth2().getAuthorizedRedirectUris()
                 .stream()
