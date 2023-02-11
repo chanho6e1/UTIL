@@ -143,19 +143,19 @@ const SwipeableDock = (props) => {
   const wrapRef = useRef([]);
 
   
-  const movePage = (url) =>{
-      wrapRef?.current[contentCount - 1]?.classList?.replace('loaded', 'unloaded');
-      setTimeout(()=> { 
-        // navigate(url);
-        wrapRef?.current[contentCount - 1]?.classList?.replace('unloaded', 'loaded');
-      } , 10)
-  }
+  // const movePage = (url) =>{
+  //     wrapRef?.current[contentCount - 1]?.classList?.replace('loaded', 'unloaded');
+  //     setTimeout(()=> { 
+  //       // navigate(url);
+  //       wrapRef?.current[contentCount - 1]?.classList?.replace('unloaded', 'loaded');
+  //     } , 10)
+  // }
 
-  useEffect(() => {
-    if (wrapRef?.current[0]) {
-      movePage(pathname)
-    }
-  }, [pathname])
+  // useEffect(() => {
+  //   if (wrapRef?.current[0]) {
+  //     // movePage(pathname)
+  //   }
+  // }, [pathname])
 
 
 
