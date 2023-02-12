@@ -1,10 +1,10 @@
-import FeedCardItem from "../UI/FeedCard/FeedCardItem";
+import FeedCardItem from "../../UI/FeedCard/FeedCardItem";
 import classes from "./Feed.module.css";
 import { useState, useEffect, useRef, Fragment } from "react";
-import Loading from "../UI/Loading/Loading";
-import { getPostSearch } from "../../api/Post/getPostSearch";
-import { getPostByTagName } from "../../api/Post/getPostByTagName";
-import { getPostByNickname } from "../../api/Post/getPostByNickname";
+import Loading from "../../UI/Loading/Loading";
+import { getPostSearch } from "../../../api/Post/getPostSearch";
+import { getPostByTagName } from "../../../api/Post/getPostByTagName";
+import { getPostByNickname } from "../../../api/Post/getPostByNickname";
 
 const feedCardItemList = (postList) => {
   return postList?.map((post) => {

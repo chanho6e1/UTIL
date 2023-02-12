@@ -3,8 +3,7 @@ import classes from "./Search.module.css";
 import SearchBar from "../UI/SearchBar/SearchBar";
 import { getPostSearch } from "../../api/Post/getPostSearch";
 import { getPostByTagName } from "../../api/Post/getPostByTagName";
-import { getPostByNickname } from "../../api/Post/getPostByNickname";
-import SearchFeed from "../Feed/백업/SearchFeed";
+import SearchFeed from "../Feed/SearchFeed";
 import { useLocation } from "react-router-dom";
 import ExploreFeed from "../Explore/ExploreFeed";
 
@@ -15,10 +14,8 @@ const Search = (props) => {
   const [searchInput, setSearchInput] = useState("");
   const [dropDownLabel, setDropDownLabel] = useState(apiLabelList[0]);
   const [dropDownCriteriaLabel, setDropDownCriteriaLabel] = useState(criteriaLabelList[0]);
-  const searchFeedWrapperRef = useRef()
 
   const [api, setApi] = useState(0);
-  const criteriaData = ["date", "view", "like"];
   const [criteria, setCriteria] = useState(0);
 
   const inputChangeHandler = (event) => {
@@ -70,94 +67,8 @@ const Search = (props) => {
     }
   }, [location]);
 
-
-
-
-
-
-
-
-
-
-
-  const [feedList, setFeedList] = useState([]);
-  // const criteria = ["date", "view", "like"];
-  const [offset, setOffset] = useState(1);
-  const size = 10;
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    console.log(searchInput)
-    if (searchInput !== null && searchInput !== "") {
-      setIsLoading(true);
-      if (api === 0) {
-        getPostSearch(criteriaData[criteria], offset, size, searchInput).then((res) => {
-          if (res.content.length !== 0) {
-            setFeedList(() => res.content);
-          }
-          setIsLoading(false);
-          console.log('getPostSearch', res.content)
-        });
-      } else if (api === 1) {
-        getPostByTagName(criteriaData[criteria], offset, size, searchInput).then((res) => {
-          if (res.content.length !== 0) {
-            setFeedList(() => res.content);
-          }
-          setIsLoading(false);
-          console.log('getPostByTagName', res.content)
-        });
-      } else {
-        getPostByNickname(criteriaData[criteria], offset, size, searchInput).then((res) => {
-          if (res.content.length !== 0) {
-            setFeedList(() => res.content);
-          }
-          setIsLoading(false);
-          console.log('getPostByNickname', res.content)
-        });
-      }
-    }
-  }, [searchInput, api, criteria]);
-
-  const fetchMoreData = () => {
-    setIsLoading(true);
-    if (api === 0) {
-      getPostSearch(criteriaData[criteria], offset + 1, size, searchInput).then((res) => {
-        setFeedList((prevState) => [...prevState, ...res.content]);
-        setOffset((prevState) => prevState + 1);
-        setIsLoading(false);
-      });
-    } else {
-      getPostByTagName(criteriaData[criteria], offset + 1, size, searchInput).then(
-        (res) => {
-          setFeedList((prevState) => [...prevState, ...res.content]);
-          setOffset((prevState) => prevState + 1);
-          setIsLoading(false);
-        }
-      );
-    }
-  };
-
-
-
-  const onWheelHandler = (event) => {
-    
-    const scrollHeight = searchFeedWrapperRef.current.scrollHeight;
-    const scrollTop = searchFeedWrapperRef.current.scrollTop;
-    const clientHeight = searchFeedWrapperRef.current.clientHeight;
-    console.log(scrollHeight, scrollTop, clientHeight)
-    if (scrollTop + clientHeight >= scrollHeight - 10 && isLoading === false) {
-      fetchMoreData();
-    }
-  }
-
-
-
-
-
   return (
-    <div ref={searchFeedWrapperRef} onWheel={onWheelHandler} className={classes[`searchbar-feed`]}>
-      <div id="search-overlay-root"></div>
+    <div className={classes[`searchbar-feed`]}>
       <div className={classes[`searchbar`]}>
         <SearchBar
           inputChangeHandler={inputChangeHandler}
@@ -173,7 +84,7 @@ const Search = (props) => {
           criteriaLabel={dropDownCriteriaLabel}
         />
       </div>
-      <div  className={classes[`searchfeed`]}>
+      <div className={classes[`searchfeed`]}>
         {searchInput === "" || searchInput === null ? (
           <div className={classes[`enter-search`]}>검색어를 입력하세요</div>
         ) : (
