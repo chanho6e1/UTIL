@@ -7,12 +7,15 @@ import { getIsFollowing } from "../../../api/Post/getIsFollowing";
 import { postFollow } from "../../../api/Post/postFollow";
 import { deleteFollow } from "../../../api/Post/deleteUnfollow";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const FollowCard = (props) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(props.userData);
     getIsFollowing(props.userData.userId).then((res) => {
       setIsFollowing(() => res);
     });
@@ -20,7 +23,8 @@ const FollowCard = (props) => {
 
   const profileOnClickHandler = () => {
     // 클릭 시 유저 페이지로 이동
-    console.log("profile", props.userData.userId);
+    props.modalHandler();
+    navigate(`/index/${props.userData.nickName}`, { state: props.userData.userId });
   };
 
   const followBtnHandler = () => {
@@ -42,7 +46,7 @@ const FollowCard = (props) => {
 
   const followBtn = (isFollowing) => {
     if (myData.userId === props.userData.userId) {
-      return
+      return;
     }
     if (isFollowing) {
       return (

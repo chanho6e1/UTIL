@@ -9,7 +9,17 @@ import PhotoCameraIcon from "../../../img/photoCameraIcon_gray.png";
 import { putLikeToggle } from "../../../api/Post/putLikeToggle";
 import { putBookmarkToggle } from "../../../api/Post/putBookmarkToggle";
 import Card from "../Card/Card";
-import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate, useLocation } from "react-router-dom";
+import {
+  HashRouter,
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  NavLink,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import AnimatedModal from "../AnimatedModal/Modal";
 import DetailItem from "../../Detail/DetailItem";
 
@@ -63,97 +73,104 @@ const FeedCardItem = (props) => {
   };
 
   const nicknameClickHandler = () => {
-    navigate(`/index?user_id=${props.userId}`, {state : props.userId})
     // 닉네임 클릭 시 유저 페이지로 이동
-
+    navigate(`/index/${props.nickname}`, { state: props.userId });
   };
 
-  const location = useLocation()
-  const url = location.pathname.split('/')[1]
+  const location = useLocation();
+  const url = location.pathname.split("/")[1];
   const postClickHandler = () => {
     if (document.body.clientWidth > 1080) {
-      navigate(`/${url}/post/${props.id}`)
+      navigate(`/${url}/post/${props.id}`);
     } else {
-      navigate(`/${url}/m/modal/post/${props.id}`)
-      setShowModal(true)
+      navigate(`/${url}/m/modal/post/${props.id}`);
+      setShowModal(true);
     }
-    
   };
-
 
   const ShowModalHandler = (boolean) => {
     navigate(`/${url}/m/modal/post/${props.id}`);
-    setShowModal(boolean)
-  }
+    setShowModal(boolean);
+  };
 
-  
-  
-  const cardRef = useRef()
-  const [showModal, setShowModal] = useState(false)
-  const modal = <AnimatedModal rootId={`${url}-overlay-root`} fadeOut={true} component={<DetailItem id={props.id} />} id={props.id} name={props.title} parentId={`modal-parent-${props.title}-${props.id}`} parentRef={cardRef} toggleFunction={ShowModalHandler} toggleBoolean={showModal} url={`/${url}/m/modal/post/${props.id}`} prevUrl={`${location.pathname}`} />
+  const cardRef = useRef();
+  const [showModal, setShowModal] = useState(false);
+  const modal = (
+    <AnimatedModal
+      rootId={`${url}-overlay-root`}
+      fadeOut={true}
+      component={<DetailItem id={props.id} />}
+      id={props.id}
+      name={props.title}
+      parentId={`modal-parent-${props.title}-${props.id}`}
+      parentRef={cardRef}
+      toggleFunction={ShowModalHandler}
+      toggleBoolean={showModal}
+      url={`/${url}/m/modal/post/${props.id}`}
+      prevUrl={`${location.pathname}`}
+    />
+  );
 
   return (
-
-      <Card className={classes.card}>
-        {modal}
-        <div ref={cardRef} className={classes.feedcarditem}> 
-          <div className={classes[`feedcard-image`]} onClick={postClickHandler}>
-            <img src={props.thumbnail} onError={imgErrorHandler} />
+    <Card className={classes.card}>
+      {modal}
+      <div ref={cardRef} className={classes.feedcarditem}>
+        <div className={classes[`feedcard-image`]} onClick={postClickHandler}>
+          <img src={props.thumbnail} onError={imgErrorHandler} />
+        </div>
+        <div className={classes[`feedcard-text-contents`]}>
+          <div className={classes[`text-contents`]} onClick={postClickHandler}>
+            <div className={classes.title}>{props.title}</div>
+            <div className={classes.contents}>{props.contents}</div>
           </div>
-          <div className={classes[`feedcard-text-contents`]}>
-            <div className={classes[`text-contents`]} onClick={postClickHandler}>
-              <div className={classes.title}>{props.title}</div>
-              <div className={classes.contents}>{props.contents}</div>
-            </div>
-            <div className={classes[`icons-div`]}>
+          <div className={classes[`icons-div`]}>
+            <IconButton
+              onClick={bookmarkClickHandler}
+              style={{
+                paddingTop: 0,
+                paddingRight: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                marginRight: 10,
+              }}
+            >
+              <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
+            </IconButton>
+            <div className={classes.like}>
               <IconButton
-                onClick={bookmarkClickHandler}
+                onClick={likeClickHandler}
                 style={{
                   paddingTop: 0,
                   paddingRight: 0,
                   paddingBottom: 0,
                   paddingLeft: 0,
-                  marginRight: 10,
                 }}
               >
-                <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
+                <img src={isLike ? likeIconFill : likeIconFlat} />
               </IconButton>
-              <div className={classes.like}>
-                <IconButton
-                  onClick={likeClickHandler}
-                  style={{
-                    paddingTop: 0,
-                    paddingRight: 0,
-                    paddingBottom: 0,
-                    paddingLeft: 0,
-                  }}
-                >
-                  <img src={isLike ? likeIconFill : likeIconFlat} />
-                </IconButton>
-                <div className={classes[`like-count`]}>{displayLikeStatusSize(likeStatusSize)}</div>
-              </div>
+              <div className={classes[`like-count`]}>{displayLikeStatusSize(likeStatusSize)}</div>
             </div>
-          </div>
-          <div className={classes["feedcard-lower-contents"]}>
-            <div className={classes[`profile-img-nickname`]} onClick={nicknameClickHandler}>
-              <ThemeProvider theme={avatarTheme}>
-                <Avatar
-                  src={props.profileImg}
-                  sx={{
-                    width: 24,
-                    height: 24,
-                    border: "1px solid lightgray",
-                    objectFit: "scale-down",
-                  }}
-                />
-              </ThemeProvider>
-              <div className={classes.nickname}>{props.nickname}</div>
-            </div>
-            <div className={classes.date}>{props.createdDate}</div>
           </div>
         </div>
-      </Card>
-
+        <div className={classes["feedcard-lower-contents"]}>
+          <div className={classes[`profile-img-nickname`]} onClick={nicknameClickHandler}>
+            <ThemeProvider theme={avatarTheme}>
+              <Avatar
+                src={props.profileImg}
+                sx={{
+                  width: 24,
+                  height: 24,
+                  border: "1px solid lightgray",
+                  objectFit: "scale-down",
+                }}
+              />
+            </ThemeProvider>
+            <div className={classes.nickname}>{props.nickname}</div>
+          </div>
+          <div className={classes.date}>{props.createdDate}</div>
+        </div>
+      </div>
+    </Card>
   );
 };
 

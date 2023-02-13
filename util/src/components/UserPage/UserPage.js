@@ -32,7 +32,7 @@ import { Fragment } from "react";
 import FollowModal from "../UI/FollowModal/FollowModal";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import Tab from "../UI/Tab/Tab";
-
+import { getUserDataByNickname } from "../../api/Post/getUserDataByNickname";
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -174,19 +174,14 @@ const UserPageForm = (props) => {
     //   console.log("ssafy me", res);
     // });
 
-    // User Data API
+    // User Data API, Tag Data
     getUserData(props.id).then((res) => {
       setUserData(() => res);
+      setUserTagList(() => res.tags);
     });
-
-    // Tag Data API
-    getUserTag(props.id).then((res) => {
-      setUserTagList(() => res);
-    });
-  }, []);
+  }, [props.id]);
 
   // Follow Data API
-
   const fetchUserFollower = (id) => {
     getUserFollower(id).then((res) => {
       setFollowerList(() => res);
@@ -207,7 +202,7 @@ const UserPageForm = (props) => {
     });
     fetchUserFollower(props.id);
     fetchUserFollowing(props.id);
-  }, [isFollowing]);
+  }, [isFollowing, props.id]);
 
   const tagOnClickHandler = (event) => {
     const tagName = event.currentTarget.getAttribute("value");
@@ -424,13 +419,19 @@ const UserPageForm = (props) => {
   };
 
   const tabItems = [
-    {content: '전체 글', function: () => {
-      setCategory("전체 글");
-    }},
-    {content: '전체 목표', function: () => {
-      setCategory("전체 목표");
-    }}
-  ]
+    {
+      content: "전체 글",
+      function: () => {
+        setCategory("전체 글");
+      },
+    },
+    {
+      content: "전체 목표",
+      function: () => {
+        setCategory("전체 목표");
+      },
+    },
+  ];
 
   const [categoryDropDownState, setCategoryDropDownState] = useState(false);
 
@@ -487,7 +488,7 @@ const UserPageForm = (props) => {
               {category}
             </div>
           </div> */}
-          <Tab tabItems={tabItems} width={'200px'} height={'48px'} />
+          <Tab tabItems={tabItems} width={"200px"} height={"48px"} />
 
           <div>
             <DropDown
@@ -528,22 +529,47 @@ const UserPageForm = (props) => {
 };
 
 const UserPage = (props) => {
-  const location = useLocation()
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
-  const userId = searchParams.get('user_id')
+  // const [userId, setUserId] = useState(searchParams.get("user_id"));
+  const [userData, setUserData] = useState([]);
+  const param = useParams();
+  const nickname = useParams()["*"];
 
+  useEffect(() => {
+    console.log("my", myData);
+    console.log("param", param);
+    console.log("nick", nickname);
+    console.log("nn", typeof nickname);
+    if (nickname !== "") {
+      console.log("get others", nickname);
+      getUserDataByNickname(nickname).then((res) => {
+        console.log("res", res);
+        setUserData(() => res);
+      });
+    }
+  }, [useParams()["*"]]);
 
-  console.log('ssafy userid', location)
   return (
     <div>
       <div id="index-overlay-root"></div>
 
       <Routes>
         {/* <Route path="*" element={<UserPageForm id={userId === null ? myData.userId : userId} />} /> */}
-        {myData !== null && userId === null && <Route path="*" element={<UserPageForm id={myData?.userId} />} />}
+        {myData !== null && nickname === "" && (
+          <Route
+            path="*"
+            element={<UserPageForm id={myData?.userId} nickname={myData?.nickname} />}
+          />
+        )}
 
-        {myData !== null && userId !== null && <Route path="*" element={<UserPageForm id={userId} />} />}
+        {myData !== null && nickname && userData.userId && (
+          <Route
+            path="*"
+            element={<UserPageForm id={userData.userId} nickname={userData.nickname} />}
+          />
+        )}
         <Route path="goal/:id" element={<GoalDetail />} />
         <Route path="post/:id" element={<DetailItem />} />
       </Routes>
@@ -551,3 +577,5 @@ const UserPage = (props) => {
   );
 };
 export default UserPage;
+
+// http://localhost:3000/index/asdfasdf
