@@ -18,6 +18,11 @@
   font-weight: 700;
 }
 
+.button {
+  min-width: 80px;
+  min-height: 30px;
+}
+
 .recommend-wrapper {
   display: flex;
   flex-direction: column;
@@ -44,7 +49,7 @@
 
 @media screen and (max-width: 486px) {
   .recommend-text {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: 600;
   }
 }

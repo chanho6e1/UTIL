@@ -73,15 +73,15 @@ const ExploreForm = () => {
     getUserFollowing(userAuth.currentUser.userId).then((res) => {
       setFollowingListCnt(() => res.length);
       setOffset(0);
-      if (res.length > 0) {
+      if (res.length <= 0) {
         // 추천 컴포넌트
         if (location.pathname === "/explore") {
           setModalState(true);
-          // setIsLoading(false);
+          setIsLoading(false);
         }
       }
     });
-  }, [criteria]);
+  }, [criteria, followingListCnt]);
 
   const fetchMoreData = () => {
     setIsLoading(() => true);

@@ -34,7 +34,6 @@ const UserRecommend = (props) => {
     const scrollHeight = recRef.current.scrollHeight;
     const scrollTop = recRef.current.scrollTop;
     const clientHeight = recRef.current.clientHeight;
-    console.log("st", scrollTop, "ch", clientHeight, "sh", scrollHeight);
     if (scrollTop + clientHeight >= scrollHeight - 20 && isLoading === false) {
       // 페이지 끝에 도달하면 추가 데이터를 받아온다
       fetchMoreData();
@@ -65,6 +64,7 @@ const UserRecommend = (props) => {
       <div className={classes[`recommend-upper`]}>
         <div className={classes[`recommend-text`]}>관심 태그를 기반으로 추천해드려요!</div>
         <Button
+          className={classes.button}
           onClick={() => {
             // props.onDone();
             props.modalHandler();
