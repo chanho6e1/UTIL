@@ -463,6 +463,42 @@ const UserPageForm = (props) => {
       <Fragment>{PlanCardItemList()}</Fragment>
     );
 
+  const kanbanBoard = (
+    <div className={classes["kanban-wrapper"]}>
+      <Card className={classes["plan-kanban"]}>
+        <PlanExpanded contracted={true} />
+      </Card>
+    </div>
+  )
+
+  const planCards = (
+    <div className={classes["plan-card-wrapper"]}>
+      <PlanCard />
+    </div>
+  )
+
+  const postButton = (
+    <div>
+      <DropDown
+        dropDownItems={postDropDownItems}
+        dropDownState={postDropDownState}
+        setDropDownState={setPostDropDownState}
+        width={"152px"}
+        itemHeight={"48px"}
+        direction={"down"}
+        borderRadius={"5px"}
+      />
+      <div
+        className={classes["dropdown"]}
+        onClick={() => {
+          setPostDropDownState(() => true);
+        }}
+      >
+        <li className={classes["drop-down-li-tag"]} />글 작성
+      </div>
+    </div>
+  )
+
   return (
     <div ref={containerRef} className={classes["user-page"]}>
       <div className={classes["contents"]}>
@@ -489,40 +525,16 @@ const UserPageForm = (props) => {
               {category}
             </div>
           </div> */}
-          <Tab tabItems={tabItems} width={"200px"} height={"48px"} />
+          {myData.userId === props.id && <Tab tabItems={tabItems} width={"200px"} height={"48px"} />}
 
-          <div>
-            <DropDown
-              dropDownItems={postDropDownItems}
-              dropDownState={postDropDownState}
-              setDropDownState={setPostDropDownState}
-              width={"152px"}
-              itemHeight={"48px"}
-              direction={"down"}
-              borderRadius={"5px"}
-            />
-            <div
-              className={classes["dropdown"]}
-              onClick={() => {
-                setPostDropDownState(() => true);
-              }}
-            >
-              <li className={classes["drop-down-li-tag"]} />글 작성
-            </div>
-          </div>
+          {myData.userId === props.id && postButton}
         </div>
         <div className={classes["body"]}>
           <div className={classes["article-list-wrapper"]}>
-            <div className={classes["kanban-wrapper"]}>
-              <Card className={classes["plan-kanban"]}>
-                <PlanExpanded contracted={true} />
-              </Card>
-            </div>
+            {myData.userId === props.id && kanbanBoard}
             {categoryView}
           </div>
-          <div className={classes["plan-card-wrapper"]}>
-            <PlanCard />
-          </div>
+          {myData.userId === props.id && planCards}
         </div>
       </div>
     </div>
@@ -579,7 +591,7 @@ const UserPage = (props) => {
 
       <Routes>
         {/* <Route path="*" element={<UserPageForm id={userId === null ? myData.userId : userId} />} /> */}
-          {/* <Route path="index/*" element={<UserPageSet/>}/> */}
+          <Route path="index/" element={<UserPageSet/>}/>
           <Route path="index/:nickname/*" element={<UserPageSet/>}/>
 
           

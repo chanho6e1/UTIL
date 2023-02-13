@@ -185,6 +185,7 @@
 
   .article-list-wrapper {
     padding: 14px 14px 14px 14px;
+    margin-right: -14px;
   }
 
   .pagination {
@@ -320,7 +321,7 @@
   display: flex;
   width: 100%;
   max-width: 100%;
-  padding-right: 14px;
+  /* padding-right: 14px; */
   /* overflow: auto; */
 }
 
@@ -329,6 +330,7 @@
   flex-direction: column; */
   flex-grow: 1;
   overflow: hidden;
+  
   /* align-items: center; */
   /* width: 100%; */
   /* padding: 14px; */
@@ -339,6 +341,7 @@
   /* margin-top: 261px; */
   width: auto;
   margin-top: 14px;
+  margin-left: 14px;
 }
 
 .plan-kanban {
@@ -395,3 +398,5 @@
   height: 50px;
   background-color: white;
 }
+
+
