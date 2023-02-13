@@ -37,7 +37,7 @@ const ExploreFeed = (props) => {
         modalState={props.modalState}
         stateHandler={props.setModalState}
         content={<UserRecommend />}
-        width={"100vh"}
+        width={"80vh"}
         height={"400px"}
         overflow={"hidden"}
       />
