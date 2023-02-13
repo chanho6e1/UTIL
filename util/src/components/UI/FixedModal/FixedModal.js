@@ -3,6 +3,14 @@ import styles from "./FixedModal.module.css";
 import ReactDOM from "react-dom";
 import Button from "../Button/Button";
 
+import { createBrowserHistory } from "history";
+import useDidMountEffect from "../../../hooks/useDidMountEffect";
+
+
+
+
+
+
 // 모달창 자체
 const ModalOverlay = (props) => {
   const backdropRef = useRef();
@@ -10,6 +18,24 @@ const ModalOverlay = (props) => {
   const cardRef = useRef();
   const contentRef = useRef();
   const backRef = useRef();
+
+
+  useEffect(() => {
+    window.history.pushState(null, document.title, window.location.href);
+    
+    const preventBack = async () => {
+      await modalHandler()
+      await window.history.pushState(null, document.title,  window.location.href);
+      
+    }
+    window.addEventListener('popstate', preventBack);
+    return () => {
+      window.removeEventListener('popstate', preventBack);
+    }
+  })
+
+
+
 
   useEffect(() => {
     if (cardRef?.current?.style) {
