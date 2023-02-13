@@ -9,7 +9,8 @@ import ReactDOM from 'react-dom'
 
 
 const ModalOverlay = (props) => {
-  const match = useMatch(props.url);
+  const location = useLocation()
+  const match = decodeURI(location.pathname) === props.url //useMatch(props.url);
   const modalRef = useRef()
   const backdropRef = useRef()
   const contentRef = useRef()
@@ -24,6 +25,7 @@ const ModalOverlay = (props) => {
   useEffect(() => {
     mountModalHandler()
     console.log('떴다!!!')
+    console.log(match, )
     if (!match) {
       unmountModalHandler()
     }
@@ -177,7 +179,7 @@ const ModalOverlay = (props) => {
 
 const Modal = (props) => {
   
-
+  
   const match = useMatch(`${props.url}`);
   // console.log(props.url, match)
   const rootElement = document.getElementById(`${props.rootId}`)
