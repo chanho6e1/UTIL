@@ -63,8 +63,9 @@ const FeedCardItem = (props) => {
   };
 
   const nicknameClickHandler = () => {
+    navigate(`/index?user_id=${props.userId}`, {state : props.userId})
     // 닉네임 클릭 시 유저 페이지로 이동
-    console.log(props.id);
+
   };
 
   const location = useLocation()

@@ -21,13 +21,13 @@ const OAuthRedirectHandler = (props) => {
     if (code === '201') {
       // 회원가입 시
       return <Navigate to={{
-        pathname: "/",
+        pathname: "/profile",
         state: { from: location }
       }}/>; 
     } else if (code === '200') {
       // 기존 유저 로그인 시
       return <Navigate to={{
-        pathname: "/create/post",
+        pathname: "/",
         state: { from: location }
       }}/>; 
     }

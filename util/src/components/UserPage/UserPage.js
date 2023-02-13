@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation, useSearchParams, useParams } from "react-router-dom";
 import classes from "./UserPage.module.css";
 import PostCardItem from "../UI/PostCard/PostCardItem";
 import TagDataList from "../UI/Tag/TagDataList";
@@ -31,6 +31,8 @@ import PlanList from "../UI/PlanList/PlanList.js";
 import { Fragment } from "react";
 import FollowModal from "../UI/FollowModal/FollowModal";
 import FixedModal from "../UI/FixedModal/FixedModal";
+import Tab from "../UI/Tab/Tab";
+
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -421,6 +423,15 @@ const UserPageForm = (props) => {
     ],
   };
 
+  const tabItems = [
+    {content: '전체 글', function: () => {
+      setCategory("전체 글");
+    }},
+    {content: '전체 목표', function: () => {
+      setCategory("전체 목표");
+    }}
+  ]
+
   const [categoryDropDownState, setCategoryDropDownState] = useState(false);
 
   const postDropDownItems = {
@@ -456,7 +467,7 @@ const UserPageForm = (props) => {
         {header}
 
         <div className={classes["body-header"]}>
-          <div>
+          {/* <div>
             <DropDown
               dropDownItems={categoryDropDownItems}
               dropDownState={categoryDropDownState}
@@ -475,7 +486,8 @@ const UserPageForm = (props) => {
               <li className={classes["drop-down-li-tag"]} />
               {category}
             </div>
-          </div>
+          </div> */}
+          <Tab tabItems={tabItems} width={'200px'} height={'48px'} />
 
           <div>
             <DropDown
@@ -516,13 +528,22 @@ const UserPageForm = (props) => {
 };
 
 const UserPage = (props) => {
+  const location = useLocation()
+  const [searchParams, setSearchParams] = useSearchParams();
+  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
+  const userId = searchParams.get('user_id')
+
+
+  console.log('ssafy userid', location)
   return (
     <div>
       <div id="index-overlay-root"></div>
 
       <Routes>
-        <Route path="*" element={<UserPageForm id={props.id} />} />
-        <Route path="index/*" element={<UserPageForm id={props.id} />} />
+        {/* <Route path="*" element={<UserPageForm id={userId === null ? myData.userId : userId} />} /> */}
+        {myData !== null && userId === null && <Route path="*" element={<UserPageForm id={myData?.userId} />} />}
+
+        {myData !== null && userId !== null && <Route path="*" element={<UserPageForm id={userId} />} />}
         <Route path="goal/:id" element={<GoalDetail />} />
         <Route path="post/:id" element={<DetailItem />} />
       </Routes>

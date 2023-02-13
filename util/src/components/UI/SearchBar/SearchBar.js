@@ -4,6 +4,7 @@ import { Button, IconButton } from "@mui/material";
 import CloseIcon from "../../../img/Close40.svg";
 import ExpandIcon from "../../../img/Expand40.svg";
 import DropDown from "../DropDown/DropDown";
+import Tab from "../Tab/Tab";
 
 const SearchBar = (props) => {
   const dropDownSearchItems = {
@@ -21,61 +22,90 @@ const SearchBar = (props) => {
   const [dropDownState, setDropDownState] = useState(false);
   const [dropDownCriteriaState, setDropDownCriteriaState] = useState(false);
 
+  const tabItems = [
+    {content: '최신', function: props.onDateClick},
+    {content: '조회수', function: props.onViewClick},
+    {content: '좋아요', function: props.onLikeClick}
+  ]
+
   return (
     <Fragment>
-      <div className={classes[`searchbar-dropdown`]}>
-        <div className={classes[`dropdown-search`]}>
-          <div className={classes[`dropdown`]}>
-            <IconButton sx={{ width: 40, height: 40 }} onClick={() => setDropDownState(true)}>
-              <img src={ExpandIcon} />
-            </IconButton>
+      <div className={classes[`search-container`]}>
+        <div className={classes[`dummy`]}/>
+
+        
+
+
+
+
+
+        <div className={classes[`search-bar`]}>
+          <div>
             <DropDown
               dropDownItems={dropDownSearchItems}
               dropDownState={dropDownState}
               setDropDownState={setDropDownState}
-              width={"120px"}
-              marginLeft={"-12px"}
+              width={"100px"}
+              itemHeight={"48px"}
               direction={"down"}
+              borderRadius={"5px"}
+              noLiTag={true}
             />
+            <div
+              className={classes["search-dropdown"]}
+              onClick={() => {
+                setDropDownState(true);
+              }}
+            >
+              {props.label}
+            </div>
           </div>
-          <div className={classes[`dropdown-item`]}>{props.label}</div>
-        </div>
-        <div className={classes[`search-container`]}>
-          <div className={classes[`input-wrap`]}>
-            <input
+
+          <div className={classes[`search-bar-line`]}/>
+
+          <input
               className={classes[`text-input`]}
+              placeholder={'검색어를 입력해 주세요.'}
               onChange={props.inputChangeHandler}
               value={props.value}
               type="text"
               id="search-input"
               maxLength={50}
-            />
-          </div>
-          <div className={classes[`btn-wrap`]}>
-            <IconButton sx={{ width: 40, height: 40 }} onClick={props.clearBtnHandler}>
-              <img src={CloseIcon} />
-            </IconButton>
+          />
+        </div>
+
+
+
+
+
+
+        <div className={classes["sort-dropdown"]}>
+          <DropDown
+            dropDownItems={dropDownCriteriaItems}
+            dropDownState={dropDownCriteriaState}
+            setDropDownState={setDropDownCriteriaState}
+            width={"152px"}
+            itemHeight={"48px"}
+            direction={"down"}
+            borderRadius={"5px"}
+          />
+          <div
+            className={classes["dropdown"]}
+            onClick={() => {
+              setDropDownCriteriaState(true);
+            }}
+          >
+            <li className={classes["drop-down-li-tag"]} />{props.criteriaLabel}
           </div>
         </div>
-        <div className={classes[`dropdown-sort`]}>
-          <div className={classes[`dropdown-item`]}>{props.criteriaLabel}</div>
-          <div className={classes[`dropdown`]}>
-            <IconButton
-              sx={{ width: 40, height: 40 }}
-              onClick={() => setDropDownCriteriaState(true)}
-            >
-              <img src={ExpandIcon} />
-            </IconButton>
-            <DropDown
-              dropDownItems={dropDownCriteriaItems}
-              dropDownState={dropDownCriteriaState}
-              setDropDownState={setDropDownCriteriaState}
-              width={"120px"}
-              marginLeft={"-80px"}
-              direction={"down"}
-            />
-          </div>
+
+        <div className={classes["sort-tab"]}>
+          <Tab tabItems={tabItems} width={'100vw'} height={'48px'} />
         </div>
+
+
+
+
       </div>
     </Fragment>
   );
