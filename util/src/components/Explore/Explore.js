@@ -181,9 +181,10 @@ const Explore = (props) => {
       <div id="explore-overlay-root"></div>
 
       <Routes>
-        <Route path="*" element={<ExploreForm />} />
+        <Route path="explore/" element={<ExploreForm />} />
+        <Route path="explore/:nickname/*" element={<ExploreForm />} />
         {/* <Route path="explore/*" element={<ExploreForm />} />   */}
-        <Route path="post/:id" element={<DetailItem />} />
+        <Route path="explore/:nickname/post/:id" element={<DetailItem />} />
         {/* <Route path="*" element={<UserPage />} /> */}
       </Routes>
     </div>

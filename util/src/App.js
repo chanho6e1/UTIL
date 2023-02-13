@@ -94,7 +94,7 @@ const App = () => {
       {/* <div id="overlay-root" style={{zIndex: '9999'}}></div> */}
       <StackNotification />
       <div ref={wrapRef} className="wrap loaded">
-
+      {/* {plans && <Main />} */}
       <Routes>
 
         {/* <Route path="/goal/:id" element={<GoalDetail />} /> 

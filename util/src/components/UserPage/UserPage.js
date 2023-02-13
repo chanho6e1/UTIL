@@ -33,6 +33,7 @@ import FollowModal from "../UI/FollowModal/FollowModal";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import Tab from "../UI/Tab/Tab";
 import { getUserDataByNickname } from "../../api/Post/getUserDataByNickname";
+import { useCalendarState } from "@mui/x-date-pickers/internals";
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -529,28 +530,49 @@ const UserPageForm = (props) => {
   );
 };
 
-const UserPage = (props) => {
+
+
+
+
+
+const UserPageSet = (props) => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
   // const [userId, setUserId] = useState(searchParams.get("user_id"));
   const [userData, setUserData] = useState([]);
-  const param = useParams();
-  const nickname = useParams()["*"];
+  const params = useParams();
+  const nickname = params["nickname"];
 
   useEffect(() => {
-    console.log("my", myData);
-    console.log("param", param);
+    console.log("myData", myData);
+    console.log("param", params);
     console.log("nick", nickname);
     console.log("nn", typeof nickname);
-    if (nickname !== "") {
+    if (nickname !== undefined) {
       console.log("get others", nickname);
       getUserDataByNickname(nickname).then((res) => {
         console.log("res", res);
         setUserData(() => res);
       });
     }
-  }, [useParams()["*"]]);
+  }, [params["nickname"]]);
+
+  return (
+    <div>
+      <div id="index-overlay-root"></div>
+      {myData !== null && nickname === undefined && <UserPageForm id={myData?.userId} nickname={myData?.nickname} />}
+      {myData !== null && nickname !== undefined && userData?.userId != null && userData?.nickname != null && <UserPageForm id={userData.userId} nickname={userData.nickname} />}
+    </div>
+  );
+};
+
+
+
+
+
+
+const UserPage = (props) => {
 
   return (
     <div>
@@ -558,25 +580,28 @@ const UserPage = (props) => {
 
       <Routes>
         {/* <Route path="*" element={<UserPageForm id={userId === null ? myData.userId : userId} />} /> */}
-        {myData !== null && nickname === "" && (
-          <Route
-            path="*"
-            element={<UserPageForm id={myData?.userId} nickname={myData?.nickname} />}
-          />
-        )}
+          {/* <Route path="index/*" element={<UserPageSet/>}/> */}
+          <Route path="index/:nickname/*" element={<UserPageSet/>}/>
 
-        {myData !== null && nickname && userData.userId && (
-          <Route
-            path="*"
-            element={<UserPageForm id={userData.userId} nickname={userData.nickname} />}
-          />
-        )}
-        <Route path="goal/:id" element={<GoalDetail />} />
-        <Route path="post/:id" element={<DetailItem />} />
+          
+          {/* <Route path="index/goal/:id" element={<GoalDetail />} />
+          <Route path="index/post/:id" element={<DetailItem />} /> */}
+          <Route path="index/:nickname/goal/:id" element={<GoalDetail />} />
+          <Route path="index/:nickname/post/:id" element={<DetailItem />} />
+          {/* <Route path="index/:nickname/m/modal/post/:id" element={<UserPageSet />} /> */}
+
+          {/* `/${url}/${props.nickname}/m/modal/post/${props.id}` */}
+          {/* <Route
+            path="indexes/:nickname"
+            element={myData !== null && userData.userId && userData.nickname && <UserPageForm id={userData.userId} nickname={userData.nickname} />}
+          /> */}
+
+
+        
       </Routes>
     </div>
   );
-};
+}
 export default UserPage;
 
 // http://localhost:3000/index/asdfasdf

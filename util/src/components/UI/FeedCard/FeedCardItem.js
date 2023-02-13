@@ -81,15 +81,15 @@ const FeedCardItem = (props) => {
   const url = location.pathname.split("/")[1];
   const postClickHandler = () => {
     if (document.body.clientWidth > 1080) {
-      navigate(`/${url}/post/${props.id}`);
+      navigate(`/${url}/${props.nickname}/post/${props.id}`);
     } else {
-      navigate(`/${url}/m/modal/post/${props.id}`);
+      navigate(`/${url}/${props.nickname}/m/modal/post/${props.id}`);
       setShowModal(true);
     }
   };
 
   const ShowModalHandler = (boolean) => {
-    navigate(`/${url}/m/modal/post/${props.id}`);
+    navigate(`/${url}/${props.nickname}/m/modal/post/${props.id}`);
     setShowModal(boolean);
   };
 
@@ -106,7 +106,7 @@ const FeedCardItem = (props) => {
       parentRef={cardRef}
       toggleFunction={ShowModalHandler}
       toggleBoolean={showModal}
-      url={`/${url}/m/modal/post/${props.id}`}
+      url={`/${url}/${props.nickname}/m/modal/post/${props.id}`}
       prevUrl={`${location.pathname}`}
     />
   );
