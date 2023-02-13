@@ -17,9 +17,7 @@ const GoalDetailL = (props) => {
           <span className={classes["goal-detail-title"]}>{props.plan?.title}</span>
           {/* <img className={classes["goal-detail-state"]} src={run} alt="goal-state" /> */}
         </div>
-        <div className={classes["goal-detail-date"]}>
-          <p>{props.plan?.startDate} ~ {props.plan?.endDate}</p>
-        </div>
+        <div className={classes["goal-detail-title-date"]}>{props.plan?.startDate} ~ {props.plan?.endDate}</div>
         {/* {props.plan !== null && <PlanCardItem plan={props.plan} />} */}
         {/* <GoalDetailLTodo todos={props.todos[props.goal?.goalId]}/> */}
         <GoalDetailLReview reviews={props.reviews[props.plan?.goalId]}/>
