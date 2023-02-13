@@ -79,10 +79,10 @@ const UserRecommendCard = (props) => {
             <Avatar
               src={props.userData.imageUrl}
               sx={{
-                width: "14vw",
-                height: "14vw",
-                maxWidth: "128px",
-                maxHeight: "128px",
+                width: "12vw",
+                height: "12vw",
+                maxWidth: "100px",
+                maxHeight: "100px",
                 border: "1px solid lightgray",
                 marginRight: "12px",
                 objectFit: "scale-down",
@@ -91,11 +91,10 @@ const UserRecommendCard = (props) => {
             />
           </div>
           <div className={classes[`user-wrapper`]}>
-            <div className={classes[`nickname-btn`]}>
+            <div className={classes[`nickname`]}>
               <div className={classes.nickname} onClick={profileOnClickHandler}>
                 {props.userData.nickname}
               </div>
-              <div className={classes[`btn-wrapper`]}>{followBtn(isFollowing)}</div>
             </div>
             <div className={classes.description} onClick={profileOnClickHandler}>
               {props.userData.discription}
@@ -105,6 +104,7 @@ const UserRecommendCard = (props) => {
             </div>
           </div>
         </div>
+        <div className={classes[`btn-wrapper`]}>{followBtn(isFollowing)}</div>
       </div>
     </Card>
   );
