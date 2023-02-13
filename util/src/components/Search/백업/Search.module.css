@@ -1,11 +1,12 @@
 .searchbar-feed {
+  margin-top: 20px;
   height: 100%;
-  overflow: scroll;
+  overflow: hidden;
 }
 
 .searchfeed {
-  /* height: 100%; */
-  /* overflow: ; */
+  height: 100%;
+  overflow: hidden;
   display: flex;
   justify-content: center;
 }
