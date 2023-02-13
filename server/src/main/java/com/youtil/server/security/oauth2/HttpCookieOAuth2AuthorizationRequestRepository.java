@@ -35,6 +35,11 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
         if (StringUtils.isNotBlank(redirectUriAfterLogin)) {
             CookieUtils.addCookie(response, REDIRECT_URI_PARAM_COOKIE_NAME, redirectUriAfterLogin, cookieExpireSeconds);
         }
+        String accessToken = response.getHeader("accessToken");
+        String code = response.getHeader("code");
+
+        CookieUtils.addCookie(response, "accessToken", accessToken, cookieExpireSeconds);
+        CookieUtils.addCookie(response, "code", code, cookieExpireSeconds);
     }
 
     @Override
