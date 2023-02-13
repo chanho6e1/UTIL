@@ -12,6 +12,7 @@ import TextArea from "../UI/TextArea/TextArea";
 import Button from "../UI/Button/Button";
 import warning from "../../img/Warning.png"
 import FixedModal from "../UI/FixedModal/FixedModal";
+import { Viewer } from '@toast-ui/react-editor';
 
 
 const DetailComment = (props) => {
@@ -180,7 +181,7 @@ const DetailComment = (props) => {
             
         </div>
         <div className={classes["Detail-comments-contents-warpper"]}>
-          <TextArea className={classes['Detail-comments-contents-box']} value={props.newDepthCommentContent} onChange={props.newDepthCommentContentInputHandler} placeholder="답글을 작성해 주세요" onKeyPress={onEnterNewDepthCommentHandlerAndClose}/>
+          <TextArea className={classes['Detail-comments-contents-box']} value={props.newDepthCommentContent} onChange={props.newDepthCommentContentInputHandler} placeholder="답글을 작성해 주세요" />
           <div className={classes['comments-buttons-wrapper']}>
             {/* <Button className={classes["solid-button"]} onClick={closeAllHandler}>취소</Button>
             <Button className={classes["solid-button"]} onClick={onClickNewDepthCommentHandlerAndClose}>등록</Button> */}
@@ -219,7 +220,7 @@ const DetailComment = (props) => {
             </div>
           </div>
           {depthMessage}
-          <div className={classes.commentContent}>{props.comment.content}</div>
+          <div className={classes.commentContent}><Viewer initialValue={props.comment.content} /></div>
           <div className={classes["Detail-comments-plus"]}>
             {props.userInfo.userId === props.comment.writerInfo.userId &&
               <Fragment>
@@ -247,7 +248,7 @@ const DetailComment = (props) => {
       <div className={classes["Detail-comments-box"]}>
         {depthImg}
         <div className={classes["Detail-comments-contents"]}>
-          <div className={classes.commentContent}>{props.comment.content}</div>
+          <div className={classes.commentContent}><Viewer initialValue={props.comment.content} /></div>
         </div>
       </div>
 
@@ -282,7 +283,7 @@ const DetailComment = (props) => {
                 
               </div>
               <div className={classes["Detail-comments-contents-warpper"]}>
-                <TextArea className={classes['Detail-comments-contents-box']} value={editCommentContent} onChange={editCommentContentInputHandler} onKeyPress={onEnterEditCommentHandler}/>
+                <TextArea className={classes['Detail-comments-contents-box']} value={editCommentContent} onChange={editCommentContentInputHandler}/>
                 <div className={classes['comments-buttons-wrapper']}>
                   {/* <Button className={classes["solid-button"]} onClick={closeAllHandler}>취소</Button>
                   <Button className={classes["solid-button"]} onClick={onClickEditCommentHandler}>등록</Button> */}
