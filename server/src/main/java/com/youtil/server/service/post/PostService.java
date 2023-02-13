@@ -175,14 +175,20 @@ public class PostService {
 
          if(!request.getPostFileList().isEmpty()){
              Map<Integer, String> map =  post.getPostFileMap();
-             post.setThubmnail(request.getPostFileList().get(0).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","")); //첫번째 사진 섬네일 등록
+//             post.setThubmnail(request.getPostFileList().get(0).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","")); //첫번째 사진 섬네일 등록
             for(int idx=0; idx<request.getPostFileList().size(); idx++){
                 String source = request.getPostFileList().get(idx).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","");
                 post.addPostFile(idx, source);
             }
+        }
+
+        String source = parseContextAndUpdateTumbnail(post);
+
+        if(source==null){
+            post.setThubmnail(baseImg);
         }else{
-             post.setThubmnail(baseImg);
-         }
+            post.setThubmnail(source);
+        }
         return post.getPostId();
     }
 
@@ -310,7 +316,7 @@ public class PostService {
 
         if (images.size() > 0) {
             for (Element image : images) {
-                source = image.attr("src").replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post", "");
+                source = image.attr("src").replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/", "");
                 return source;
             }
         }
