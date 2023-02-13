@@ -7,8 +7,10 @@ import { getPostByNickname } from "../../api/Post/getPostByNickname";
 import SearchFeed from "../Feed/백업/SearchFeed";
 import { useLocation } from "react-router-dom";
 import ExploreFeed from "../Explore/ExploreFeed";
+import { Routes, Route } from "react-router-dom";
+import DetailItem from "../Detail/DetailItem";
 
-const Search = (props) => {
+const SearchForm = (props) => {
   const apiLabelList = ["제목", "태그", "닉네임"];
   const criteriaLabelList = ["최신", "조회수", "좋아요"];
   const location = useLocation();
@@ -157,7 +159,7 @@ const Search = (props) => {
 
   return (
     <div ref={searchFeedWrapperRef} onWheel={onWheelHandler} className={classes[`searchbar-feed`]}>
-      <div id="search-overlay-root"></div>
+      
       <div className={classes[`searchbar`]}>
         <SearchBar
           inputChangeHandler={inputChangeHandler}
@@ -184,5 +186,22 @@ const Search = (props) => {
     </div>
   );
 };
+
+const Search = (props) => {
+
+
+
+  return (
+    <div>
+    <div id="search-overlay-root"></div>
+
+      <Routes>
+        <Route path="search/" element={<SearchForm />} />
+        <Route path="search/:nickname/*" element={<SearchForm />} />
+        <Route path="search/:nickname/post/:id" element={<DetailItem />} />
+      </Routes>
+    </div>
+  )
+}
 
 export default Search;
