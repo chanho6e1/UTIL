@@ -100,11 +100,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Cookie cookie = new Cookie("code", code);
         response.addCookie(cookie);
 
-//        targetUrl = "http://localhost:3000";
-//        System.out.println(response.getHeader("code"));
-
-//        System.out.println(targetUrl + "/code=200");
-
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
 
 //        System.out.println(response.getStatus() + " " + jsonString);
