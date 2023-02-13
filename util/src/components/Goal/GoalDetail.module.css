@@ -13,8 +13,26 @@
 
   .goal-detail-title {
     margin-top: 20px;
-    font-size: 40px;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: 550;
+    text-align: start;
+    margin-inline: 15px;
+  }
+
+  .goal-detail-title-date {
+    text-align: start;
+    /* text-align: end; */
+    margin-inline: 20px;
+    color: gray;
+    margin-bottom: 10px;
+  }
+
+  .goal-detail-reviews-title {
+    display: none;
+  }
+
+  .goal-detail-reviews-line {
+    display: none;
   }
 
   .goal-detail-reviews {
@@ -50,11 +68,24 @@
     margin: auto;
     padding: 14px;
   }
+  
+  .goal-detail-mobile-content-box {
+    justify-content: center;
+  }
+
+  .goal-detail-mobile-content-tap {
+    display: flex;
+    justify-content: center;
+  }
 
   .goal-detail-r-tils-page {
     width: 100%;
     text-align: center;
     margin-top: 14px;
+  }
+
+  .goal-detail-mobile-feedcard {
+    margin-top: 12px;
   }
 }
 
@@ -73,8 +104,8 @@
 
   .goal-detail-title {
     margin-top: 20px;
-    font-size: 40px;
-    font-weight: 600;
+    font-size: 28px;
+    font-weight: 550;
   }
 
   .goal-detail-mobile-content {
@@ -107,13 +138,19 @@
     text-align: start;
     height: 330px;
     width: 300px;
-    overflow: hidden;
+    /* overflow: hidden; */
     grid-template-rows: 1fr 8fr 1fr;
   }
 
   .goal-detail-r-tils-page {
     width: 100%;
     text-align: center;
+  }
+  
+  .goal-detail-title-date {
+    margin-inline: 20px;
+    margin-bottom: 10px;
+    color: gray;
   }
 }
 
@@ -136,8 +173,8 @@
   }
    
  .goal-detail-title {
-  font-size: 50px;
-  font-weight: 700;
+  font-size: 32px;
+  font-weight: 550;
   }
   
   .goal-detail-reviews {
@@ -154,8 +191,8 @@
     border: 1px solid gray; */
     text-align: start;
     height: 330px;
-    width: 300px;
-    overflow: hidden;
+    width: 100%;
+    /* overflow: hidden; */
     grid-template-rows: 1fr 8fr 1fr;
   }
 
@@ -163,7 +200,19 @@
     width: 100%;
     text-align: center;
   }
+  
+  .goal-detail-title-date {
+    margin-inline: 20px;
+    margin-bottom: 10px;
+    color: gray;
+  }
 }
+
+.goal-detail {
+  overflow: scroll;
+  height: 100vh;
+}
+
 
 .goal-detail-line {
 /* border-left: 2px solid gray;  */
@@ -182,7 +231,7 @@
 }
 
 .goal-detail-date {
-  text-align: end;
+  text-align: center;
   margin-right: 50px;
 }
 
@@ -283,7 +332,7 @@
 .goal-detail-reviews-title {
   text-align: start;
   margin-left: 30px;
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 400;
   margin-bottom: 10px;
 }
