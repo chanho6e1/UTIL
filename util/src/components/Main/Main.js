@@ -25,7 +25,7 @@ const Main = (props) => {
 
   const postData = {
     content: [
-      userAuth?.currentUser?.userId && <UserPage id={userAuth.currentUser.userId} />,
+      <UserPage />,
       <Explore />,
       <PlanResponsive />,
       <Search />,
@@ -47,7 +47,7 @@ const Main = (props) => {
       dockExpandedBottom: [<div>알림</div>, <CurrentUser />],
       dockWrapperBottom: [<React.Fragment />, <UserDockWrapper />],
     },
-    url: ["/index", "/explore", "/search", "/etc"],
+    url: ["/index", "/explore", "/plan", "/search"],
     bottomUrl: ["/notification", "/user"],
   };
 

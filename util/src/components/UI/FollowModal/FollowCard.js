@@ -6,9 +6,11 @@ import { useState, useEffect } from "react";
 import { getIsFollowing } from "../../../api/Post/getIsFollowing";
 import { postFollow } from "../../../api/Post/postFollow";
 import { deleteFollow } from "../../../api/Post/deleteUnfollow";
+import { useSelector } from "react-redux";
 
 const FollowCard = (props) => {
   const [isFollowing, setIsFollowing] = useState(false);
+  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
 
   useEffect(() => {
     getIsFollowing(props.userData.userId).then((res) => {
@@ -39,13 +41,16 @@ const FollowCard = (props) => {
   };
 
   const followBtn = (isFollowing) => {
+    if (myData.userId === props.userData.userId) {
+      return
+    }
     if (isFollowing) {
       return (
         <Button
           className={`${classes[`follow-btn-true`]} ${classes[`button`]}`}
           onClick={followBtnHandler}
         >
-          팔로잉
+          팔로잉 취소
         </Button>
       );
     } else {
