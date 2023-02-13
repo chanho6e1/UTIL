@@ -27,7 +27,7 @@ const OAuthRedirectHandler = (props) => {
     } else if (code === '200') {
       // 기존 유저 로그인 시
       return <Navigate to={{
-        pathname: "/",
+        pathname: "/index",
         state: { from: location }
       }}/>; 
     }
