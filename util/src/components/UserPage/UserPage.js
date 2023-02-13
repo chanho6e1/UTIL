@@ -283,7 +283,6 @@ const UserPageForm = (props) => {
   };
 
   useEffect(() => {
-
     // scroll event listener 등록
     if (containerRef.current !== null) {
       containerRef.current.addEventListener("scroll", handleScroll);
@@ -530,11 +529,6 @@ const UserPageForm = (props) => {
   );
 };
 
-
-
-
-
-
 const UserPageSet = (props) => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -545,12 +539,7 @@ const UserPageSet = (props) => {
   const nickname = params["nickname"];
 
   useEffect(() => {
-    console.log("myData", myData);
-    console.log("param", params);
-    console.log("nick", nickname);
-    console.log("nn", typeof nickname);
     if (nickname !== undefined) {
-      console.log("get others", nickname);
       getUserDataByNickname(nickname).then((res) => {
         console.log("res", res);
         setUserData(() => res);
@@ -561,47 +550,44 @@ const UserPageSet = (props) => {
   return (
     <div>
       <div id="index-overlay-root"></div>
-      {myData !== null && nickname === undefined && <UserPageForm id={myData?.userId} nickname={myData?.nickname} />}
-      {myData !== null && nickname !== undefined && userData?.userId != null && userData?.nickname != null && <UserPageForm id={userData.userId} nickname={userData.nickname} />}
+      {myData !== null && nickname === undefined && (
+        <UserPageForm id={myData?.userId} nickname={myData?.nickname} />
+      )}
+      {myData !== null &&
+        nickname !== undefined &&
+        userData?.userId != null &&
+        userData?.nickname != null && (
+          <UserPageForm id={userData.userId} nickname={userData.nickname} />
+        )}
     </div>
   );
 };
 
-
-
-
-
-
 const UserPage = (props) => {
-
   return (
     <div>
       <div id="index-overlay-root"></div>
 
       <Routes>
         {/* <Route path="*" element={<UserPageForm id={userId === null ? myData.userId : userId} />} /> */}
-          {/* <Route path="index/*" element={<UserPageSet/>}/> */}
-          <Route path="index/:nickname/*" element={<UserPageSet/>}/>
+        {/* <Route path="index/*" element={<UserPageSet/>}/> */}
+        <Route path="index/:nickname/*" element={<UserPageSet />} />
 
-          
-          {/* <Route path="index/goal/:id" element={<GoalDetail />} />
+        {/* <Route path="index/goal/:id" element={<GoalDetail />} />
           <Route path="index/post/:id" element={<DetailItem />} /> */}
-          <Route path="index/:nickname/goal/:id" element={<GoalDetail />} />
-          <Route path="index/:nickname/post/:id" element={<DetailItem />} />
-          {/* <Route path="index/:nickname/m/modal/post/:id" element={<UserPageSet />} /> */}
+        <Route path="index/:nickname/goal/:id" element={<GoalDetail />} />
+        <Route path="index/:nickname/post/:id" element={<DetailItem />} />
+        {/* <Route path="index/:nickname/m/modal/post/:id" element={<UserPageSet />} /> */}
 
-          {/* `/${url}/${props.nickname}/m/modal/post/${props.id}` */}
-          {/* <Route
+        {/* `/${url}/${props.nickname}/m/modal/post/${props.id}` */}
+        {/* <Route
             path="indexes/:nickname"
             element={myData !== null && userData.userId && userData.nickname && <UserPageForm id={userData.userId} nickname={userData.nickname} />}
           /> */}
-
-
-        
       </Routes>
     </div>
   );
-}
+};
 export default UserPage;
 
 // http://localhost:3000/index/asdfasdf
