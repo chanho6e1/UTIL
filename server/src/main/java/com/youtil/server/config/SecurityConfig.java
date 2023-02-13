@@ -21,9 +21,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -121,57 +126,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .cors()
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .csrf()
-//                .disable()
-//                .formLogin()
-//                .disable()
-//                .httpBasic()
-//                .disable()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/",
-//                        "/error",
-//                        "/favicon.ico",
-//                        "/**/*.png",
-//                        "/**/*.gif",
-//                        "/**/*.svg",
-//                        "/**/*.jpg",
-//                        "/**/*.html",
-//                        "/**/*.css",
-//                        "/**/*.js", "swagger-resources/**")
-//                .permitAll()
-//                .antMatchers("/auth/**", "/oauth2/**")
-//                .permitAll()
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .oauth2Login()
-//                .authorizationEndpoint()
-//                .baseUri("/oauth2/authorize")
-//                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
-//                .and()
-//                .redirectionEndpoint()
-//                .baseUri("/oauth2/callback/*")
-//                .and()
-//                .userInfoEndpoint()
-//                .userService(customOAuth2UserService)
-//                .and()
-//                .successHandler(oAuth2AuthenticationSuccessHandler)
-//                .failureHandler(oAuth2AuthenticationFailureHandler);
-//        // Add our custom Token based authentication filter
-//        http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-//    }
 
+    @Bean
+    CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000", "https://i8d210.p.ssafy.io"));
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setAllowedMethods(
+                Arrays.asList("HEAD", "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+        );
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
+    }
 
 }
 
