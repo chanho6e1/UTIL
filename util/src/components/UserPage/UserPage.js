@@ -597,7 +597,7 @@ const UserPage = (props) => {
           
           {/* <Route path="index/goal/:id" element={<GoalDetail />} />
           <Route path="index/post/:id" element={<DetailItem />} /> */}
-          <Route path="index/:nickname/goal/:id" element={<GoalDetail />} />
+          <Route path="index/goal/:id" element={<GoalDetail />} />
           <Route path="index/:nickname/post/:id" element={<DetailItem />} />
           {/* <Route path="index/:nickname/m/modal/post/:id" element={<UserPageSet />} /> */}
 
