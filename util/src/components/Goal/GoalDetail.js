@@ -9,6 +9,8 @@ import { detailTodosAPI } from "../../api/Goal/detailTodosAPI";
 import { detailReviewsAPI } from "../../api/Goal/detailReviewsAPI";
 import { detailTilAPI } from "../../api/Goal/detailTilAPI";
 import GoalDetailMobile from "./GoalDetailMobile";
+import { Avatar, Pagination } from "@mui/material";
+
 
 import { useSelector, useDispatch } from 'react-redux'
 import { HashRouter, BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate, useMatch, useLocation, useParams } from "react-router-dom";
@@ -21,6 +23,80 @@ const GoalDetail = (props) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [tilPage, settilPage] = useState(1)
+  const [isLoading, setIsLoading] = useState(true);
+  const [postList, setPostList] = useState(null);
+  const [offset, setOffset] = useState(1);
+  const [fetchStart, setFetchStart] = useState(false);
+  const containerRef = useRef();
+  const [totalPage, setTotalPage] = useState(10);
+  const postWrapperRef = useRef();
+
+
+  const fetchUserPostData = (criteriaIdx, page, size) => {
+    setIsLoading(true);
+    detailTilAPI(idx, page).then((res) => {
+      setPostList(() => res.content);
+      setOffset(() => page);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+      containerRef.current.scrollTo({
+        left: 0,
+        top: postWrapperRef.current.offsetTop - 14,
+        behavior: "smooth",
+      });
+    });
+  };
+
+  const fetchUserPostDataMobile = (page) => {
+    setIsLoading(true);
+    detailTilAPI(idx, page + 1).then((res) => {
+      setPostList((prev) => [...prev, ...res.content]);
+      setOffset(() => page + 1);
+      setTimeout(() => {
+        setIsLoading(false);
+        setFetchStart(() => false);
+      }, 500);
+    });
+  };
+
+  useEffect(() => {
+    if (fetchStart === true) {
+      fetchUserPostDataMobile(offset);
+    }
+  }, [fetchStart]);
+
+  const pageChangeHandler = (event, page) => {
+    fetchUserPostData(page);
+  };
+
+  const handleScroll = () => {
+    const scrollHeight = containerRef.current.scrollHeight;
+    const scrollTop = containerRef.current.scrollTop;
+    const clientHeight = containerRef.current.clientHeight;
+    if (scrollTop + clientHeight >= scrollHeight - 1 && isLoading === false) {
+      if (offset < totalPage) {
+        if (document.body.clientWidth < 1080) {
+          setFetchStart(() => true);
+        }
+      }
+
+      // 페이지 끝에 도달하면 추가 데이터를 받아온다
+    }
+  };
+
+  useEffect(() => {
+    // scroll event listener 등록
+    if (containerRef.current !== null) {
+      containerRef.current.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      // scroll event listener 해제
+      if (containerRef.current !== null) {
+        containerRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  });
 
   useEffect(() => {
     detailPlansAPI(idx)
@@ -65,6 +141,16 @@ const GoalDetail = (props) => {
     })
   }, [tilPage])
 
+  useEffect(() => {
+    setIsLoading(true);
+
+    detailTilAPI(idx, offset). then((res) => {
+      setPostList(() => res.content);
+      setTotalPage(() => res.totalPages);
+      setIsLoading(false);
+    })
+  }, [])
+
   const plans = useSelector(state => state.planSlice.allPlans)
   const reviews = useSelector(state => state.postDetailSlice.reviews)
   const tils = useSelector(state => state.postDetailSlice.tils)
@@ -82,7 +168,7 @@ const GoalDetail = (props) => {
 
   
   return (
-    <Fragment>
+    <div ref={containerRef} className={classes["goal-detail"]}>
       <div className={classes["goal-detail-pc"]}>
         <div />
         {plans && <GoalDetailL plan={plans[idx]} reviews={reviews} />}
@@ -91,9 +177,9 @@ const GoalDetail = (props) => {
         <div />
       </div>
       <div className={classes["goal-detail-mobile"]}>
-        {plans && <GoalDetailMobile plan={plans[idx]} reviews={reviews} tils={tils} nextPage={nextPage} prevPage={prevPage} tilPage={tilPage}/>}
+        {plans && <GoalDetailMobile plan={plans[idx]} reviews={reviews} tils={tils} nextPage={nextPage} prevPage={prevPage} tilPage={tilPage} totalPage={totalPage} pageChangeHandler={pageChangeHandler} postList={postList} postWrapperRef={postWrapperRef}/>}
       </div>
-    </Fragment>
+    </div>
   );
 };
 
