@@ -77,6 +77,8 @@ const UserPageForm = (props) => {
   const size = 8;
   const [isLoading, setIsLoading] = useState(true);
   const postWrapperRef = useRef();
+  const params = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
 
@@ -262,10 +264,25 @@ const UserPageForm = (props) => {
     }
   };
 
+
   const pageChangeHandler = (event, page) => {
     fetchUserPostData(criteriaIdx, page, size);
+    searchParams.set("page", page)
+    setSearchParams(searchParams)
+    // setOffset(parseInt(searchParams.get("page")))
   };
+  
+  // useEffect(() => {
+  //   setOffset(parseInt(searchParams.get("page")))
+  // }, [])
 
+  useEffect(() => {
+    // fetchUserPostData(criteriaIdx, offset, size);
+    if (offset !== searchParams.get("page") && searchParams.get("page") !== null) {
+      fetchUserPostData(criteriaIdx, searchParams.get("page"), size);
+    }
+  });
+  
   // scroll event handler
   const handleScroll = () => {
     const scrollHeight = containerRef.current.scrollHeight;
@@ -405,7 +422,7 @@ const UserPageForm = (props) => {
       <div className={classes["line"]} />
     </React.Fragment>
   );
-
+  
   const [category, setCategory] = useState("전체 글");
 
   const categoryDropDownItems = {
@@ -457,7 +474,7 @@ const UserPageForm = (props) => {
         <div ref={postWrapperRef}>{postCardContainer(postList)}</div>
 
         <div className={classes[`pagination`]}>
-          <Pagination count={totalPage} onChange={pageChangeHandler} />
+          <Pagination count={totalPage} onChange={pageChangeHandler} page={parseInt(offset)}/>
         </div>
       </Fragment>
     ) : (
