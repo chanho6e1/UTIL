@@ -36,7 +36,7 @@ const ExploreFeed = (props) => {
       <FixedModal
         modalState={props.modalState}
         stateHandler={props.setModalState}
-        content={<UserRecommend />}
+        content={<UserRecommend myTagList={props.myTagList} />}
         width={"80vh"}
         height={"400px"}
         overflow={"hidden"}

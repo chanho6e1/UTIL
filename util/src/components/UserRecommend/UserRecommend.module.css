@@ -47,6 +47,13 @@
   bottom: 0;
 }
 
+.alt-message-wrapper {
+  margin-top: 100px;
+  font-size: 24px;
+  font-weight: 700;
+  color: rgb(130, 130, 130);
+}
+
 @media screen and (max-width: 486px) {
   .recommend-text {
     font-size: 0.8rem;

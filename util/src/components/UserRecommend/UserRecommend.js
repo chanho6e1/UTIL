@@ -29,35 +29,29 @@ const UserRecommend = (props) => {
     });
   };
 
-  // scroll event handler
-  const handleScroll = () => {
+  useEffect(() => {
+    if (props.myTagList.length === 0) {
+    } else {
+      getRecommendUser(offset, size).then((res) => {
+        setUserList(() => res.content);
+      });
+    }
+  }, []);
+
+  const onWheelHandler = () => {
     const scrollHeight = recRef.current.scrollHeight;
     const scrollTop = recRef.current.scrollTop;
     const clientHeight = recRef.current.clientHeight;
-    if (scrollTop + clientHeight >= scrollHeight - 20 && isLoading === false) {
-      // 페이지 끝에 도달하면 추가 데이터를 받아온다
+    console.log(scrollHeight, scrollTop, clientHeight);
+    if (scrollTop + clientHeight >= scrollHeight - 10 && isLoading === false) {
       fetchMoreData();
     }
   };
 
-  useEffect(() => {
-    getRecommendUser(offset, size).then((res) => {
-      setUserList(() => res.content);
-    });
-  }, []);
-
-  useEffect(() => {
-    // scroll event listener 등록
-    if (recRef.current !== null) {
-      recRef.current.addEventListener("scroll", handleScroll);
-    }
-    return () => {
-      // scroll event listener 해제
-      if (recRef.current !== null) {
-        recRef.current.removeEventListener("scroll", handleScroll);
-      }
-    };
-  });
+  const altText = () => {
+    const message = "관심 태그가 없어요\n\n마이 프로필에서 태그를 설정해 보세요";
+    return <div className={classes[`alt-message-wrapper`]}>{message}</div>;
+  };
 
   return (
     <div className={classes[`recommend-modal`]}>
@@ -73,9 +67,9 @@ const UserRecommend = (props) => {
           건너뛰기
         </Button>
       </div>
-      <div className={classes[`recommend-wrapper`]} ref={recRef}>
+      <div className={classes[`recommend-wrapper`]} ref={recRef} onWheel={onWheelHandler}>
         <div className={classes[`content-wrapper`]}>
-          {UserRecommendCardList(userList)}
+          {userList.length === 0 ? altText() : UserRecommendCardList(userList)}
           {isLoading && <div className={classes.loading}>{Loading()}</div>}
         </div>
       </div>

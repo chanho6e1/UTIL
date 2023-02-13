@@ -81,7 +81,7 @@ const ExploreForm = () => {
         }
       }
     });
-  }, [criteria, followingListCnt]);
+  }, [criteria, followingListCnt, userAuth]);
 
   const fetchMoreData = () => {
     setIsLoading(() => true);
@@ -169,7 +169,12 @@ const ExploreForm = () => {
       <div className={classes["explore-inner-wrapper"]}>
         {header}
         {altMessages}
-        <ExploreFeed feedList={feedList} modalState={modalState} setModalState={setModalState} />
+        <ExploreFeed
+          feedList={feedList}
+          modalState={modalState}
+          setModalState={setModalState}
+          myTagList={myTagList}
+        />
       </div>
     </div>
   );
