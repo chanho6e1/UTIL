@@ -6,6 +6,8 @@ import GoalDetailRTil from "./GoalDetailRTil";
 import FeedCardItem from "../UI/FeedCard/FeedCardItem";
 import PlanCardItem from "../Plan/PlanCard/PlanCardItem"
 import { Fragment } from "react";
+import { Avatar, Pagination } from "@mui/material";
+import Tab from "../UI/Tab/Tab";
 
 
 const GoalDetailMobile = (props) => {
@@ -13,7 +15,53 @@ const GoalDetailMobile = (props) => {
   const [todosView, gotodosView] = useState(false)
   const [postView, gopostView] = useState(false)
   const [tilsArr, settilsArr] = useState([])
+  const [category, setCategory] = useState("회고록");
   
+  const tabItems = [
+    {content: '회고록', function: () => {
+      setCategory("회고록");
+    }},
+    {content: '포스트', function: () => {
+      setCategory("포스트");
+    }},
+    {content: 'Check List', function: () => {
+      setCategory("Check List");
+    }},
+  ]
+
+  const categoryView1 = 
+    category === "Check List" ? (
+      <PlanCardItem plan={props.plan} />
+    ) : (
+      <Fragment>
+        <div ref={props.postWrapperRef} className={classes["goal-detail-mobile-feedcard"]}>
+          {props.postList?.map((til) => (
+            <FeedCardItem
+                id={til.postId}
+                key={til.postId}
+                thumbnail={til.thumbnail}
+                title={til.title}
+                contents={til.content}
+                likeStatusSize={til.likeStatusSize}
+                likeStatus={til.likeStatus}
+                bookmarkStatus={til.bookmarkStatus}
+                profileImg={til.writerInfo.profileImg}
+                nickname={til.writerInfo.nickname}
+                createdDate={til.createdDate}
+            />
+          ))}
+        </div>
+      </Fragment>
+    );
+  
+  const categoryView2 = 
+    category === "회고록" ? (
+      <GoalDetailLReview reviews={props.reviews[props.plan?.goalId]}/>
+    ) : (
+      categoryView1
+    );
+   
+
   useEffect(() => {
     if (props.tils) {
       settilsArr(Object.values(props.tils))
@@ -42,7 +90,7 @@ const GoalDetailMobile = (props) => {
     <div className={classes["goal-detail-mobile"]} >
       <div>
         <div className={classes["goal-detail-title"]}>{props.plan?.title}</div>
-        <p>{props.plan?.startDate} ~ {props.plan?.endDate}</p>
+        <div className={classes["goal-detail-title-date"]}>{props.plan?.startDate} ~ {props.plan?.endDate}</div>
       </div>
       <div className={classes["goal-detail-mobile-content"]}>
         <div className={classes["goal-detail-mobile-content-in"]}>
@@ -61,43 +109,15 @@ const GoalDetailMobile = (props) => {
     <div className={classes["goal-detail-mobile"]} >
       <div>
         <div className={classes["goal-detail-title"]}>{props.plan?.title}</div>
-        <p>{props.plan?.startDate} ~ {props.plan?.endDate}</p>
+        <div className={classes["goal-detail-title-date"]}>{props.plan?.startDate} ~ {props.plan?.endDate}</div>
       </div>
-      <div className={classes["goal-detail-mobile-button"]}>
-        <Button className={classes["goal-detail-mobile-button-in"]} onClick={reviewViewHandler}>회고록</Button>
-        <Button className={classes["goal-detail-mobile-button-in"]} onClick={postViewHandler}>포스트</Button>
-        {/* <Button onClick={todosViewHandler}>세부 항목</Button> */}
-      </div>
-      <div className={classes["goal-detail-mobile-content"]}>
-        {reviewView && <GoalDetailLReview reviews={props.reviews[props.plan?.goalId]}/>}
-        {postView &&
-          <div>
-            <div className={classes["goal-detail-r-tils-page"]}>
-              <span className={classes["goal-detail-r-tils-page-button"]} onClick={props.prevPage}>prev</span>
-              <span className={classes["goal-detail-r-tils-page-num"]}>{props.tilPage}</span>
-              <span className={classes["goal-detail-r-tils-page-button"]} onClick={props.nextPage}>next</span>
-            </div>
-            <div>
-              {tilsArr[0].content.map((til) => (
-                <FeedCardItem
-                    id={til.postId}
-                    key={til.postId}
-                    thumbnail={til.thumbnail}
-                    title={til.title}
-                    contents={til.content}
-                    likeStatusSize={til.likeStatusSize}
-                    likeStatus={til.likeStatus}
-                    bookmarkStatus={til.bookmarkStatus}
-                    profileImg={til.writerInfo.profileImg}
-                    nickname={til.writerInfo.nickname}
-                    createdDate={til.createdDate}
-                />
-              ))}
-            </div>
-          </div>
-        }
-        {/* {postView && <GoalDetailRTil tils={props.tils[props.plan?.goalId]?.content} prevPage={props.prevPage} nextPage={props.nextPage} tilPage={props.tilPage}/>} */}
-        {/* {todosView && props.plan !== null && <PlanCardItem plan={props.plan} />} */}
+      <div className={classes["goal-detail-mobile-content-box"]}>
+        <div className={classes["goal-detail-mobile-content-tap"]}>
+          <Tab tabItems={tabItems} width={'300px'} height={'48px'} />
+        </div>
+        <div className={classes["goal-detail-mobile-content"]}>
+          {categoryView2}
+        </div>
       </div>
     </div>
   )

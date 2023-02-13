@@ -77,6 +77,8 @@ const UserPageForm = (props) => {
   const size = 8;
   const [isLoading, setIsLoading] = useState(true);
   const postWrapperRef = useRef();
+  const params = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
 
@@ -262,10 +264,25 @@ const UserPageForm = (props) => {
     }
   };
 
+
   const pageChangeHandler = (event, page) => {
     fetchUserPostData(criteriaIdx, page, size);
+    searchParams.set("page", page)
+    setSearchParams(searchParams)
+    // setOffset(parseInt(searchParams.get("page")))
   };
+  
+  // useEffect(() => {
+  //   setOffset(parseInt(searchParams.get("page")))
+  // }, [])
 
+  useEffect(() => {
+    // fetchUserPostData(criteriaIdx, offset, size);
+    if (offset !== searchParams.get("page") && searchParams.get("page") !== null) {
+      fetchUserPostData(criteriaIdx, searchParams.get("page"), size);
+    }
+  });
+  
   // scroll event handler
   const handleScroll = () => {
     const scrollHeight = containerRef.current.scrollHeight;
@@ -404,7 +421,7 @@ const UserPageForm = (props) => {
       <div className={classes["line"]} />
     </React.Fragment>
   );
-
+  
   const [category, setCategory] = useState("전체 글");
 
   const categoryDropDownItems = {
@@ -456,7 +473,7 @@ const UserPageForm = (props) => {
         <div ref={postWrapperRef}>{postCardContainer(postList)}</div>
 
         <div className={classes[`pagination`]}>
-          <Pagination count={totalPage} onChange={pageChangeHandler} />
+          <Pagination count={totalPage} onChange={pageChangeHandler} page={parseInt(offset)}/>
         </div>
       </Fragment>
     ) : (
@@ -541,11 +558,6 @@ const UserPageForm = (props) => {
   );
 };
 
-
-
-
-
-
 const UserPageSet = (props) => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -556,12 +568,7 @@ const UserPageSet = (props) => {
   const nickname = params["nickname"];
 
   useEffect(() => {
-    console.log("myData", myData);
-    console.log("param", params);
-    console.log("nick", nickname);
-    console.log("nn", typeof nickname);
     if (nickname !== undefined) {
-      console.log("get others", nickname);
       getUserDataByNickname(nickname).then((res) => {
         console.log("res", res);
         setUserData(() => res);
@@ -572,19 +579,20 @@ const UserPageSet = (props) => {
   return (
     <div>
       <div id="index-overlay-root"></div>
-      {myData !== null && nickname === undefined && <UserPageForm id={myData?.userId} nickname={myData?.nickname} />}
-      {myData !== null && nickname !== undefined && userData?.userId != null && userData?.nickname != null && <UserPageForm id={userData.userId} nickname={userData.nickname} />}
+      {myData !== null && nickname === undefined && (
+        <UserPageForm id={myData?.userId} nickname={myData?.nickname} />
+      )}
+      {myData !== null &&
+        nickname !== undefined &&
+        userData?.userId != null &&
+        userData?.nickname != null && (
+          <UserPageForm id={userData.userId} nickname={userData.nickname} />
+        )}
     </div>
   );
 };
 
-
-
-
-
-
 const UserPage = (props) => {
-
   return (
     <div>
       <div id="index-overlay-root"></div>
@@ -594,25 +602,21 @@ const UserPage = (props) => {
           <Route path="index/" element={<UserPageSet/>}/>
           <Route path="index/:nickname/*" element={<UserPageSet/>}/>
 
-          
-          {/* <Route path="index/goal/:id" element={<GoalDetail />} />
+        {/* <Route path="index/goal/:id" element={<GoalDetail />} />
           <Route path="index/post/:id" element={<DetailItem />} /> */}
           <Route path="index/goal/:id" element={<GoalDetail />} />
           <Route path="index/:nickname/post/:id" element={<DetailItem />} />
           {/* <Route path="index/:nickname/m/modal/post/:id" element={<UserPageSet />} /> */}
 
-          {/* `/${url}/${props.nickname}/m/modal/post/${props.id}` */}
-          {/* <Route
+        {/* `/${url}/${props.nickname}/m/modal/post/${props.id}` */}
+        {/* <Route
             path="indexes/:nickname"
             element={myData !== null && userData.userId && userData.nickname && <UserPageForm id={userData.userId} nickname={userData.nickname} />}
           /> */}
-
-
-        
       </Routes>
     </div>
   );
-}
+};
 export default UserPage;
 
 // http://localhost:3000/index/asdfasdf

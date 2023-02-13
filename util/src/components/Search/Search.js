@@ -17,7 +17,7 @@ const SearchForm = (props) => {
   const [searchInput, setSearchInput] = useState("");
   const [dropDownLabel, setDropDownLabel] = useState(apiLabelList[0]);
   const [dropDownCriteriaLabel, setDropDownCriteriaLabel] = useState(criteriaLabelList[0]);
-  const searchFeedWrapperRef = useRef()
+  const searchFeedWrapperRef = useRef();
 
   const [api, setApi] = useState(0);
   const criteriaData = ["date", "view", "like"];
@@ -72,16 +72,6 @@ const SearchForm = (props) => {
     }
   }, [location]);
 
-
-
-
-
-
-
-
-
-
-
   const [feedList, setFeedList] = useState([]);
   // const criteria = ["date", "view", "like"];
   const [offset, setOffset] = useState(1);
@@ -90,7 +80,6 @@ const SearchForm = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    console.log(searchInput)
     if (searchInput !== null && searchInput !== "") {
       setIsLoading(true);
       if (api === 0) {
@@ -99,7 +88,7 @@ const SearchForm = (props) => {
             setFeedList(() => res.content);
           }
           setIsLoading(false);
-          console.log('getPostSearch', res.content)
+          console.log("getPostSearch", res.content);
         });
       } else if (api === 1) {
         getPostByTagName(criteriaData[criteria], offset, size, searchInput).then((res) => {
@@ -107,7 +96,7 @@ const SearchForm = (props) => {
             setFeedList(() => res.content);
           }
           setIsLoading(false);
-          console.log('getPostByTagName', res.content)
+          console.log("getPostByTagName", res.content);
         });
       } else {
         getPostByNickname(criteriaData[criteria], offset, size, searchInput).then((res) => {
@@ -115,7 +104,7 @@ const SearchForm = (props) => {
             setFeedList(() => res.content);
           }
           setIsLoading(false);
-          console.log('getPostByNickname', res.content)
+          console.log("getPostByNickname", res.content);
         });
       }
     }
@@ -130,36 +119,26 @@ const SearchForm = (props) => {
         setIsLoading(false);
       });
     } else {
-      getPostByTagName(criteriaData[criteria], offset + 1, size, searchInput).then(
-        (res) => {
-          setFeedList((prevState) => [...prevState, ...res.content]);
-          setOffset((prevState) => prevState + 1);
-          setIsLoading(false);
-        }
-      );
+      getPostByTagName(criteriaData[criteria], offset + 1, size, searchInput).then((res) => {
+        setFeedList((prevState) => [...prevState, ...res.content]);
+        setOffset((prevState) => prevState + 1);
+        setIsLoading(false);
+      });
     }
   };
 
-
-
   const onWheelHandler = (event) => {
-    
     const scrollHeight = searchFeedWrapperRef.current.scrollHeight;
     const scrollTop = searchFeedWrapperRef.current.scrollTop;
     const clientHeight = searchFeedWrapperRef.current.clientHeight;
-    console.log(scrollHeight, scrollTop, clientHeight)
     if (scrollTop + clientHeight >= scrollHeight - 10 && isLoading === false) {
+      console.log(scrollTop, clientHeight, scrollHeight);
       fetchMoreData();
     }
-  }
-
-
-
-
+  };
 
   return (
     <div ref={searchFeedWrapperRef} onWheel={onWheelHandler} className={classes[`searchbar-feed`]}>
-      
       <div className={classes[`searchbar`]}>
         <SearchBar
           inputChangeHandler={inputChangeHandler}
@@ -175,12 +154,12 @@ const SearchForm = (props) => {
           criteriaLabel={dropDownCriteriaLabel}
         />
       </div>
-      <div  className={classes[`searchfeed`]}>
+      <div className={classes[`searchfeed`]}>
         {searchInput === "" || searchInput === null ? (
           <div className={classes[`enter-search`]}>검색어를 입력하세요</div>
         ) : (
           // <SearchFeed api={api} searchInput={searchInput} criteria={criteria} />
-          <ExploreFeed feedList={feedList}/>
+          <ExploreFeed feedList={feedList} />
         )}
       </div>
     </div>
@@ -188,12 +167,9 @@ const SearchForm = (props) => {
 };
 
 const Search = (props) => {
-
-
-
   return (
-    <div>
-    <div id="search-overlay-root"></div>
+    <div style={{ height: "100%" }}>
+      <div id="search-overlay-root"></div>
 
       <Routes>
         <Route path="search/" element={<SearchForm />} />
@@ -201,7 +177,7 @@ const Search = (props) => {
         <Route path="search/:nickname/post/:id" element={<DetailItem />} />
       </Routes>
     </div>
-  )
-}
+  );
+};
 
 export default Search;
