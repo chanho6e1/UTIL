@@ -62,4 +62,11 @@ public class UserController {
                 HttpStatus.OK, "유저 조회 성공", userService.getUser(userId)));
     }
 
+    @GetMapping("/search/{nickName}")
+    @ApiOperation(value = "유저 정보 조회", notes = "조회하고자 하는 유저의 정보를 반환한다.")
+    public ResponseEntity<CommonResponse> getUserByNickName(@PathVariable String nickName){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "유저 조회 성공", userService.getUserByNickName(nickName)));
+    }
+
 }

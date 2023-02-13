@@ -110,4 +110,9 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         return UserResponse.from(user);
     }
+
+    public UserResponse getUserByNickName(String nickName) {
+        User user = userRepository.findByNickName(nickName).orElseThrow(() -> new ResourceNotFoundException("User", "nickName", nickName));
+        return UserResponse.from(user);
+    }
 }
