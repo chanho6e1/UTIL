@@ -108,7 +108,8 @@ public class UserService {
 
     public UserResponse getUser(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-        return UserResponse.from(user);
+//        return UserResponse.from(user);
+        return UserResponse.from(user, getTagLike(user.getUserId()));
     }
 
     public UserResponse getUserByNickName(String nickName) {
