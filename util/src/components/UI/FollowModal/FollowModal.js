@@ -4,14 +4,21 @@ import FollowCard from "./FollowCard";
 import { IconButton } from "@mui/material";
 import CloseIcon from "../../../img/Close40.svg";
 
-const FollowCardList = (followList) => {
-  return followList?.map((user) => {
-    return <FollowCard id={user.userId} key={`follow-card-${user.userId}`} userData={user} />;
-  });
-};
-
 const FollowModal = (props) => {
   const [followData, setFollowData] = useState(props.followData);
+
+  const FollowCardList = (followList) => {
+    return followList?.map((user) => {
+      return (
+        <FollowCard
+          id={user.userId}
+          key={`follow-card-${user.userId}`}
+          userData={user}
+          modalHandler={props.modalHandler}
+        />
+      );
+    });
+  };
 
   useEffect(() => {
     if (props.followData) {
