@@ -1,9 +1,10 @@
-import React, { useEffect, useState }  from "react";
+import React, { useEffect, useState, useRef }  from "react";
 import styles from './BlogPostForm.module.css'
 import TextInput from "../UI/TextInput/TextInput";
 import { recvPlansAPI } from "../../api/Plan/recvPlansAPI";
 import arrow from '../../img/arrow.png'
 import Button from "../UI/Button/Button";
+import { OverlayScrollbarsComponent, useOverlayScrollbars } from "overlayscrollbars-react";
 
 const BlogPostFormRender = (props) => {
     // const [plans, setPlans] = useState([])
@@ -12,6 +13,9 @@ const BlogPostFormRender = (props) => {
     const [showScopePicker, setShowScopePicker] = useState(true)
     const [selectedPlan, setSelectedPlan] = useState(props.queryString.goal ? props.queryString.goal : null)
     const [selectedScope, setSelectedScope] = useState(2)
+
+
+
 
     // useEffect(() => {
     //     recvPlansAPI()
@@ -120,11 +124,14 @@ const BlogPostFormRender = (props) => {
                         <img className={styles['arrow-icon']} src={arrow} style={{transform: showPlansPicker ? 'rotate(90deg)' : 'none', marginLeft:'10px', marginRight:'12px', width: '12px', height: 'auto'}}/>
                         {selectedPlan ? <div>{selectedPlan.title}</div> : <div style={{color:'rgb(120, 120, 120)'}}>연결할 목표 선택하기</div>}
                     </div>
-                    <div className={styles['picker-wrapper']} style={{height: showPlansPicker ? '200px' : '0px'}}>
+                    <div  className={styles['picker-wrapper']} style={{height: showPlansPicker ? '200px' : '0px'}}>
                         <div className={styles['shadow-box-wrapper']} style={{height: showPlansPicker ? '200px' : '0px'}}>
                             <div className={styles['shadow-box']} />
                         </div>
+
                         {plansRender}
+
+                        
                     </div>
 
 
@@ -157,7 +164,7 @@ const BlogPostForm = (props) => {
 
     return (
         <React.Fragment>
-            {plans && <BlogPostFormRender plans={plans} postSubmitHandler={props.postSubmitHandler} reviewSubmitHandler={props.reviewSubmitHandler} forReview={props.forReview} edit={props.edit} queryString={props.queryString}/>}
+            {plans && <BlogPostFormRender plans={plans} postSubmitHandler={props.postSubmitHandler} reviewSubmitHandler={props.reviewSubmitHandler} forReview={props.forReview} edit={props.edit} queryString={props.queryString} modalHandler={props.modalHandler} />}
         </React.Fragment>
     )
 }

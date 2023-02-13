@@ -16,7 +16,7 @@ import { deleteFollow } from "../../api/Post/deleteUnfollow";
 import { postFollow } from "../../api/Post/postFollow";
 import { getUserTag } from "../../api/Post/getUserTag";
 import { getMyData } from "../../api/UserProfile/getMyData";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import UserPageResponsive from "./UserPageResponsive";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
 import { useSelector, useDispatch } from "react-redux";
@@ -593,13 +593,15 @@ const UserPageSet = (props) => {
 };
 
 const UserPage = (props) => {
+  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
   return (
     <div>
       <div id="index-overlay-root"></div>
 
       <Routes>
         {/* <Route path="*" element={<UserPageForm id={userId === null ? myData.userId : userId} />} /> */}
-          <Route path="index/" element={<UserPageSet/>}/>
+          <Route path="/" element={myData?.nickname && <Navigate to={`/index/${myData?.nickname}`}/>}/>
+          <Route path="index/" element={myData?.nickname && <Navigate to={`/index/${myData?.nickname}`}/>}/>
           <Route path="index/:nickname/*" element={<UserPageSet/>}/>
 
         {/* <Route path="index/goal/:id" element={<GoalDetail />} />

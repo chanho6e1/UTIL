@@ -1,5 +1,12 @@
 
-@media all and (max-width: 480px) {
+@media all and (max-width: 768px) {
+
+    .mobile-indicator-wrapper {
+        width: 100%;
+        height: 2px;
+        position: relative;
+    }
+
     .dock-view {
         
         display: flex;
@@ -42,7 +49,11 @@
     }
 }
 
-@media all and (min-width: 480px) {
+@media all and (min-width: 768px) {
+
+    .mobile-indicator-wrapper {
+        display: none;
+    }
 
     .dock-wrapper {
         width: 110px;
@@ -143,6 +154,14 @@
 
 }
 
+
+.mobile-indicator {
+    height: 100%;
+    background-color: black;
+    transition-property: left;
+    transition-duration: 0.3s;
+    position: relative;
+}
 
 
 .dock-wrapper {

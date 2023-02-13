@@ -81,7 +81,10 @@ const FeedCardItem = (props) => {
   const url = location.pathname.split("/")[1];
   const postClickHandler = () => {
     if (document.body.clientWidth > 1080) {
-      navigate(`/${url}/${props.nickname}/post/${props.id}`);
+      // navigate(`/${url}/${props.nickname}/post/${props.id}`);
+
+      navigate(`/${url}/${props.nickname}/m/modal/post/${props.id}`);
+      setShowModal(true);
     } else {
       navigate(`/${url}/${props.nickname}/m/modal/post/${props.id}`);
       setShowModal(true);

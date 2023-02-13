@@ -184,8 +184,8 @@ const UserProfileChangeCard = (props) => {
   };
 
   return (
-    <Card className={classes.userprofile}>
-      <form onSubmit={confirmHandler}>
+    <div className={classes.userprofile}>
+      <form onSubmit={confirmHandler} className={classes['userprofile-form']}>
         <div className={classes.header}>
           <IconButton
             onClick={() => {
@@ -197,7 +197,7 @@ const UserProfileChangeCard = (props) => {
           >
             <Avatar
               src={imageUrl}
-              sx={{ width: 100, height: 100 }}
+              sx={{ width: 100, height: 100, marginRight: '20px' }}
               className={classes[`avatar-img`]}
             />
             {isHover && <img src={PhotoCameraIconCircle} className={classes.camera} />}
@@ -296,7 +296,7 @@ const UserProfileChangeCard = (props) => {
           </div>
         </div>
       </form>
-    </Card>
+    </div>
   );
 };
 

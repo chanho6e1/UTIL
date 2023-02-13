@@ -6,18 +6,20 @@ import { userAuthSliceActions } from '../../redux/userAuthSlice'
 import { ACCESS_TOKEN } from '../../constants';
 import { useNavigate, useLocation } from 'react-router-dom'
 import DropDown from "../UI/DropDown/DropDown";
+import { useEffect } from "react";
+import { getMyData } from "../../api/UserProfile/getMyData";
 
 
 
 
 
-export const UserIcon = (props) => {
+const UserIconExec = (props) => {
   const userAuth = useSelector(state => state.userAuthSlice.userAuth)
 
 
   const userImage = (
       <div className={styles['user-image-wrapper']} >
-        <img className={styles['user-image']} src={`${userAuth.authenticated ? userAuth.currentUser.imageUrl : null }`}/>
+        <img className={styles['user-image']} src={props.imageUrl}/>
       </div> 
   )
 
@@ -33,6 +35,24 @@ export const UserIcon = (props) => {
     </React.Fragment> 
       
 
+  )
+}
+
+export const UserIcon = (props) => {
+  const userAuth = useSelector(state => state.userAuthSlice.userAuth)
+  const [userData, setUserData] = useState(null)
+
+  useEffect(() => {
+    getMyData().then((res) => {
+      setUserData(() => res);
+    });
+  }, [userAuth?.currentUser?.imageUrl])
+  
+  return (
+    <React.Fragment>
+      {userData !== null && <UserIconExec key={`${userAuth?.currentUser?.imageUrl}`} imageUrl={userData === null ? userAuth?.currentUser?.imageUrl : userData?.imageUrl} />}
+    </React.Fragment>
+    
   )
 }
 
@@ -77,6 +97,7 @@ export const UserDockWrapper = (props) => {
     localStorage.removeItem(ACCESS_TOKEN);
     dispatch(userAuthSliceActions.changeAuthenticated('false'))
     dispatch(userAuthSliceActions.changeCurrentUser(null))
+    navigate('/login');
   }
 
   const navigateLogin = () => {

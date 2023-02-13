@@ -19,6 +19,9 @@ const SwipeableDock = (props) => {
   const [height, setHeight] = useState(null)
   const [urlLib, setUrlLib] = useState({})
   const location = useLocation();
+  const indicatorRef = useRef()
+  const dockWrapperRef = useRef()
+  const [indicatorWidth, setIndicatorWidth] = useState()
 
 
   useEffect(() => {
@@ -48,7 +51,12 @@ const SwipeableDock = (props) => {
   // }, [urlLib, location.pathname])
 
 
-
+  const resize = () => {
+    if (indicatorRef?.current !== null) {
+      indicatorRef.current.style.width = dockWrapperRef.current.clientWidth / postData.url.length + 'px'
+      setIndicatorWidth(dockWrapperRef.current.clientWidth / postData.url.length)
+    }
+  }
 
 
   useEffect(() => {
@@ -62,13 +70,27 @@ const SwipeableDock = (props) => {
         movingDiv.current.style.transform = `translateX(${-props.parentRef.current.clientWidth * (contentCount - 1)}px)`
       }
     }
+
+    if (indicatorRef?.current !== null) {
+      indicatorRef.current.style.left = indicatorWidth * (contentCount - 1) + 'px'
+    }
     
     window.addEventListener(`resize`, resize);
     return () => {
       window.removeEventListener(`resize`, resize);
     }
+
+    
     
   }, [contentCount])
+
+
+  useEffect(() => {
+    if (indicatorRef?.current !== null) {
+      indicatorRef.current.style.width = dockWrapperRef.current.clientWidth / postData.url.length + 'px'
+      setIndicatorWidth(dockWrapperRef.current.clientWidth / postData.url.length)
+    }
+  }, [indicatorRef?.current])
 
   
 
@@ -85,8 +107,11 @@ const SwipeableDock = (props) => {
     if (Math.abs(position.x) > Math.abs(position.y)) {
       movingDiv.current.style.transitionDuration = '0s'
       movingDiv.current.style.transform = `translateX(${positionx + (-width * (contentCount - 1))}px)`
+      
     setPositionx(() => position.x)
     }
+    indicatorRef.current.style.transitionDuration = '0s'
+    indicatorRef.current.style.left = (indicatorWidth * (contentCount - 1)) - (positionx / (postData.url.length)) + 'px'
   }
 
 
@@ -96,7 +121,7 @@ const SwipeableDock = (props) => {
 
   const onSwipeEnd = () => {
     movingDiv.current.style.transitionDuration = '0.3s'
-    
+    indicatorRef.current.style.transitionDuration = '0.3s'
     if (positionx < -20 && contentCount < postData.content.length) {
       navigate(postData.url[contentCount], { replace: true });
       setContentCount((prev) => prev + 1)
@@ -187,7 +212,7 @@ const SwipeableDock = (props) => {
 
 
       
-      <div className={styles['dock-wrapper']} onMouseEnter={mouseOnHandler.bind(this, true)} onMouseLeave={mouseOnHandler.bind(this, false)}>
+      <div ref={dockWrapperRef} className={styles['dock-wrapper']} onMouseEnter={mouseOnHandler.bind(this, true)} onMouseLeave={mouseOnHandler.bind(this, false)}>
 
 
         <div className={styles['dock-mobile']}>
@@ -235,6 +260,10 @@ const SwipeableDock = (props) => {
 
         </div>
 
+      
+      <div className={styles['mobile-indicator-wrapper']}> 
+        <div ref={indicatorRef} className={styles['mobile-indicator']}/>
+      </div>
 
       </div>
     </div>

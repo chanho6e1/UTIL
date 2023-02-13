@@ -40,8 +40,21 @@ const PlanCalendarDateSelector = (props) => {
     setMaxDate(new Date(todosPeriod?.maxDate))
   }, [todosPeriod?.minDate, todosPeriod?.maxDate])
 
+
+  const colorList = [
+    "#ff3b30",
+    "#ff9500",
+    "#ffcc00",
+    "#34c759",
+    "#5ac8fa",
+    "#007aff",
+    "#5856d6",
+    "#af52de",
+    "#ff2d55",
+  ];
   useEffect(() => {
-    dateSelectorBar.current.style.backgroundColor = "#"+(parseInt(Math.random()*0xffffff)).toString(16)
+    // dateSelectorBar.current.style.backgroundColor = "#"+(parseInt(Math.random()*0xffffff)).toString(16)
+    dateSelectorBar.current.style.backgroundColor = colorList[Math.floor(Math.random() * colorList.length)]
   }, [])
 
   const getMonthDistance = (start, end) => {

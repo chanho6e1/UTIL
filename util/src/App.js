@@ -37,6 +37,7 @@ const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const plans = useSelector((state) => state.planSlice.plans);
+  const userAuth = useSelector(state => state.userAuthSlice.userAuth)
 
   useEffect(() => {
     loadCurrentlyLoggedInUser()
@@ -101,7 +102,7 @@ const App = () => {
         <Route path="/post/:id" element={<DetailItem />} />  */}
 
 
-        <Route path="/*" element={plans && <Main />} />
+        <Route path="/*" element={userAuth?.currentUser != null && (userAuth?.currentUser?.nickname != null ? (plans && <Main />) : <Navigate to={'/profile'}/>)} />
         <Route path="/login" element={<SocialLogin />} />
         <Route path="/oauth2/redirect" element={<OAuthRedirectHandler />} /> 
         <Route path="/profile" element={<UserProfileChange />} />

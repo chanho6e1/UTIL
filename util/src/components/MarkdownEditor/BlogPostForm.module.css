@@ -123,8 +123,10 @@
 .picker-wrapper {
     /* margin: 12px; */
     /* margin-top: 20px; */
-    overflow: scroll;
+    /* overflow: scroll; */
     z-index:100;
+    overflow: scroll;
+    overflow-x: hidden;
     transition-property: height;
     transition-duration: 0.3s;
     position: relative;
