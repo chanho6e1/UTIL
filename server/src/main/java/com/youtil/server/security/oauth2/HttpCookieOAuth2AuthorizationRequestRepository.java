@@ -14,7 +14,8 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
     public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
     public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
     private static final int cookieExpireSeconds = 180;
-
+    private static String accessToken;
+    private static String code;
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
         return CookieUtils.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
@@ -35,11 +36,12 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
         if (StringUtils.isNotBlank(redirectUriAfterLogin)) {
             CookieUtils.addCookie(response, REDIRECT_URI_PARAM_COOKIE_NAME, redirectUriAfterLogin, cookieExpireSeconds);
         }
-        String accessToken = response.getHeader("accessToken");
-        String code = response.getHeader("code");
 
-        CookieUtils.addCookie(response, "accessToken", accessToken, cookieExpireSeconds);
-        CookieUtils.addCookie(response, "code", code, cookieExpireSeconds);
+//        String accessToken = response.getHeader("accessToken");
+//        String code = response.getHeader("code");
+//
+//        CookieUtils.addCookie(response, "accessToken", accessToken, cookieExpireSeconds);
+//        CookieUtils.addCookie(response, "code", code, cookieExpireSeconds);
     }
 
     @Override
