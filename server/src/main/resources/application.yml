@@ -59,9 +59,9 @@ spring:
           clientSecret: 'PAZgffRuTr5fh89fBMJ0Gxd6DInXqYVt'
           clientAuthenticationMethod: post
           authorizationGrantType: authorization_code
-#          redirectUri: 'http://i8d210.p.ssafy.io:8081/oauth2/callback/kakao' #로컬 프론트
+          redirectUri: 'http://i8d210.p.ssafy.io:8081/oauth2/callback/kakao' #로컬 프론트
 #          redirectUri: 'http://localhost:8081/oauth2/callback/kakao' #내가 테스트
-          redirect-uri: 'https://i8d210.p.ssafy.io/oauth2/callback/kakao' #배포 프론트
+#          redirect-uri: 'https://i8d210.p.ssafy.io/oauth2/callback/kakao' #배포 프론트
           scope:
             - profile_nickname
             - profile_image
