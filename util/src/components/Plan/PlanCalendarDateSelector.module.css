@@ -1,125 +1,114 @@
-
-
 .date-selector-bar {
-    height: 36px;
-    border-radius: 10px;
-    display: flex;
-    transition-property: width left border opacity;
-    right: 2600px;
-    position: absolute;
-    right: 3000px;
-    /* background-color: rgba(154, 76, 249, 0.5); */
-    opacity: 70%;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  transition-property: width left border opacity;
+  right: 2600px;
+  position: absolute;
+  right: 3000px;
+  /* background-color: rgba(154, 76, 249, 0.5); */
+  opacity: 70%;
 }
 
 .date-selector-bar:hover {
-    /* background-color: rgba(154, 76, 249, 0.8); */
-    opacity: 100%;
+  /* background-color: rgba(154, 76, 249, 0.8); */
+  opacity: 100%;
 }
 
-
 .center-move-handler {
-    flex: 1;
-    
-    height: 36px;
-    cursor: pointer;
-    
+  flex: 1;
+
+  height: 36px;
+  cursor: pointer;
 }
 
 .center-swiper {
-    flex: 1;
-    
+  flex: 1;
 }
 
 .date-selector-bar:hover .end-date-string {
-    opacity: 255;
+  opacity: 255;
 }
 .date-selector-bar:hover .start-date-string {
-    opacity: 255;
-    
+  opacity: 255;
 }
 
-
-
 .end-date-string {
-    transition-property: opacity;
-    transition-duration: 0.3s;
-    opacity: 0;
-    width: 120px;
-    height: 36px;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    left: -17px;
-    font-size: 13px;
-    color:rgb(100, 100, 100);
-    user-select: none;
+  transition-property: opacity;
+  transition-duration: 0.3s;
+  opacity: 0;
+  width: 120px;
+  height: 36px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: -17px;
+  font-size: 13px;
+  color: rgb(100, 100, 100);
+  user-select: none;
 }
 
 .start-date-string {
-    transition-property: opacity;
-    transition-duration: 0.3s;
-    opacity: 0;
-    width: 120px;
-    height: 36px;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    left: -100px;
-    font-size: 13px;
-    color:rgb(100, 100, 100);
-    user-select: none;
+  transition-property: opacity;
+  transition-duration: 0.3s;
+  opacity: 0;
+  width: 120px;
+  height: 36px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: -100px;
+  font-size: 13px;
+  color: rgb(100, 100, 100);
+  user-select: none;
 }
 
 .resize-handler {
-    width: 2px;
-    height: 36px;
-    cursor:col-resize;
-    position: relative;
+  width: 2px;
+  height: 36px;
+  cursor: col-resize;
+  position: relative;
 }
 
-
-
 .left-resize {
-    border-radius: 30px 0px 0px 30px;
+  border-radius: 30px 0px 0px 30px;
 }
 
 .right-resize {
-    border-radius: 0px 30px 30px 0px;
+  border-radius: 0px 30px 30px 0px;
 }
 
-
 .on-mouse-block-left {
-    transition-property: opacity;
-    transition-duration: 0.3s;
-    opacity: 0;
-    background-color: white;
-    width: 5px;
-    height: 24px;
-    border-radius: 20px;
-    margin: 6px;;
-    position: absolute;
+  transition-property: opacity;
+  transition-duration: 0.3s;
+  opacity: 0;
+  background-color: white;
+  width: 5px;
+  height: 24px;
+  border-radius: 20px;
+  margin: 6px;
+  position: absolute;
 }
 
 .date-selector-bar:hover .on-mouse-block-left {
-    opacity: 60%;
+  opacity: 60%;
 }
 
 .on-mouse-block-right {
-    transition-property: opacity;
-    transition-duration: 0.3s;
-    opacity: 0;
-    background-color: white;
-    width: 5px;
-    height: 24px;
-    border-radius: 20px;
-    margin: 6px;;
-    position: absolute;
-    left:-15px;
+  transition-property: opacity;
+  transition-duration: 0.3s;
+  opacity: 0;
+  background-color: white;
+  width: 5px;
+  height: 24px;
+  border-radius: 20px;
+  margin: 6px;
+  position: absolute;
+  left: -15px;
 }
 
 .date-selector-bar:hover .on-mouse-block-right {
-    opacity: 60%;
+  opacity: 60%;
 }
