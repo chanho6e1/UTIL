@@ -11,7 +11,10 @@ import FixedModal from "../../UI/FixedModal/FixedModal";
 const feedCardItemList = (postList) => {
   return postList?.map((post) => {
     return (
-      <div key={`simple-feed-card-${post.postId}`} className={classes["card-wrapper"]}>
+      <div
+        key={`simple-feed-card-${post.postId}`}
+        className={classes["card-wrapper"]}
+      >
         <FeedCardItem
           id={post.postId}
           key={post.postId}

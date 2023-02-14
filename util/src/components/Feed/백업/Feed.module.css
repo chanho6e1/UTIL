@@ -7,11 +7,7 @@
   flex-wrap: wrap;
   text-align: start;
   /* box-sizing: border-box; */
-
-  
 }
-
-
 
 .user-recommend {
 }
@@ -32,9 +28,7 @@
 
   overflow: hidden;
   /* padding-left: 14px; */
-
 }
-
 
 .no-post {
   margin: 150px auto;
@@ -54,7 +48,6 @@
 
   .feed {
     width: 100vw;
-    
   }
 
   .card-wrapper {
@@ -80,8 +73,6 @@
   }
 }
 
-
 .card-wrapper {
   width: 300px;
-
 }
