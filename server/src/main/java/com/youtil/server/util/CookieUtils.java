@@ -1,5 +1,6 @@
 package com.youtil.server.util;
 
+import org.springframework.http.ResponseCookie;
 import org.springframework.util.SerializationUtils;
 
 import javax.servlet.http.Cookie;
@@ -31,7 +32,14 @@ public class CookieUtils {
         cookie.setMaxAge(maxAge);
         cookie.setSecure(true);
         response.addCookie(cookie);
-
+//        ResponseCookie cookie = ResponseCookie.from(name, value)
+//                .path("/")
+//                .sameSite("None")
+//                .httpOnly(false)
+//                .secure(true)
+//                .maxAge(maxAge)
+//                .build();
+//        response.addHeader("Set-Cookie", cookie.toString());
     }
 
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
