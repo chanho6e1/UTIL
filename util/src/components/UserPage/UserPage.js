@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Route, Routes, useLocation, useSearchParams, useParams } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  useLocation,
+  useSearchParams,
+  useParams,
+} from "react-router-dom";
 import classes from "./UserPage.module.css";
 import PostCardItem from "../UI/PostCard/PostCardItem";
 import TagDataList from "../UI/Tag/TagDataList";
@@ -69,7 +75,9 @@ const UserPageForm = (props) => {
   const [followingListCnt, setFollowingListCnt] = useState(null);
   const [followingModalState, setFollowingModalState] = useState(false);
   const [userTagList, setUserTagList] = useState([]);
-  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
+  const myData = useSelector(
+    (state) => state.userAuthSlice.userAuth.currentUser
+  );
   const criteria = ["date", "view", "like"];
   const [criteriaIdx, setCriteriaIdx] = useState(0);
   const [offset, setOffset] = useState(1);
@@ -133,14 +141,16 @@ const UserPageForm = (props) => {
         }, 500);
       });
     } else {
-      getUserPosts(props.id, criteria[criteriaIdx], page + 1, size).then((res) => {
-        setPostList((prev) => [...prev, ...res.content]);
-        setOffset(() => page + 1);
-        setTimeout(() => {
-          setIsLoading(false);
-          setFetchStart(() => false);
-        }, 500);
-      });
+      getUserPosts(props.id, criteria[criteriaIdx], page + 1, size).then(
+        (res) => {
+          setPostList((prev) => [...prev, ...res.content]);
+          setOffset(() => page + 1);
+          setTimeout(() => {
+            setIsLoading(false);
+            setFetchStart(() => false);
+          }, 500);
+        }
+      );
     }
   };
 
@@ -164,11 +174,13 @@ const UserPageForm = (props) => {
         setIsLoading(false);
       });
     } else {
-      getUserPosts(props.id, criteria[criteriaIdx], offset, size).then((res) => {
-        setPostList(() => res.content);
-        setTotalPage(() => res.totalPages);
-        setIsLoading(false);
-      });
+      getUserPosts(props.id, criteria[criteriaIdx], offset, size).then(
+        (res) => {
+          setPostList(() => res.content);
+          setTotalPage(() => res.totalPages);
+          setIsLoading(false);
+        }
+      );
     }
 
     // My Data API
@@ -264,25 +276,27 @@ const UserPageForm = (props) => {
     }
   };
 
-
   const pageChangeHandler = (event, page) => {
     fetchUserPostData(criteriaIdx, page, size);
-    searchParams.set("page", page)
-    setSearchParams(searchParams)
+    searchParams.set("page", page);
+    setSearchParams(searchParams);
     // setOffset(parseInt(searchParams.get("page")))
   };
-  
+
   // useEffect(() => {
   //   setOffset(parseInt(searchParams.get("page")))
   // }, [])
 
   useEffect(() => {
     // fetchUserPostData(criteriaIdx, offset, size);
-    if (offset !== searchParams.get("page") && searchParams.get("page") !== null) {
+    if (
+      offset !== searchParams.get("page") &&
+      searchParams.get("page") !== null
+    ) {
       fetchUserPostData(criteriaIdx, searchParams.get("page"), size);
     }
   });
-  
+
   // scroll event handler
   const handleScroll = () => {
     const scrollHeight = containerRef.current.scrollHeight;
@@ -380,21 +394,27 @@ const UserPageForm = (props) => {
                     >
                       팔로워
                     </div>
-                    <div className={classes[`follow-number`]}>{followerListCnt}명</div>
+                    <div className={classes[`follow-number`]}>
+                      {followerListCnt}명
+                    </div>
                     <div
                       className={classes[`follow-text`]}
                       onClick={() => setFollowingModalState(true)}
                     >
                       팔로우
                     </div>
-                    <div className={classes[`follow-number`]}>{followingListCnt}명</div>
+                    <div className={classes[`follow-number`]}>
+                      {followingListCnt}명
+                    </div>
                   </div>
 
                   {myData.userId !== props.id && followBtn(isFollowing)}
                 </div>
               </div>
               <div className={classes["user-column"]}>
-                <div className={classes["user-description"]}>{userData.discription}</div>
+                <div className={classes["user-description"]}>
+                  {userData.discription}
+                </div>
               </div>
             </div>
           </div>
@@ -421,7 +441,7 @@ const UserPageForm = (props) => {
       <div className={classes["line"]} />
     </React.Fragment>
   );
-  
+
   const [category, setCategory] = useState("전체 글");
 
   const categoryDropDownItems = {
@@ -473,7 +493,11 @@ const UserPageForm = (props) => {
         <div ref={postWrapperRef}>{postCardContainer(postList)}</div>
 
         <div className={classes[`pagination`]}>
-          <Pagination count={totalPage} onChange={pageChangeHandler} page={parseInt(offset)}/>
+          <Pagination
+            count={totalPage}
+            onChange={pageChangeHandler}
+            page={parseInt(offset)}
+          />
         </div>
       </Fragment>
     ) : (
@@ -486,13 +510,13 @@ const UserPageForm = (props) => {
         <PlanExpanded contracted={true} />
       </Card>
     </div>
-  )
+  );
 
   const planCards = (
     <div className={classes["plan-card-wrapper"]}>
       <PlanCard />
     </div>
-  )
+  );
 
   const postButton = (
     <div>
@@ -514,7 +538,7 @@ const UserPageForm = (props) => {
         <li className={classes["drop-down-li-tag"]} />글 작성
       </div>
     </div>
-  )
+  );
 
   return (
     <div ref={containerRef} className={classes["user-page"]}>
@@ -542,7 +566,9 @@ const UserPageForm = (props) => {
               {category}
             </div>
           </div> */}
-          {myData.userId === props.id && <Tab tabItems={tabItems} width={"200px"} height={"48px"} />}
+          {myData.userId === props.id && (
+            <Tab tabItems={tabItems} width={"200px"} height={"48px"} />
+          )}
 
           {myData.userId === props.id && postButton}
         </div>
@@ -561,7 +587,9 @@ const UserPageForm = (props) => {
 const UserPageSet = (props) => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
+  const myData = useSelector(
+    (state) => state.userAuthSlice.userAuth.currentUser
+  );
   // const [userId, setUserId] = useState(searchParams.get("user_id"));
   const [userData, setUserData] = useState([]);
   const params = useParams();
@@ -593,22 +621,34 @@ const UserPageSet = (props) => {
 };
 
 const UserPage = (props) => {
-  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
+  const myData = useSelector(
+    (state) => state.userAuthSlice.userAuth.currentUser
+  );
   return (
     <div>
       <div id="index-overlay-root"></div>
 
       <Routes>
         {/* <Route path="*" element={<UserPageForm id={userId === null ? myData.userId : userId} />} /> */}
-          <Route path="/" element={myData?.nickname && <Navigate to={`/index/${myData?.nickname}`}/>}/>
-          <Route path="index/" element={myData?.nickname && <Navigate to={`/index/${myData?.nickname}`}/>}/>
-          <Route path="index/:nickname/*" element={<UserPageSet/>}/>
+        <Route
+          path="/"
+          element={
+            myData?.nickname && <Navigate to={`/index/${myData?.nickname}`} />
+          }
+        />
+        <Route
+          path="index/"
+          element={
+            myData?.nickname && <Navigate to={`/index/${myData?.nickname}`} />
+          }
+        />
+        <Route path="index/:nickname/*" element={<UserPageSet />} />
 
         {/* <Route path="index/goal/:id" element={<GoalDetail />} />
           <Route path="index/post/:id" element={<DetailItem />} /> */}
-          <Route path="index/goal/:id" element={<GoalDetail />} />
-          <Route path="index/:nickname/post/:id" element={<DetailItem />} />
-          {/* <Route path="index/:nickname/m/modal/post/:id" element={<UserPageSet />} /> */}
+        <Route path="index/goal/:id" element={<GoalDetail />} />
+        <Route path="index/:nickname/post/:id" element={<DetailItem />} />
+        {/* <Route path="index/:nickname/m/modal/post/:id" element={<UserPageSet />} /> */}
 
         {/* `/${url}/${props.nickname}/m/modal/post/${props.id}` */}
         {/* <Route

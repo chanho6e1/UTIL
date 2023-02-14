@@ -13,7 +13,9 @@ const Search = (props) => {
   const location = useLocation();
   const [searchInput, setSearchInput] = useState("");
   const [dropDownLabel, setDropDownLabel] = useState(apiLabelList[0]);
-  const [dropDownCriteriaLabel, setDropDownCriteriaLabel] = useState(criteriaLabelList[0]);
+  const [dropDownCriteriaLabel, setDropDownCriteriaLabel] = useState(
+    criteriaLabelList[0]
+  );
 
   const [api, setApi] = useState(0);
   const [criteria, setCriteria] = useState(0);
@@ -89,7 +91,7 @@ const Search = (props) => {
           <div className={classes[`enter-search`]}>검색어를 입력하세요</div>
         ) : (
           // <SearchFeed api={api} searchInput={searchInput} criteria={criteria} />
-          <ExploreFeed feedList={feedList}/>
+          <ExploreFeed feedList={feedList} />
         )}
       </div>
     </div>
