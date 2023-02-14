@@ -38,8 +38,7 @@ public class CookieUtils {
 //                .secure(true)
 //                .maxAge(maxAge)
 //                .build();
-
-        response.addHeader("Set-Cookie", cookie.toString());
+//        response.addHeader("Set-Cookie", cookie.toString());
     }
 
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
