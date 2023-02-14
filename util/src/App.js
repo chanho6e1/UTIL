@@ -29,33 +29,33 @@ import UserProfileChange from "./components/UserProfileChangePage/UserProfileCha
 import ToastEditor from "./components/MarkdownEditor/ToastEditor";
 // import OAuth2RedirectHandler from './components/UserAuth/OAuth/OAuth2RedirectHandler';
 
-import { modifyPlanSliceActions } from "./redux/planSlice";
-import { recvIngPlanAPI } from "./api/Plan/recvIngPlanAPI";
-import { recvIngAllPlanAPI } from "./api/Plan/recvIngAllPlanAPI";
+import { modifyPlanSliceActions } from './redux/planSlice';
+import { recvIngPlanAPI } from './api/Plan/recvIngPlanAPI';
+import { recvIngAllPlanAPI } from './api/Plan/recvIngAllPlanAPI';
 
 const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const plans = useSelector((state) => state.planSlice.plans);
+  const userAuth = useSelector(state => state.userAuthSlice.userAuth)
 
   useEffect(() => {
-    loadCurrentlyLoggedInUser();
-  }, []);
+    loadCurrentlyLoggedInUser()
+  }, [])
+
 
   const loadCurrentlyLoggedInUser = () => {
     getCurrentUser()
-      .then((response) => {
-        console.log("getMy!!!");
-        dispatch(userAuthSliceActions.changeAuthenticated("true"));
-        dispatch(
-          userAuthSliceActions.changeCurrentUser(JSON.stringify(response.data))
-        );
-        dispatch(userAuthSliceActions.changeLoading("false"));
-      })
-      .catch((error) => {
-        dispatch(userAuthSliceActions.changeLoading("false"));
-      });
-  };
+    .then(response => {
+      console.log('getMy!!!')
+      dispatch(userAuthSliceActions.changeAuthenticated('true'))
+      dispatch(userAuthSliceActions.changeCurrentUser(JSON.stringify(response.data)))
+      dispatch(userAuthSliceActions.changeLoading('false'))
+    }).catch(error => {
+      dispatch(userAuthSliceActions.changeLoading('false'))
+    });    
+  }
+
 
   useEffect(() => {
     recvIngPlanAPI()
@@ -63,16 +63,16 @@ const App = () => {
         navigate("/login");
       })
       .then((res) => {
-        dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)));
-      });
+          dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+      })
     recvIngAllPlanAPI()
       .catch((err) => {
-        navigate("/login");
+          navigate('/login');
       })
       .then((res) => {
-        dispatch(modifyPlanSliceActions.responseAllPlans(JSON.stringify(res)));
-      });
-  }, []);
+          dispatch(modifyPlanSliceActions.responseAllPlans(JSON.stringify(res)))
+      })
+  }, [])
 
   const { pathname } = useLocation();
   const wrapRef = useRef(null);
@@ -95,35 +95,28 @@ const App = () => {
       {/* <div id="overlay-root" style={{zIndex: '9999'}}></div> */}
       <StackNotification />
       <div ref={wrapRef} className="wrap loaded">
-        {/* {plans && <Main />} */}
-        <Routes>
-          {/* <Route path="/goal/:id" element={<GoalDetail />} /> 
+      {/* {plans && <Main />} */}
+      <Routes>
+
+        {/* <Route path="/goal/:id" element={<GoalDetail />} /> 
         <Route path="/post/:id" element={<DetailItem />} />  */}
 
-          <Route path="/*" element={plans && <Main />} />
-          <Route path="/login" element={<SocialLogin />} />
-          <Route path="/oauth2/redirect" element={<OAuthRedirectHandler />} />
-          <Route path="/profile" element={<UserProfileChange />} />
-          <Route path="/create">
-            <Route
-              path="review"
-              element={<ToastEditor key={"review"} forReview={true} />}
-            />
-            <Route path="post" element={<ToastEditor key={"post"} />} />
-          </Route>
-          <Route path="/edit">
-            <Route
-              path="review/:id"
-              element={
-                <ToastEditor key={"review"} edit={true} forReview={true} />
-              }
-            />
-            <Route
-              path="post/:id"
-              element={<ToastEditor key={"post"} edit={true} />}
-            />
-          </Route>
-        </Routes>
+
+        <Route path="/*" element={userAuth?.currentUser != null && (userAuth?.currentUser?.nickname != null ? (plans && <Main />) : <Navigate to={'/profile'}/>)} />
+        <Route path="/login" element={<SocialLogin />} />
+        <Route path="/oauth2/redirect" element={<OAuthRedirectHandler />} /> 
+        <Route path="/profile" element={<UserProfileChange />} />
+        <Route path="/create" >
+          <Route path="review" element={<ToastEditor key={'review'} forReview={true}/>} />
+          <Route path="post" element={<ToastEditor key={'post'} />} />
+        </ Route>
+        <Route path="/edit" >
+          <Route path="review/:id" element={<ToastEditor key={'review'} edit={true} forReview={true}/>} />
+          <Route path="post/:id" element={<ToastEditor key={'post'} edit={true} />} />
+        </ Route>
+
+      </Routes>
+      
       </div>
     </div>
   );

@@ -8,6 +8,7 @@
   width: 300px;
 }
 
+
 @media screen and (max-width: 768px) {
   .feed-wrapper {
     width: 100%;
@@ -15,6 +16,7 @@
     padding: 14px;
     box-sizing: border-box;
     /* padding: 0px; */
+    
   }
 
   .feed-card-item-wrapper {
@@ -45,3 +47,5 @@
     grid-template-columns: repeat(5, 324px);
   }
 }
+
+

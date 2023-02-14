@@ -4,7 +4,6 @@ import classes from "./UserRecommend.module.css";
 import { getRecommendUser } from "../../api/UserProfile/getRecommendUser";
 import Button from "../UI/Button/Button";
 import Loading from "../UI/Loading/Loading";
-import personAddIcon from "../../img/PersonAddIcon.svg";
 
 const UserRecommend = (props) => {
   const [userList, setUserList] = useState([]);
@@ -15,12 +14,7 @@ const UserRecommend = (props) => {
 
   const UserRecommendCardList = (userList) => {
     return userList?.map((user) => {
-      return (
-        <UserRecommendCard
-          userData={user}
-          key={`user-recommend-card-${user.userId}`}
-        />
-      );
+      return <UserRecommendCard userData={user} key={`user-recommend-card-${user.userId}`} />;
     });
   };
 
@@ -35,42 +29,40 @@ const UserRecommend = (props) => {
     });
   };
 
-  useEffect(() => {
-    if (props.myTagList.length === 0) {
-    } else {
-      getRecommendUser(offset, size).then((res) => {
-        setUserList(() => res.content);
-      });
-    }
-  }, []);
-
-  const onWheelHandler = () => {
+  // scroll event handler
+  const handleScroll = () => {
     const scrollHeight = recRef.current.scrollHeight;
     const scrollTop = recRef.current.scrollTop;
     const clientHeight = recRef.current.clientHeight;
-    if (scrollTop + clientHeight >= scrollHeight - 10 && isLoading === false) {
+    if (scrollTop + clientHeight >= scrollHeight - 20 && isLoading === false) {
+      // 페이지 끝에 도달하면 추가 데이터를 받아온다
       fetchMoreData();
     }
   };
 
-  const altContents = () => {
-    const message = "관심 태그가 없어요\n마이 프로필에서 태그를 설정해 보세요";
-    return (
-      <div className={classes[`alt-wrapper`]}>
-        <div className={classes[`alt-message-icon`]}>
-          <img src={personAddIcon} />
-        </div>
-        <div className={classes[`alt-message-wrapper`]}>{message}</div>
-      </div>
-    );
-  };
+  useEffect(() => {
+    getRecommendUser(offset, size).then((res) => {
+      setUserList(() => res.content);
+    });
+  }, []);
+
+  useEffect(() => {
+    // scroll event listener 등록
+    if (recRef.current !== null) {
+      recRef.current.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      // scroll event listener 해제
+      if (recRef.current !== null) {
+        recRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  });
 
   return (
     <div className={classes[`recommend-modal`]}>
       <div className={classes[`recommend-upper`]}>
-        <div className={classes[`recommend-text`]}>
-          관심 태그를 기반으로 추천해드려요!
-        </div>
+        <div className={classes[`recommend-text`]}>관심 태그를 기반으로 추천해드려요!</div>
         <Button
           className={classes.button}
           onClick={() => {
@@ -81,13 +73,9 @@ const UserRecommend = (props) => {
           건너뛰기
         </Button>
       </div>
-      <div
-        className={classes[`recommend-wrapper`]}
-        ref={recRef}
-        onWheel={onWheelHandler}
-      >
+      <div className={classes[`recommend-wrapper`]} ref={recRef}>
         <div className={classes[`content-wrapper`]}>
-          {userList.length === 0 ? altContents() : UserRecommendCardList(userList)}
+          {UserRecommendCardList(userList)}
           {isLoading && <div className={classes.loading}>{Loading()}</div>}
         </div>
       </div>

@@ -1,4 +1,5 @@
 @media all and (max-width: 1080px) {
+
   .body-header {
     padding-right: 14px;
   }
@@ -329,7 +330,7 @@
   flex-direction: column; */
   flex-grow: 1;
   overflow: hidden;
-
+  
   /* align-items: center; */
   /* width: 100%; */
   /* padding: 14px; */
@@ -397,3 +398,5 @@
   height: 50px;
   background-color: white;
 }
+
+

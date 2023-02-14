@@ -2,19 +2,20 @@ import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 import { recvTodosAPI } from "./recvTodosAPI";
 
+
 export const editTodosAPI = (goalId, data) => {
-  return axios({
-    method: "put",
+    return axios({
+    method: 'put',
     url: `${API_BASE_URL}/todos/dates/${goalId}`,
     headers: {
-      Authorization: TOKEN(),
+        Authorization: TOKEN()
     },
-    data: data,
-  })
+    data: data
+    })
     .then((res) => {
-      return recvTodosAPI(goalId);
+        return recvTodosAPI(goalId)
     })
     .catch((err) => {
-      throw err;
-    });
-};
+        throw err
+    })
+}

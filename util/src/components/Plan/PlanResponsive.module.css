@@ -1,17 +1,21 @@
+
 @media all and (max-width: 480px) {
-  .mobile {
-    display: block;
-  }
-  .pc {
-    display: none;
-  }
+    .mobile {
+        display: block;
+    }
+    .pc {
+        display: none;
+    }
+
 }
 
 @media all and (min-width: 480px) {
-  .mobile {
-    display: none;
-  }
-  .pc {
-    display: block;
-  }
+
+    .mobile {
+        display: none;
+    }
+    .pc {
+        display: block;
+    }
+
 }

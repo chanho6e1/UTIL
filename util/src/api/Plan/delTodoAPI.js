@@ -4,12 +4,17 @@ import { recvTodosAPI } from "./recvTodosAPI";
 
 export const delTodoAPI = (todoId, goalId) => {
   return axios({
-    method: "delete",
+    method: 'delete',
     url: `${API_BASE_URL}/todos/${todoId}`,
     headers: {
-      Authorization: TOKEN(),
+        Authorization: TOKEN()
     },
-  }).then((res) => {
-    return recvTodosAPI(goalId);
-  });
-};
+    })
+    .then((res) => {
+        return recvTodosAPI(goalId)
+    })
+}
+
+
+
+

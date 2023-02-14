@@ -1,47 +1,47 @@
 .plan-item-wrapper {
-  display: flex;
-  width: 100%;
-  padding: 12px;
-  box-sizing: border-box;
-  height: 48px;
-  align-items: center;
-  transition-property: background-color;
-  transition-duration: 0.3s;
-  cursor: pointer;
+    display: flex;
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    height: 48px;
+    align-items: center;
+    transition-property: background-color;
+    transition-duration: 0.3s;
+    cursor: pointer;
 }
 
 .plan-item-wrapper:hover {
-  background-color: rgb(230, 230, 238);
+    background-color: rgb(230, 230, 238);
 }
 
 .plan-item-text {
-  flex: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .even {
-  background-color: rgb(213, 213, 218, 0.2);
+    background-color: rgb(213, 213, 218, 0.2);
 }
 
 .title-text {
-  text-align: left;
-  width: 140px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  word-break: break-all;
+    text-align: left;
+    width: 140px;
+    overflow: hidden;  		
+    text-overflow: ellipsis;  	
+    white-space: nowrap; 		
+    word-break:break-all
 }
 
 .small-text {
-  font-size: 12px;
-  color: rgb(120, 120, 120);
+    font-size: 12px;;
+    color: rgb(120, 120, 120);
 }
 
 .arrow-icon {
-  margin-right: 12px;
-  opacity: 50%;
-  transition-property: background-color transform;
-  transition-duration: 0.3s;
+    margin-right: 12px;
+    opacity: 50%;
+    transition-property: background-color transform;
+    transition-duration: 0.3s;
 }

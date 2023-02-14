@@ -47,48 +47,9 @@
   bottom: 0;
 }
 
-.alt-wrapper {
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin-top: 80px;
-}
-
-.alt-message-icon {
-  display: flex;
-  margin-right: 14px;
-}
-
-.alt-message-wrapper {
-  display: flex;
-  font-size: 24px;
-  font-weight: 700;
-  white-space: pre-line;
-  color: rgb(130, 130, 130);
-}
-
 @media screen and (max-width: 486px) {
   .recommend-text {
     font-size: 0.8rem;
     font-weight: 600;
-  }
-
-  .alt-wrapper {
-    display: flex;
-    width: 80%;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin-top: 80px;
-  }
-
-  .alt-message-wrapper {
-    display: flex;
-    font-size: 16px;
-    font-weight: 700;
-    white-space: pre-line;
-    color: rgb(130, 130, 130);
   }
 }

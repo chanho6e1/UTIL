@@ -1,14 +1,14 @@
 .dock-wrapper {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .logo-text {
-  font-family: "Pattaya", sans-serif;
-  color: rgba(154, 76, 249, 0.8);
+    font-family: 'Pattaya', sans-serif;
+    color: rgba(154, 76, 249, 0.8);
 }
 
 .logo-icon {
-  opacity: 80%;
-  transform: rotate(5deg);
+    opacity: 80%;
+    transform: rotate( 5deg );
 }

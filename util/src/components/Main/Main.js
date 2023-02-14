@@ -24,15 +24,16 @@ const Main = (props) => {
   const userAuth = useSelector((state) => state.userAuthSlice.userAuth);
 
   const postData = {
-    content: [<UserPage />, <Explore />, <PlanResponsive />, <Search />],
+    content: [
+      <UserPage />,
+      <Explore />,
+      <PlanResponsive />,
+      <Search />,
+    ],
     //
     dock: {
       logoContracted: (
-        <img
-          className={styles["logo-icon"]}
-          src={logo}
-          style={{ width: "96px", height: "auto" }}
-        />
+        <img className={styles["logo-icon"]} src={logo} style={{ width: "96px", height: "auto" }} />
       ),
       logoExpanded: <div className={styles["logo-text"]}>util</div>,
       dockContracted: [Icons.home, Icons.feed, Icons.compass, Icons.search],

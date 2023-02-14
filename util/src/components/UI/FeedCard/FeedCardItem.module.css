@@ -1,6 +1,6 @@
 .card {
-  margin-bottom: 20px;
-  height: 400px;
+  margin-bottom:20px;
+  height:400px;
 }
 
 .feedcarditem {
@@ -12,7 +12,7 @@
   /* border: 1px solid #c9c9c9; */
   /* border-radius: 20px; */
   font-family: Inter;
-
+  
   background-color: white;
   /* margin: 10px; */
   overflow: hidden;
@@ -35,6 +35,8 @@
 .feedcard-text-contents {
   padding: 14px 10px 0px 10px;
   cursor: pointer;
+  
+
 }
 
 .title {
