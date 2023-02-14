@@ -10,10 +10,6 @@ import { Avatar, Pagination } from "@mui/material";
 import Tab from "../UI/Tab/Tab";
 
 const GoalDetailMobile = (props) => {
-  const [reviewView, goreviewView] = useState(true);
-  const [todosView, gotodosView] = useState(false);
-  const [postView, gopostView] = useState(false);
-  const [tilsArr, settilsArr] = useState([]);
   const [category, setCategory] = useState("회고록");
 
   const tabItems = [
@@ -39,28 +35,32 @@ const GoalDetailMobile = (props) => {
 
   const categoryView1 =
     category === "Check List" ? (
-      <PlanCardItem plan={props.plan} />
+      <div className={classes["goal-detail-mobile-content"]}>
+        <PlanCardItem plan={props.plan} />
+      </div>
     ) : (
       <Fragment>
-        <div
-          ref={props.postWrapperRef}
-          className={classes["goal-detail-mobile-feedcard"]}
-        >
-          {props.postList?.map((til) => (
-            <FeedCardItem
-              id={til.postId}
-              key={til.postId}
-              thumbnail={til.thumbnail}
-              title={til.title}
-              contents={til.content}
-              likeStatusSize={til.likeStatusSize}
-              likeStatus={til.likeStatus}
-              bookmarkStatus={til.bookmarkStatus}
-              profileImg={til.writerInfo.profileImg}
-              nickname={til.writerInfo.nickname}
-              createdDate={til.createdDate}
-            />
-          ))}
+        <div className={classes["goal-detail-mobile-content"]}>
+          <div
+            ref={props.postWrapperRef}
+            className={classes["goal-detail-mobile-feedcard"]}
+          >
+            {props.postList?.map((til) => (
+              <FeedCardItem
+                id={til.postId}
+                key={til.postId}
+                thumbnail={til.thumbnail}
+                title={til.title}
+                contents={til.content}
+                likeStatusSize={til.likeStatusSize}
+                likeStatus={til.likeStatus}
+                bookmarkStatus={til.bookmarkStatus}
+                profileImg={til.writerInfo.profileImg}
+                nickname={til.writerInfo.nickname}
+                createdDate={til.createdDate}
+              />
+            ))}
+          </div>
         </div>
       </Fragment>
     );
@@ -72,30 +72,6 @@ const GoalDetailMobile = (props) => {
       categoryView1
     );
 
-  useEffect(() => {
-    if (props.tils) {
-      settilsArr(Object.values(props.tils));
-    }
-  }, [props.tils]);
-
-  const reviewViewHandler = () => {
-    gotodosView(false);
-    gopostView(false);
-    goreviewView(true);
-  };
-
-  const todosViewHandler = () => {
-    gopostView(false);
-    goreviewView(false);
-    gotodosView(true);
-  };
-
-  const postViewHandler = () => {
-    goreviewView(false);
-    gotodosView(false);
-    gopostView(true);
-  };
-
   const bigView = (
     <div className={classes["goal-detail-mobile"]}>
       <div>
@@ -106,7 +82,11 @@ const GoalDetailMobile = (props) => {
       </div>
       <div className={classes["goal-detail-mobile-content"]}>
         <div className={classes["goal-detail-mobile-content-in"]}>
-          <GoalDetailLReview reviews={props.reviews[props.plan?.goalId]} />
+          <GoalDetailLReview
+            reviews={props.reviews[props.plan?.goalId]}
+            completeToggle={props.completeToggle}
+            completeButton={props.completeButton}
+          />
           <div />
           <div className={classes["goal-detail-r-out"]}>
             <GoalDetailRTil
@@ -126,15 +106,18 @@ const GoalDetailMobile = (props) => {
     <div className={classes["goal-detail-mobile"]}>
       <div>
         <div className={classes["goal-detail-title"]}>{props.plan?.title}</div>
-        <div className={classes["goal-detail-title-date"]}>
-          {props.plan?.startDate} ~ {props.plan?.endDate}
+        <div className={classes["goal-detail-title-date-wrapper"]}>
+          <div className={classes["goal-detail-title-date"]}>
+            {props.plan?.startDate} ~ {props.plan?.endDate}
+          </div>
+          <div onClick={props.completeToggle} className={classes["plan-state"]}>{props.completeButton}</div>
         </div>
       </div>
       <div className={classes["goal-detail-mobile-content-box"]}>
         <div className={classes["goal-detail-mobile-content-tap"]}>
-          <Tab tabItems={tabItems} width={"300px"} height={"48px"} />
+          <Tab tabItems={tabItems} width={"100%"} height={"48px"} />
         </div>
-        <div className={classes["goal-detail-mobile-content"]}>
+        <div>
           {categoryView2}
         </div>
       </div>
