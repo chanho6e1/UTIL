@@ -10,7 +10,6 @@ import { useLocation } from "react-router-dom";
 const ExploreFeed = (props) => {
   const location = useLocation();
 
-
   const feedCardItemList = props.feedList.map((post) => {
     return (
       <div className={classes["feed-card-item-wrapper"]}>

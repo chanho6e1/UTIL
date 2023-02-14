@@ -49,21 +49,23 @@ const UserProfileChange = (props) => {
               // 성공 시 마이 유틸
               if (res.status === 200) {
                 // window.location.reload();
-                
-                
-                getCurrentUser()
-                  .then(response => {
-                    console.log('getMy!!!')
-                    
-                    dispatch(userAuthSliceActions.changeAuthenticated('true'))
-                    dispatch(userAuthSliceActions.changeCurrentUser(JSON.stringify(response.data)))
-                    dispatch(userAuthSliceActions.changeLoading('false'))
-                    navigate(`/index`);
 
-                  }).catch(error => {
-                    dispatch(userAuthSliceActions.changeLoading('false'))
-                  });    
-                
+                getCurrentUser()
+                  .then((response) => {
+                    console.log("getMy!!!");
+
+                    dispatch(userAuthSliceActions.changeAuthenticated("true"));
+                    dispatch(
+                      userAuthSliceActions.changeCurrentUser(
+                        JSON.stringify(response.data)
+                      )
+                    );
+                    dispatch(userAuthSliceActions.changeLoading("false"));
+                    navigate(`/index`);
+                  })
+                  .catch((error) => {
+                    dispatch(userAuthSliceActions.changeLoading("false"));
+                  });
               }
             });
           } else {
