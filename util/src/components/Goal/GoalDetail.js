@@ -192,18 +192,16 @@ const GoalDetailShow = (props) => {
         src={warning}
       />
       <div>
-        <p style={{ lineHeight: "40%" }}>
-          아직 완료되지 않은 TODO가 있습니다.
-        </p>
+        <p style={{ lineHeight: "40%" }}>아직 완료되지 않은 TODO가 있습니다.</p>
       </div>
     </div>
   );
-    
+
   const completeToggle = () => {
     detailAllTodosAPI(props.idx).then((res) => {
       if (res === true) {
         detailGoalCompleteAPI(props.idx).then((res) => {
-          setComplete(res)
+          setComplete(res);
         });
       } else {
         setNotiContent(errorMessage);
@@ -218,7 +216,7 @@ const GoalDetailShow = (props) => {
       startDate={props.plans[props.idx].startDate}
       endDate={props.plans[props.idx].endDate}
     />
-  )
+  );
 
   return (
     <div ref={containerRef} className={classes["goal-detail"]}>
@@ -265,7 +263,7 @@ const GoalDetailShow = (props) => {
             pageChangeHandler={pageChangeHandler}
             postList={postList}
             postWrapperRef={postWrapperRef}
-            completeToggle={completeToggle}       
+            completeToggle={completeToggle}
             completeButton={completeButton}
           />
         )}
