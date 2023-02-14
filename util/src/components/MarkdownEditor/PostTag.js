@@ -24,7 +24,7 @@ const PostTag = (props) => {
       setFrontData([])
       props?.editTags?.map((el, idx) => {
         setFrontData((prev) => [...prev, el.tagName])
-        
+        props.setTags((prev) => [...prev, el.tagName])
       })
     }
   }, [])

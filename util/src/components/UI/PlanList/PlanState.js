@@ -4,25 +4,25 @@ import classes from "./PlanList.module.css"
 const PlanState = (props) => {
   const planComplete = (
     <div className={classes['planComplete-wrapper']}>
-      완료
+      완료됨
     </div>
   )
   
   const planUnComplete = (
     <div className={classes['planUnComplete-wrapper']}>
-      미완
+      미완료
     </div>
   )
 
   const planRunning = (
     <div className={classes['planRunning-wrapper']}>
-      진행
+      진행중
     </div>
   )
   
   const plancomming = (
     <div className={classes['plancomming-wrapper']}>
-      예정
+      예정됨
     </div>
   )
   

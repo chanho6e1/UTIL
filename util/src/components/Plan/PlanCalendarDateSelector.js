@@ -139,8 +139,8 @@ const PlanCalendarDateSelector = (props) => {
     }
 
 
-  }, [new Date(props.plan.startDate) != initialStartDate, new Date(props.plan.endDate) != initialEndDate])
-
+  }, [initialStartDate, initialEndDate])
+  // [new Date(props.plan.startDate) != initialStartDate, new Date(props.plan.endDate) != initialEndDate]
 
   const transferMoveTodo = (distance, reverse) => {
     recvTodosAPI(props.plan.goalId)
@@ -161,7 +161,7 @@ const PlanCalendarDateSelector = (props) => {
           goalId: props.plan.goalId,
           data: res
         }
-        console.log('PlanCalendarDateSelector : editTodosAPI')
+        // console.log('PlanCalendarDateSelector : editTodosAPI')
         dispatch(modifyPlanSliceActions.responseTodos(JSON.stringify(processing)))
       })
       .then((res) => {
@@ -349,7 +349,9 @@ const PlanCalendarDateSelector = (props) => {
     if (todosPeriod) {
       if (positionx > 0) {
         if (updatingStartDate >= minDate) {
-          setInitialStartDate(() => minDate)
+          const dateCorrection = minDate
+          dateCorrection.setDate(dateCorrection.getDate() - 1)
+          setInitialStartDate(() => dateCorrection)
           setAlertNotiState(true)
           // setStartWidth()
         }
@@ -388,6 +390,8 @@ const PlanCalendarDateSelector = (props) => {
     if (todosPeriod) {
       if (positionx < 0) {
         if (updatingEndDate <= maxDate) {
+          const dateCorrection = maxDate
+          dateCorrection.setDate(dateCorrection.getDate() + 1)
           setInitialEndDate(() => maxDate)
           setAlertNotiState(true)
           // setStartWidth()

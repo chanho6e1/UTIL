@@ -10,7 +10,7 @@ function Card(props) {
   return (
     // 감싸고자 하는 내용이 들어갈 {props.children} 코드를 최상위 요소 바로 아래에 삽입해야 한다.
     // 클래스 이름을 위에서 정의한 classes 상수로 입력
-    <div className={classes}>
+    <div className={classes} onClick={props.onClick}>
       {props.children}
     </div>
   )

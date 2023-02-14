@@ -42,7 +42,6 @@ const ExploreFeed = (props) => {
         height={"400px"}
         overflow={"hidden"}
       />
-
       <div className={classes["feed-wrapper"]}>{feedCardItemList}</div>
     </Fragment>
   );

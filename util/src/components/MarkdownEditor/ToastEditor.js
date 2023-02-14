@@ -38,6 +38,9 @@ import { editPostAPI } from '../../api/Post/editPostAPI';
 import { recvIsAllTodosDoneAPI } from '../../api/Plan/recvIsAllTodosDoneAPI';
 
 
+import HtmlToMarkdown from './HtmlToMarkdown';
+
+
 
 const ToastEditorForm = (props) => {
   const editorRef = useRef()
@@ -53,6 +56,7 @@ const ToastEditorForm = (props) => {
   const [scope, setScope] = useState()
   const [bindedGoal, setBindedGoal] = useState(searchParams.get('goal_id') ? searchParams.get('goal_id') : null)
   const [queryString, setQueryString] = useState({goal:null, takeStep:null})
+  
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -309,7 +313,7 @@ const ToastEditorForm = (props) => {
       <Editor
         ref={editorRef}
         language='ko-KR'
-        initialValue={props.editContent.content || ' '} // content는 글 수정시 사용
+        initialValue={props.editInitialContent || ' '} // content는 글 수정시 사용
         placeholder="내용을 입력해주세요."
         previewStyle={`${editorWrapperRef?.current?.clientWidth > 470 ? "vertical" : "tab"}`} // 미리보기 스타일 지정
         height="100%" // 에디터 창 높이
@@ -333,7 +337,7 @@ const ToastEditorForm = (props) => {
           }
         }}
       ></Editor>
-    
+      
     </div>
   );
 }
@@ -344,6 +348,7 @@ const ToastEditor = (props) => {
   const [editTags, setEditTags] = useState(null)
   const params = useParams()
   const editIdx = params.id
+  const [editInitialContent, setEditInitialContent] = useState(null)
 
   useEffect(() => {
 
@@ -376,7 +381,8 @@ const ToastEditor = (props) => {
 
   return (
     <React.Fragment>
-      {editContent !== null && <ToastEditorForm editContent={editContent} editTags={editTags} forReview={props.forReview} edit={props.edit} editIdx={editIdx} />}
+      {editContent?.content && <HtmlToMarkdown content={editContent?.content} setEditInitialContent={setEditInitialContent}  />}
+      {(props.edit !== true || editInitialContent !== null) && <ToastEditorForm editContent={editContent} editInitialContent={editInitialContent} editTags={editTags} forReview={props.forReview} edit={props.edit} editIdx={editIdx} />}
     </React.Fragment>
     
   )

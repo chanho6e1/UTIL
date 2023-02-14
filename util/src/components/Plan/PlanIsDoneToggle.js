@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import complete from "../../img/Complete.png"
 import styles from './PlanIsDoneToggle.module.css'
 import { recvTodayTodosAPI } from "../../api/Plan/recvTodayTodosAPI";
+import { recvIngPlanAPI } from "../../api/Plan/recvIngPlanAPI";
 
 
 const DoneModalForm = (props) => {
@@ -83,6 +84,23 @@ const PlanIsDoneToggle = (props) => {
 
     const planDone = () => {
         editIsPlanDoneAPI(props.plan.goalId)
+        .then((res) => {
+            setNotiContent(message3)
+            setDoneNotiState(true)
+            recvIngPlanAPI()
+            .catch((err) => {
+                console.log('PlanIsDoneToggle : recvIngPlanAPI => ', err)
+            })
+            .then((res) => {
+                dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
+                
+            })
+            
+        })
+        .catch((err) => {
+            console.log('PlanIsDoneToggle : editIsPlanDoneAPI => ', err)
+        })
+        
         
     }
 
@@ -90,6 +108,8 @@ const PlanIsDoneToggle = (props) => {
         const url = `/create/post?goal_id=${props.plan.goalId}${isPlanDone ? '&ask_done=true' : ''}&step=true`
         navigate(url)
     }
+
+    
 
 
     const message1 = (
@@ -113,6 +133,16 @@ const PlanIsDoneToggle = (props) => {
             </div>
         </div>
     )
+
+    const message3 = (
+        <div style={{display:'flex', justifyContent:'space-evenly', alignItems:'center'}}>
+          <img style={{width:'40px', height:'40px', marginRight:'12px'}} src={complete} />
+          <div>
+            <p style={{lineHeight: '40%'}}>축하드립니다!</p>
+            <p style={{lineHeight: '40%'}}>목표를 완료하였습니다!</p>
+          </div>
+        </div>
+      )
 
 
     const [doneModalState, setDoneModalState] = useState(false)

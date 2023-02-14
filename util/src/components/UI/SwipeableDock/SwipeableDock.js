@@ -51,12 +51,9 @@ const SwipeableDock = (props) => {
   // }, [urlLib, location.pathname])
 
 
-  const resize = () => {
-    if (indicatorRef?.current !== null) {
-      indicatorRef.current.style.width = dockWrapperRef.current.clientWidth / postData.url.length + 'px'
-      setIndicatorWidth(dockWrapperRef.current.clientWidth / postData.url.length)
-    }
-  }
+  // const resize = () => {
+    
+  // }
 
 
   useEffect(() => {
@@ -68,6 +65,11 @@ const SwipeableDock = (props) => {
       if (props.parentRef.current.clientWidth) {
         movingDiv.current.style.transitionDuration = '0s'
         movingDiv.current.style.transform = `translateX(${-props.parentRef.current.clientWidth * (contentCount - 1)}px)`
+      }
+      if (indicatorRef?.current !== null) {
+        indicatorRef.current.style.width = dockWrapperRef.current.clientWidth / postData.url.length + 'px'
+        setIndicatorWidth(dockWrapperRef.current.clientWidth / postData.url.length)
+        indicatorRef.current.style.left = (dockWrapperRef.current.clientWidth / postData.url.length) * (contentCount - 1) + 'px'
       }
     }
 
