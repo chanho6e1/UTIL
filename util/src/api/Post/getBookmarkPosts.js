@@ -1,11 +1,10 @@
 import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
-export const getUserDataByNickname = (nickname) => {
+export const getBookmarkPosts = (criteria, offset, size) => {
   return axios({
     method: "get",
-    // url: `${API_BASE_URL}/user/search/${nickname}`,
-    url: `http://i8d210.p.ssafy.io:8081/api/user/search/${nickname}`,
+    url: `${API_BASE_URL}/posts/bookmarks?criteria=${criteria}&offset=${offset}&size=${size}`,
     headers: {
       Authorization: TOKEN(),
     },
@@ -16,6 +15,6 @@ export const getUserDataByNickname = (nickname) => {
     .catch((err) => {
       console.log(err);
       console.log(TOKEN());
-      console.log("유저 정보 조회에 실패하였습니다.");
+      console.log("게시물 목록 조회에 실패하였습니다.");
     });
 };
