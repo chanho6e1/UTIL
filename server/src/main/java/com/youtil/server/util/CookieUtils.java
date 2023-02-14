@@ -30,7 +30,7 @@ public class CookieUtils {
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setMaxAge(maxAge);
-        cookie.setSecure(true);
+//        cookie.setSecure(true);
         response.addCookie(cookie);
 //        ResponseCookie cookie = ResponseCookie.from(name, value)
 //                .path("/")
