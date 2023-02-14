@@ -12,14 +12,8 @@
     align-items: center;
     border-radius: 1rem;
     overflow: hidden; */
-    background: linear-gradient(
-      120deg,
-      #e5e5e5 30%,
-      #f0f0f0 38%,
-      #f0f0f0 40%,
-      #e5e5e5 48%
-    );
-
+    background: linear-gradient(120deg, #e5e5e5 30%, #f0f0f0 38%, #f0f0f0 40%, #e5e5e5 48%);
+    
     background-size: 700% 200%;
     background-position: 100% 0;
     animation: load 3s infinite;
@@ -39,7 +33,9 @@
     background-size: 700% 200%;
     background-position: 100% 0;
     animation: load 3s infinite; */
+
   }
+  
 }
 
 @media all and (min-width: 1080px) {
@@ -61,47 +57,37 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: linear-gradient(
-      120deg,
-      #e5e5e5 30%,
-      #f0f0f0 38%,
-      #f0f0f0 40%,
-      #e5e5e5 48%
-    );
+    background: linear-gradient(120deg, #e5e5e5 30%, #f0f0f0 38%, #f0f0f0 40%, #e5e5e5 48%);
     border-radius: 1rem;
     background-size: 700% 200%;
     background-position: 100% 0;
     animation: load 3s infinite;
     margin-right: 8px;
   }
-
+  
   .thumbnail-area {
     display: flex;
     align-items: center;
     width: 300px;
     border-radius: 0 20px 20px 0;
-    background: linear-gradient(
-      120deg,
-      #e5e5e5 30%,
-      #f0f0f0 38%,
-      #f0f0f0 40%,
-      #e5e5e5 48%
-    );
+    background: linear-gradient(120deg, #e5e5e5 30%, #f0f0f0 38%, #f0f0f0 40%, #e5e5e5 48%);
     border-radius: 1rem;
     background-size: 700% 200%;
     background-position: 100% 0;
     animation: load 3s infinite;
   }
+
+
+  
 }
 
+
+
+
+
+
 .animation {
-  background: linear-gradient(
-    120deg,
-    #e5e5e5 30%,
-    #f0f0f0 38%,
-    #f0f0f0 40%,
-    #e5e5e5 48%
-  );
+  background: linear-gradient(120deg, #e5e5e5 30%, #f0f0f0 38%, #f0f0f0 40%, #e5e5e5 48%);
   border-radius: 1rem;
   background-size: 700% 200%;
   background-position: 100% 0;
@@ -119,8 +105,9 @@
   transition-property: opacity;
   transition-duration: 0.3s;
   width: 100%;
+
 }
 
 .li-tag {
-  list-style-type: none;
+  list-style-type:none;
 }

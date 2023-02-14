@@ -3,23 +3,26 @@ import axios from "axios";
 
 import { recvIngPlanAPI } from "./recvIngPlanAPI";
 
+
 export const editPlanAPI = (goalId, data) => {
-  return axios({
-    method: "put",
+    return axios({
+    method: 'put',
     url: `${API_BASE_URL}/goals/${goalId}`,
     headers: {
-      Authorization: TOKEN(),
+        Authorization: TOKEN(),
     },
     data: {
-      startDate: data.startDate,
-      endDate: data.endDate,
-      title: data.title,
+
+        startDate: data.startDate,
+        endDate: data.endDate,
+        title: data.title,
     },
-  })
+    })
     .then((res) => {
-      return recvIngPlanAPI();
+        return recvIngPlanAPI()
     })
     .catch((err) => {
-      throw err;
-    });
-};
+        throw err
+    })
+}
+

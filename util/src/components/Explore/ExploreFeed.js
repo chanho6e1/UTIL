@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 const ExploreFeed = (props) => {
   const location = useLocation();
 
+
   const feedCardItemList = props.feedList.map((post) => {
     return (
       <div className={classes["feed-card-item-wrapper"]}>
@@ -36,12 +37,11 @@ const ExploreFeed = (props) => {
       <FixedModal
         modalState={props.modalState}
         stateHandler={props.setModalState}
-        content={<UserRecommend myTagList={props.myTagList} />}
+        content={<UserRecommend />}
         width={"80vh"}
         height={"400px"}
         overflow={"hidden"}
       />
-
       <div className={classes["feed-wrapper"]}>{feedCardItemList}</div>
     </Fragment>
   );

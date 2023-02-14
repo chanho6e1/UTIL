@@ -81,7 +81,10 @@ const FeedCardItem = (props) => {
   const url = location.pathname.split("/")[1];
   const postClickHandler = () => {
     if (document.body.clientWidth > 1080) {
-      navigate(`/${url}/${props.nickname}/post/${props.id}`);
+      // navigate(`/${url}/${props.nickname}/post/${props.id}`);
+
+      navigate(`/${url}/${props.nickname}/m/modal/post/${props.id}`);
+      setShowModal(true);
     } else {
       navigate(`/${url}/${props.nickname}/m/modal/post/${props.id}`);
       setShowModal(true);
@@ -148,17 +151,12 @@ const FeedCardItem = (props) => {
               >
                 <img src={isLike ? likeIconFill : likeIconFlat} />
               </IconButton>
-              <div className={classes[`like-count`]}>
-                {displayLikeStatusSize(likeStatusSize)}
-              </div>
+              <div className={classes[`like-count`]}>{displayLikeStatusSize(likeStatusSize)}</div>
             </div>
           </div>
         </div>
         <div className={classes["feedcard-lower-contents"]}>
-          <div
-            className={classes[`profile-img-nickname`]}
-            onClick={nicknameClickHandler}
-          >
+          <div className={classes[`profile-img-nickname`]} onClick={nicknameClickHandler}>
             <ThemeProvider theme={avatarTheme}>
               <Avatar
                 src={props.profileImg}

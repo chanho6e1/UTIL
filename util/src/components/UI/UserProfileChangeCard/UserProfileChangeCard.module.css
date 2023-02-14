@@ -1,19 +1,26 @@
 .userprofile {
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 30%;
   background-color: white;
   margin: 10px auto;
   padding: 20px;
 }
 
+.userprofile-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .header {
   display: flex;
-  justify-content: space-around;
+  justify-content: left;
   align-items: center;
-  width: 60%;
+  width: 100%;
   text-align: center;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   font-weight: bold;
   font-size: xx-large;
 }
@@ -49,7 +56,7 @@
 }
 
 .userdata {
-  width: 60%;
+  width: 100%;
   text-align: center;
   margin: 0 auto;
 }
@@ -90,7 +97,7 @@
   background-color: rgb(170, 220, 190);
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
   .userprofile {
     justify-content: center;
     align-items: center;
@@ -99,7 +106,7 @@
     box-shadow: none;
   }
   .header {
-    width: 80%;
+    /* width: 80%; */
     font-size: x-large;
   }
   .userdata {
@@ -107,28 +114,3 @@
   }
 }
 
-@media screen and (min-width: 769px) and (max-width: 1200px) {
-  .userprofile {
-    justify-content: center;
-    align-items: center;
-    width: 80%;
-    background-color: white;
-    margin: 10px auto;
-    padding: 20px;
-  }
-  .header {
-    width: 70%;
-  }
-  .userdata {
-    width: 80%;
-  }
-}
-
-@media screen and (min-width: 1201px) and (max-width: 1500px) {
-  .userprofile {
-    width: 70%;
-  }
-  .header {
-    width: 60%;
-  }
-}

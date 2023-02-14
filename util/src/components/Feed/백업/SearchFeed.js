@@ -9,12 +9,10 @@ import { getPostByNickname } from "../../../api/Post/getPostByNickname";
 const feedCardItemList = (postList) => {
   return postList?.map((post) => {
     return (
-      <div
-        key={`search-feed-card-${post.postId}`}
-        className={classes["card-wrapper"]}
-      >
+      <div key={`search-feed-card-${post.postId}`} className={classes['card-wrapper']}>
         <FeedCardItem
           id={post.postId}
+          
           thumbnail={post.thumbnail}
           title={post.title}
           contents={post.contents}
@@ -45,36 +43,21 @@ const SearchFeed = (props) => {
     if (props.searchInput !== null && props.searchInput !== "") {
       setIsLoading(true);
       if (props.api === 0) {
-        getPostSearch(
-          criteria[props.criteria],
-          offset,
-          size,
-          props.searchInput
-        ).then((res) => {
+        getPostSearch(criteria[props.criteria], offset, size, props.searchInput).then((res) => {
           if (res.content.length !== 0) {
             setFeedList(() => res.content);
           }
           setIsLoading(false);
         });
       } else if (props.api === 1) {
-        getPostByTagName(
-          criteria[props.criteria],
-          offset,
-          size,
-          props.searchInput
-        ).then((res) => {
+        getPostByTagName(criteria[props.criteria], offset, size, props.searchInput).then((res) => {
           if (res.content.length !== 0) {
             setFeedList(() => res.content);
           }
           setIsLoading(false);
         });
       } else {
-        getPostByNickname(
-          criteria[props.criteria],
-          offset,
-          size,
-          props.searchInput
-        ).then((res) => {
+        getPostByNickname(criteria[props.criteria], offset, size, props.searchInput).then((res) => {
           if (res.content.length !== 0) {
             setFeedList(() => res.content);
           }
@@ -87,27 +70,19 @@ const SearchFeed = (props) => {
   const fetchMoreData = () => {
     setIsLoading(true);
     if (props.api === 0) {
-      getPostSearch(
-        criteria[props.criteria],
-        offset + 1,
-        size,
-        props.searchInput
-      ).then((res) => {
+      getPostSearch(criteria[props.criteria], offset + 1, size, props.searchInput).then((res) => {
         setFeedList((prevState) => [...prevState, ...res.content]);
         setOffset((prevState) => prevState + 1);
         setIsLoading(false);
       });
     } else {
-      getPostByTagName(
-        criteria[props.criteria],
-        offset + 1,
-        size,
-        props.searchInput
-      ).then((res) => {
-        setFeedList((prevState) => [...prevState, ...res.content]);
-        setOffset((prevState) => prevState + 1);
-        setIsLoading(false);
-      });
+      getPostByTagName(criteria[props.criteria], offset + 1, size, props.searchInput).then(
+        (res) => {
+          setFeedList((prevState) => [...prevState, ...res.content]);
+          setOffset((prevState) => prevState + 1);
+          setIsLoading(false);
+        }
+      );
     }
   };
 

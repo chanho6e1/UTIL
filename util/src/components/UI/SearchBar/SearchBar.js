@@ -23,15 +23,21 @@ const SearchBar = (props) => {
   const [dropDownCriteriaState, setDropDownCriteriaState] = useState(false);
 
   const tabItems = [
-    { content: "최신", function: props.onDateClick },
-    { content: "조회수", function: props.onViewClick },
-    { content: "좋아요", function: props.onLikeClick },
-  ];
+    {content: '최신', function: props.onDateClick},
+    {content: '조회수', function: props.onViewClick},
+    {content: '좋아요', function: props.onLikeClick}
+  ]
 
   return (
     <Fragment>
       <div className={classes[`search-container`]}>
-        <div className={classes[`dummy`]} />
+        <div className={classes[`dummy`]}/>
+
+        
+
+
+
+
 
         <div className={classes[`search-bar`]}>
           <div>
@@ -55,18 +61,23 @@ const SearchBar = (props) => {
             </div>
           </div>
 
-          <div className={classes[`search-bar-line`]} />
+          <div className={classes[`search-bar-line`]}/>
 
           <input
-            className={classes[`text-input`]}
-            placeholder={"검색어를 입력해 주세요."}
-            onChange={props.inputChangeHandler}
-            value={props.value}
-            type="text"
-            id="search-input"
-            maxLength={50}
+              className={classes[`text-input`]}
+              placeholder={'검색어를 입력해 주세요.'}
+              onChange={props.inputChangeHandler}
+              value={props.value}
+              type="text"
+              id="search-input"
+              maxLength={50}
           />
         </div>
+
+
+
+
+
 
         <div className={classes["sort-dropdown"]}>
           <DropDown
@@ -84,14 +95,17 @@ const SearchBar = (props) => {
               setDropDownCriteriaState(true);
             }}
           >
-            <li className={classes["drop-down-li-tag"]} />
-            {props.criteriaLabel}
+            <li className={classes["drop-down-li-tag"]} />{props.criteriaLabel}
           </div>
         </div>
 
         <div className={classes["sort-tab"]}>
-          <Tab tabItems={tabItems} width={"100vw"} height={"48px"} />
+          <Tab tabItems={tabItems} width={'100vw'} height={'48px'} />
         </div>
+
+
+
+
       </div>
     </Fragment>
   );

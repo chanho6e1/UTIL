@@ -16,6 +16,6 @@ export const putLikeToggle = (postId) => {
       console.log(err);
       console.log(TOKEN());
       console.log("좋아요 실패");
-      throw err;
+      throw err
     });
 };

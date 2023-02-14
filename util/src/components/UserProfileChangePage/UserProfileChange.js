@@ -8,11 +8,15 @@ import { putUserData } from "../../api/UserProfile/putUserData";
 import { postUserTags } from "../../api/UserProfile/postUserTags";
 import { putUserTags } from "../../api/UserProfile/putUserTags";
 import { useNavigate } from "react-router-dom";
+import { getCurrentUser } from "../../util/APIUtils";
+import { useSelector, useDispatch } from "react-redux";
+import { userAuthSliceActions } from "../../redux/userAuthSlice";
 
 const UserProfileChange = (props) => {
   const [userData, setUserData] = useState("");
   const [userTagList, setUserTagList] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getMyData().then((res) => setUserData(() => res));
@@ -44,7 +48,22 @@ const UserProfileChange = (props) => {
             postUserTags(newTagList).then((res) => {
               // 성공 시 마이 유틸
               if (res.status === 200) {
-                navigate(`/index`);
+                // window.location.reload();
+                
+                
+                getCurrentUser()
+                  .then(response => {
+                    console.log('getMy!!!')
+                    
+                    dispatch(userAuthSliceActions.changeAuthenticated('true'))
+                    dispatch(userAuthSliceActions.changeCurrentUser(JSON.stringify(response.data)))
+                    dispatch(userAuthSliceActions.changeLoading('false'))
+                    navigate(`/index`);
+
+                  }).catch(error => {
+                    dispatch(userAuthSliceActions.changeLoading('false'))
+                  });    
+                
               }
             });
           } else {

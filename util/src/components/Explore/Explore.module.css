@@ -7,15 +7,18 @@
 }
 
 .explore-inner-wrapper {
+
 }
+
+
 
 .alt-message-wrapper {
   margin-top: 100px;
   font-size: 24px;
   font-weight: 700;
-  color: rgb(130, 130, 130);
-  white-space: pre-line;
+  color: rgb(130, 130 ,130);
 }
+
 
 @media all and (max-width: 480px) {
   .header {
@@ -31,6 +34,10 @@
   }
 }
 
+
+
+
+
 .dropdown {
   width: 150px;
   height: 48px;
@@ -43,25 +50,27 @@
   align-items: center;
   cursor: pointer;
   transition-property: background-color color;
-  transition-duration: 0.2s;
-  user-select: none;
+    transition-duration: 0.2s;
+    user-select: none;
   margin-right: 8px;
 }
 
 .dropdown:hover {
-  background-color: rgba(154, 76, 249, 0.05);
+  background-color: rgba(154, 76, 249, 0.05);;
 }
 
 .drop-down-li-tag {
   color: rgb(220, 220, 220);
   margin-left: 24px;
-  font-size: 24px;
+  font-size: 24px;;
   margin-right: -10px;
 }
 
 .tab-wrapper {
   margin-right: 12px;
 }
+
+
 
 @media screen and (max-width: 480px) {
   .header {

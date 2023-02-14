@@ -23,12 +23,7 @@ const ExploreForm = () => {
   const [criteria, setCriteria] = useState(0);
   const criteriaLabelList = ["피드", "최신", "조회수", "좋아요"];
   const criteriaList = ["date", "view", "like"];
-  const criteriaAPI = [
-    getSubscribePosts,
-    getPostsByMyTag,
-    getPostsByMyTag,
-    getPostsByMyTag,
-  ];
+  const criteriaAPI = [getSubscribePosts, getPostsByMyTag, getPostsByMyTag, getPostsByMyTag];
   const [dropDownCriteriaState, setDropDownCriteriaState] = useState(false);
   const [myTagList, setMyTagList] = useState([]);
   const userAuth = useSelector((state) => state.userAuthSlice.userAuth);
@@ -75,6 +70,7 @@ const ExploreForm = () => {
       setIsLoading(() => false);
     });
 
+
     getUserFollowing(userAuth.currentUser.userId).then((res) => {
       setFollowingListCnt(() => res.length);
       setOffset(0);
@@ -86,17 +82,15 @@ const ExploreForm = () => {
         }
       }
     });
-  }, [criteria, followingListCnt, userAuth]);
+  }, [criteria, followingListCnt]);
 
   const fetchMoreData = () => {
     setIsLoading(() => true);
-    criteriaAPI[criteria](criteriaList[criteria], offset + 1, size).then(
-      (res) => {
-        setFeedList((prevState) => [...prevState, ...res.content]);
-        setOffset((prevState) => prevState + 1);
-        setIsLoading(() => false);
-      }
-    );
+    criteriaAPI[criteria](criteriaList[criteria], offset + 1, size).then((res) => {
+      setFeedList((prevState) => [...prevState, ...res.content]);
+      setOffset((prevState) => prevState + 1);
+      setIsLoading(() => false);
+    });
   };
 
   const dropDownCriteriaItems = {
@@ -172,20 +166,11 @@ const ExploreForm = () => {
   );
 
   return (
-    <div
-      className={classes["explore-wrapper"]}
-      onWheel={onWheelHandler}
-      ref={exploreWrapperRef}
-    >
+    <div className={classes["explore-wrapper"]} onWheel={onWheelHandler} ref={exploreWrapperRef}>
       <div className={classes["explore-inner-wrapper"]}>
         {header}
         {altMessages}
-        <ExploreFeed
-          feedList={feedList}
-          modalState={modalState}
-          setModalState={setModalState}
-          myTagList={myTagList}
-        />
+        <ExploreFeed feedList={feedList} modalState={modalState} setModalState={setModalState} />
       </div>
     </div>
   );
