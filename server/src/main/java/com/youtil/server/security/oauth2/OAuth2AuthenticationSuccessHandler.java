@@ -85,13 +85,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 //        writer.print(json); //json화
         String code = "";
         if(user.getNickname() != null){
-            response.setStatus(200);
-            response.setHeader("code", "200");
+//            response.setStatus(200);
+//            response.setHeader("code", "200");
             targetUrl += "&code=200";
             code = "200";
         }else{
-            response.setStatus(201); //회원가입
-            response.setHeader("code", "201");
+//            response.setStatus(201); //회원가입
+//            response.setHeader("code", "201");
             targetUrl += "&code=201";
             code = "201";
         }
