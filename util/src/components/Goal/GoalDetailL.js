@@ -20,7 +20,11 @@ const GoalDetailL = (props) => {
         </div>
         {/* {props.plan !== null && <PlanCardItem plan={props.plan} />} */}
         {/* <GoalDetailLTodo todos={props.todos[props.goal?.goalId]}/> */}
-        <GoalDetailLReview reviews={props.reviews[props.plan?.goalId]} />
+        <GoalDetailLReview
+          reviews={props.reviews[props.plan?.goalId]}
+          completeToggle={props.completeToggle}
+          completeButton={props.completeButton}
+        />
       </div>
       <div />
     </div>
