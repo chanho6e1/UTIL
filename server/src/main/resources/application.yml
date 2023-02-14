@@ -3,7 +3,6 @@ spring:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
   profiles.active: local
-  # ??? ?? ??
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     #    url: jdbc:mysql://i8d210.p.ssafy.io:3306/youtil?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
@@ -74,6 +73,7 @@ spring:
           authorization-grant-type: authorization_code
           scope: name, email, profile_image
           client-name: Naver
+
 
       # Provider ??
       provider:
