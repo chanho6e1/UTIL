@@ -2,6 +2,7 @@ package com.youtil.server.config.s3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
+import com.youtil.server.common.exception.ArgumentMismatchException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
@@ -69,7 +70,15 @@ public class S3Uploader {
 
 
     private Optional<File> convert(MultipartFile multipartFile) throws IOException {
-    File convertFile = new File(System.getProperty("user.dir")+"/"+ multipartFile.getOriginalFilename());
+        File convertFile = new File(System.getProperty("user.dir")+"/"+ multipartFile.getOriginalFilename());
+
+        String str = multipartFile.getOriginalFilename().toString().toLowerCase();
+        String extension = str.substring(str.length()-3, str.length());
+
+        if(!extension.equals("png") && !extension.equals("jpg") && !extension.equals("jpeg")){
+            throw new ArgumentMismatchException("파일 확장자는 jpg png만 가능합니다");
+        }
+
         if(convertFile.createNewFile()){
             try(FileOutputStream fos = new FileOutputStream(convertFile)){
                 fos.write(multipartFile.getBytes());
