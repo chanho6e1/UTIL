@@ -4,6 +4,7 @@ import classes from "./UserRecommend.module.css";
 import { getRecommendUser } from "../../api/UserProfile/getRecommendUser";
 import Button from "../UI/Button/Button";
 import Loading from "../UI/Loading/Loading";
+import personAddIcon from "../../img/PersonAddIcon.svg";
 
 const UserRecommend = (props) => {
   const [userList, setUserList] = useState([]);
@@ -42,15 +43,21 @@ const UserRecommend = (props) => {
     const scrollHeight = recRef.current.scrollHeight;
     const scrollTop = recRef.current.scrollTop;
     const clientHeight = recRef.current.clientHeight;
-    console.log(scrollHeight, scrollTop, clientHeight);
     if (scrollTop + clientHeight >= scrollHeight - 10 && isLoading === false) {
       fetchMoreData();
     }
   };
 
-  const altText = () => {
-    const message = "관심 태그가 없어요\n\n마이 프로필에서 태그를 설정해 보세요";
-    return <div className={classes[`alt-message-wrapper`]}>{message}</div>;
+  const altContents = () => {
+    const message = "관심 태그가 없어요\n마이 프로필에서 태그를 설정해 보세요";
+    return (
+      <div className={classes[`alt-wrapper`]}>
+        <div className={classes[`alt-message-icon`]}>
+          <img src={personAddIcon} />
+        </div>
+        <div className={classes[`alt-message-wrapper`]}>{message}</div>
+      </div>
+    );
   };
 
   return (
@@ -69,7 +76,7 @@ const UserRecommend = (props) => {
       </div>
       <div className={classes[`recommend-wrapper`]} ref={recRef} onWheel={onWheelHandler}>
         <div className={classes[`content-wrapper`]}>
-          {userList.length === 0 ? altText() : UserRecommendCardList(userList)}
+          {userList.length === 0 ? altContents() : UserRecommendCardList(userList)}
           {isLoading && <div className={classes.loading}>{Loading()}</div>}
         </div>
       </div>
