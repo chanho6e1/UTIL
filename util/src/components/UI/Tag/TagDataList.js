@@ -86,9 +86,7 @@ const TagDataList = (props) => {
 
   return (
     <Fragment>
-      <div style={{ display: "flex", marginTop: "8px"}}>
-        {TagDataItem}
-        </div>
+      <div style={{ display: "flex", marginTop: "8px" }}>{TagDataItem}</div>
     </Fragment>
   );
 };

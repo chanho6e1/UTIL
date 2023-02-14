@@ -1,20 +1,21 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { notificationSliceActions } from "../../../redux/notificationSlice";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 import useDidMountEffect from "../../../hooks/useDidMountEffect";
 
-
 const NotiDeliverer = (props) => {
-  const dispatch = useDispatch()
-  const stack = useSelector(state => state.notificationSlice.stack)
+  const dispatch = useDispatch();
+  const stack = useSelector((state) => state.notificationSlice.stack);
 
   // const randNum = Math.floor(Math.random() * 100)
   useEffect(() => {
-    console.log(stack)
-    let key = Object.keys(stack).length !== 0 ? parseInt(Object.keys(stack)[Object.keys(stack).length - 1]) + 1 : 0
+    console.log(stack);
+    let key =
+      Object.keys(stack).length !== 0
+        ? parseInt(Object.keys(stack)[Object.keys(stack).length - 1]) + 1
+        : 0;
     // const key = (Object.keys(stack).length * 100) + randNum
 
-    
     const data = {
       key: key,
       value: {
@@ -22,19 +23,19 @@ const NotiDeliverer = (props) => {
         duration: props.duration,
         width: props.width,
         height: props.height,
-        passToFixed: props.passToFixed ? props.passToFixed : false
-      }
-    }
-    dispatch(notificationSliceActions.push(data))
-    props.stateHandler(false)
-  }, [])
+        passToFixed: props.passToFixed ? props.passToFixed : false,
+      },
+    };
+    dispatch(notificationSliceActions.push(data));
+    props.stateHandler(false);
+  }, []);
 
-  return
+  return;
   // return (
   //   <React.Fragment>
 
   //   </React.Fragment>
   // )
-}
+};
 
-export default NotiDeliverer
+export default NotiDeliverer;
