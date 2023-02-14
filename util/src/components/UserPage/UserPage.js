@@ -1,11 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-  Route,
-  Routes,
-  useLocation,
-  useSearchParams,
-  useParams,
-} from "react-router-dom";
+import { Route, Routes, useLocation, useSearchParams, useParams } from "react-router-dom";
 import classes from "./UserPage.module.css";
 import PostCardItem from "../UI/PostCard/PostCardItem";
 import TagDataList from "../UI/Tag/TagDataList";
@@ -40,6 +34,7 @@ import FixedModal from "../UI/FixedModal/FixedModal";
 import Tab from "../UI/Tab/Tab";
 import { getUserDataByNickname } from "../../api/Post/getUserDataByNickname";
 import { useCalendarState } from "@mui/x-date-pickers/internals";
+import { getBookmarkPosts } from "../../api/Post/getBookmarkPosts";
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -75,12 +70,15 @@ const UserPageForm = (props) => {
   const [followingListCnt, setFollowingListCnt] = useState(null);
   const [followingModalState, setFollowingModalState] = useState(false);
   const [userTagList, setUserTagList] = useState([]);
-  const myData = useSelector(
-    (state) => state.userAuthSlice.userAuth.currentUser
-  );
+  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
   const criteria = ["date", "view", "like"];
   const [criteriaIdx, setCriteriaIdx] = useState(0);
+  const [tabIdx, setTabIdx] = useState(0);
+  const tabList = ["전체 글", "전체 목표", "북마크"];
   const [offset, setOffset] = useState(1);
+  const [bookmarkList, setBookmarkList] = useState(null);
+  const [bookmarkOffset, setBookmarkOffset] = useState(1);
+  const [bookmarkTotalPage, setBookmarkTotalPage] = useState(10);
   const [totalPage, setTotalPage] = useState(10);
   const size = 8;
   const [isLoading, setIsLoading] = useState(true);
@@ -100,18 +98,35 @@ const UserPageForm = (props) => {
   const fetchUserPostData = (criteriaIdx, page, size) => {
     setIsLoading(true);
     if (myData.userId === props.id) {
-      getMyPosts(criteria[criteriaIdx], page, size).then((res) => {
-        setPostList(() => res.content);
-        setOffset(() => page);
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 500);
-        containerRef.current.scrollTo({
-          left: 0,
-          top: postWrapperRef.current.offsetTop - 14,
-          behavior: "smooth",
+      if (tabIdx === 0) {
+        // 전체 글
+        getMyPosts(criteria[criteriaIdx], page, size).then((res) => {
+          setPostList(() => res.content);
+          setOffset(() => page);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
+          containerRef.current.scrollTo({
+            left: 0,
+            top: postWrapperRef.current.offsetTop - 14,
+            behavior: "smooth",
+          });
         });
-      });
+      } else if (tabIdx === 2) {
+        // 북마크
+        getBookmarkPosts(criteria[criteriaIdx], page, size).then((res) => {
+          setBookmarkList(() => res.content);
+          setBookmarkOffset(() => page);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
+          containerRef.current.scrollTo({
+            left: 0,
+            top: postWrapperRef.current.offsetTop - 14,
+            behavior: "smooth",
+          });
+        });
+      }
     } else {
       getUserPosts(props.id, criteria[criteriaIdx], page, size).then((res) => {
         setPostList(() => res.content);
@@ -131,31 +146,41 @@ const UserPageForm = (props) => {
   const fetchUserPostDataMobile = (criteriaIdx, page, size) => {
     setIsLoading(true);
     if (myData.userId === props.id) {
-      getMyPosts(criteria[criteriaIdx], page + 1, size).then((res) => {
-        setPostList((prev) => [...prev, ...res.content]);
-        setOffset(() => page + 1);
-        // setIsLoading(false)
-        setTimeout(() => {
-          setIsLoading(false);
-          setFetchStart(() => false);
-        }, 500);
-      });
-    } else {
-      getUserPosts(props.id, criteria[criteriaIdx], page + 1, size).then(
-        (res) => {
+      // 전체 글
+      if (tabIdx === 0) {
+        getMyPosts(criteria[criteriaIdx], page + 1, size).then((res) => {
           setPostList((prev) => [...prev, ...res.content]);
           setOffset(() => page + 1);
           setTimeout(() => {
             setIsLoading(false);
             setFetchStart(() => false);
           }, 500);
-        }
-      );
+        });
+      } else if (tabIdx === 2) {
+        // 북마크
+        getBookmarkPosts(criteria[criteriaIdx], page + 1, size).then((res) => {
+          setBookmarkList((prev) => [...prev, ...res.content]);
+          setBookmarkOffset(() => page + 1);
+          setTimeout(() => {
+            setIsLoading(false);
+            setFetchStart(() => false);
+          }, 500);
+        });
+      }
+    } else {
+      getUserPosts(props.id, criteria[criteriaIdx], page + 1, size).then((res) => {
+        setPostList((prev) => [...prev, ...res.content]);
+        setOffset(() => page + 1);
+        setTimeout(() => {
+          setIsLoading(false);
+          setFetchStart(() => false);
+        }, 500);
+      });
     }
   };
 
+  // 모바일용 get data
   const [fetchStart, setFetchStart] = useState(false);
-
   useEffect(() => {
     if (fetchStart === true) {
       fetchUserPostDataMobile(criteriaIdx, offset, size);
@@ -164,30 +189,32 @@ const UserPageForm = (props) => {
 
   // 초기 데이터
   useEffect(() => {
-    // Post API
     setIsLoading(true);
 
+    // Post API
     if (myData.userId === props.id) {
-      getMyPosts(criteria[criteriaIdx], offset, size).then((res) => {
+      // 내 작성글 get
+      getMyPosts(criteria[criteriaIdx], offset, size)
+        .then((res) => {
+          setPostList(() => res.content);
+          setTotalPage(() => res.totalPages);
+          setIsLoading(false);
+        })
+        .then(
+          // 북마크한 게시물 get
+          getBookmarkPosts(criteria[criteriaIdx], bookmarkOffset, size).then((res) => {
+            setBookmarkList(() => res.content);
+            setBookmarkTotalPage(() => res.totalPages);
+            setIsLoading(false);
+          })
+        );
+    } else {
+      getUserPosts(props.id, criteria[criteriaIdx], offset, size).then((res) => {
         setPostList(() => res.content);
         setTotalPage(() => res.totalPages);
         setIsLoading(false);
       });
-    } else {
-      getUserPosts(props.id, criteria[criteriaIdx], offset, size).then(
-        (res) => {
-          setPostList(() => res.content);
-          setTotalPage(() => res.totalPages);
-          setIsLoading(false);
-        }
-      );
     }
-
-    // My Data API
-    // getMyData().then((res) => {
-    //   setMyData(() => res);
-    //   console.log("ssafy me", res);
-    // });
 
     // User Data API, Tag Data
     getUserData(props.id).then((res) => {
@@ -218,11 +245,6 @@ const UserPageForm = (props) => {
     fetchUserFollower(props.id);
     fetchUserFollowing(props.id);
   }, [isFollowing, props.id]);
-
-  const tagOnClickHandler = (event) => {
-    const tagName = event.currentTarget.getAttribute("value");
-    navigate(`/search?tag=${tagName}`);
-  };
 
   const followBtnHandler = () => {
     // 현재 팔로우 중이면 언팔
@@ -264,6 +286,12 @@ const UserPageForm = (props) => {
     }
   };
 
+  // tag 클릭시 검색 페이지로 이동
+  const tagOnClickHandler = (event) => {
+    const tagName = event.currentTarget.getAttribute("value");
+    navigate(`/search?tag=${tagName}`);
+  };
+
   // 작성 글이 없다면 대체 화면 출력
   const postCardContainer = (postList) => {
     if (isLoading) {
@@ -289,42 +317,33 @@ const UserPageForm = (props) => {
 
   useEffect(() => {
     // fetchUserPostData(criteriaIdx, offset, size);
-    if (
-      offset !== searchParams.get("page") &&
-      searchParams.get("page") !== null
-    ) {
+    if (offset !== searchParams.get("page") && searchParams.get("page") !== null && !isLoading) {
       fetchUserPostData(criteriaIdx, searchParams.get("page"), size);
     }
-  });
+  }, []);
 
   // scroll event handler
-  const handleScroll = () => {
+  const onWheelHandler = (event) => {
     const scrollHeight = containerRef.current.scrollHeight;
     const scrollTop = containerRef.current.scrollTop;
     const clientHeight = containerRef.current.clientHeight;
-    if (scrollTop + clientHeight >= scrollHeight - 1 && isLoading === false) {
-      if (offset < totalPage) {
-        if (document.body.clientWidth < 1080) {
-          setFetchStart(() => true);
+    // 페이지 끝에 도달하면 추가 데이터를 받아온다
+    if (scrollTop + clientHeight >= scrollHeight - 1 && event.deltaY > 0 && isLoading === false) {
+      if (tabIdx === 0) {
+        if (offset < totalPage) {
+          if (document.body.clientWidth < 1080) {
+            setFetchStart(() => true);
+          }
+        }
+      } else if (tabIdx === 2) {
+        if (offset < bookmarkTotalPage) {
+          if (document.body.clientWidth < 1080) {
+            setFetchStart(() => true);
+          }
         }
       }
-
-      // 페이지 끝에 도달하면 추가 데이터를 받아온다
     }
   };
-
-  useEffect(() => {
-    // scroll event listener 등록
-    if (containerRef.current !== null) {
-      containerRef.current.addEventListener("scroll", handleScroll);
-    }
-    return () => {
-      // scroll event listener 해제
-      if (containerRef.current !== null) {
-        containerRef.current.removeEventListener("scroll", handleScroll);
-      }
-    };
-  });
 
   const userInformation = (
     <div className={classes[`user-page-upper`]}>
@@ -394,27 +413,21 @@ const UserPageForm = (props) => {
                     >
                       팔로워
                     </div>
-                    <div className={classes[`follow-number`]}>
-                      {followerListCnt}명
-                    </div>
+                    <div className={classes[`follow-number`]}>{followerListCnt}명</div>
                     <div
                       className={classes[`follow-text`]}
                       onClick={() => setFollowingModalState(true)}
                     >
                       팔로우
                     </div>
-                    <div className={classes[`follow-number`]}>
-                      {followingListCnt}명
-                    </div>
+                    <div className={classes[`follow-number`]}>{followingListCnt}명</div>
                   </div>
 
                   {myData.userId !== props.id && followBtn(isFollowing)}
                 </div>
               </div>
               <div className={classes["user-column"]}>
-                <div className={classes["user-description"]}>
-                  {userData.discription}
-                </div>
+                <div className={classes["user-description"]}>{userData.discription}</div>
               </div>
             </div>
           </div>
@@ -442,36 +455,29 @@ const UserPageForm = (props) => {
     </React.Fragment>
   );
 
-  const [category, setCategory] = useState("전체 글");
-
-  const categoryDropDownItems = {
-    label: ["전체 글", "전체 목표"],
-    function: [
-      () => {
-        setCategory("전체 글");
-      },
-      () => {
-        setCategory("전체 목표");
-      },
-    ],
-  };
-
   const tabItems = [
     {
-      content: "전체 글",
+      // "전체 글"
+      content: tabList[0],
       function: () => {
-        setCategory("전체 글");
+        setTabIdx(0);
       },
     },
     {
-      content: "전체 목표",
+      // "전체 목표"
+      content: tabList[1],
       function: () => {
-        setCategory("전체 목표");
+        setTabIdx(1);
+      },
+    },
+    {
+      // "북마크"
+      content: tabList[2],
+      function: () => {
+        setTabIdx(2);
       },
     },
   ];
-
-  const [categoryDropDownState, setCategoryDropDownState] = useState(false);
 
   const postDropDownItems = {
     label: ["포스트 작성", "회고록 작성"],
@@ -487,22 +493,36 @@ const UserPageForm = (props) => {
 
   const [postDropDownState, setPostDropDownState] = useState(false);
 
-  const categoryView =
-    category === "전체 글" ? (
-      <Fragment>
-        <div ref={postWrapperRef}>{postCardContainer(postList)}</div>
-
-        <div className={classes[`pagination`]}>
-          <Pagination
-            count={totalPage}
-            onChange={pageChangeHandler}
-            page={parseInt(offset)}
-          />
-        </div>
-      </Fragment>
-    ) : (
-      <Fragment>{PlanCardItemList()}</Fragment>
-    );
+  const tabView = () => {
+    if (tabIdx === 0) {
+      // 전체 글
+      return (
+        <Fragment>
+          <div ref={postWrapperRef}>{postCardContainer(postList)}</div>
+          <div className={classes[`pagination`]}>
+            <Pagination count={totalPage} onChange={pageChangeHandler} page={parseInt(offset)} />
+          </div>
+        </Fragment>
+      );
+    } else if (tabIdx === 1) {
+      // 전체 목표
+      return <Fragment>{PlanCardItemList()}</Fragment>;
+    } else {
+      // 북마크
+      return (
+        <Fragment>
+          <div ref={postWrapperRef}>{postCardContainer(bookmarkList)}</div>
+          <div className={classes[`pagination`]}>
+            <Pagination
+              count={bookmarkTotalPage}
+              onChange={pageChangeHandler}
+              page={parseInt(bookmarkOffset)}
+            />
+          </div>
+        </Fragment>
+      );
+    }
+  };
 
   const kanbanBoard = (
     <div className={classes["kanban-wrapper"]}>
@@ -541,7 +561,7 @@ const UserPageForm = (props) => {
   );
 
   return (
-    <div ref={containerRef} className={classes["user-page"]}>
+    <div ref={containerRef} className={classes["user-page"]} onWheel={onWheelHandler}>
       <div className={classes["contents"]}>
         {header}
 
@@ -575,7 +595,7 @@ const UserPageForm = (props) => {
         <div className={classes["body"]}>
           <div className={classes["article-list-wrapper"]}>
             {myData.userId === props.id && kanbanBoard}
-            {categoryView}
+            {tabView()}
           </div>
           {myData.userId === props.id && planCards}
         </div>
@@ -587,9 +607,7 @@ const UserPageForm = (props) => {
 const UserPageSet = (props) => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const myData = useSelector(
-    (state) => state.userAuthSlice.userAuth.currentUser
-  );
+  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
   // const [userId, setUserId] = useState(searchParams.get("user_id"));
   const [userData, setUserData] = useState([]);
   const params = useParams();
@@ -598,7 +616,6 @@ const UserPageSet = (props) => {
   useEffect(() => {
     if (nickname !== undefined) {
       getUserDataByNickname(nickname).then((res) => {
-        console.log("res", res);
         setUserData(() => res);
       });
     }
@@ -621,9 +638,7 @@ const UserPageSet = (props) => {
 };
 
 const UserPage = (props) => {
-  const myData = useSelector(
-    (state) => state.userAuthSlice.userAuth.currentUser
-  );
+  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
   return (
     <div>
       <div id="index-overlay-root"></div>
@@ -632,15 +647,11 @@ const UserPage = (props) => {
         {/* <Route path="*" element={<UserPageForm id={userId === null ? myData.userId : userId} />} /> */}
         <Route
           path="/"
-          element={
-            myData?.nickname && <Navigate to={`/index/${myData?.nickname}`} />
-          }
+          element={myData?.nickname && <Navigate to={`/index/${myData?.nickname}`} />}
         />
         <Route
           path="index/"
-          element={
-            myData?.nickname && <Navigate to={`/index/${myData?.nickname}`} />
-          }
+          element={myData?.nickname && <Navigate to={`/index/${myData?.nickname}`} />}
         />
         <Route path="index/:nickname/*" element={<UserPageSet />} />
 
