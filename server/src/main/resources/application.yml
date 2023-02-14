@@ -141,3 +141,8 @@ server:
   tomcat:
     remoteip:
       protocol-header: x-forwarded-proto
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
