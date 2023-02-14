@@ -18,7 +18,6 @@
 }
 
 .plan-date {
-
 }
 
 .plan-state {
@@ -32,7 +31,7 @@
   height: 52px;
   width: 96px;
   /* padding:4px; */
-  border-radius: 5px;;
+  border-radius: 5px;
   font-size: 20px;
   display: flex;
   justify-content: center;
@@ -52,7 +51,7 @@
 
   height: 52px;
   width: 96px;
-  border-radius: 5px;;
+  border-radius: 5px;
   font-size: 20px;
   display: flex;
   justify-content: center;
@@ -68,7 +67,7 @@
 
   height: 52px;
   width: 96px;
-  border-radius: 5px;;
+  border-radius: 5px;
   font-size: 20px;
   display: flex;
   justify-content: center;
@@ -86,7 +85,7 @@
 
   height: 52px;
   width: 96px;
-  border-radius: 5px;;
+  border-radius: 5px;
   font-size: 20px;
   display: flex;
   justify-content: center;

@@ -1,50 +1,49 @@
-
 .is-done-true-wrapper {
-    background-color: rgb(190, 240, 210);
-    color: rgb(0, 120, 40);
+  background-color: rgb(190, 240, 210);
+  color: rgb(0, 120, 40);
 
-    height:26px;
-    width: 48px;
-    /* padding:4px; */
-    border-radius: 5px;;
-    font-size: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition-property: background-color;
-    transition-duration: 0.3s;
-    cursor: pointer;
+  height: 26px;
+  width: 48px;
+  /* padding:4px; */
+  border-radius: 5px;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  cursor: pointer;
 }
 
 .is-done-true-wrapper:hover {
-    background-color: rgb(170, 220, 190);
+  background-color: rgb(170, 220, 190);
 }
 
 .is-done-false-wrapper {
-    background-color: rgb(220, 220, 228);
-    color: rgb(50, 50, 50);
+  background-color: rgb(220, 220, 228);
+  color: rgb(50, 50, 50);
 
-    height:26px;
-    width: 48px;
-    border-radius: 5px;;
-    font-size: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition-property: background-color;
-    transition-duration: 0.3s;
-    cursor: pointer;
+  height: 26px;
+  width: 48px;
+  border-radius: 5px;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  cursor: pointer;
 }
 
 .is-done-false-wrapper:hover {
-    background-color: rgb(200, 200, 208);
+  background-color: rgb(200, 200, 208);
 }
 
 .noti-button {
-    width: 45%;
+  width: 45%;
 }
 
 .button {
-    width: 90%;
-    margin: 4px;
+  width: 90%;
+  margin: 4px;
 }

@@ -15,7 +15,12 @@ const UserRecommend = (props) => {
 
   const UserRecommendCardList = (userList) => {
     return userList?.map((user) => {
-      return <UserRecommendCard userData={user} key={`user-recommend-card-${user.userId}`} />;
+      return (
+        <UserRecommendCard
+          userData={user}
+          key={`user-recommend-card-${user.userId}`}
+        />
+      );
     });
   };
 
@@ -63,7 +68,9 @@ const UserRecommend = (props) => {
   return (
     <div className={classes[`recommend-modal`]}>
       <div className={classes[`recommend-upper`]}>
-        <div className={classes[`recommend-text`]}>관심 태그를 기반으로 추천해드려요!</div>
+        <div className={classes[`recommend-text`]}>
+          관심 태그를 기반으로 추천해드려요!
+        </div>
         <Button
           className={classes.button}
           onClick={() => {
@@ -74,7 +81,11 @@ const UserRecommend = (props) => {
           건너뛰기
         </Button>
       </div>
-      <div className={classes[`recommend-wrapper`]} ref={recRef} onWheel={onWheelHandler}>
+      <div
+        className={classes[`recommend-wrapper`]}
+        ref={recRef}
+        onWheel={onWheelHandler}
+      >
         <div className={classes[`content-wrapper`]}>
           {userList.length === 0 ? altContents() : UserRecommendCardList(userList)}
           {isLoading && <div className={classes.loading}>{Loading()}</div>}

@@ -12,7 +12,12 @@ const AutoCompleteMultipleTagInput = (props) => {
       options={props.tagList}
       renderTags={(tagValue, getTagProps) =>
         tagValue.map((option, index) => (
-          <Chip variant="outlined" label={option} {...getTagProps({ index })} size="small" />
+          <Chip
+            variant="outlined"
+            label={option}
+            {...getTagProps({ index })}
+            size="small"
+          />
         ))
       }
       renderInput={(params) => (

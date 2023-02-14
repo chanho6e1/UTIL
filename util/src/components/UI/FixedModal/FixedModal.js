@@ -6,11 +6,6 @@ import Button from "../Button/Button";
 import { createBrowserHistory } from "history";
 import useDidMountEffect from "../../../hooks/useDidMountEffect";
 
-
-
-
-
-
 // 모달창 자체
 const ModalOverlay = (props) => {
   const backdropRef = useRef();
@@ -19,23 +14,22 @@ const ModalOverlay = (props) => {
   const contentRef = useRef();
   const backRef = useRef();
 
-
   useEffect(() => {
     window.history.pushState(null, document.title, window.location.href);
-    
+
     const preventBack = async () => {
-      await modalHandler()
-      await window.history.pushState(null, document.title,  window.location.href);
-      
-    }
-    window.addEventListener('popstate', preventBack);
+      await modalHandler();
+      await window.history.pushState(
+        null,
+        document.title,
+        window.location.href
+      );
+    };
+    window.addEventListener("popstate", preventBack);
     return () => {
-      window.removeEventListener('popstate', preventBack);
-    }
-  })
-
-
-
+      window.removeEventListener("popstate", preventBack);
+    };
+  });
 
   useEffect(() => {
     if (cardRef?.current?.style) {
@@ -72,7 +66,10 @@ const ModalOverlay = (props) => {
     }, 300);
   };
 
-  const content = React.cloneElement(props.content, { ...props, modalHandler: modalHandler });
+  const content = React.cloneElement(props.content, {
+    ...props,
+    modalHandler: modalHandler,
+  });
 
   return (
     <div ref={backdropRef} className={styles.backdrop}>
