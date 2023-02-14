@@ -9,8 +9,10 @@ import { getAllTags } from "../../../api/UserProfile/getAllTags";
 import Card from "../Card/Card";
 import { useNavigate } from "react-router-dom";
 
-const isUnderTwoChars = (value) => (typeof value === "string" ? value.trim().length < 2 : false);
-const isOverTenChars = (value) => (typeof value === "string" ? value.trim().length > 10 : false);
+const isUnderTwoChars = (value) =>
+  typeof value === "string" ? value.trim().length < 2 : false;
+const isOverTenChars = (value) =>
+  typeof value === "string" ? value.trim().length > 10 : false;
 const isTagOverFive = (value) => value.length > 5;
 
 const UserProfileChangeCard = (props) => {
@@ -19,7 +21,9 @@ const UserProfileChangeCard = (props) => {
   const navigate = useNavigate();
 
   // 신규 유저 체크
-  const [isNewUser, setIsNewUser] = useState(props.nickname === null ? true : false);
+  const [isNewUser, setIsNewUser] = useState(
+    props.nickname === null ? true : false
+  );
 
   // 프로필 사진
   const [imageUrl, setImageUrl] = useState(props.imageUrl);
@@ -55,16 +59,26 @@ const UserProfileChangeCard = (props) => {
   const [nicknameIsOverTenChars, setNicknameIsOverTenChars] = useState(false);
   const [nicknameIsDuplicated, setNicknameIsDuplicated] = useState(false);
 
-  const [description, setDescription] = useState(props.description ? props.description : "");
+  const [description, setDescription] = useState(
+    props.description ? props.description : ""
+  );
   // description(자기소개) 글자 수
-  const [count, setCount] = useState(props.description ? props.description.length : 0);
+  const [count, setCount] = useState(
+    props.description ? props.description.length : 0
+  );
 
   // 소속
-  const [myDepartment, setMyDepartment] = useState(props.department ? props.department : "");
+  const [myDepartment, setMyDepartment] = useState(
+    props.department ? props.department : ""
+  );
 
   // 관심 태그
-  const [myTagList, setMyTagList] = useState(props.myTagList ? props.myTagList : []);
-  const [myTagOverFive, setMyTagOverFive] = useState(isTagOverFive(myTagList.length));
+  const [myTagList, setMyTagList] = useState(
+    props.myTagList ? props.myTagList : []
+  );
+  const [myTagOverFive, setMyTagOverFive] = useState(
+    isTagOverFive(myTagList.length)
+  );
   const [allTagList, setAllTagList] = useState([]);
 
   useEffect(() => {
@@ -134,7 +148,13 @@ const UserProfileChangeCard = (props) => {
     return () => {
       clearTimeout(identifier);
     };
-  }, [nickname, nicknameIsDuplicated, nicknameIsOverTenChars, nicknameIsUnderTwoChars, myTagList]);
+  }, [
+    nickname,
+    nicknameIsDuplicated,
+    nicknameIsOverTenChars,
+    nicknameIsUnderTwoChars,
+    myTagList,
+  ]);
 
   const descriptionOnChangeHandler = (event) => {
     setDescription(event.target.value);
@@ -200,7 +220,9 @@ const UserProfileChangeCard = (props) => {
               sx={{ width: 100, height: 100 }}
               className={classes[`avatar-img`]}
             />
-            {isHover && <img src={PhotoCameraIconCircle} className={classes.camera} />}
+            {isHover && (
+              <img src={PhotoCameraIconCircle} className={classes.camera} />
+            )}
             <input
               style={{ display: "none" }}
               type="file"
@@ -216,7 +238,11 @@ const UserProfileChangeCard = (props) => {
             <FormControl sx={{ width: "100%" }}>
               <TextField
                 id="filled-basic"
-                error={nicknameIsUnderTwoChars || nicknameIsOverTenChars || nicknameIsDuplicated}
+                error={
+                  nicknameIsUnderTwoChars ||
+                  nicknameIsOverTenChars ||
+                  nicknameIsDuplicated
+                }
                 helperText={
                   nicknameIsUnderTwoChars || nicknameIsOverTenChars
                     ? "닉네임은 2자 이상 10자 이하입니다."
@@ -268,7 +294,9 @@ const UserProfileChangeCard = (props) => {
                 label={"관심 태그"}
                 onChange={myTagListChangeHandler}
                 error={myTagOverFive}
-                helperText={myTagOverFive ? "관심 태그는 5개까지 등록 가능합니다." : ""}
+                helperText={
+                  myTagOverFive ? "관심 태그는 5개까지 등록 가능합니다." : ""
+                }
               />
             </FormControl>
           </div>

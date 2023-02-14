@@ -11,7 +11,9 @@ import { useNavigate } from "react-router-dom";
 
 const FollowCard = (props) => {
   const [isFollowing, setIsFollowing] = useState(false);
-  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
+  const myData = useSelector(
+    (state) => state.userAuthSlice.userAuth.currentUser
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,7 +26,9 @@ const FollowCard = (props) => {
   const profileOnClickHandler = () => {
     // 클릭 시 유저 페이지로 이동
     props.modalHandler();
-    navigate(`/index/${props.userData.nickName}`, { state: props.userData.userId });
+    navigate(`/index/${props.userData.nickName}`, {
+      state: props.userData.userId,
+    });
   };
 
   const followBtnHandler = () => {

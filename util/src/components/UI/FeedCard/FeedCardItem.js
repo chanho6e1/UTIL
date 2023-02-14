@@ -148,12 +148,17 @@ const FeedCardItem = (props) => {
               >
                 <img src={isLike ? likeIconFill : likeIconFlat} />
               </IconButton>
-              <div className={classes[`like-count`]}>{displayLikeStatusSize(likeStatusSize)}</div>
+              <div className={classes[`like-count`]}>
+                {displayLikeStatusSize(likeStatusSize)}
+              </div>
             </div>
           </div>
         </div>
         <div className={classes["feedcard-lower-contents"]}>
-          <div className={classes[`profile-img-nickname`]} onClick={nicknameClickHandler}>
+          <div
+            className={classes[`profile-img-nickname`]}
+            onClick={nicknameClickHandler}
+          >
             <ThemeProvider theme={avatarTheme}>
               <Avatar
                 src={props.profileImg}

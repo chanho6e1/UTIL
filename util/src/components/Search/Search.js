@@ -16,7 +16,9 @@ const SearchForm = (props) => {
   const location = useLocation();
   const [searchInput, setSearchInput] = useState("");
   const [dropDownLabel, setDropDownLabel] = useState(apiLabelList[0]);
-  const [dropDownCriteriaLabel, setDropDownCriteriaLabel] = useState(criteriaLabelList[0]);
+  const [dropDownCriteriaLabel, setDropDownCriteriaLabel] = useState(
+    criteriaLabelList[0]
+  );
   const searchFeedWrapperRef = useRef();
 
   const [api, setApi] = useState(0);
@@ -83,15 +85,22 @@ const SearchForm = (props) => {
     if (searchInput !== null && searchInput !== "") {
       setIsLoading(true);
       if (api === 0) {
-        getPostSearch(criteriaData[criteria], offset, size, searchInput).then((res) => {
-          if (res.content.length !== 0) {
-            setFeedList(() => res.content);
+        getPostSearch(criteriaData[criteria], offset, size, searchInput).then(
+          (res) => {
+            if (res.content.length !== 0) {
+              setFeedList(() => res.content);
+            }
+            setIsLoading(false);
+            console.log("getPostSearch", res.content);
           }
-          setIsLoading(false);
-          console.log("getPostSearch", res.content);
-        });
+        );
       } else if (api === 1) {
-        getPostByTagName(criteriaData[criteria], offset, size, searchInput).then((res) => {
+        getPostByTagName(
+          criteriaData[criteria],
+          offset,
+          size,
+          searchInput
+        ).then((res) => {
           if (res.content.length !== 0) {
             setFeedList(() => res.content);
           }
@@ -99,7 +108,12 @@ const SearchForm = (props) => {
           console.log("getPostByTagName", res.content);
         });
       } else {
-        getPostByNickname(criteriaData[criteria], offset, size, searchInput).then((res) => {
+        getPostByNickname(
+          criteriaData[criteria],
+          offset,
+          size,
+          searchInput
+        ).then((res) => {
           if (res.content.length !== 0) {
             setFeedList(() => res.content);
           }
@@ -113,13 +127,20 @@ const SearchForm = (props) => {
   const fetchMoreData = () => {
     setIsLoading(true);
     if (api === 0) {
-      getPostSearch(criteriaData[criteria], offset + 1, size, searchInput).then((res) => {
-        setFeedList((prevState) => [...prevState, ...res.content]);
-        setOffset((prevState) => prevState + 1);
-        setIsLoading(false);
-      });
+      getPostSearch(criteriaData[criteria], offset + 1, size, searchInput).then(
+        (res) => {
+          setFeedList((prevState) => [...prevState, ...res.content]);
+          setOffset((prevState) => prevState + 1);
+          setIsLoading(false);
+        }
+      );
     } else {
-      getPostByTagName(criteriaData[criteria], offset + 1, size, searchInput).then((res) => {
+      getPostByTagName(
+        criteriaData[criteria],
+        offset + 1,
+        size,
+        searchInput
+      ).then((res) => {
         setFeedList((prevState) => [...prevState, ...res.content]);
         setOffset((prevState) => prevState + 1);
         setIsLoading(false);
@@ -138,7 +159,11 @@ const SearchForm = (props) => {
   };
 
   return (
-    <div ref={searchFeedWrapperRef} onWheel={onWheelHandler} className={classes[`searchbar-feed`]}>
+    <div
+      ref={searchFeedWrapperRef}
+      onWheel={onWheelHandler}
+      className={classes[`searchbar-feed`]}
+    >
       <div className={classes[`searchbar`]}>
         <SearchBar
           inputChangeHandler={inputChangeHandler}

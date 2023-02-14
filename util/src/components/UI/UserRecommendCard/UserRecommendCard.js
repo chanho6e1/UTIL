@@ -62,7 +62,9 @@ const UserRecommendCard = (props) => {
   const profileOnClickHandler = (event) => {
     // 클릭 시 유저 페이지로 이동
     console.log(props);
-    navigate(`/index/${props.userData.nickname}`, { state: props.userData.userId });
+    navigate(`/index/${props.userData.nickname}`, {
+      state: props.userData.userId,
+    });
   };
 
   useEffect(() => {
@@ -96,11 +98,17 @@ const UserRecommendCard = (props) => {
                 {props.userData.nickname}
               </div>
             </div>
-            <div className={classes.description} onClick={profileOnClickHandler}>
+            <div
+              className={classes.description}
+              onClick={profileOnClickHandler}
+            >
               {props.userData.discription}
             </div>
             <div className={classes.tags}>
-              <TagDataList tagList={props.userData.tags} onClick={tagOnClickHandler} />
+              <TagDataList
+                tagList={props.userData.tags}
+                onClick={tagOnClickHandler}
+              />
             </div>
           </div>
         </div>
