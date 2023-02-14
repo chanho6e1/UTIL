@@ -97,31 +97,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         clearAuthenticationAttributes(request, response);
-        Cookie cookie = new Cookie("code", code);
-        response.addCookie(cookie);
+//        Cookie cookie = new Cookie("code", code);
+//        response.addCookie(cookie);
+        CookieUtils.addCookie(response, "code", code, 180);
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
-
-//        System.out.println(response.getStatus() + " " + jsonString);
-
-//        System.out.println(currentUser.getUserId());
-
-
-
-        //repository
-
-        //repository 의존성 주입
-        //dto 반환
-        //response.
-
-        //response 넣어 200, 201
-
-        //직렬화 printer writer class = 바디에 넣기
-//        PrintWriter writer = response.getWriter();
-////        writer.print(json); //json화
-//
-//        clearAuthenticationAttributes(request, response);
-//        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
@@ -138,8 +118,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 //        logger.info("===============success token: {}", token);
 
-        Cookie cookie = new Cookie("accessToken", token);
-        response.addCookie(cookie);
+//        Cookie cookie = new Cookie("accessToken", token);
+//        response.addCookie(cookie);
+        CookieUtils.addCookie(response, "accessToken", token, 180);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", token)
