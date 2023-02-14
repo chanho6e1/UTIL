@@ -110,16 +110,16 @@ const GoalDetailMobile = (props) => {
           <div className={classes["goal-detail-title-date"]}>
             {props.plan?.startDate} ~ {props.plan?.endDate}
           </div>
-          <div onClick={props.completeToggle} className={classes["plan-state"]}>{props.completeButton}</div>
+          <div onClick={props.completeToggle} className={classes["plan-state"]}>
+            {props.completeButton}
+          </div>
         </div>
       </div>
       <div className={classes["goal-detail-mobile-content-box"]}>
         <div className={classes["goal-detail-mobile-content-tap"]}>
           <Tab tabItems={tabItems} width={"100%"} height={"48px"} />
         </div>
-        <div>
-          {categoryView2}
-        </div>
+        <div>{categoryView2}</div>
       </div>
     </div>
   );

@@ -8,8 +8,7 @@ export const detailGoalCompleteAPI = (idx) => {
     headers: {
       Authorization: TOKEN(),
     },
-  })
-    .then((res) => {
-      return res.data.data
-    })
+  }).then((res) => {
+    return res.data.data;
+  });
 };

@@ -2,12 +2,13 @@ import classes from "../Goal/GoalDetail.module.css";
 import GoalDetailLReviewItem from "./GoalDetailLReviewItem";
 
 const GoalDetailLReview = (props) => {
-
   return (
     <div className={classes["goal-detail-reviews"]}>
       <div className={classes["goal-detail-reviews-up"]}>
         <div className={classes["goal-detail-reviews-title"]}>회고록</div>
-        <div onClick={props.completeToggle} className={classes["plan-state"]}>{props.completeButton}</div>
+        <div onClick={props.completeToggle} className={classes["plan-state"]}>
+          {props.completeButton}
+        </div>
       </div>
       <div className={classes["goal-detail-reviews-line"]} />
       <ul>

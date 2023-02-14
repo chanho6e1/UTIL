@@ -10,7 +10,7 @@ export const detailAllTodosAPI = (idx) => {
     },
   })
     .then((res) => {
-      return res.data.data
+      return res.data.data;
     })
     .catch((err) => {
       throw err;

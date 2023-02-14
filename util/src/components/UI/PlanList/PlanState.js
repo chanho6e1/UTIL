@@ -26,9 +26,9 @@ const PlanState = (props) => {
   };
 
   const isRunning = nowTime() <= props.startDate ? plancomming : planRunning;
-  
+
   const nowState = nowTime() > props.endDate ? planUnComplete : isRunning;
-  
+
   const isComplete = props.state ? planComplete : nowState;
 
   return isComplete;
