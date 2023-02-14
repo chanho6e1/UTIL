@@ -40,6 +40,13 @@ public class GoalController {
                 HttpStatus.OK, "조회 성공", goalService.getGoalList(userPrincipal.getId())));
     }
 
+    @ApiOperation(value = "다른 유저의 목표 리스트", notes = "다른 유저가 작성한 목표를 조회한다.")
+    @GetMapping("/{userId}/users")
+    public ResponseEntity<CommonResponse> getGoalListByUserId(@PathVariable Long userId){
+        return ResponseEntity.ok().body(CommonResponse.of(
+                HttpStatus.OK, "조회 성공", goalService.getGoalList(userId)));
+    }
+
     @ApiOperation(value = "목표 단일 조회", notes = "내가 작성한 목표를 단일 조회한다.")
     @GetMapping("/{goalId}")
     public ResponseEntity<CommonResponse> getGoal(@ApiIgnore @CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId){
