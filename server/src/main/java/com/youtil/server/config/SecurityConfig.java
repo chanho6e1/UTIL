@@ -131,7 +131,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000", "https://i8d210.p.ssafy.io"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000", "https://i8d210.p.ssafy.io", "http://i8d210.p.ssafy.io:8081"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setAllowedMethods(
                 Arrays.asList("HEAD", "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
