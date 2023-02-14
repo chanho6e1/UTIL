@@ -43,7 +43,9 @@ const FollowModal = (props) => {
         </IconButton>
       </div>
       <div className={classes[`follow-modal-lower`]}>
-        <div className={classes[`follow-modal-contents`]}>{FollowCardList(followData)}</div>
+        <div className={classes[`follow-modal-contents`]}>
+          {FollowCardList(followData)}
+        </div>
       </div>
     </div>
   );
