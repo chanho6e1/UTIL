@@ -22,17 +22,20 @@
 
 .plan-state {
   margin: auto;
+  height: 52px;
+  width: 96px;
+  font-size: 20px;
 }
+
 
 .planComplete-wrapper {
   background-color: rgb(190, 240, 210);
   color: rgb(0, 120, 40);
 
-  height: 52px;
-  width: 96px;
+  height: 100%;
+  width: 100%;
   /* padding:4px; */
   border-radius: 5px;
-  font-size: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,40 +44,48 @@
   /* cursor: pointer; */
 }
 
-/* .planComplete-wrapper:hover {
+.planComplete-wrapper:hover {
   background-color: rgb(170, 220, 190);
-} */
+}
 
 .planUnComplete-wrapper {
   background-color: rgb(241, 191, 163);
   color: rgb(149, 16, 16);
 
-  height: 52px;
-  width: 96px;
+  height: 100%;
+  width: 100%;
+  /* padding:4px; */
   border-radius: 5px;
-  font-size: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   transition-property: background-color;
   transition-duration: 0.3s;
   /* cursor: pointer; */
+}
+
+.planUnComplete-wrapper:hover {
+  background-color: rgb(221, 171, 143);
 }
 
 .planRunning-wrapper {
   background-color: rgb(220, 220, 228);
   color: rgb(50, 50, 50);
 
-  height: 52px;
-  width: 96px;
+  height: 100%;
+  width: 100%;
+  /* padding:4px; */
   border-radius: 5px;
-  font-size: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   transition-property: background-color;
   transition-duration: 0.3s;
   /* cursor: pointer; */
+}
+
+.planRunning-wrapper:hover {
+  background-color: rgb(200, 200, 208);
 }
 
 .plancomming-wrapper {
@@ -83,14 +94,18 @@
   /* background-color: rgb(154, 154, 241);
   color: rgb(32, 23, 130); */
 
-  height: 52px;
-  width: 96px;
+  height: 100%;
+  width: 100%;
+  /* padding:4px; */
   border-radius: 5px;
-  font-size: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   transition-property: background-color;
   transition-duration: 0.3s;
   /* cursor: pointer; */
+}
+
+.plancomming-wrapper:hover {
+  background-color: rgb(220, 220, 228);
 }

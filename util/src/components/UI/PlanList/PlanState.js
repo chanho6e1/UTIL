@@ -25,13 +25,13 @@ const PlanState = (props) => {
     return `${now.getFullYear()}-${nowM}-${nowD}`;
   };
 
-  const isComplete = props.state ? planComplete : planUnComplete;
-
   const isRunning = nowTime() <= props.startDate ? plancomming : planRunning;
+  
+  const nowState = nowTime() > props.endDate ? planUnComplete : isRunning;
+  
+  const isComplete = props.state ? planComplete : nowState;
 
-  const nowState = nowTime() > props.endDate ? isComplete : isRunning;
-
-  return nowState;
+  return isComplete;
 };
 
 export default PlanState;
