@@ -2,23 +2,18 @@ import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 import { recvIngPlanAPI } from "./recvIngPlanAPI";
 
-
 export const delPlanAPI = (idx) => {
   return axios({
-    method: 'delete',
+    method: "delete",
     url: `${API_BASE_URL}/goals/${idx}`,
     headers: {
-        Authorization: TOKEN()
+      Authorization: TOKEN(),
     },
-    })
+  })
     .then((res) => {
-        return recvIngPlanAPI()
+      return recvIngPlanAPI();
     })
     .catch((err) => {
-        throw err
-    })
-}
-
-
-
-
+      throw err;
+    });
+};

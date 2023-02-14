@@ -4,10 +4,10 @@ import classes from "./PostCardContainerLoading.module.css";
 const PostCardLoadingItem = (key) => {
   return (
     // <li className={classes['li-tag']} key={key}>
-      <div key={key} className={classes.item}>
-        <div className={classes[`text-area`]}> </div>
-        <div className={classes[`thumbnail-area`]}> </div>
-      </div>
+    <div key={key} className={classes.item}>
+      <div className={classes[`text-area`]}> </div>
+      <div className={classes[`thumbnail-area`]}> </div>
+    </div>
     // </li>
   );
 };
