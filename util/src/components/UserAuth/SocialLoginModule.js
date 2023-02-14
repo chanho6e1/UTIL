@@ -11,18 +11,25 @@ import {
 const SocialLoginModule = (props) => {
   return (
     <div className={styles["social-login-header"]}>
-      <a
-        className={`${styles["social-login-wrapper"]} ${styles["google-login"]}`}
-        href={GOOGLE_AUTH_URL}
-      >
-        <img className={styles["google-logo"]} src={google} />
+      <div className={styles["social-login-title"]}>Log in</div>
+      <a className={styles["social-login-button"]} href={GOOGLE_AUTH_URL}>
+        <div
+          className={`${styles["social-login-wrapper"]} ${styles["google-login"]}`}
+          
+        >
+          <img className={styles["google-logo"]} src={google} />
+        </div>
+        <div className={styles["login-label"]}>Continue with Google</div>
       </a>
 
-      <a
-        className={`${styles["social-login-wrapper"]} ${styles["kakaotalk-login"]}`}
-        href={KAKAO_AUTH_URL}
-      >
-        <img className={styles["kakaotalk-logo"]} src={kakaotalk} />
+      <a className={styles["social-login-button"]} href={KAKAO_AUTH_URL}>
+        <div
+          className={`${styles["social-login-wrapper"]} ${styles["kakaotalk-login"]}`}
+          
+        >
+          <img className={styles["kakaotalk-logo"]} src={kakaotalk} />
+        </div>
+        <div className={styles["login-label"]}>Continue with Kakaotalk</div>
       </a>
     </div>
   );
