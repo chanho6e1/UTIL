@@ -38,11 +38,15 @@ const SocialLogin = (props) => {
         </div>
         
         <SocialLoginModule />
+
+        <div style={{ color:'rgb(130,130,130)', fontSize:'14px'}}><a style={{textDecoration: 'none', color:'rgb(130,130,130)', fontSize:'14px'}} href="https://www.freepik.com/free-vector/programming-concept-illustration_7118756.htm#query=programmer&position=19&from_view=keyword&track=sph">Image by storyset</a><br/>on Freepik</div>
         <div/>
       </div>
-
-      <img className={styles['pc-image']} style={{ width: "60vw", height: "auto", minWidth: "500px"}} src={illust1} />
-      <a href="https://www.freepik.com/free-vector/programming-concept-illustration_7118756.htm#query=programmer&position=19&from_view=keyword&track=sph">Image by storyset</a> on Freepik
+      <div>
+        <img className={styles['pc-image']} style={{ width: "60vw", height: "auto", minWidth: "500px"}} src={illust1} />
+      </div>
+      
+      
     </div>
   );
 };

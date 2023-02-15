@@ -10,7 +10,7 @@
 
 @media screen and (max-width: 768px) {
   .feed-wrapper {
-    width: 100%;
+    width: 100vw;
     grid-template-columns: repeat(1);
     padding: 14px;
     box-sizing: border-box;

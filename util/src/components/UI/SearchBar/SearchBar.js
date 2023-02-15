@@ -34,6 +34,7 @@ const SearchBar = (props) => {
         <div className={classes[`dummy`]} />
 
         <div className={classes[`search-bar`]}>
+
           <div>
             <DropDown
               dropDownItems={dropDownSearchItems}
@@ -44,6 +45,7 @@ const SearchBar = (props) => {
               direction={"down"}
               borderRadius={"5px"}
               noLiTag={true}
+              
             />
             <div
               className={classes["search-dropdown"]}
@@ -54,6 +56,7 @@ const SearchBar = (props) => {
               {props.label}
             </div>
           </div>
+
 
           <div className={classes[`search-bar-line`]} />
 

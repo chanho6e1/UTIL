@@ -24,7 +24,7 @@ const Main = (props) => {
   const userAuth = useSelector((state) => state.userAuthSlice.userAuth);
 
   const postData = {
-    content: [<UserPage />, <Explore />, <PlanResponsive />, <Search />],
+    content: [<UserPage />, <PlanResponsive />, <Explore />, <Search />],
     //
     dock: {
       logoContracted: (
@@ -35,18 +35,18 @@ const Main = (props) => {
         />
       ),
       logoExpanded: <div className={styles["logo-text"]}>util</div>,
-      dockContracted: [Icons.home, Icons.feed, Icons.compass, Icons.search],
+      dockContracted: [Icons.home, Icons.compass, Icons.feed,  Icons.search],
       dockExpanded: [
         <div>마이 유틸</div>,
-        <div>탐색 탭</div>,
         <div>목표</div>,
+        <div>탐색</div>,
         <div>검색</div>,
       ],
-      dockContractedBottom: [Icons.notification, <UserIcon />],
-      dockExpandedBottom: [<div>알림</div>, <CurrentUser />],
-      dockWrapperBottom: [<React.Fragment />, <UserDockWrapper />],
+      dockContractedBottom: [<UserIcon />],
+      dockExpandedBottom: [<CurrentUser />],
+      dockWrapperBottom: [<UserDockWrapper />],
     },
-    url: ["/index", "/explore", "/plan", "/search"],
+    url: ["/index", "/plan", "/explore", "/search"],
     bottomUrl: ["/notification", "/user"],
   };
 

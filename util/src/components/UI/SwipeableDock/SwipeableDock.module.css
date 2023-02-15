@@ -94,7 +94,7 @@
     height: 110px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: end;
     margin-bottom: 24px;
   }
 
