@@ -5,6 +5,7 @@ import { getRecommendUser } from "../../api/UserProfile/getRecommendUser";
 import Button from "../UI/Button/Button";
 import Loading from "../UI/Loading/Loading";
 import personAddIcon from "../../img/PersonAddIcon.svg";
+import { useNavigate } from "react-router-dom";
 
 const UserRecommend = (props) => {
   const [userList, setUserList] = useState([]);
@@ -12,6 +13,7 @@ const UserRecommend = (props) => {
   const size = 5;
   const recRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate()
 
   const UserRecommendCardList = (userList) => {
     return userList?.map((user) => {
@@ -51,10 +53,14 @@ const UserRecommend = (props) => {
     const message = "관심 태그가 없어요. 마이 프로필에서 태그를 설정해 보세요";
     return (
       <div className={classes[`alt-wrapper`]}>
-        <div className={classes[`alt-message-icon`]}>
-          <img src={personAddIcon} />
+        <div className={classes[`alt-inner-wrapper`]}>
+          <div className={classes[`alt-message-icon`]}>
+            <img src={personAddIcon} />
+          </div>
+          <div className={classes[`alt-message-wrapper`]}>{message}</div>
         </div>
-        <div className={classes[`alt-message-wrapper`]}>{message}</div>
+        
+        <Button onClick={() => {navigate('/profile')}}>태그 추가하러 가기</Button>
       </div>
     );
   };
