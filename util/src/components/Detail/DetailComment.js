@@ -92,6 +92,7 @@ const DetailComment = (props) => {
     props.comment.isPrivate
   );
   const editCommentIsPrivateInputHandler = (event) => {
+    console.log("비공개 수정", event.target.checked)
     seteditCommentIsPrivate(event.target.checked);
   };
 
@@ -106,15 +107,15 @@ const DetailComment = (props) => {
       props.postId,
       inputEditCommentData
     )
-      .then((res) => {
-        const proccessing = {
-          postId: props.postId,
-          data: res,
-        };
-        dispatch(
-          modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing))
-        );
-      })
+      // .then((res) => {
+      //   const proccessing = {
+      //     postId: props.postId,
+      //     data: res,
+      //   };
+      //   dispatch(
+      //     modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing))
+      //   );
+      // })
       .catch((err) => {
         console.log(err);
       });
@@ -151,7 +152,10 @@ const DetailComment = (props) => {
           src={warning}
         />
         <div>
-          <p>삭제 시 복구할 수 없습니다. <br/>정말로 삭제 하시겠습니까?</p>
+          <p>
+            삭제 시 복구할 수 없습니다. <br />
+            정말로 삭제 하시겠습니까?
+          </p>
         </div>
         <div
           style={{
@@ -278,7 +282,10 @@ const DetailComment = (props) => {
           </div>
           {depthMessage}
           <div className={classes.commentContent}>
-            <Viewer initialValue={props.comment.content} plugins={[[codeSyntaxHighlight, { highlighter: prism }]]} />
+            <Viewer
+              initialValue={props.comment.content}
+              plugins={[[codeSyntaxHighlight, { highlighter: prism }]]}
+            />
           </div>
           <div className={classes["Detail-comments-plus"]}>
             {props.userInfo.userId === props.comment.writerInfo.userId && (
@@ -350,7 +357,10 @@ const DetailComment = (props) => {
         {depthImg}
         <div className={classes["Detail-comments-contents"]}>
           <div className={classes.commentContent}>
-            <Viewer initialValue={props.comment.content} plugins={[[codeSyntaxHighlight, { highlighter: prism }]]} />
+            <Viewer
+              initialValue={props.comment.content}
+              plugins={[[codeSyntaxHighlight, { highlighter: prism }]]}
+            />
           </div>
         </div>
       </div>
@@ -487,7 +497,8 @@ const DetailComment = (props) => {
 
   const privateComment =
     props.userInfo.userId === props.comment.writerInfo.userId ||
-    props.postWriterInfo.userId === props.userInfo.userId ? (
+    props.userInfo.userId === props.postWriterInfo.userId ||
+    props.userInfo.nickname === props.comment.parentWriterNickName ? (
       editCommentBox
     ) : (
       <Fragment>
