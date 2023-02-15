@@ -31,8 +31,7 @@ const UserRecommend = (props) => {
   };
 
   useEffect(() => {
-    if (props.myTagList.length === 0) {
-    } else {
+    if (props.myTagList !== null) {
       getRecommendUser(offset, size).then((res) => {
         setUserList(() => res.content);
       });

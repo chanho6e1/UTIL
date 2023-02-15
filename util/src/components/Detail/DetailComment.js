@@ -11,6 +11,11 @@ import warning from "../../img/Warning.png";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import { Viewer } from "@toast-ui/react-editor";
 
+import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js";
+import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+import prism from "prismjs";
+import "prismjs/themes/prism.css";
+
 const DetailComment = (props) => {
   const dispatch = useDispatch();
   const [depthComment, setdepthComment] = useState(false);
@@ -146,8 +151,7 @@ const DetailComment = (props) => {
           src={warning}
         />
         <div>
-          <p style={{ lineHeight: "40%" }}>삭제 시 복구할 수 없습니다.</p>
-          <p style={{ lineHeight: "40%" }}>정말로 삭제 하시겠습니까?</p>
+          <p>삭제 시 복구할 수 없습니다. <br/>정말로 삭제 하시겠습니까?</p>
         </div>
         <div
           style={{
@@ -274,7 +278,7 @@ const DetailComment = (props) => {
           </div>
           {depthMessage}
           <div className={classes.commentContent}>
-            <Viewer initialValue={props.comment.content} />
+            <Viewer initialValue={props.comment.content} plugins={[[codeSyntaxHighlight, { highlighter: prism }]]} />
           </div>
           <div className={classes["Detail-comments-plus"]}>
             {props.userInfo.userId === props.comment.writerInfo.userId && (
@@ -346,7 +350,7 @@ const DetailComment = (props) => {
         {depthImg}
         <div className={classes["Detail-comments-contents"]}>
           <div className={classes.commentContent}>
-            <Viewer initialValue={props.comment.content} />
+            <Viewer initialValue={props.comment.content} plugins={[[codeSyntaxHighlight, { highlighter: prism }]]} />
           </div>
         </div>
       </div>

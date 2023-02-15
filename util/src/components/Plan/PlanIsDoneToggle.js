@@ -34,9 +34,7 @@ const DoneModalForm = (props) => {
         src={complete}
       />
       <div>
-        <p style={{ lineHeight: "40%" }}>목표의 모든 TODO를 완료하였습니다.</p>
-        <p style={{ lineHeight: "40%" }}>
-          관련 글을 작성하고 목표를 완료하세요.
+        <p>목표의 모든 TODO를 완료하였습니다. <br/>관련 글을 작성하고 목표를 완료하세요.
         </p>
       </div>
       <div
@@ -230,8 +228,7 @@ const PlanIsDoneToggle = (props) => {
         src={complete}
       />
       <div>
-        <p style={{ lineHeight: "40%" }}>축하드립니다!</p>
-        <p style={{ lineHeight: "40%" }}>목표를 완료하였습니다!</p>
+        <p>축하드립니다! <br/>목표를 완료하였습니다!</p>
       </div>
     </div>
   );

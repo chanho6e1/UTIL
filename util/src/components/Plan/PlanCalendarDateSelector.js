@@ -639,9 +639,7 @@ const PlanCalendarDateSelector = (props) => {
         src={warning}
       />
       <div>
-        <p style={{ lineHeight: "40%" }}>TODO의 날짜는 현재 조정중인 목표의</p>
-        <p style={{ lineHeight: "40%" }}>
-          날짜 범위를 미만 & 초과할 수 없습니다.
+        <p>TODO의 날짜는 현재 조정중인 목표의 <br/>날짜 범위를 미만 & 초과할 수 없습니다.
         </p>
       </div>
     </div>

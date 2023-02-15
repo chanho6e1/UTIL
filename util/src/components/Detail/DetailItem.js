@@ -32,6 +32,15 @@ import warning from "../../img/Warning.png";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import { Viewer } from "@toast-ui/react-editor";
 
+
+
+
+
+import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js";
+import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+import prism from "prismjs";
+import "prismjs/themes/prism.css";
+
 const DetailItemShow = (props) => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -242,7 +251,7 @@ const DetailItemShow = (props) => {
     userInfo &&
     comments[post.postId]?.map((comment) => (
       <DetailComment
-        key={`commentId${comment.commentId}`}
+        key={`commentId${comment.commentId}-${comment.content}`}
         comment={comment}
         postWriterInfo={post.writerInfo}
         userInfo={userInfo}
@@ -291,8 +300,7 @@ const DetailItemShow = (props) => {
           src={warning}
         />
         <div>
-          <p style={{ lineHeight: "40%" }}>삭제 시 복구할 수 없습니다.</p>
-          <p style={{ lineHeight: "40%" }}>정말로 삭제 하시겠습니까?</p>
+          <p>삭제 시 복구할 수 없습니다. <br/>정말로 삭제 하시겠습니까?</p>
         </div>
         <div
           style={{
@@ -382,7 +390,7 @@ const DetailItemShow = (props) => {
           </div>
 
           <div className={classes.contents}>
-            <Viewer initialValue={post.content} />
+            <Viewer initialValue={post.content} plugins={[[codeSyntaxHighlight, { highlighter: prism }]]} />
             {/* {post.content} */}
           </div>
         </div>

@@ -1,10 +1,12 @@
 import classes from "../Goal/GoalDetail.module.css";
 import GoalDetailRTilItem from "./GoalDetailRTilItem";
-import { Fragment, useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Card from "../UI/Card/Card";
+import { useSelector } from "react-redux";
 
 const GoalDetailRTil = (props) => {
   const [tilsArr, settilsArr] = useState([]);
+  const userAuth = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
 
   useEffect(() => {
     if (props.tils) {
@@ -17,7 +19,7 @@ const GoalDetailRTil = (props) => {
       <div className={classes["goal-detail-r-tils-title"]}>TIL</div>
       <div className={classes["goal-detail-r-tils-item"]}>
         {tilsArr.map((til) => (
-          <GoalDetailRTilItem key={`tilId${til.todoId}`} til={til} />
+          <GoalDetailRTilItem key={`tilId${til.todoId}`} til={til} nickname={userAuth.nickname} />
         ))}
       </div>
       <div className={classes["goal-detail-r-tils-page"]}>
