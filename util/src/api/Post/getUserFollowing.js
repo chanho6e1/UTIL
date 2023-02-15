@@ -15,7 +15,7 @@ export const getUserFollowing = (userId) => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
+
       console.log("팔로잉 목록 조회에 실패하였습니다.");
     });
 };

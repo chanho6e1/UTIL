@@ -14,7 +14,6 @@ export const getIsFollowing = (toUserId) => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
       console.log("팔로우 여부 조회에 실패하였습니다.");
     });
 };

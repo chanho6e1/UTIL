@@ -14,7 +14,6 @@ export const getUserTag = (userId) => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
       console.log("태그 목록 조회에 실패하였습니다.");
     });
 };

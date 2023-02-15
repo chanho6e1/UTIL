@@ -14,7 +14,6 @@ export const getMyTags = () => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
       console.log("나의 태그 조회에 실패하였습니다.");
     });
 };

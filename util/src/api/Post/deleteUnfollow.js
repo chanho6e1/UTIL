@@ -14,7 +14,6 @@ export const deleteFollow = (toUserId) => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
       console.log("언팔로우 실패");
     });
 };

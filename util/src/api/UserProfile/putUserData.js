@@ -15,7 +15,6 @@ export const putUserData = (userData) => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
       console.log("유저 정보 업데이트 실패");
     });
 };

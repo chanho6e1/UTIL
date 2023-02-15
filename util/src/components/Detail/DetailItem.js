@@ -241,7 +241,6 @@ const DetailItemShow = (props) => {
   };
 
   const postDeleteHandler = () => {
-    console.log(post.postId);
     tilDeleteAPI(post.postId)
       .then((res) => {
         navigate(`/`);

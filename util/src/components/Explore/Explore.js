@@ -69,7 +69,6 @@ const ExploreForm = () => {
   useEffect(() => {
     setIsLoading(() => true);
     criteriaAPI[criteria](criteriaList[criteria], 1, 20).then((res) => {
-      console.log("초기데이터", res.content);
       setFeedList(() => res.content);
       setOffset(() => 1);
       setIsLoading(() => false);
@@ -147,7 +146,6 @@ const ExploreForm = () => {
     const scrollHeight = exploreWrapperRef.current.scrollHeight;
     const scrollTop = exploreWrapperRef.current.scrollTop;
     const clientHeight = exploreWrapperRef.current.clientHeight;
-    console.log(scrollHeight, scrollTop, clientHeight);
     if (scrollTop + clientHeight >= scrollHeight - 10 && isLoading === false) {
       fetchMoreData();
     }

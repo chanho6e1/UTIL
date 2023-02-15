@@ -21,16 +21,6 @@ const BlogPostFormRender = (props) => {
   );
   const [selectedScope, setSelectedScope] = useState(2);
 
-  // useEffect(() => {
-  //     recvPlansAPI()
-  //     .then((res) => {
-  //         setPlans(res)
-
-  //     })
-  // }, [])
-
-  console.log("ttttt", plans);
-
   const planPickerHandler = () => {
     if (props.forReview === true) {
       return;
@@ -66,6 +56,7 @@ const BlogPostFormRender = (props) => {
     if (plans[el].state === false) {
       return (
         <div
+          key={`blog-post-form-plan-${el}`}
           onClick={() => {
             selectPlan(plans[el]);
             planPickerHandler();
@@ -227,7 +218,6 @@ const BlogPostForm = (props) => {
   const [plans, setPlans] = useState(null);
   useEffect(() => {
     recvPlansAPI().then((res) => {
-      console.log(res);
       setPlans(res);
     });
   }, []);

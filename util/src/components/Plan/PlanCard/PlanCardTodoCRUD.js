@@ -113,7 +113,6 @@ const PlanCardTodoCRUD = (props) => {
             goalId: props.plan.goalId,
             data: res,
           };
-          console.log("PlanCardTodoCRUD : newTodoAPI");
           dispatch(
             modifyPlanSliceActions.responseTodos(JSON.stringify(processing))
           );
@@ -131,15 +130,6 @@ const PlanCardTodoCRUD = (props) => {
                 )
               );
               props.modalHandler();
-
-              // recvTodayTodosAPI()
-              // .then((res) => {
-              // dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
-              // props.modalHandler()
-              // })
-              // .catch((err) => {
-              // console.log('PlanCardItem : recvTodayTodosAPI => ', err)
-              // })
             })
             .catch((err) => {
               console.log("PlanCardTodoCRUD : recvTodoPeriodAPI => ", err);
@@ -191,15 +181,6 @@ const PlanCardTodoCRUD = (props) => {
         modifyPlanSliceActions.responseTodos(JSON.stringify(proccessing))
       );
       props.modalHandler();
-
-      // recvTodayTodosAPI()
-      // .then((res) => {
-      // dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
-      // props.modalHandler()
-      // })
-      // .catch((err) => {
-      // console.log('PlanCardItem : recvTodayTodosAPI => ', err)
-      // })
     });
   };
 

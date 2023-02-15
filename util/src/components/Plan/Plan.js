@@ -73,7 +73,6 @@ const Plan = (props) => {
             goalId: goalId,
             data: res,
           };
-          console.log("Plan : recvTodosAPI");
           dispatch(
             modifyPlanSliceActions.responseTodos(JSON.stringify(processing))
           );
@@ -273,7 +272,6 @@ const Plan = (props) => {
           }
         })
         .then((res) => {
-          console.log("Plan : newPlanAPI");
           dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)));
           setNewPlanValue("");
           setNewPlan(false);

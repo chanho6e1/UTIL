@@ -14,7 +14,6 @@ export const getMyData = () => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
       console.log("로그인 유저 조회에 실패하였습니다.");
     });
 };

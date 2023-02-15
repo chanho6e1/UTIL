@@ -15,6 +15,7 @@ const Tab = (props) => {
   const tabItems = props.tabItems.map((el, idx) => {
     return (
       <div
+        key={`${el.content}-${idx}`}
         ref={(el) => (tabItemsRef.current[idx] = el)}
         onClick={() => {
           setTabIndex(() => idx);

@@ -52,7 +52,6 @@ const UserProfileChange = (props) => {
 
                 getCurrentUser()
                   .then((response) => {
-                    console.log("getMy!!!");
 
                     dispatch(userAuthSliceActions.changeAuthenticated("true"));
                     dispatch(

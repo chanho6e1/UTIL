@@ -14,7 +14,6 @@ export const getPostTag = (postId) => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
       console.log("태그 조회에 실패하였습니다.");
     });
 };

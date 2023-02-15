@@ -51,20 +51,13 @@ const ExploreFeed = (props) => {
 
   useEffect(() => {
     setIsLoading(true);
-    // if (criteria !== 0) {
     props.api(criteriaList[props.criteria], offset, 20).then((res) => {
-      // setFeedList(() => res.content);
-      // setIsLoading(false);
-      console.log(res.content);
       if (res.content.length > 0) {
-        // setOffset((prevState) => prevState + 1);
         setFeedList(() => res.content);
         setIsLoading(false);
       } else {
         setFeedList(() => []);
-
         if (props.criteria === 0) {
-          // 추천 컴포넌트
           if (location.pathname === "/explore") {
             setModalState(true);
             setIsLoading(false);
@@ -108,11 +101,6 @@ const ExploreFeed = (props) => {
     // scroll event listener 등록
     if (props.exploreRef.current !== null) {
       props.exploreRef.current.addEventListener("scroll", handleScroll);
-      console.log(
-        "ssafy",
-        props.exploreRef.current.clientHeight,
-        props.exploreRef.current.scrollHeight
-      );
     }
     return () => {
       // scroll event listener 해제

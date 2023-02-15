@@ -275,14 +275,6 @@ const GoalDetailShow = (props) => {
 
 const GoalDetail = (props) => {
   const idx = useParams().id;
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    detailPlansAPI(idx).then((res) => {
-      dispatch(modifyPlanSliceActions.getPlans(JSON.stringify(res)));
-    });
-  }, []);
-
   const plans = useSelector((state) => state.planSlice.allPlans);
 
   return (

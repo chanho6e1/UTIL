@@ -14,7 +14,7 @@ export const getUserFollower = (userId) => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
+
       console.log("팔로워 목록 조회에 실패하였습니다.");
     });
 };

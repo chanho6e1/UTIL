@@ -153,7 +153,6 @@ const PlanCalendarDateSelector = (props) => {
       };
       editPlanAPI(props.plan.goalId, processing)
         .then((res) => {
-          console.log("PlanCalendarDateSelector : editPlanAPI");
           dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)));
         })
         .catch((err) => {
@@ -183,7 +182,6 @@ const PlanCalendarDateSelector = (props) => {
               goalId: props.plan.goalId,
               data: res,
             };
-            // console.log('PlanCalendarDateSelector : editTodosAPI')
             dispatch(
               modifyPlanSliceActions.responseTodos(JSON.stringify(processing))
             );
