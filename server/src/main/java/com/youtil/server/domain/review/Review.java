@@ -28,6 +28,7 @@ public class Review extends BaseEntity {
     private Goal goal;
 
     private String title;
+    @Column(columnDefinition="TEXT")
     private String content;
 
 //    private Long isPrivate; //공개2, 팔로워1, 비공개0
