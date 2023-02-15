@@ -32,6 +32,7 @@ public class TagController {
     PostService postService;
 
     // 관심 테그
+    @ApiIgnore
     @ApiOperation(value = "관심 테그 등록", notes = "관심 테그를 등록한다")
     @PostMapping("/likes")
     public ResponseEntity<CommonResponse> findOrCrateTagLike(@ApiIgnore @CurrentUser UserPrincipal user, @RequestBody @Valid TagSaveRequest request) throws Exception {
@@ -52,14 +53,14 @@ public class TagController {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "유저별 관심 테그 조회 성공", tagService.getUserTagLike(userId)));
     }
-
+    @ApiIgnore
     @ApiOperation(value = "관심 테그 삭제", notes = "관심 테그를 삭제한다")
     @DeleteMapping("/likes")
     public ResponseEntity<CommonResponse> deleteTagLike(@ApiIgnore @CurrentUser UserPrincipal user) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.NO_CONTENT, "관심 테그 삭제 성공", tagService.deleteTagLike(user.getId())));
     }
-
+    @ApiIgnore
     @ApiOperation(value = "관심 테그 수정", notes = "관심 테그를 수정한다")
     @PutMapping("/likes")
     public ResponseEntity<CommonResponse> updateTagLike(@ApiIgnore @CurrentUser UserPrincipal user, @RequestBody @Valid TagSaveRequest request) throws Exception {
@@ -68,6 +69,7 @@ public class TagController {
                 HttpStatus.CREATED, "관심 테그 수정 성공", tagService.updateTagLike(user.getId(), request)));
     }
     // 포스트 테그
+    @ApiIgnore
     @ApiOperation(value = "포스트 테그 등록", notes = "포스트 테그를 등록한다")
     @PostMapping("/posts/{postId}")
     public ResponseEntity<CommonResponse> findOrCrateTagPost(@PathVariable Long postId, @RequestBody @Valid TagSaveRequest request) throws Exception {
@@ -82,12 +84,14 @@ public class TagController {
                 HttpStatus.OK, "포스트 테그 조회 성공", tagService.getTagByPost(postId)));
     }
 
+    @ApiIgnore
     @ApiOperation(value = "포스트 테그 삭제", notes = "포스트 테그를 삭제한다")
     @DeleteMapping("/posts/{postId}")
     public ResponseEntity<CommonResponse> deleteTagPost(@PathVariable Long postId) {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.NO_CONTENT, "포스트 테그 삭제 성공", tagService.deleteTagPost(postId)));
     }
+    @ApiIgnore
     @ApiOperation(value = "포스트 테그 수정", notes = "포스트 테그를 수정한다")
     @PutMapping("/posts/{postId}")
     public ResponseEntity<CommonResponse> updateTagLike(@PathVariable Long postId, @RequestBody @Valid TagSaveRequest request) throws Exception {
@@ -103,6 +107,7 @@ public class TagController {
                 HttpStatus.OK, "테그 조회 성공", tagService.getTag()));
     }
 
+    @ApiIgnore
     @ApiOperation(value = "테그 삭제", notes = "테그를 삭제한다")
     @DeleteMapping("/{tagId}")
     public ResponseEntity<CommonResponse> deleteTag(@PathVariable Long tagId) {
@@ -110,6 +115,7 @@ public class TagController {
                 HttpStatus.NO_CONTENT, "카테고리 삭제 성공", tagService.deleteTag(tagId)));
     }
 
+    @ApiIgnore
     @ApiOperation(value = "테그 수정", notes = "해당 테그를 수정한다")
     @PutMapping("/{tagId}")
     public ResponseEntity<CommonResponse> updateTag(@PathVariable Long tagId,
