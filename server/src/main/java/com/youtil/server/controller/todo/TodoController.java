@@ -25,6 +25,7 @@ public class TodoController {
     @Autowired
     TodoService todoService;
 
+    @ApiIgnore
     @ApiOperation(value = "투두 등록", notes = "투두를 등록한다")
     @PostMapping("/{goalId}")
     public ResponseEntity<CommonResponse> createTodo(@PathVariable Long goalId, @RequestBody @Valid TodoSaveRequest request) throws Exception {
@@ -32,6 +33,7 @@ public class TodoController {
                 HttpStatus.CREATED, "등록 성공", todoService.createTodo(goalId, request)));
     }
 
+    @ApiIgnore
     @ApiOperation(value = "투두 수정", notes = "해당 투두를 수정한다")
     @PutMapping("/{todoId}")
     public ResponseEntity<CommonResponse> updateTodo(@PathVariable Long todoId,
@@ -40,12 +42,15 @@ public class TodoController {
                 HttpStatus.CREATED, "투두 수정 성공", todoService.updateTodo(todoId, request)));
     }
 
+    @ApiIgnore
     @ApiOperation(value = "투두 상태 수정", notes = "해당 투두 상태를 수정한다")
     @PutMapping("/{todoId}/state")
     public ResponseEntity<CommonResponse> setTodoState(@PathVariable Long todoId) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "투두 상태 수정 성공", todoService.setTodoState(todoId)));
     }
+
+    @ApiIgnore
     @ApiOperation(value = "전체 투두 날짜 수정", notes = "전체 투두 날짜를 수정한다")
     @PutMapping("/dates/{goalId}")
     public ResponseEntity<CommonResponse> updateTodoDate(@PathVariable Long goalId, @RequestBody @Valid List<TodoUpdateDateRequest> request) throws Exception {
@@ -53,6 +58,7 @@ public class TodoController {
                 HttpStatus.CREATED, "전체 투두 날짜 수정 성공", todoService.updateTodoDate(goalId, request)));
     }
 
+    @ApiIgnore
     @ApiOperation(value = "투두 삭제", notes = "투두를 삭제한다")
     @DeleteMapping("/{todoId}")
     public ResponseEntity<CommonResponse> deleteTodo(@PathVariable Long todoId) {

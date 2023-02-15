@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -34,6 +35,8 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private TokenProvider tokenProvider;
+
+    @ApiIgnore
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
@@ -46,6 +49,8 @@ public class AuthController {
         String token = tokenProvider.createToken(authentication);
         return ResponseEntity.ok(new AuthResponse(token));
     }
+
+    @ApiIgnore
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {

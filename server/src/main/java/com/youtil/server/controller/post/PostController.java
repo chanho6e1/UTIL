@@ -145,14 +145,14 @@ public class PostController {
 
 
     //////////////
-
+    @ApiIgnore
     @ApiOperation(value = "게시물 등록", notes = "게시물을 등록한다")
     @PostMapping
     public ResponseEntity<CommonResponse> createPost(@ApiIgnore @CurrentUser UserPrincipal user, @RequestBody @Valid PostSaveRequest request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "등록 성공", postService.createPost(user.getId(), request)));
     }
-
+    @ApiIgnore
     @ApiOperation(value = "게시물 수정", notes = "해당 게시물을 수정한다")
     @PutMapping("/{postId}")
     public ResponseEntity<CommonResponse> updatepost(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long postId,
@@ -160,7 +160,7 @@ public class PostController {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "수정 성공", postService.updatePost(user.getId(), postId, request)));
     }
-
+    @ApiIgnore
     @ApiOperation(value = "게시물 삭제", notes = "단일 게시물을 삭제한다")
     @DeleteMapping("/{postId}")
     public ResponseEntity<CommonResponse> deletepost(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long postId) throws UnsupportedEncodingException {
@@ -169,7 +169,7 @@ public class PostController {
     }
 
     ////////////////////
-
+    @ApiIgnore
     @ApiOperation(value = "게시물 좋아요 토글", notes = "단일 게시물에 대한 좋아요 선택/해제한다")
     @PutMapping("/{postId}/likes")
     public ResponseEntity<CommonResponse> togglePostLikes(@ApiIgnore @CurrentUser UserPrincipal user,
@@ -177,7 +177,7 @@ public class PostController {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "좋아요 성공", postService.togglePostLikes(user.getId(), postId)));
     }
-
+    @ApiIgnore
     @ApiOperation(value = "북마크 토글", notes = "단일 게시물에 대한 북마크를 선택/해제한다")
     @PutMapping("/{postId}/bookmarks")
     public ResponseEntity<CommonResponse> togglePostBookmarks(@ApiIgnore @CurrentUser UserPrincipal user,

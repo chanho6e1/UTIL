@@ -38,14 +38,14 @@ public class PostCommentController {
                 HttpStatus.OK, "해당 게시물의 댓글 목록 조회 성공", postCommentService.findPostCommentList(postId, offset, size)));
     }
 
-
+    @ApiIgnore
     @ApiOperation(value = "댓글 등록", notes = "댓글을 등록한다")
     @PostMapping("/{postId}")
     public ResponseEntity<CommonResponse> createPost(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long postId, @RequestBody @Valid PostCommentSaveRequest request) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "등록 성공", postCommentService.createPostComment(user.getId(), postId, request)));
     }
-
+    @ApiIgnore
     @ApiOperation(value = "댓글 수정", notes = "댓글을 수정한다")
     @PutMapping("/{commentId}")
     public ResponseEntity<CommonResponse> updatepost(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long commentId,
@@ -53,7 +53,7 @@ public class PostCommentController {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "수정 성공", postCommentService.updatePostComment(user.getId(), commentId, request)));
     }
-
+    @ApiIgnore
     @ApiOperation(value = "댓글 삭제", notes = "단일 댓글을 삭제한다")
     @DeleteMapping("/{commentId}")
     public ResponseEntity<CommonResponse> deletepost(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long commentId) {

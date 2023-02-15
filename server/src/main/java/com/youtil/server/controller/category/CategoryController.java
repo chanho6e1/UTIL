@@ -41,7 +41,7 @@ public class CategoryController {
                 HttpStatus.CREATED, "카테고리별 게시물 조회 성공", postCategoryService.getCategoryPosts(user.getId(), catogoryId, criteria, offset, size)));
     }
 
-
+    @ApiIgnore
     @ApiOperation(value = "카테고리 등록", notes = "카테고리를 등록한다")
     @PostMapping
     public ResponseEntity<CommonResponse> createCategory(@ApiIgnore @CurrentUser UserPrincipal user, @RequestBody @Valid CategorySaveRequest request){
@@ -49,21 +49,21 @@ public class CategoryController {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "등록 성공", postCategoryService.createCategory(user.getId(), request)));
     }
-
+    @ApiIgnore
     @ApiOperation(value = "해당 카테고리에 게시물을 등록", notes = "해당 카테고리에 게시물을 등록")
     @PutMapping("/{catogoryId}/posts/{postId}")
     public ResponseEntity<CommonResponse> setCategory(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long catogoryId, @PathVariable Long postId) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "해당 카테고리에 게시물 등록 성공", postCategoryService.setCategory(user.getId(),catogoryId, postId)));
     }
-
+    @ApiIgnore
     @ApiOperation(value = "해당 카테고리에 게시물을 삭제", notes = "해당 카테고리에 게시물을 삭제")
     @PutMapping("/{catogoryId}/deletes/{postId}")
     public ResponseEntity<CommonResponse> resetCategory(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long catogoryId,@PathVariable Long postId) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "해당 카테고리에 게시물 삭제 성공", postCategoryService.resetCategory(user.getId(), catogoryId, postId)));
     }
-
+    @ApiIgnore
     @ApiOperation(value = "카테고리 수정", notes = "해당 카테고리를 수정한다")
     @PutMapping("/{catogoryId}")
     public ResponseEntity<CommonResponse> updatepost(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long catogoryId,
@@ -71,7 +71,7 @@ public class CategoryController {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "카테고리 수정 성공", postCategoryService.updateCategory(user.getId(), catogoryId, request)));
     }
-
+    @ApiIgnore
     @ApiOperation(value = "카테고리 삭제", notes = "카테고리를 삭제한다")
     @DeleteMapping("/{catogoryId}")
     public ResponseEntity<CommonResponse> deletepost(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long catogoryId) {

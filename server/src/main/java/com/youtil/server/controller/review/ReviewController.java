@@ -23,7 +23,7 @@ public class ReviewController {
 
     @Autowired
     ReviewService reviewService;
-
+    @ApiIgnore
     @ApiOperation(value = "회고록 등록", notes = "회고록을 등록한다.")
     @PostMapping("/{goalId}")
     public ResponseEntity<CommonResponse> createReview(@PathVariable Long goalId, @RequestBody @Valid ReviewSaveRequest request){
@@ -62,7 +62,7 @@ public class ReviewController {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "조회 성공", reviewService.getReview(reviewId, user.getId())));
     }
-
+    @ApiIgnore
     @ApiOperation(value = "회고록 수정", notes = "회고록을 수정한다.")
     @PutMapping("/{reviewId}")
     public ResponseEntity<CommonResponse> updateReview(@PathVariable Long reviewId, @RequestBody @Valid ReviewUpdateRequest request,
@@ -70,7 +70,7 @@ public class ReviewController {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "수정 성공", reviewService.updateReview(reviewId, request, user.getId())));
     }
-
+    @ApiIgnore
     @ApiOperation(value = "회고록 삭제", notes = "회고록을 삭제한다.")
     @DeleteMapping("/{reviewId}")
     public ResponseEntity<CommonResponse> deleteReview(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable Long reviewId){
