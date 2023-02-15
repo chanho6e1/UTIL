@@ -5,7 +5,6 @@ import kakaotalk from "../../img/social_kakaotalk.png";
 import {
   GOOGLE_AUTH_URL,
   KAKAO_AUTH_URL,
-  GITHUB_AUTH_URL,
 } from "../../constants";
 
 const SocialLoginModule = (props) => {

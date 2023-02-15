@@ -1,8 +1,5 @@
 import { useState, Fragment } from "react";
 import classes from "./SearchBar.module.css";
-import { Button, IconButton } from "@mui/material";
-import CloseIcon from "../../../img/Close40.svg";
-import ExpandIcon from "../../../img/Expand40.svg";
 import DropDown from "../DropDown/DropDown";
 import Tab from "../Tab/Tab";
 

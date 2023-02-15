@@ -9,16 +9,12 @@ import { uploadPost } from "../../api/Post/uploadPost";
 import { uploadReview } from "../../api/Post/uploadReview";
 import {
   useNavigate,
-  useMatch,
   useLocation,
-  Routes,
-  Route,
   useSearchParams,
   useParams,
 } from "react-router-dom";
 import { recvPlanAPI } from "../../api/Plan/recvPlanAPI";
 import { chkPlanAPI } from "../../api/Plan/chkPlanAPI";
-import useDidMountEffect from "../../hooks/useDidMountEffect";
 import { detailReviewAPI } from "../../api/Goal/detailReviewAPI";
 
 // Toast 에디터

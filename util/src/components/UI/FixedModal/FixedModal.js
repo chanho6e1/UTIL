@@ -1,10 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import styles from "./FixedModal.module.css";
 import ReactDOM from "react-dom";
-import Button from "../Button/Button";
-
-import { createBrowserHistory } from "history";
-import useDidMountEffect from "../../../hooks/useDidMountEffect";
 
 // 모달창 자체
 const ModalOverlay = (props) => {

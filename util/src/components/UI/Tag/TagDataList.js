@@ -1,7 +1,7 @@
 import Chip from "@mui/material/Chip";
 import { styled } from "@mui/material/styles";
 import { Fragment } from "react";
-import { IconButton, createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 const TagList = styled("li")(({ theme }) => ({
   margin: theme.spacing(0, 0.5, 0, 0),

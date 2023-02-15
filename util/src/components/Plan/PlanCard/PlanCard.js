@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import PlanCardItem from "./PlanCardItem";
 import styles from "./PlanCard.module.css";
-import { notificationSliceActions } from "../../../redux/notificationSlice";
 import { useSelector, useDispatch } from "react-redux";
 import PlanCardPlanCRUD from "./PlanCardPlanCRUD";
 import FixedModal from "../../UI/FixedModal/FixedModal";

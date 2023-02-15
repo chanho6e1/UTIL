@@ -1,22 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Plan from "./Plan";
 import styles from "./PlanExpanded.module.css";
-import {
-  HashRouter,
-  BrowserRouter,
-  Routes,
-  Route,
-  Link,
-  NavLink,
-  Navigate,
-  useNavigate,
-  useMatch,
-  useLocation,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { modifyPlanSliceActions } from "../../redux/planSlice";
-import { recvPlansAPI } from "../../api/Plan/recvPlansAPI";
-import { recvIngPlanAPI } from "../../api/Plan/recvIngPlanAPI";
 import { recvPlansPeriodAPI } from "../../api/Plan/recvPlansPeriodAPI";
 import { recvTodosPeriodAPI } from "../../api/Plan/recvTodosPeriodAPI";
 import PlanLoading from "./PlanLoading";

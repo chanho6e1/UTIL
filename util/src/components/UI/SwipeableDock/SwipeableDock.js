@@ -3,12 +3,10 @@ import Swipe from "react-easy-swipe";
 import styles from "./SwipeableDock.module.css";
 import {
   useNavigate,
-  useMatch,
+
   useLocation,
-  Routes,
-  Route,
+
 } from "react-router-dom";
-import useDidMountEffect from "../../../hooks/useDidMountEffect";
 
 const SwipeableDock = (props) => {
   const movingDiv = useRef();

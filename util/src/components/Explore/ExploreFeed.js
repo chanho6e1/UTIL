@@ -1,8 +1,6 @@
 import FeedCardItem from "../UI/FeedCard/FeedCardItem";
 import classes from "./ExploreFeed.module.css";
-import { getPosts } from "../../api/Post/getPosts";
-import { useState, useEffect, useRef, Fragment } from "react";
-import Loading from "../UI/Loading/Loading";
+import { Fragment } from "react";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import UserRecommend from "../UserRecommend/UserRecommend";
 import { useLocation } from "react-router-dom";

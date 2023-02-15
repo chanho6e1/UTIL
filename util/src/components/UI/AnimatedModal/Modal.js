@@ -2,8 +2,6 @@ import React, { useEffect, useRef } from "react";
 import {
   useNavigate,
   useMatch,
-  Routes,
-  Route,
   useLocation,
 } from "react-router-dom";
 import styles from "./Modal.module.css";

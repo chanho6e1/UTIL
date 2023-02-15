@@ -3,20 +3,12 @@ import styles from "./Main.module.css";
 import SwipeableDock from "../UI/SwipeableDock/SwipeableDock";
 import * as Icons from "./Icons";
 import logo from "../../img/util-logo.png";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { UserIcon, CurrentUser, UserDockWrapper } from "./MainUserInfo";
-import ToastEditor from "../MarkdownEditor/ToastEditor";
-
-import PlanExpanded from "../Plan/PlanExpanded";
-
-
 import UserPage from "../UserPage/UserPage";
-import UserProfileChange from "../UserProfileChangePage/UserProfileChange";
 import PlanResponsive from "../Plan/PlanResponsive";
 import Explore from "../Explore/Explore";
-import { getSubscribePosts } from "../../api/Post/getSubscribePosts";
 import Search from "../Search/Search";
-import UserRecommend from "../UserRecommend/UserRecommend";
 
 const Main = (props) => {
   const parentRef = useRef();

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { notificationSliceActions } from "../../../redux/notificationSlice";
 import { useSelector, useDispatch } from "react-redux";
-import useDidMountEffect from "../../../hooks/useDidMountEffect";
 
 const NotiDeliverer = (props) => {
   const dispatch = useDispatch();

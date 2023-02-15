@@ -1,13 +1,10 @@
 import classes from "./DetailItem.module.css";
-import bookmarkIcon from "../../assets/bookmarkIcon.svg";
-import flatColorLikeIcon from "../../assets/flatColorLikeIcon.svg";
 import defaultUserPicture from "../../assets/defaultUserPicture.svg";
-import depth from "../../img/depth.png";
 import { tilCommentDelAPI } from "../../api/Detail/tilCommentDelAPI";
 import { tilCommentEditAPI } from "../../api/Detail/tilCommentEditAPI";
-import { Fragment, useState, useEffect, useRef, useCallback } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { modifyPostDetailSliceActions } from "../../redux/postDetailSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import TextArea from "../UI/TextArea/TextArea";
 import Button from "../UI/Button/Button";
 import warning from "../../img/Warning.png";

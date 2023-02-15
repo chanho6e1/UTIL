@@ -9,7 +9,7 @@ import { postUserTags } from "../../api/UserProfile/postUserTags";
 import { putUserTags } from "../../api/UserProfile/putUserTags";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../util/APIUtils";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userAuthSliceActions } from "../../redux/userAuthSlice";
 
 const UserProfileChange = (props) => {

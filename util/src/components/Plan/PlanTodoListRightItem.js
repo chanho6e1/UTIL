@@ -1,15 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./PlanTodoListRightItem.module.css";
 import { modifyPlanSliceActions } from "../../redux/planSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { editTodoAPI } from "../../api/Plan/editTodoAPI";
-import { chkTodoAPI } from "../../api/Plan/chkTodoAPI";
 import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 import { recvTodoPeriodAPI } from "../../api/Plan/recvTodoPeriodAPI";
-import { recvIsAllTodosDoneAPI } from "../../api/Plan/recvIsAllTodosDoneAPI";
-import FixedModal from "../UI/FixedModal/FixedModal";
-import complete from "../../img/Complete.png";
-import Button from "../UI/Button/Button";
 import warning from "../../img/Warning.png";
 import { useNavigate } from "react-router-dom";
 import PlanIsDoneToggle from "./PlanIsDoneToggle";

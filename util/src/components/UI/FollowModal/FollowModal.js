@@ -1,5 +1,5 @@
 import classes from "./FollowModal.module.css";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import FollowCard from "./FollowCard";
 import { IconButton } from "@mui/material";
 import CloseIcon from "../../../img/Close40.svg";

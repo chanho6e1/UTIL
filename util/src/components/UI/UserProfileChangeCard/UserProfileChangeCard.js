@@ -6,7 +6,6 @@ import AutoCompleteMultipleTagInput from "../Tag/AutoCompleteMultipleTagInput";
 import PhotoCameraIconCircle from "../../../img/photoCameraIcon_circle.png";
 import { nicknameDuplicateCheck } from "../../../api/UserProfile/nicknameDuplicateCheck";
 import { getAllTags } from "../../../api/UserProfile/getAllTags";
-import Card from "../Card/Card";
 import { useNavigate } from "react-router-dom";
 
 const isUnderTwoChars = (value) =>

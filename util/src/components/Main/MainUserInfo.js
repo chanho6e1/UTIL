@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import styles from "./MainUserInfo.module.css";
 import { userAuthSliceActions } from "../../redux/userAuthSlice";
 import { ACCESS_TOKEN } from "../../constants";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DropDown from "../UI/DropDown/DropDown";
 import { useEffect } from "react";
 import { getMyData } from "../../api/UserProfile/getMyData";

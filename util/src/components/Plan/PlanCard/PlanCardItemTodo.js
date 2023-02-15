@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styles from "./PlanCardItemTodo.module.css";
-import arrow from "../../../img/arrow.png";
 import PlanIsDoneToggle from "../PlanIsDoneToggle";
 import FixedModal from "../../UI/FixedModal/FixedModal";
 import PlanCardTodoCRUD from "./PlanCardTodoCRUD";
