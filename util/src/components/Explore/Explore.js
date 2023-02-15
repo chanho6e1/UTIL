@@ -13,6 +13,8 @@ import DetailItem from "../Detail/DetailItem";
 import Tab from "../UI/Tab/Tab";
 import { useLocation } from "react-router-dom";
 import { getUserFollowing } from "../../api/Post/getUserFollowing";
+import UserRecommend from "../UserRecommend/UserRecommend";
+import FixedModal from "../UI/FixedModal/FixedModal";
 
 const ExploreForm = () => {
   const [criteria, setCriteria] = useState(0);
@@ -74,11 +76,12 @@ const ExploreForm = () => {
       setOffset(0);
       if (res.length <= 0) {
         // 추천 컴포넌트
-        if (location.pathname === "/explore") {
+        if (location.pathname === "/explore" && criteria === 0) {
           setModalState(true);
-          setIsLoading(false);
+          
         }
       }
+      setIsLoading(false);
     });
   }, [criteria, followingListCnt]);
 
@@ -170,17 +173,27 @@ const ExploreForm = () => {
       onWheel={onWheelHandler}
       ref={exploreWrapperRef}
     >
+      <FixedModal
+        modalState={modalState}
+        stateHandler={setModalState}
+        content={<UserRecommend />}
+        width={"80vh"}
+        height={"400px"}
+        overflow={"hidden"}
+      />
+
       {header}
       <div className={classes["explore-inner-wrapper"]}>
         
         {altMessages}
-        <div>
-          <ExploreFeed
-            feedList={feedList}
-            modalState={modalState}
-            setModalState={setModalState}
-          />
-        </div>
+        {feedList.length !== 0 &&
+          <div>
+            <ExploreFeed
+              feedList={feedList}
+            />
+          </div>
+        }
+        
         
       </div>
     </div>
