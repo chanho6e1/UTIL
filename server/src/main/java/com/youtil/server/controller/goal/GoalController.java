@@ -25,7 +25,7 @@ public class GoalController {
 
     @Autowired
     GoalService goalService;
-
+    @ApiIgnore
     @ApiOperation(value = "목표 등록", notes = "목표를 등록한다.")
     @PostMapping
     public ResponseEntity<CommonResponse> createGoal(@ApiIgnore @CurrentUser UserPrincipal userPrincipal, @RequestBody @Valid GoalSaveRequest request){
@@ -55,13 +55,14 @@ public class GoalController {
     }
 
     // input 2023-01-31T06:24:59.000Z
+    @ApiIgnore
     @ApiOperation(value = "목표 수정", notes = "내가 작성한 목표를 수정한다.")
     @PutMapping("/{goalId}")
     public ResponseEntity<CommonResponse> updateGoal(@ApiIgnore @CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId, @RequestBody @Valid GoalUpdateRequest request) throws UnsupportedEncodingException {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "수정 성공", goalService.updateGoal(userPrincipal.getId(), goalId, request)));
     }
-
+    @ApiIgnore
     @ApiOperation(value = "목표 삭제", notes = "내가 작성한 목표를 삭제한다.")
     @DeleteMapping("/{goalId}")
     public ResponseEntity<CommonResponse> deleteGoal(@ApiIgnore @CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId) throws UnsupportedEncodingException {
@@ -101,6 +102,7 @@ public class GoalController {
     // 목표 제일 빠른 startDate, 제일 느린 endDate
     // input 2023-01-31T06:24:59.000Z
 
+    @ApiIgnore
     @ApiOperation(value = "목표 달성 유무 변경", notes = "내가 설정한 목표의 달성 상태를 변경")
     @PutMapping("/{goalId}/state")
     public ResponseEntity<CommonResponse> updateGoalState(@ApiIgnore @CurrentUser UserPrincipal userPrincipal, @PathVariable Long goalId){
