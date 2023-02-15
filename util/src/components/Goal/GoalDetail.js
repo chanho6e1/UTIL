@@ -23,6 +23,7 @@ import {
   useNavigate,
   useMatch,
   useLocation,
+  useSearchParams,
   useParams,
 } from "react-router-dom";
 import { Fragment } from "react";
@@ -39,6 +40,7 @@ const GoalDetail = (props) => {
   const containerRef = useRef();
   const [totalPage, setTotalPage] = useState(10);
   const postWrapperRef = useRef();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const fetchUserPostData = (criteriaIdx, page, size) => {
     setIsLoading(true);
@@ -129,7 +131,11 @@ const GoalDetail = (props) => {
   }, []);
 
   useEffect(() => {
+    // if (searchParams.get("refresh") === true)
+    searchParams.set("refresh", false);
+    setSearchParams(searchParams);
     detailReviewsAPI(idx).then((res) => {
+      console.log("getReview", res)
       const proccessing = {
         goalId: idx,
         data: res,
@@ -138,7 +144,7 @@ const GoalDetail = (props) => {
         modifyPostDetailSliceActions.getReviews(JSON.stringify(proccessing))
       );
     });
-  }, []);
+  }, [searchParams.get("refresh")]);
 
   useEffect(() => {
     detailTilAPI(idx, tilPage).then((res) => {

@@ -43,6 +43,7 @@ import { getPostTag } from "../../api/Post/getPostTag";
 import { editDetailReviewAPI } from "../../api/Goal/editDetailReviewAPI";
 import { editPostAPI } from "../../api/Post/editPostAPI";
 import { recvIsAllTodosDoneAPI } from "../../api/Plan/recvIsAllTodosDoneAPI";
+import { useSelector } from "react-redux";
 
 import HtmlToMarkdown from "./HtmlToMarkdown";
 
@@ -51,6 +52,9 @@ const ToastEditorForm = (props) => {
   const editorWrapperRef = useRef();
   const [searchParams, setSearchParams] = useSearchParams();
   const today = new Date();
+  const userAuth = useSelector(
+    (state) => state.userAuthSlice.userAuth.currentUser
+  );
   const dateString = `${today.getFullYear()}년 ${
     today.getMonth() + 1
   }월 ${today.getDate()}일 회고록`;
@@ -109,23 +113,29 @@ const ToastEditorForm = (props) => {
       },
       { skill: tags }
     )
-      .then((res) => {
+      .then((postId) => {
         if (selectedGoalId) {
           recvIsAllTodosDoneAPI(selectedGoalId).then((res) => {
             if (res === true) {
               setDoneNotiContent(message3);
               setTimeout(function () {
-                navigate("/index", { replace: true });
+                navigate(`/index/${userAuth.nickname}/post/${postId}`, {
+                  replace: true,
+                });
               }, 1000);
             } else {
               setDoneNotiContent(message2);
               setTimeout(function () {
-                navigate("/index", { replace: true });
+                navigate(`/index/${userAuth.nickname}/post/${postId}`, {
+                  replace: true,
+                });
               }, 1000);
             }
           });
         } else {
-          navigate("/index", { replace: true });
+          navigate(`/index/${userAuth.nickname}/post/${postId}`, {
+            replace: true,
+          });
         }
       })
 
@@ -143,22 +153,29 @@ const ToastEditorForm = (props) => {
         if (selectedGoalId) {
           recvIsAllTodosDoneAPI(selectedGoalId).then((res) => {
             if (res === true) {
-              chkPlanAPI(queryString.goal.goalId, true)
+              chkPlanAPI(selectedGoalId, true)
                 .then((res) => {
                   setDoneNotiContent(message1);
                   // setDoneNotiState(true)
                 })
                 .then((res) => {
                   setTimeout(function () {
-                    navigate("/index", { replace: true });
+                    navigate(`/index/goal/${selectedGoalId}?refresh=true`, {
+                      replace: true,
+                    });
+                    
                   }, 1000);
                 });
             } else {
-              navigate("/index", { replace: true });
+              navigate(`/index/goal/${selectedGoalId}?refresh=true`, {
+                replace: true,
+              });
             }
           });
         } else {
-          navigate("/index", { replace: true });
+          navigate(`/index/goal/${selectedGoalId}?refresh=true`, {
+            replace: true,
+          });
         }
       })
       .catch((err) => {
@@ -172,7 +189,13 @@ const ToastEditorForm = (props) => {
       content: editorRef.current.getInstance().getHTML(),
     })
       .then((res) => {
-        navigate("/index", { replace: true });
+        console.log("editReview", res);
+        console.log("1번");
+        setTimeout(() => {
+          navigate(`/index/goal/${res.goalId}?refresh=true`, { replace: true });
+        }, 1000)
+        
+        // navigate(`/index`, { replace: true });
       })
       .catch((err) => {
         console.log(err);
@@ -191,7 +214,9 @@ const ToastEditorForm = (props) => {
       { skill: tags },
       props.editIdx
     ).then((res) => {
-      navigate("/index", { replace: true });
+      navigate(`/index/${userAuth.nickname}/post/${props.editIdx}`, {
+        replace: true,
+      });
     });
   };
 

@@ -32,7 +32,7 @@ const HtmlToMarkdown = (props) => {
     });
   });
 
-  return result;
+  return;
 };
 
 export default HtmlToMarkdown;
