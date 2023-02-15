@@ -28,6 +28,10 @@
   .pc {
     display: none;
   }
+
+  .mobile {
+    margin-bottom: 12px;
+  }
 }
 
 @media all and (min-width: 480px) {
@@ -51,7 +55,7 @@
   }
 
   .tags {
-    /* width: 400px; */
+    max-width: 300px;
   }
 }
 
@@ -103,7 +107,7 @@
 .button {
   margin-top: 4px;
   margin-left: 8px;
-  min-height: 24px;
+  min-height: 40px;
   width: 12vh;
 }
 

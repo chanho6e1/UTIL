@@ -114,9 +114,9 @@ const UserPageForm = (props) => {
         getBookmarkPosts(criteria[criteriaIdx], page, size).then((res) => {
           setPostBookmarkList(() => res.content);
           setOffsetBookmark(() => page);
-          setTimeout(() => {
+          // setTimeout(() => {
             setIsLoading(false);
-          }, 500);
+          // }, 500);
           if (containerRef.current.scrollTop !== 0) {
             containerRef.current.scrollTo({
               left: 0,
@@ -130,9 +130,9 @@ const UserPageForm = (props) => {
         getLikePosts(criteria[criteriaIdx], page, size).then((res) => {
           setPostLikeList(() => res.content);
           setOffsetLike(() => page);
-          setTimeout(() => {
+          // setTimeout(() => {
             setIsLoading(false);
-          }, 500);
+          // }, 500);
           if (containerRef.current.scrollTop !== 0) {
             containerRef.current.scrollTo({
               left: 0,
@@ -146,9 +146,9 @@ const UserPageForm = (props) => {
         getMyPosts(criteria[criteriaIdx], page, size).then((res) => {
           setPostList(() => res.content);
           setOffset(() => page);
-          setTimeout(() => {
+          // setTimeout(() => {
             setIsLoading(false);
-          }, 500);
+          // }, 500);
           if (containerRef.current.scrollTop !== 0) {
             containerRef.current.scrollTo({
               left: 0,
@@ -162,9 +162,9 @@ const UserPageForm = (props) => {
       getUserPosts(props.id, criteria[criteriaIdx], page, size).then((res) => {
         setPostList(() => res.content);
         setOffset(() => page);
-        setTimeout(() => {
+        // setTimeout(() => {
           setIsLoading(false);
-        }, 500);
+        // }, 500);
         containerRef.current.scrollTo({
           left: 0,
           top: postWrapperRef.current.offsetTop - 14,
@@ -182,10 +182,10 @@ const UserPageForm = (props) => {
         getBookmarkPosts(criteria[criteriaIdx], page + 1, size).then((res) => {
           setPostBookmarkList((prev) => [...prev, ...res.content]);
           setOffsetBookmark(() => page + 1);
-          setTimeout(() => {
+          // setTimeout(() => {
             setIsLoading(false);
             setFetchStart(() => false);
-          }, 500);
+          // }, 500);
         });
       } else {
         setCategory("전체 글");
@@ -193,10 +193,10 @@ const UserPageForm = (props) => {
           setPostList((prev) => [...prev, ...res.content]);
           setOffset(() => page + 1);
           // setIsLoading(false)
-          setTimeout(() => {
+          // setTimeout(() => {
             setIsLoading(false);
             setFetchStart(() => false);
-          }, 500);
+          // }, 500);
         });
       }
     } else {
@@ -204,10 +204,10 @@ const UserPageForm = (props) => {
         (res) => {
           setPostList((prev) => [...prev, ...res.content]);
           setOffset(() => page + 1);
-          setTimeout(() => {
+          // setTimeout(() => {
             setIsLoading(false);
             setFetchStart(() => false);
-          }, 500);
+          // }, 500);
         }
       );
     }

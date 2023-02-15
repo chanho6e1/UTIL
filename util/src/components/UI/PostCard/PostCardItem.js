@@ -12,6 +12,13 @@ import Card from "../Card/Card";
 import { useNavigate } from "react-router-dom";
 
 
+
+import { Viewer } from "@toast-ui/react-editor";
+import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js";
+import prism from "prismjs";
+import "prismjs/themes/prism.css";
+
+
 const avatarTheme = createTheme({
   components: {
     MuiAvatar: {
@@ -27,12 +34,16 @@ const PostCardItem = (props) => {
   const [isBookmark, setIsBookmark] = useState(props.bookmarkStatus);
   const [isLike, setIsLike] = useState(props.likeStatus);
   const navigate = useNavigate();
+  const viewerRef = useRef()
 
-  // useEffect(() => {
-  //   getPostTag(props.id).then((res) => {
-  //     setTagList(() => res);
-  //   });
-  // }, []);
+  const [plainContent, setPlainContent] = useState(null)
+
+
+  useEffect(() => {
+    if (viewerRef?.current?.innerText) {
+      setPlainContent(viewerRef?.current?.innerText)
+    }
+  }, [viewerRef?.current?.innerText])
 
   const imgErrorHandler = (event) => {
     event.target.src = PhotoCameraIcon;
@@ -146,11 +157,14 @@ const PostCardItem = (props) => {
   );
 
   return (
-    <Card className={classes.card}>
-      <div className={classes["left-wrapper"]}>
+    <Card className={classes.card} >
+      <div className={classes["left-wrapper"]} onMouseOver={() => console.log(viewerRef)}>
         <div className={classes["left-top"]} onClick={postClickHandler}>
           <div className={classes.title}>{props.title}</div>
-          <div className={classes.contents}>{props.content}</div>
+          <div className={classes.contents}>{plainContent}</div>
+          {/* <div className={classes.contents}>{props.content}</div> */}
+          <div ref={viewerRef} style={{display:'none'}}><Viewer initialValue={props.content}  plugins={[[codeSyntaxHighlight, { highlighter: prism }]]} /></div>
+          
         </div>
 
         <div className={classes["left-bottom"]}>
