@@ -47,12 +47,14 @@ const PlanCardPlanCRUD = (props) => {
 
   const today = toStringByFormatting(new Date());
 
+
+
   const [title, setTitle] = useState(props.plan ? props.plan.title : null);
   const [startDate, setStartDate] = useState(
     props.plan ? new Date(props.plan.startDate) : today
   );
   const [endDate, setEndDate] = useState(
-    props.plan ? new Date(props.plan.startDate) : null
+    props.plan ? new Date(props.plan.endDate) : null
   );
 
   const titleChangeHandler = (event) => {
@@ -87,11 +89,13 @@ const PlanCardPlanCRUD = (props) => {
           }
         });
     } else {
-      newPlanAPI(startDate, endDate, title)
+      const dateCorrection = new Date(endDate)
+      dateCorrection.setDate(dateCorrection.getDate() + 1)
+      newPlanAPI(startDate, dateCorrection, title)
         .catch((err) => {
           // navigate('/login');
           console.log("Plan : newPlanAPI => ", err);
-          if (startDate == null || endDate == null) {
+          if (startDate == null || dateCorrection == null) {
             setNotiContent("시작일과 마감일은 필수 입력 사항입니다.");
             setDoneNotiState(true);
           }
@@ -101,6 +105,7 @@ const PlanCardPlanCRUD = (props) => {
           }
         })
         .then((res) => {
+          console.log(res)
           dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)));
           props.modalHandler();
         });

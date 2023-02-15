@@ -447,7 +447,7 @@ const DetailItemShow = (props) => {
             <div className={classes["comment-title"]}>댓글 목록</div>
           ) : null}
 
-          <div>
+          <div className={classes["comments-inner-wrapper"]}>
             {comments[post.postId]?.length !== 0 ? commentsRender : noComment}
           </div>
 
@@ -507,6 +507,7 @@ const DetailItem = (props) => {
   }, []);
 
   return (
+
     <div className={classes["detail-wrapper"]}>
       {detail !== null && loading === false ? (
         <DetailItemShow post={detail} />
@@ -514,6 +515,8 @@ const DetailItem = (props) => {
         <DetailItemLoading />
       )}
     </div>
+
+    
   );
 };
 
