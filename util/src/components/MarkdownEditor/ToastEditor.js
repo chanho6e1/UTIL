@@ -423,7 +423,7 @@ const ToastEditorForm = (props) => {
       <Editor
         ref={editorRef}
         language="ko-KR"
-        initialValue={props.editContent.content || " "} // content는 글 수정시 사용
+        initialValue={props?.editContent?.content || " "} // content는 글 수정시 사용
         // props.editInitialContent
         placeholder="내용을 입력해주세요."
         previewStyle={`${
@@ -459,7 +459,7 @@ const ToastEditor = (props) => {
   const [editTags, setEditTags] = useState(null);
   const params = useParams();
   const editIdx = params.id;
-  const [editInitialContent, setEditInitialContent] = useState(null);
+
 
   useEffect(() => {
     if (editIdx) {
@@ -476,6 +476,7 @@ const ToastEditor = (props) => {
           getPostTag(editIdx).then((tags) => {
             setEditContent(() => post);
             setEditTags(() => tags);
+            console.log(post)
           });
         });
       }
@@ -483,25 +484,20 @@ const ToastEditor = (props) => {
       setEditContent(() => "");
     }
   }, []);
-
+  console.log(props.edit)
   return (
     <React.Fragment>
-      {editContent?.content && (
-        <HtmlToMarkdown
-          content={editContent?.content}
-          setEditInitialContent={setEditInitialContent}
-        />
-      )}
-      {(props.edit !== true || editInitialContent !== null) && (
+      {((props.edit === true && editContent !== null) || props.edit !== true) &&
         <ToastEditorForm
           editContent={editContent}
-          editInitialContent={editInitialContent}
           editTags={editTags}
           forReview={props.forReview}
           edit={props.edit}
           editIdx={editIdx}
         />
-      )}
+      }
+      
+     
     </React.Fragment>
   );
 };
