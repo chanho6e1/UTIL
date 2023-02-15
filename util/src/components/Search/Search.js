@@ -69,7 +69,7 @@ const SearchForm = (props) => {
       setApi(() => 0);
       setDropDownLabel(() => apiLabelList[0]);
     }
-  }, [location]);
+  }, []);
 
   const [feedList, setFeedList] = useState([]);
   // const criteria = ["date", "view", "like"];
@@ -79,6 +79,7 @@ const SearchForm = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    console.log('ferwgesg', searchInput, api, criteria)
     if (searchInput !== null && searchInput !== "") {
       setIsLoading(true);
       if (api === 0) {
@@ -96,8 +97,11 @@ const SearchForm = (props) => {
           setIsLoading(false);
         });
       } else {
+        console.log('getPostByNickname before', searchInput, api)
         getPostByNickname(criteriaData[criteria], offset, size, searchInput).then((res) => {
+          console.log('getPostByNickname after', searchInput, api)
           if (res.content.length !== 0) {
+            console.log('getPostByNickname after valid', searchInput, api)
             setFeedList(() => res.content);
           }
           setIsLoading(false);
