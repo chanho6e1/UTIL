@@ -171,19 +171,23 @@ public class PostService {
         }
 
          if(!request.getPostFileList().isEmpty()){
-            for(int idx=0; idx<request.getPostFileList().size(); idx++){
+             post.setThubmnail(request.getPostFileList().get(0));
+             for(int idx=0; idx<request.getPostFileList().size(); idx++){
                 String source = request.getPostFileList().get(idx).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","");
                 post.addPostFile(idx, source);
             }
-        }
-
-        String source = parseContextAndUpdateTumbnail(post);
-
-        if(source==null){
-            post.setThubmnail(baseImg);
         }else{
-            post.setThubmnail(source);
-        }
+             post.setThubmnail(baseImg);
+         }
+
+//        String source = parseContextAndUpdateTumbnail(post);
+//
+//        if(source==null){
+//            post.setThubmnail(baseImg);
+//        }else{
+//            post.setThubmnail(source);
+//        }
+
         return post.getPostId();
     }
 
@@ -228,11 +232,15 @@ public class PostService {
                     .orElseThrow(()-> new ResourceNotFoundException("goal" , "goalId", request.getGoalId()));
              validGoalUser(userId, goal.getUser().getUserId());
              post.setGoal(goal);
-        } else{
-            post.resetGoal();
         }
+//         else{
+//            post.resetGoal();
+//        }
 
-        if(!request.getPostFileList().isEmpty()){
+         if(post.getThumbnail().equals(baseImg) && !request.getPostFileList().isEmpty()){
+             post.setThubmnail(request.getPostFileList().get(0));
+         }
+         if(!request.getPostFileList().isEmpty()){
             Map<Integer, String> map =  post.getPostFileMap();
             int size = map.size();
             for(int idx=0; idx<request.getPostFileList().size(); idx++){
@@ -241,13 +249,13 @@ public class PostService {
             }
         }
 
-        String source = parseContextAndUpdateTumbnail(post);
-
-        if(source==null){
-            post.setThubmnail(baseImg);
-        }else{
-            post.setThubmnail(source);
-        }
+//        String source = parseContextAndUpdateTumbnail(post);
+//
+//        if(source==null){
+//            post.setThubmnail(baseImg);
+//        }else{
+//            post.setThubmnail(source);
+//        }
 
         return post.getPostId();
     }
