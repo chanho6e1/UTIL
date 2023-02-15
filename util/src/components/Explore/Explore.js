@@ -89,7 +89,7 @@ const ExploreForm = () => {
     setIsLoading(() => true);
     criteriaAPI[criteria](criteriaList[criteria], offset + 1, size).then(
       (res) => {
-        setFeedList((prevState) => [...prevState, ...res.content]);
+        setFeedList((prevState) => [...prevState, ...res?.content]);
         setOffset((prevState) => prevState + 1);
         setIsLoading(() => false);
       }
@@ -178,7 +178,7 @@ const ExploreForm = () => {
         stateHandler={setModalState}
         content={<UserRecommend />}
         width={"80vh"}
-        height={"400px"}
+        height={"600px"}
         overflow={"hidden"}
       />
 

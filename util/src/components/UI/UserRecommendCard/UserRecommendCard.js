@@ -75,8 +75,10 @@ const UserRecommendCard = (props) => {
   return (
     <Card className={classes.card}>
       <div className={classes[`card-inner-wrapper`]}>
+
         <div className={classes[`avatar-userdata`]}>
           <div className={classes.avatar}>
+
             <Avatar
               src={props.userData.imageUrl}
               sx={{
@@ -103,6 +105,21 @@ const UserRecommendCard = (props) => {
             >
               {props.userData.discription}
             </div>
+            <div className={classes.pc}>
+              <div className={classes.tags}>
+                <TagDataList
+                  tagList={props.userData.tags}
+                  onClick={tagOnClickHandler}
+                />
+              </div>
+            </div>
+            
+          </div>
+
+          
+
+        </div>
+        <div className={classes.mobile}>
             <div className={classes.tags}>
               <TagDataList
                 tagList={props.userData.tags}
@@ -110,8 +127,8 @@ const UserRecommendCard = (props) => {
               />
             </div>
           </div>
-        </div>
         <div className={classes[`btn-wrapper`]}>{followBtn(isFollowing)}</div>
+        
       </div>
     </Card>
   );
