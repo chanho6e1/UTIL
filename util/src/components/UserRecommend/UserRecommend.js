@@ -48,7 +48,7 @@ const UserRecommend = (props) => {
   };
 
   const altContents = () => {
-    const message = "관심 태그가 없어요\n마이 프로필에서 태그를 설정해 보세요";
+    const message = "관심 태그가 없어요. 마이 프로필에서 태그를 설정해 보세요";
     return (
       <div className={classes[`alt-wrapper`]}>
         <div className={classes[`alt-message-icon`]}>
@@ -62,20 +62,21 @@ const UserRecommend = (props) => {
   return (
     <div className={classes[`recommend-modal`]}>
       <div className={classes[`recommend-upper`]}>
-        <div className={classes[`recommend-text`]}>관심 태그를 기반으로 추천해드려요!</div>
+        <div className={classes[`recommend-text`]}>관심 태그 기반으로 추천해드려요!</div>
         <Button
           className={classes.button}
           onClick={() => {
-            // props.onDone();
+            props.onDone();
             props.modalHandler();
           }}
         >
-          건너뛰기
+          다음
         </Button>
       </div>
       <div className={classes[`recommend-wrapper`]} ref={recRef} onWheel={onWheelHandler}>
+        {userList.length === 0 && altContents()}
         <div className={classes[`content-wrapper`]}>
-          {userList.length === 0 ? altContents() : UserRecommendCardList(userList)}
+          {userList.length !== 0 && UserRecommendCardList(userList)}
           {isLoading && <div className={classes.loading}>{Loading()}</div>}
         </div>
       </div>

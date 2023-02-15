@@ -17,17 +17,7 @@
   /* flex-direction: column; */
 }
 
-.alt-message-wrapper {
-  margin-top: 100px;
-  /* font-size: 24px;
-  font-weight: 700;
-  color: rgb(130, 130, 130); */
-  white-space: pre-line;
 
-  margin-top: 40px;
-  font-size: x-large;
-  color: #aaacae;
-}
 
 @media all and (max-width: 768px) {
 
@@ -40,6 +30,18 @@
 
   .explore-wrapper {
     padding-top: 54px;
+  }
+
+  .alt-message-wrapper {
+    margin-top: 100px;
+    /* font-size: 24px;
+    font-weight: 700;
+    color: rgb(130, 130, 130); */
+    white-space: pre-line;
+  
+    margin-top: 40px;
+    font-size: 18px;
+    color: #aaacae;
   }
 
 
@@ -61,6 +63,18 @@
 
   .explore-inner-wrapper {
     padding-top: 14px;
+  }
+
+  .alt-message-wrapper {
+    margin-top: 100px;
+    /* font-size: 24px;
+    font-weight: 700;
+    color: rgb(130, 130, 130); */
+    white-space: pre-line;
+  
+    margin-top: 40px;
+    font-size: x-large;
+    color: #aaacae;
   }
 
   
