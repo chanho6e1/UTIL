@@ -53,7 +53,7 @@ public class PostCommentResponse {
             this.modifiedDate = comment.getModifiedDate().format(myFormatObj);
         }
         if( comment.getParent()!= null) {
-            this.parentWriterNickName = comment.getParent().getUser().getUserName();//닉네임으로 변경 필요
+            this.parentWriterNickName = comment.getParent().getUser().getNickName();//닉네임으로 변경 필요
         }
 
         this.isDelete = comment.getIsDelete();
@@ -73,7 +73,7 @@ public class PostCommentResponse {
             this.modifiedDate = comment.getModifiedDate().format(myFormatObj);
         }
         if( comment.getParent()!= null) {
-            this.parentWriterNickName = comment.getParent().getUser().getUserName(); //닉네임으로 변경 필요
+            this.parentWriterNickName = comment.getParent().getUser().getNickName(); //닉네임으로 변경 필요
         }
         this.isDelete = comment.getIsDelete();
         this.isPrivate = comment.getIsPrivate();
