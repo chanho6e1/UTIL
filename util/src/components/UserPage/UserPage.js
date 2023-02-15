@@ -8,6 +8,8 @@ import Button from "../UI/Button/Button";
 import PostCardContainerLoading from "../UI/Loading/PostCardContainerLoading";
 import { getUserPosts } from "../../api/Post/getUserPosts";
 import { getMyPosts } from "../../api/Post/getMyPosts";
+import { getLikePosts } from "../../api/Post/getLikePosts";
+import { getBookmarkPosts } from "../../api/Post/getBookmarkPosts";
 import { getUserData } from "../../api/Post/getUserData";
 import { getIsFollowing } from "../../api/Post/getIsFollowing";
 import { getUserFollower } from "../../api/Post/getUserFollower";
@@ -60,6 +62,14 @@ const postCardItemList = (postList) => {
 const UserPageForm = (props) => {
   const containerRef = useRef();
   const [postList, setPostList] = useState(null);
+  const [postLikeList, setPostLikeList] = useState(null);
+  const [postBookmarkList, setPostBookmarkList] = useState(null);
+  const [totalPage, setTotalPage] = useState(10);
+  const [totalLikePage, setTotalLikePage] = useState(10);
+  const [totalBookmarkPage, setTotalBookmarkPage] = useState(10);
+  const [offset, setOffset] = useState(1);
+  const [offsetLike, setOffsetLike] = useState(1);
+  const [offsetBookmark, setOffsetBookmark] = useState(1);
   const [userData, setUserData] = useState([]);
   // const [myData, setMyData] = useState([]);
   const [isFollowing, setIsFollowing] = useState(null);
@@ -73,18 +83,12 @@ const UserPageForm = (props) => {
   const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
   const criteria = ["date", "view", "like"];
   const [criteriaIdx, setCriteriaIdx] = useState(0);
-  const [tabIdx, setTabIdx] = useState(0);
-  const tabList = ["전체 글", "전체 목표", "북마크"];
-  const [offset, setOffset] = useState(1);
-  const [bookmarkList, setBookmarkList] = useState(null);
-  const [bookmarkOffset, setBookmarkOffset] = useState(1);
-  const [bookmarkTotalPage, setBookmarkTotalPage] = useState(10);
-  const [totalPage, setTotalPage] = useState(10);
   const size = 8;
   const [isLoading, setIsLoading] = useState(true);
   const postWrapperRef = useRef();
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [category, setCategory] = useState("전체 글");
 
   const navigate = useNavigate();
 
@@ -98,11 +102,12 @@ const UserPageForm = (props) => {
   const fetchUserPostData = (criteriaIdx, page, size) => {
     setIsLoading(true);
     if (myData.userId === props.id) {
-      if (tabIdx === 0) {
-        // 전체 글
-        getMyPosts(criteria[criteriaIdx], page, size).then((res) => {
-          setPostList(() => res.content);
-          setOffset(() => page);
+      if (searchParams.get("category") === "1") {
+        console.log("북마크fetch");
+        setCategory("북마크");
+        getBookmarkPosts(criteria[criteriaIdx], page, size).then((res) => {
+          setPostBookmarkList(() => res.content);
+          setOffsetBookmark(() => page);
           setTimeout(() => {
             setIsLoading(false);
           }, 500);
@@ -112,11 +117,27 @@ const UserPageForm = (props) => {
             behavior: "smooth",
           });
         });
-      } else if (tabIdx === 2) {
-        // 북마크
-        getBookmarkPosts(criteria[criteriaIdx], page, size).then((res) => {
-          setBookmarkList(() => res.content);
-          setBookmarkOffset(() => page);
+      } else if (searchParams.get("category") === "2") {
+        console.log("좋아요fetch");
+        setCategory("좋아요");
+        getLikePosts(criteria[criteriaIdx], page, size).then((res) => {
+          setPostLikeList(() => res.content);
+          setOffsetLike(() => page);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
+          containerRef.current.scrollTo({
+            left: 0,
+            top: postWrapperRef.current.offsetTop - 14,
+            behavior: "smooth",
+          });
+        });
+      } else {
+        console.log("전체 글fetch");
+        setCategory("전체 글");
+        getMyPosts(criteria[criteriaIdx], page, size).then((res) => {
+          setPostList(() => res.content);
+          setOffset(() => page);
           setTimeout(() => {
             setIsLoading(false);
           }, 500);
@@ -146,21 +167,24 @@ const UserPageForm = (props) => {
   const fetchUserPostDataMobile = (criteriaIdx, page, size) => {
     setIsLoading(true);
     if (myData.userId === props.id) {
-      // 전체 글
-      if (tabIdx === 0) {
-        getMyPosts(criteria[criteriaIdx], page + 1, size).then((res) => {
-          setPostList((prev) => [...prev, ...res.content]);
-          setOffset(() => page + 1);
+      if (searchParams.get("category") === "1") {
+        console.log("북마크 모바일")
+        setCategory("북마크");
+        getBookmarkPosts(criteria[criteriaIdx], page + 1, size).then((res) => {
+          setPostBookmarkList((prev) => [...prev, ...res.content]);
+          setOffsetBookmark(() => page + 1);
           setTimeout(() => {
             setIsLoading(false);
             setFetchStart(() => false);
           }, 500);
         });
-      } else if (tabIdx === 2) {
-        // 북마크
-        getBookmarkPosts(criteria[criteriaIdx], page + 1, size).then((res) => {
-          setBookmarkList((prev) => [...prev, ...res.content]);
-          setBookmarkOffset(() => page + 1);
+      } else {
+        console.log("전체 글 모바일")
+        setCategory("전체 글");
+        getMyPosts(criteria[criteriaIdx], page + 1, size).then((res) => {
+          setPostList((prev) => [...prev, ...res.content]);
+          setOffset(() => page + 1);
+          // setIsLoading(false)
           setTimeout(() => {
             setIsLoading(false);
             setFetchStart(() => false);
@@ -168,14 +192,16 @@ const UserPageForm = (props) => {
         });
       }
     } else {
-      getUserPosts(props.id, criteria[criteriaIdx], page + 1, size).then((res) => {
-        setPostList((prev) => [...prev, ...res.content]);
-        setOffset(() => page + 1);
-        setTimeout(() => {
-          setIsLoading(false);
-          setFetchStart(() => false);
-        }, 500);
-      });
+      getUserPosts(props.id, criteria[criteriaIdx], page + 1, size).then(
+        (res) => {
+          setPostList((prev) => [...prev, ...res.content]);
+          setOffset(() => page + 1);
+          setTimeout(() => {
+            setIsLoading(false);
+            setFetchStart(() => false);
+          }, 500);
+        }
+      );
     }
   };
 
@@ -183,15 +209,31 @@ const UserPageForm = (props) => {
   const [fetchStart, setFetchStart] = useState(false);
   useEffect(() => {
     if (fetchStart === true) {
-      fetchUserPostDataMobile(criteriaIdx, offset, size);
+      if (searchParams.get("category") === "1") {
+        fetchUserPostDataMobile(criteriaIdx, offsetBookmark, size);
+      } else {
+        fetchUserPostDataMobile(criteriaIdx, offset, size);
+      }
     }
   }, [fetchStart]);
 
   // 초기 데이터
   useEffect(() => {
     setIsLoading(true);
-
-    // Post API
+    if (searchParams.get("category") === null) {
+      searchParams.set("category", 0);
+      searchParams.set("page", 1);
+      setSearchParams(searchParams);
+    } else if (searchParams.get("category") === "0") {
+      console.log("초기 전체글");
+      setCategory("전체 글");
+    } else if (searchParams.get("category") === "1") {
+      console.log("초기 북마크");
+      setCategory("북마크");
+    } else {
+      console.log("초기 좋아요");
+      setCategory("좋아요");
+    }
     if (myData.userId === props.id) {
       // 내 작성글 get
       getMyPosts(criteria[criteriaIdx], offset, size)
@@ -212,8 +254,26 @@ const UserPageForm = (props) => {
       getUserPosts(props.id, criteria[criteriaIdx], offset, size).then((res) => {
         setPostList(() => res.content);
         setTotalPage(() => res.totalPages);
-        setIsLoading(false);
       });
+      getLikePosts(criteria[criteriaIdx], offsetLike, size).then((res) => {
+        setPostLikeList(() => res.content);
+        setTotalLikePage(() => res.totalPages);
+      });
+      getBookmarkPosts(criteria[criteriaIdx], offsetBookmark, size).then(
+        (res) => {
+          setPostBookmarkList(() => res.content);
+          setTotalBookmarkPage(() => res.totalPages);
+          setIsLoading(false);
+        }
+      );
+    } else {
+      getUserPosts(props.id, criteria[criteriaIdx], offset, size).then(
+        (res) => {
+          setPostList(() => res.content);
+          setTotalPage(() => res.totalPages);
+          setIsLoading(false);
+        }
+      );
     }
 
     // User Data API, Tag Data
@@ -306,7 +366,24 @@ const UserPageForm = (props) => {
 
   const pageChangeHandler = (event, page) => {
     fetchUserPostData(criteriaIdx, page, size);
+    searchParams.set("category", 0);
     searchParams.set("page", page);
+    setSearchParams(searchParams);
+    // setOffset(parseInt(searchParams.get("page")))
+  };
+
+  const pageBookmarkChangeHandler = (event, page) => {
+    fetchUserPostData(criteriaIdx, page, size);
+    searchParams.set("category", 1);
+    searchParams.set("bookmark", page);
+    setSearchParams(searchParams);
+    // setOffset(parseInt(searchParams.get("page")))
+  };
+
+  const pageLikeChangeHandler = (event, page) => {
+    fetchUserPostData(criteriaIdx, page, size);
+    searchParams.set("category", 2);
+    searchParams.set("like", page);
     setSearchParams(searchParams);
     // setOffset(parseInt(searchParams.get("page")))
   };
@@ -317,8 +394,33 @@ const UserPageForm = (props) => {
 
   useEffect(() => {
     // fetchUserPostData(criteriaIdx, offset, size);
-    if (offset !== searchParams.get("page") && searchParams.get("page") !== null && !isLoading) {
+    if (
+      searchParams.get("category") === "0" &&
+      offset !== searchParams.get("page") &&
+      searchParams.get("page") !== null &&
+      !isLoading && 
+      document.body.clientWidth > 1080
+    ) {
+      setCategory("전체 글");
       fetchUserPostData(criteriaIdx, searchParams.get("page"), size);
+    } else if (
+      searchParams.get("category") === "1" &&
+      offsetBookmark !== searchParams.get("bookmark") &&
+      searchParams.get("bookmark") !== null &&
+      !isLoading && 
+      document.body.clientWidth > 1080
+    ) {
+      setCategory("북마크");
+      fetchUserPostData(criteriaIdx, searchParams.get("bookmark"), size);
+    } else if (
+      searchParams.get("category") === "2" &&
+      offsetLike !== searchParams.get("like") &&
+      searchParams.get("like") !== null &&
+      !isLoading &&
+      document.body.clientWidth > 1080
+    ) {
+      setCategory("좋아요");
+      fetchUserPostData(criteriaIdx, searchParams.get("like"), size);
     }
   }, []);
 
@@ -327,23 +429,69 @@ const UserPageForm = (props) => {
     const scrollHeight = containerRef.current.scrollHeight;
     const scrollTop = containerRef.current.scrollTop;
     const clientHeight = containerRef.current.clientHeight;
-    // 페이지 끝에 도달하면 추가 데이터를 받아온다
-    if (scrollTop + clientHeight >= scrollHeight - 1 && event.deltaY > 0 && isLoading === false) {
-      if (tabIdx === 0) {
-        if (offset < totalPage) {
-          if (document.body.clientWidth < 1080) {
-            setFetchStart(() => true);
-          }
-        }
-      } else if (tabIdx === 2) {
-        if (offset < bookmarkTotalPage) {
-          if (document.body.clientWidth < 1080) {
-            setFetchStart(() => true);
-          }
+    if (scrollTop + clientHeight >= scrollHeight - 1 && isLoading === false) {
+      if (searchParams.get("category") === "0" && offset < totalPage) {
+        if (document.body.clientWidth < 1080) {
+          setFetchStart(() => true);
         }
       }
+
+      if (searchParams.get("category") === "1" && offsetBookmark < totalBookmarkPage) {
+        if (document.body.clientWidth < 1080) {
+          setFetchStart(() => true);
+        }
+      }
+      // 페이지 끝에 도달하면 추가 데이터를 받아온다
     }
   };
+
+  useEffect(() => {
+    // scroll event listener 등록
+    if (containerRef.current !== null) {
+      containerRef.current.addEventListener("scroll", handleScroll);
+    }
+    return () => {
+      // scroll event listener 해제
+      if (containerRef.current !== null) {
+        containerRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  });
+
+  const [postDropDownState, setPostDropDownState] = useState(false);
+  const postDropDownItems = {
+    label: ["포스트", "회고록"],
+    function: [
+      () => {
+        navigate("/create/post");
+      },
+      () => {
+        navigate("/create/review");
+      },
+    ],
+  };
+
+  const postButton = (
+    <div style={{ fontSize: "16px" }}>
+      <DropDown
+        dropDownItems={postDropDownItems}
+        dropDownState={postDropDownState}
+        setDropDownState={setPostDropDownState}
+        width={"132px"}
+        itemHeight={"48px"}
+        direction={"down"}
+        borderRadius={"5px"}
+      />
+      <div
+        className={classes["dropdown"]}
+        onClick={() => {
+          setPostDropDownState(() => true);
+        }}
+      >
+        <li className={classes["drop-down-li-tag"]} />글 작성
+      </div>
+    </div>
+  );
 
   const userInformation = (
     <div className={classes[`user-page-upper`]}>
@@ -455,6 +603,18 @@ const UserPageForm = (props) => {
     </React.Fragment>
   );
 
+  // const categoryDropDownItems = {
+  //   label: ["전체 글", "전체 목표"],
+  //   function: [
+  //     () => {
+  //       setCategory("전체 글");
+  //     },
+  //     () => {
+  //       setCategory("전체 목표");
+  //     },
+  //   ],
+  // };
+
   const tabItems = [
     {
       // "전체 글"
@@ -467,56 +627,106 @@ const UserPageForm = (props) => {
       // "전체 목표"
       content: tabList[1],
       function: () => {
-        setTabIdx(1);
+        setCategory("전체 글");
+        searchParams.set("category", 0);
+        if (searchParams.get("page") === null) {
+          searchParams.set("page", 1);
+        }
+        setSearchParams(searchParams);
       },
     },
     {
-      // "북마크"
-      content: tabList[2],
+      content: "북마크",
       function: () => {
-        setTabIdx(2);
+        setCategory("북마크");
+        searchParams.set("category", 1);
+        if (searchParams.get("bookmark") === null) {
+          searchParams.set("bookmark", 1);
+        }
+        setSearchParams(searchParams);
+      },
+    },
+    // {
+    //   content: "좋아요",
+    //   function: () => {
+    //     setCategory("좋아요");
+    //     searchParams.set("category", 2);
+    //     if (searchParams.get("like") === null) {
+    //       searchParams.set("like", 1);
+    //     }
+    //     setSearchParams(searchParams);
+    //   },
+    // },
+    {
+      content: "목표",
+      function: () => {
+        setCategory("목표");
+        searchParams.set("category", 3);
+        setSearchParams(searchParams);
       },
     },
   ];
 
-  const postDropDownItems = {
-    label: ["포스트 작성", "회고록 작성"],
-    function: [
-      () => {
-        navigate("/create/post");
-      },
-      () => {
-        navigate("/create/review");
-      },
-    ],
-  };
+  // const [categoryDropDownState, setCategoryDropDownState] = useState(false);
 
-  const [postDropDownState, setPostDropDownState] = useState(false);
+  // const categoryView =
+  //   category === "전체 글" ? (
+  //     <Fragment>
+  //       <div ref={postWrapperRef}>{postCardContainer(postList)}</div>
 
-  const tabView = () => {
-    if (tabIdx === 0) {
-      // 전체 글
+  //       <div className={classes[`pagination`]}>
+  //         <Pagination
+  //           count={totalPage}
+  //           onChange={pageChangeHandler}
+  //           page={parseInt(offset)}
+  //         />
+  //       </div>
+  //     </Fragment>
+  //   ) : (
+  //     <Fragment>{PlanCardItemList()}</Fragment>
+  //   );
+
+  const categoryView = () => {
+    if (category === "전체 글") {
       return (
         <Fragment>
           <div ref={postWrapperRef}>{postCardContainer(postList)}</div>
+
           <div className={classes[`pagination`]}>
-            <Pagination count={totalPage} onChange={pageChangeHandler} page={parseInt(offset)} />
+            <Pagination
+              count={totalPage}
+              onChange={pageChangeHandler}
+              page={parseInt(offset)}
+            />
           </div>
         </Fragment>
       );
-    } else if (tabIdx === 1) {
-      // 전체 목표
+    } else if (category === "목표") {
       return <Fragment>{PlanCardItemList()}</Fragment>;
-    } else {
-      // 북마크
+    } else if (category === "북마크") {
       return (
         <Fragment>
-          <div ref={postWrapperRef}>{postCardContainer(bookmarkList)}</div>
+          <div ref={postWrapperRef}>{postCardContainer(postBookmarkList)}</div>
+
           <div className={classes[`pagination`]}>
             <Pagination
-              count={bookmarkTotalPage}
-              onChange={pageChangeHandler}
-              page={parseInt(bookmarkOffset)}
+              count={totalBookmarkPage}
+              onChange={pageBookmarkChangeHandler}
+              page={parseInt(offsetBookmark)}
+            />
+          </div>
+        </Fragment>
+      );
+    } else {
+      return (
+        <Fragment>
+          <div ref={postWrapperRef}>{postCardContainer(postLikeList)}</div>
+
+          <div className={classes[`pagination`]}>
+            <Pagination
+              count={totalLikePage}
+              onChange={pageLikeChangeHandler}
+              page={parseInt(offsetLike)}
             />
           </div>
         </Fragment>
@@ -535,28 +745,6 @@ const UserPageForm = (props) => {
   const planCards = (
     <div className={classes["plan-card-wrapper"]}>
       <PlanCard />
-    </div>
-  );
-
-  const postButton = (
-    <div>
-      <DropDown
-        dropDownItems={postDropDownItems}
-        dropDownState={postDropDownState}
-        setDropDownState={setPostDropDownState}
-        width={"152px"}
-        itemHeight={"48px"}
-        direction={"down"}
-        borderRadius={"5px"}
-      />
-      <div
-        className={classes["dropdown"]}
-        onClick={() => {
-          setPostDropDownState(() => true);
-        }}
-      >
-        <li className={classes["drop-down-li-tag"]} />글 작성
-      </div>
     </div>
   );
 
@@ -586,16 +774,23 @@ const UserPageForm = (props) => {
               {category}
             </div>
           </div> */}
-          {myData.userId === props.id && (
-            <Tab tabItems={tabItems} width={"200px"} height={"48px"} />
-          )}
+          <div className={classes["tab-wrapper"]}>
+            {myData.userId === props.id && (
+              <Tab
+                tabItems={tabItems}
+                width={"100%"}
+                height={"48px"}
+                initialValue={parseInt(searchParams.get("category"))}
+              />
+            )}
+          </div>
 
           {myData.userId === props.id && postButton}
         </div>
         <div className={classes["body"]}>
           <div className={classes["article-list-wrapper"]}>
             {myData.userId === props.id && kanbanBoard}
-            {tabView()}
+            {categoryView()}
           </div>
           {myData.userId === props.id && planCards}
         </div>

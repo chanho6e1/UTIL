@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useState } from "react";
 const Tab = (props) => {
   const tabItemsRef = useRef([]);
   const tabIndicatorRef = useRef();
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(props.initialValue ? props.initialValue : 0);
 
   useEffect(() => {
     if (tabIndicatorRef?.current) {
