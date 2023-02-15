@@ -37,7 +37,6 @@ import { Viewer } from "@toast-ui/react-editor";
 
 
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js";
-import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import prism from "prismjs";
 import "prismjs/themes/prism.css";
 

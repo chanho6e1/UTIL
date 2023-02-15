@@ -167,6 +167,8 @@ const ExploreForm = () => {
     </Fragment>
   );
 
+  
+
   return (
     <div
       className={classes["explore-wrapper"]}
@@ -176,7 +178,7 @@ const ExploreForm = () => {
       <FixedModal
         modalState={modalState}
         stateHandler={setModalState}
-        content={<UserRecommend />}
+        content={<UserRecommend onDone={fetchMoreData} />}
         width={"80vh"}
         height={"600px"}
         overflow={"hidden"}

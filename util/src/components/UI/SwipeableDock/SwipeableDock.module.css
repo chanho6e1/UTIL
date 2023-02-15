@@ -8,6 +8,7 @@
   .dock-view {
     display: flex;
     flex-direction: column-reverse;
+    height:100vh;
   }
 
   .dock-wrapper {
