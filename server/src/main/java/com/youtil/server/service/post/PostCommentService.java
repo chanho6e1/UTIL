@@ -12,7 +12,6 @@ import com.youtil.server.repository.post.PostRepository;
 import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,23 +48,6 @@ public class PostCommentService {
         return result;
     }
 
-
-//    public List<PostCommentResponse> findCommentList(Long postId, int offset) {
-//
-//        PostComment postComment = postCommentRepository.findComment(request.getNestedTo())
-//                .orElseThrow(() -> new ResourceNotFoundException("PostComment", "commentId", request.getNestedTo()));
-//
-//        User nestedToInfo =  postComment.getUser();
-//
-//        List<PostCommentResponse> list =  postCommentQueryRepository.findPostList(postId, PageRequest.of(offset - 1, 10))
-//                .stream().().map(PostCommentResponse::new).collect(Collectors.toList());
-//
-//        post.getPostLikeList().getPostLikeList().parallelStream()
-//                .anyMatch(l -> l.ownedBy(post.getUser().getUserId()));
-//        return list;
-//    }
-
-    /////////////////////////
     @Transactional
     public Long createPostComment(Long userId, Long postId, PostCommentSaveRequest request) {
 

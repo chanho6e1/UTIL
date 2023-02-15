@@ -105,24 +105,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-//                //여기 추가함
-//                .requiresChannel().antMatchers("/oauth2/**").requiresInsecure()
-//                .and()
-//                //
                 .oauth2Login()
                 .authorizationEndpoint()
                 .baseUri("/api/oauth2/authorize")
                 .authorizationRequestRepository(cookieAuthorizationRequestRepository())
                 .and()
                 .redirectionEndpoint()
-//                .baseUri("/api/oauth2/callback/*")
                 .baseUri("/oauth2/callback/*") //서버용
                 .and()
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService)
                 .and()
                 .successHandler(oAuth2AuthenticationSuccessHandler)
-//                .successHandler(signInSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler);
 
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

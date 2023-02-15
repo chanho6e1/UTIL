@@ -4,14 +4,11 @@ import com.youtil.server.common.exception.ArgumentMismatchException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.todo.Todo;
-import com.youtil.server.dto.goal.GoalPeriodResponse;
 import com.youtil.server.dto.todo.*;
 import com.youtil.server.repository.goal.GoalRepository;
 import com.youtil.server.repository.todo.TodoRepository;
-import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +22,6 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class TodoService {
     private final TodoRepository todoRepository;
-
-    private final UserRepository userRepository;
 
     private final GoalRepository goalRepository;
 
