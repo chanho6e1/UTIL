@@ -92,7 +92,6 @@ const DetailComment = (props) => {
     props.comment.isPrivate
   );
   const editCommentIsPrivateInputHandler = (event) => {
-    console.log("비공개 수정", event.target.checked)
     seteditCommentIsPrivate(event.target.checked);
   };
 
@@ -105,17 +104,18 @@ const DetailComment = (props) => {
     tilCommentEditAPI(
       props.comment.commentId,
       props.postId,
-      inputEditCommentData
+      inputEditCommentData,
     )
-      // .then((res) => {
-      //   const proccessing = {
-      //     postId: props.postId,
-      //     data: res,
-      //   };
-      //   dispatch(
-      //     modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing))
-      //   );
-      // })
+      .then((res) => {
+        const proccessing = {
+          postId: props.postId,
+          data: res,
+        };
+        console.log(JSON.stringify(proccessing))
+        dispatch(
+          modifyPostDetailSliceActions.getComments(JSON.stringify(proccessing))
+        );
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -320,7 +320,7 @@ const DetailComment = (props) => {
       {depthNewComment}
       {props.comment.children.map((comment) => (
         <DetailComment
-          key={`commentId${comment.commentId}`}
+          key={`commentId${comment.commentId}-${comment.content}`}
           comment={comment}
           postWriterInfo={props.postWriterInfo}
           userInfo={props.userInfo}
@@ -367,7 +367,7 @@ const DetailComment = (props) => {
 
       {props.comment.children.map((comment) => (
         <DetailComment
-          key={`commentId${comment.commentId}`}
+          key={`commentId${comment.commentId}-${comment.content}`}
           comment={comment}
           postWriterInfo={props.postWriterInfo}
           userInfo={props.userInfo}
@@ -462,7 +462,7 @@ const DetailComment = (props) => {
       {/* <hr /> */}
       {props.comment.children.map((comment) => (
         <DetailComment
-          key={`commentId${comment.commentId}`}
+          key={`commentId${comment.commentId}-${comment.content}`}
           comment={comment}
           postWriterInfo={props.postWriterInfo}
           userInfo={props.userInfo}
@@ -511,7 +511,7 @@ const DetailComment = (props) => {
         {/* <hr /> */}
         {props.comment.children.map((comment) => (
           <DetailComment
-            key={`commentId${comment.commentId}`}
+            key={`commentId${comment.commentId}-${comment.content}`}
             comment={comment}
             postWriterInfo={props.postWriterInfo}
             userInfo={props.userInfo}
