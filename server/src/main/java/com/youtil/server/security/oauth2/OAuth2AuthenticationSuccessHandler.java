@@ -59,7 +59,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             return;
         }
 
-//        System.out.println(targetUrl);
 
         System.out.println("oauth Success");
 
@@ -67,8 +66,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         System.out.println(userEmail);
 
         Optional<User> userOptional = userRepository.findByEmail(userEmail);
-
-//        User user = userOptional.get();
 
         UserResponse user = UserResponse.from(userOptional.get());
 
@@ -80,25 +77,16 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String jsonString = gson.toJson(user);
         writer.print(jsonString);
 
-//        response.setHeader();
-
-//        writer.print(json); //json화
         String code = "";
         if(user.getNickname() != null){
-//            response.setStatus(200);
-//            response.setHeader("code", "200");
             targetUrl += "&code=200";
             code = "200";
         }else{
-//            response.setStatus(201); //회원가입
-//            response.setHeader("code", "201");
             targetUrl += "&code=201";
             code = "201";
         }
 
         clearAuthenticationAttributes(request, response);
-//        Cookie cookie = new Cookie("code", code);
-//        response.addCookie(cookie);
         CookieUtils.addCookie(response, "code", code, 180);
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
@@ -116,10 +104,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String token = tokenProvider.createToken(authentication);
 
-//        logger.info("===============success token: {}", token);
-
-//        Cookie cookie = new Cookie("accessToken", token);
-//        response.addCookie(cookie);
         CookieUtils.addCookie(response, "accessToken", token, 180);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
@@ -134,7 +118,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private boolean isAuthorizedRedirectUri(String uri) {
         URI clientRedirectUri = URI.create(uri);
-//        System.out.println(clientRedirectUri);
 
         return appProperties.getOauth2().getAuthorizedRedirectUris()
                 .stream()

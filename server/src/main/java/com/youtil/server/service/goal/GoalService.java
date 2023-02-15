@@ -17,7 +17,6 @@ import com.youtil.server.repository.todo.TodoRepository;
 import com.youtil.server.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -77,7 +76,6 @@ public class GoalService {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Map<Long, GoalResponse> responseMap = new HashMap<>();
         goalQueryRepository.findGoalListByUser(userId).stream().map((goal) -> responseMap.put(goal.getGoalId(), new GoalResponse(goal))).collect(Collectors.toList());
-//        return goalQueryRepository.findGoalListByUser(userId).stream().map((goal) -> new GoalResponse(goal)).collect(Collectors.toList());
         return responseMap;
     }
 
@@ -154,7 +152,6 @@ public class GoalService {
     @Transactional
     public Object toggleGoalState(Long id, Long goalId) {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
-//        validGoalUser(id, goal.getUser().getUserId());
         goal.toggleState();
 
         return goal.isState();
@@ -180,13 +177,6 @@ public class GoalService {
                 page.getTotalPages(), page.isLast());
     }
 
-//    public List<GoalResponse> getDoingGoal(Long userId) {
-//        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-//
-//        return goalQueryRepository.getDoingGoal(userId).stream()
-//                .map((goal) -> new GoalResponse(goal)).collect(Collectors.toList());
-//    }
-
     public Map<Long, GoalResponse> getDoingGoal(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         Map<Long, GoalResponse> responseMap = new HashMap<>();
@@ -194,7 +184,7 @@ public class GoalService {
                 .map((goal) -> responseMap.put(goal.getGoalId(), new GoalResponse(goal))).collect(Collectors.toList());
 
         return responseMap;
-    }//
+    }
 
     public void validGoalUser(Long currentUser, Long goalUser) {
 

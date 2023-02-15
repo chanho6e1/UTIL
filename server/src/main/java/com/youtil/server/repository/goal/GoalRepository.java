@@ -1,17 +1,12 @@
 package com.youtil.server.repository.goal;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.user.User;
-import com.youtil.server.dto.goal.GoalPeriodResponse;
-import com.youtil.server.dto.goal.GoalResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -35,9 +30,4 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
             ,nativeQuery = true)
     Map<String, String> findGoalPeriod(@Param("userId")Long userId);
 
-//    List<Goal> findGoalListByUser(Long userId);
-//    List<Goal> findAllByUserId(Long userId);
-
-//    List<Goal> findAllByUserId(Long userId);
-//    Goal findByGoalId(Long goalId);
 }

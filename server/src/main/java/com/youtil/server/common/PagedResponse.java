@@ -11,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class PagedResponse<T> {
     private Object content;
-//    private List<T> content;
     private int page;
     private int size;
     private long totalElements;
@@ -19,7 +18,6 @@ public class PagedResponse<T> {
     private boolean last;
 
     public PagedResponse(Object content, int page, int size, long totalElements, int totalPages, boolean last) {
-//        setContent(content);
         this.content = content;
         this.page = page;
         this.size = size;
@@ -27,16 +25,6 @@ public class PagedResponse<T> {
         this.totalPages = totalPages;
         this.last = last;
     }
-
-//    public PagedResponse(List<T> content, int page, int size, long totalElements, int totalPages, boolean last) {
-//        setContent(content);
-//        this.content = content;
-//        this.page = page; // ban
-//        this.size = size;
-//        this.totalElements = totalElements;
-//        this.totalPages = totalPages; // ban
-//        this.last = last;
-//    }
 
     public final void setContent(List<T> content) {
         if (content == null) {
