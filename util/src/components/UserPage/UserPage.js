@@ -1,11 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-  Route,
-  Routes,
-  useLocation,
-  useSearchParams,
-  useParams,
-} from "react-router-dom";
+import { Route, Routes, useLocation, useSearchParams, useParams } from "react-router-dom";
 import classes from "./UserPage.module.css";
 import PostCardItem from "../UI/PostCard/PostCardItem";
 import TagDataList from "../UI/Tag/TagDataList";
@@ -42,6 +36,7 @@ import FixedModal from "../UI/FixedModal/FixedModal";
 import Tab from "../UI/Tab/Tab";
 import { getUserDataByNickname } from "../../api/Post/getUserDataByNickname";
 import { useCalendarState } from "@mui/x-date-pickers/internals";
+import { getBookmarkPosts } from "../../api/Post/getBookmarkPosts";
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -85,9 +80,7 @@ const UserPageForm = (props) => {
   const [followingListCnt, setFollowingListCnt] = useState(null);
   const [followingModalState, setFollowingModalState] = useState(false);
   const [userTagList, setUserTagList] = useState([]);
-  const myData = useSelector(
-    (state) => state.userAuthSlice.userAuth.currentUser
-  );
+  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
   const criteria = ["date", "view", "like"];
   const [criteriaIdx, setCriteriaIdx] = useState(0);
   const size = 8;
@@ -212,8 +205,8 @@ const UserPageForm = (props) => {
     }
   };
 
+  // 모바일용 get data
   const [fetchStart, setFetchStart] = useState(false);
-
   useEffect(() => {
     if (fetchStart === true) {
       if (searchParams.get("category") === "1") {
@@ -226,7 +219,6 @@ const UserPageForm = (props) => {
 
   // 초기 데이터
   useEffect(() => {
-    // Post API
     setIsLoading(true);
     if (searchParams.get("category") === null) {
       searchParams.set("category", 0);
@@ -243,7 +235,23 @@ const UserPageForm = (props) => {
       setCategory("좋아요");
     }
     if (myData.userId === props.id) {
-      getMyPosts(criteria[criteriaIdx], offset, size).then((res) => {
+      // 내 작성글 get
+      getMyPosts(criteria[criteriaIdx], offset, size)
+        .then((res) => {
+          setPostList(() => res.content);
+          setTotalPage(() => res.totalPages);
+          setIsLoading(false);
+        })
+        .then(
+          // 북마크한 게시물 get
+          getBookmarkPosts(criteria[criteriaIdx], bookmarkOffset, size).then((res) => {
+            setBookmarkList(() => res.content);
+            setBookmarkTotalPage(() => res.totalPages);
+            setIsLoading(false);
+          })
+        );
+    } else {
+      getUserPosts(props.id, criteria[criteriaIdx], offset, size).then((res) => {
         setPostList(() => res.content);
         setTotalPage(() => res.totalPages);
       });
@@ -267,12 +275,6 @@ const UserPageForm = (props) => {
         }
       );
     }
-
-    // My Data API
-    // getMyData().then((res) => {
-    //   setMyData(() => res);
-    //   console.log("ssafy me", res);
-    // });
 
     // User Data API, Tag Data
     getUserData(props.id).then((res) => {
@@ -304,11 +306,6 @@ const UserPageForm = (props) => {
     fetchUserFollowing(props.id);
   }, [isFollowing, props.id]);
 
-  const tagOnClickHandler = (event) => {
-    const tagName = event.currentTarget.getAttribute("value");
-    navigate(`/search?tag=${tagName}`);
-  };
-
   const followBtnHandler = () => {
     // 현재 팔로우 중이면 언팔
     if (isFollowing) {
@@ -334,7 +331,7 @@ const UserPageForm = (props) => {
           className={`${classes[`follow-btn-true`]} ${classes[`button`]}`}
           onClick={followBtnHandler}
         >
-          팔로잉
+          팔로잉 취소
         </Button>
       );
     } else {
@@ -347,6 +344,12 @@ const UserPageForm = (props) => {
         </Button>
       );
     }
+  };
+
+  // tag 클릭시 검색 페이지로 이동
+  const tagOnClickHandler = (event) => {
+    const tagName = event.currentTarget.getAttribute("value");
+    navigate(`/search?tag=${tagName}`);
   };
 
   // 작성 글이 없다면 대체 화면 출력
@@ -419,10 +422,10 @@ const UserPageForm = (props) => {
       setCategory("좋아요");
       fetchUserPostData(criteriaIdx, searchParams.get("like"), size);
     }
-  });
+  }, []);
 
   // scroll event handler
-  const handleScroll = () => {
+  const onWheelHandler = (event) => {
     const scrollHeight = containerRef.current.scrollHeight;
     const scrollTop = containerRef.current.scrollTop;
     const clientHeight = containerRef.current.clientHeight;
@@ -558,27 +561,21 @@ const UserPageForm = (props) => {
                     >
                       팔로워
                     </div>
-                    <div className={classes[`follow-number`]}>
-                      {followerListCnt}명
-                    </div>
+                    <div className={classes[`follow-number`]}>{followerListCnt}명</div>
                     <div
                       className={classes[`follow-text`]}
                       onClick={() => setFollowingModalState(true)}
                     >
                       팔로우
                     </div>
-                    <div className={classes[`follow-number`]}>
-                      {followingListCnt}명
-                    </div>
+                    <div className={classes[`follow-number`]}>{followingListCnt}명</div>
                   </div>
 
                   {myData.userId !== props.id && followBtn(isFollowing)}
                 </div>
               </div>
               <div className={classes["user-column"]}>
-                <div className={classes["user-description"]}>
-                  {userData.discription}
-                </div>
+                <div className={classes["user-description"]}>{userData.discription}</div>
               </div>
             </div>
           </div>
@@ -620,7 +617,15 @@ const UserPageForm = (props) => {
 
   const tabItems = [
     {
-      content: "전체 글",
+      // "전체 글"
+      content: tabList[0],
+      function: () => {
+        setTabIdx(0);
+      },
+    },
+    {
+      // "전체 목표"
+      content: tabList[1],
       function: () => {
         setCategory("전체 글");
         searchParams.set("category", 0);
@@ -744,7 +749,7 @@ const UserPageForm = (props) => {
   );
 
   return (
-    <div ref={containerRef} className={classes["user-page"]}>
+    <div ref={containerRef} className={classes["user-page"]} onWheel={onWheelHandler}>
       <div className={classes["contents"]}>
         {header}
 
@@ -797,9 +802,7 @@ const UserPageForm = (props) => {
 const UserPageSet = (props) => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const myData = useSelector(
-    (state) => state.userAuthSlice.userAuth.currentUser
-  );
+  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
   // const [userId, setUserId] = useState(searchParams.get("user_id"));
   const [userData, setUserData] = useState([]);
   const params = useParams();
@@ -808,7 +811,6 @@ const UserPageSet = (props) => {
   useEffect(() => {
     if (nickname !== undefined) {
       getUserDataByNickname(nickname).then((res) => {
-        console.log("res", res);
         setUserData(() => res);
       });
     }
@@ -831,9 +833,7 @@ const UserPageSet = (props) => {
 };
 
 const UserPage = (props) => {
-  const myData = useSelector(
-    (state) => state.userAuthSlice.userAuth.currentUser
-  );
+  const myData = useSelector((state) => state.userAuthSlice.userAuth.currentUser);
   return (
     <div>
       <div id="index-overlay-root"></div>
@@ -842,15 +842,11 @@ const UserPage = (props) => {
         {/* <Route path="*" element={<UserPageForm id={userId === null ? myData.userId : userId} />} /> */}
         <Route
           path="/"
-          element={
-            myData?.nickname && <Navigate to={`/index/${myData?.nickname}`} />
-          }
+          element={myData?.nickname && <Navigate to={`/index/${myData?.nickname}`} />}
         />
         <Route
           path="index/"
-          element={
-            myData?.nickname && <Navigate to={`/index/${myData?.nickname}`} />
-          }
+          element={myData?.nickname && <Navigate to={`/index/${myData?.nickname}`} />}
         />
         <Route path="index/:nickname/*" element={<UserPageSet />} />
 
