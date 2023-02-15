@@ -326,7 +326,7 @@ const UserPageForm = (props) => {
           className={`${classes[`follow-btn-true`]} ${classes[`button`]}`}
           onClick={followBtnHandler}
         >
-          팔로잉
+          팔로잉 취소
         </Button>
       );
     } else {
