@@ -9,8 +9,7 @@ import ToastEditor from "../MarkdownEditor/ToastEditor";
 
 import PlanExpanded from "../Plan/PlanExpanded";
 
-import Plan from "../Plan/Plan";
-import MyUtil from "../MyUtil/MyUtil";
+
 import UserPage from "../UserPage/UserPage";
 import UserProfileChange from "../UserProfileChangePage/UserProfileChange";
 import PlanResponsive from "../Plan/PlanResponsive";
