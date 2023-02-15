@@ -171,7 +171,7 @@ public class PostService {
         }
 
          if(!request.getPostFileList().isEmpty()){
-             post.setThubmnail(request.getPostFileList().get(0));
+             post.setThubmnail(request.getPostFileList().get(0).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/",""));
              for(int idx=0; idx<request.getPostFileList().size(); idx++){
                 String source = request.getPostFileList().get(idx).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","");
                 post.addPostFile(idx, source);
@@ -233,12 +233,12 @@ public class PostService {
              validGoalUser(userId, goal.getUser().getUserId());
              post.setGoal(goal);
         }
-//         else{
-//            post.resetGoal();
-//        }
+         else{
+            post.resetGoal();
+        }
 
          if(post.getThumbnail().equals(baseImg) && !request.getPostFileList().isEmpty()){
-             post.setThubmnail(request.getPostFileList().get(0));
+             post.setThubmnail(request.getPostFileList().get(0).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/",""));
          }
          if(!request.getPostFileList().isEmpty()){
             Map<Integer, String> map =  post.getPostFileMap();
