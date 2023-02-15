@@ -29,10 +29,14 @@ const ModalOverlay = (props) => {
       contentRef.current.style.transitionProperty =
         await "left top width height opacity";
       contentRef.current.style.transitionDuration = await "0s";
+      // indicatorRef.current.style.width =
+      //   (await contentRef.current.clientWidth) + "px";
+      // indicatorRef.current.style.height =
+      //   (await contentRef.current.clientHeight) + "px";
       indicatorRef.current.style.width =
-        (await contentRef.current.clientWidth) + "px";
+        '100%';
       indicatorRef.current.style.height =
-        (await contentRef.current.clientHeight) + "px";
+        '100%';
       contentRef.current.style.left =
         (await props.parentRef.current.getBoundingClientRect().left) + "px";
       contentRef.current.style.top =
