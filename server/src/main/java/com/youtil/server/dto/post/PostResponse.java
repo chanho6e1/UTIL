@@ -69,7 +69,8 @@ PostResponse {
         this.postId = post.getPostId();
         this.title = post.getTitle();
 //        this.content = post.getContent().substring(0,30).replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");;
-        this.content = post.getContent().replaceAll("<([^>]+)>", "");
+//        this.content = post.getContent().replaceAll("<([^>]+)>", "");
+        this.content = post.getContent();
         this.createdDate = post.getCreatedDate().format(myFormatObj);
         if(post.getModifiedDate()!=null) {
             this.modifiedDate = post.getModifiedDate().format(myFormatObj);
@@ -93,7 +94,8 @@ PostResponse {
         this.postId = post.getPostId();
         this.title = post.getTitle();
 //        this.content = post.getContent().substring(0,30).replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");;
-        this.content = post.getContent().replaceAll("<([^>]+)>", "");
+//        this.content = post.getContent().replaceAll("<([^>]+)>", "");
+        this.content = post.getContent();
         this.createdDate = post.getCreatedDate().format(myFormatObj);
         if(post.getModifiedDate()!=null) {
             this.modifiedDate = post.getModifiedDate().format(myFormatObj);
