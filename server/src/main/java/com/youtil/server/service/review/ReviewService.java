@@ -5,6 +5,7 @@ import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.review.Review;
 import com.youtil.server.domain.user.User;
+import com.youtil.server.dto.review.ReviewGoalResponse;
 import com.youtil.server.dto.review.ReviewResponse;
 import com.youtil.server.dto.review.ReviewSaveRequest;
 import com.youtil.server.dto.review.ReviewUpdateRequest;
@@ -76,13 +77,14 @@ public class ReviewService {
     }
 
     @Transactional
-    public Long updateReview(Long reviewId, ReviewUpdateRequest request, Long userId) {
+    public ReviewGoalResponse updateReview(Long reviewId, ReviewUpdateRequest request, Long userId) {
         Review review = reviewRepository.findReviewByReviewId(reviewId).orElseThrow(() -> new ResourceNotFoundException("Review", "reviewId", reviewId));
 
         Review myReview = reviewRepository.isMine(review.getReviewId(), userId).orElseThrow(() -> new ResourceNotFoundException("내가 만든 회고록이 아닙니다"));
 
         review.update(request);
-        return reviewId;
+
+        return new ReviewGoalResponse(review);
     }
 
     @Transactional
