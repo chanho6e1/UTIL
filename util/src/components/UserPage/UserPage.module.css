@@ -121,6 +121,10 @@
   .article-list-wrapper {
     padding: 14px 14px 14px 14px;
   }
+
+  .tab-wrapper {
+    width: 100%;
+  }
 }
 
 @media all and (min-width: 1080px) {
@@ -192,6 +196,10 @@
     display: flex;
     justify-content: center;
     margin-bottom: 48px;
+  }
+
+  .tab-wrapper {
+    width: 300px;
   }
 }
 
@@ -365,7 +373,7 @@
 }
 
 .dropdown {
-  width: 150px;
+  width: 130px;
   height: 48px;
   /* box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1); */
   border: 1px solid rgb(220, 220, 220);

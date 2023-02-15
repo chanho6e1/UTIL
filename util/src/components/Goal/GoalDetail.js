@@ -8,8 +8,13 @@ import { detailPlansAPI } from "../../api/Goal/detailPlansAPI";
 import { detailTodosAPI } from "../../api/Goal/detailTodosAPI";
 import { detailReviewsAPI } from "../../api/Goal/detailReviewsAPI";
 import { detailTilAPI } from "../../api/Goal/detailTilAPI";
+import { detailAllTodosAPI } from "../../api/Goal/detailAllTodosAPI";
+import { detailGoalCompleteAPI } from "../../api/Goal/detailGoalCompleteAPI";
 import GoalDetailMobile from "./GoalDetailMobile";
 import { Avatar, Pagination } from "@mui/material";
+import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
+import PlanState from "../UI/PlanList/PlanState";
+import warning from "../../img/Warning.png";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -28,10 +33,8 @@ import {
 } from "react-router-dom";
 import { Fragment } from "react";
 
-const GoalDetail = (props) => {
-  const idx = useParams().id;
+const GoalDetailShow = (props) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [tilPage, settilPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [postList, setPostList] = useState(null);
@@ -40,11 +43,14 @@ const GoalDetail = (props) => {
   const containerRef = useRef();
   const [totalPage, setTotalPage] = useState(10);
   const postWrapperRef = useRef();
+  const [todoComplete, setTodoComplete] = useState(false);
+  const [complete, setComplete] = useState(props.state);
+  const [doneNotiState, setDoneNotiState] = useState(false);
+  const [notiContent, setNotiContent] = useState();
 
-
-  const fetchUserPostData = (criteriaIdx, page, size) => {
+  const fetchUserPostData = (page) => {
     setIsLoading(true);
-    detailTilAPI(idx, page).then((res) => {
+    detailTilAPI(props.idx, page).then((res) => {
       setPostList(() => res.content);
       setOffset(() => page);
       setTimeout(() => {
@@ -60,7 +66,7 @@ const GoalDetail = (props) => {
 
   const fetchUserPostDataMobile = (page) => {
     setIsLoading(true);
-    detailTilAPI(idx, page + 1).then((res) => {
+    detailTilAPI(props.idx, page + 1).then((res) => {
       setPostList((prev) => [...prev, ...res.content]);
       setOffset(() => page + 1);
       setTimeout(() => {
@@ -109,19 +115,15 @@ const GoalDetail = (props) => {
   });
 
   useEffect(() => {
-    detailPlansAPI(idx)
-      .catch((err) => {
-        navigate("/login");
-      })
-      .then((res) => {
-        dispatch(modifyPlanSliceActions.getPlans(JSON.stringify(res)));
-      });
+    detailAllTodosAPI(props.idx).then((res) => {
+      setTodoComplete(res);
+    });
   }, []);
 
   useEffect(() => {
-    detailTodosAPI(idx).then((res) => {
+    detailTodosAPI(props.idx).then((res) => {
       const proccessing = {
-        goalId: idx,
+        goalId: props.idx,
         data: res,
       };
       dispatch(
@@ -131,10 +133,9 @@ const GoalDetail = (props) => {
   }, []);
 
   useEffect(() => {
-    detailReviewsAPI(idx).then((res) => {
-      console.log("getReview", res)
+    detailReviewsAPI(props.idx).then((res) => {
       const proccessing = {
-        goalId: idx,
+        goalId: props.idx,
         data: res,
       };
       dispatch(
@@ -144,9 +145,9 @@ const GoalDetail = (props) => {
   }, []);
 
   useEffect(() => {
-    detailTilAPI(idx, tilPage).then((res) => {
+    detailTilAPI(props.idx, tilPage).then((res) => {
       const proccessing = {
-        goalId: idx,
+        goalId: props.idx,
         data: res,
       };
       dispatch(
@@ -158,14 +159,13 @@ const GoalDetail = (props) => {
   useEffect(() => {
     setIsLoading(true);
 
-    detailTilAPI(idx, offset).then((res) => {
+    detailTilAPI(props.idx, offset).then((res) => {
       setPostList(() => res.content);
       setTotalPage(() => res.totalPages);
       setIsLoading(false);
     });
   }, []);
 
-  const plans = useSelector((state) => state.planSlice.allPlans);
   const reviews = useSelector((state) => state.postDetailSlice.reviews);
   const tils = useSelector((state) => state.postDetailSlice.tils);
 
@@ -176,19 +176,73 @@ const GoalDetail = (props) => {
   };
 
   const nextPage = () => {
-    if (tilPage < tils[idx].totalPages)
+    if (tilPage < tils[props.idx].totalPages)
       settilPage((prevState) => prevState + 1);
   };
 
+  const errorMessage = (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-evenly",
+        alignItems: "center",
+      }}
+    >
+      <img
+        style={{ width: "40px", height: "40px", marginRight: "12px" }}
+        src={warning}
+      />
+      <div>
+        <p style={{ lineHeight: "40%" }}>아직 완료되지 않은 TODO가 있습니다.</p>
+      </div>
+    </div>
+  );
+
+  const completeToggle = () => {
+    detailAllTodosAPI(props.idx).then((res) => {
+      if (res === true) {
+        detailGoalCompleteAPI(props.idx).then((res) => {
+          setComplete(res);
+        });
+      } else {
+        setNotiContent(errorMessage);
+        setDoneNotiState(true);
+      }
+    });
+  };
+
+  const completeButton = (
+    <PlanState
+      state={complete}
+      startDate={props.plans[props.idx].startDate}
+      endDate={props.plans[props.idx].endDate}
+    />
+  );
+
   return (
     <div ref={containerRef} className={classes["goal-detail"]}>
+      {doneNotiState && (
+        <NotiDeliverer
+          content={notiContent}
+          stateHandler={setDoneNotiState}
+          duration={5000}
+          width={400}
+        />
+      )}
       <div className={classes["goal-detail-pc"]}>
         <div />
-        {plans && <GoalDetailL plan={plans[idx]} reviews={reviews} />}
+        {props.plans && (
+          <GoalDetailL
+            plan={props.plans[props.idx]}
+            reviews={reviews}
+            completeToggle={completeToggle}
+            completeButton={completeButton}
+          />
+        )}
         <div className={classes["goal-detail-line"]} />
-        {plans && (
+        {props.plans && (
           <GoalDetailR
-            plan={plans[idx]}
+            plan={props.plans[props.idx]}
             tils={tils}
             nextPage={nextPage}
             prevPage={prevPage}
@@ -198,9 +252,9 @@ const GoalDetail = (props) => {
         <div />
       </div>
       <div className={classes["goal-detail-mobile"]}>
-        {plans && (
+        {props.plans && (
           <GoalDetailMobile
-            plan={plans[idx]}
+            plan={props.plans[props.idx]}
             reviews={reviews}
             tils={tils}
             nextPage={nextPage}
@@ -210,6 +264,8 @@ const GoalDetail = (props) => {
             pageChangeHandler={pageChangeHandler}
             postList={postList}
             postWrapperRef={postWrapperRef}
+            completeToggle={completeToggle}
+            completeButton={completeButton}
           />
         )}
       </div>
@@ -217,4 +273,22 @@ const GoalDetail = (props) => {
   );
 };
 
+const GoalDetail = (props) => {
+  const idx = useParams().id;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    detailPlansAPI(idx).then((res) => {
+      dispatch(modifyPlanSliceActions.getPlans(JSON.stringify(res)));
+    });
+  }, []);
+
+  const plans = useSelector((state) => state.planSlice.allPlans);
+
+  return (
+    <div>
+      <GoalDetailShow idx={idx} plans={plans} state={plans[idx].state} />
+    </div>
+  );
+};
 export default GoalDetail;
