@@ -160,20 +160,20 @@ const ToastEditorForm = (props) => {
                 })
                 .then((res) => {
                   setTimeout(function () {
-                    navigate(`/index/goal/${selectedGoalId}?refresh=true`, {
+                    navigate(`/index/goal/${selectedGoalId}`, {
                       replace: true,
                     });
                     
                   }, 1000);
                 });
             } else {
-              navigate(`/index/goal/${selectedGoalId}?refresh=true`, {
+              navigate(`/index/goal/${selectedGoalId}`, {
                 replace: true,
               });
             }
           });
         } else {
-          navigate(`/index/goal/${selectedGoalId}?refresh=true`, {
+          navigate(`/index/goal/${selectedGoalId}`, {
             replace: true,
           });
         }
@@ -189,12 +189,8 @@ const ToastEditorForm = (props) => {
       content: editorRef.current.getInstance().getHTML(),
     })
       .then((res) => {
-        console.log("editReview", res);
-        console.log("1번");
-        setTimeout(() => {
-          navigate(`/index/goal/${res.goalId}?refresh=true`, { replace: true });
-        }, 1000)
-        
+        navigate(`/index/goal/${res.goalId}`, { replace: true });
+
         // navigate(`/index`, { replace: true });
       })
       .catch((err) => {
