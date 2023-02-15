@@ -11,8 +11,8 @@ export const uploadPost = (data, tags) => {
       Authorization: TOKEN(),
     },
   })
-    .then((res) => {
-      return postPostTags(res.data.data, tags);
+    .then((post) => {
+      return postPostTags(post.data.data, tags).then((res) => {return post.data.data});
     })
     .catch((err) => {
       throw err;
