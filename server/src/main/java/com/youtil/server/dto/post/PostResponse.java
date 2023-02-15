@@ -57,14 +57,14 @@ PostResponse {
     private String createdDate;
 
     private String modifiedDate;
+
     private List<TagResponse> tags;
+
+    private Long goalId;
 
     public PostResponse(Post post, User user) { //전체 조회
 
-
-
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
         this.writerInfo = WriterInfo.from(post.getUser());
         this.postId = post.getPostId();
         this.title = post.getTitle();
@@ -81,6 +81,9 @@ PostResponse {
         this.likeStatusSize = post.getTotalLikes();
         this.bookmarkStatus = post.getPostBookmarkList().getPostBookmarkList().parallelStream()
                 .anyMatch((b)-> b.ownedBy(user.getUserId()));
+        if(post.getGoal()!=null){
+            this.goalId  = post.getGoal().getGoalId();
+        }
     }
 
     public PostResponse(Post post, User user, List<TagResponse> tags) {
@@ -103,6 +106,9 @@ PostResponse {
         this.bookmarkStatus = post.getPostBookmarkList().getPostBookmarkList().parallelStream()
                 .anyMatch((b)-> b.ownedBy(user.getUserId()));
         this.tags = tags;
+        if(post.getGoal()!=null){
+            this.goalId  = post.getGoal().getGoalId();
+        }
     }
 
     public PostResponse(Post post, Boolean likeStatus, Boolean bookmarkStatus) { //단건 조회
@@ -124,5 +130,9 @@ PostResponse {
         this.totalCommentSize = post.getTotalComments(); //댓글 수
         this.likeStatusSize = post.getTotalLikes(); //좋아요 수
         this.bookmarkStatus = bookmarkStatus;
+        if(post.getGoal()!=null){
+            this.goalId  = post.getGoal().getGoalId();
+        }
     }
 }
+//
