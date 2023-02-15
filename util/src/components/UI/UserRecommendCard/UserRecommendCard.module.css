@@ -1,3 +1,63 @@
+@media all and (max-width: 480px) {
+  .card-inner-wrapper {
+    display: flex;
+    width: 100%;
+    padding: 10px;
+    align-items: center;
+    /* justify-content: space-between; */
+    overflow: hidden;
+    flex-direction: column;
+  }
+  .nickname {
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .tags {
+    width: 80vw;
+  }
+
+  .avatar {
+    display: flex;
+
+    margin: 10px 10px 10px 8px;
+    cursor: pointer;
+  }
+
+  .pc {
+    display: none;
+  }
+}
+
+@media all and (min-width: 480px) {
+  .card-inner-wrapper {
+    display: flex;
+    width: 100%;
+    padding: 10px;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .avatar {
+    display: flex;
+    align-items: center;
+    margin: 10px 10px 10px 8px;
+    cursor: pointer;
+  }
+
+  .mobile {
+    display: none;
+  }
+
+  .tags {
+    /* width: 400px; */
+  }
+}
+
+
+
+
 .card {
   display: flex;
   box-sizing: content-box;
@@ -5,25 +65,15 @@
   width: 90%;
 }
 
-.card-inner-wrapper {
-  display: flex;
-  width: 100%;
-  padding: 10px;
-  justify-content: space-between;
-  overflow: hidden;
-}
+
 
 .avatar-userdata {
   display: flex;
+  
   width: 100%;
 }
 
-.avatar {
-  display: flex;
-  align-items: center;
-  margin: 10px 10px 10px 8px;
-  cursor: pointer;
-}
+
 
 .user-wrapper {
   display: flex;
@@ -91,7 +141,7 @@
   display: flex;
   box-sizing: border-box;
   overflow: scroll;
-  width: 30vh;
+  /* width: 30vh; */
   margin-bottom: 10px;
   padding-left: 20px;
   margin-left: -20px;
@@ -120,14 +170,3 @@
   scrollbar-width: none;
 }
 
-@media screen and (max-width: 486px) {
-  .nickname {
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-  }
-
-  .tags {
-    width: 10vh;
-  }
-}
