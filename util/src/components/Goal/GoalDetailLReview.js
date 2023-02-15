@@ -23,7 +23,7 @@ const GoalDetailLReview = (props) => {
           // </li>
         ))}
       </ul>
-    </div>
+    </div> 
   );
 };
 

@@ -28,6 +28,7 @@ import {
   useNavigate,
   useMatch,
   useLocation,
+  useSearchParams,
   useParams,
 } from "react-router-dom";
 import { Fragment } from "react";

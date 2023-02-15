@@ -111,13 +111,13 @@ const ExploreForm = () => {
   ];
 
   const dropDown = (
-    <div>
+    <div className={['dropdown-wrapper']}>
       <DropDown
         dropDownItems={dropDownCriteriaItems}
         dropDownState={dropDownCriteriaState}
         setDropDownState={setDropDownCriteriaState}
-        width={"152px"}
-        itemHeight={"48px"}
+        width={"137px"}
+        itemHeight={"40px"}
         direction={"down"}
         borderRadius={"5px"}
       />
@@ -137,7 +137,7 @@ const ExploreForm = () => {
   const header = (
     <div className={classes[`header`]}>
       <div className={classes["tab-wrapper"]}>
-        <Tab tabItems={tabItems} width={"200px"} height={"48px"} />
+        <Tab tabItems={tabItems} width={"200px"} height={"54px"} />
       </div>
       {criteria === 0 ? null : dropDown}
     </div>
@@ -177,14 +177,18 @@ const ExploreForm = () => {
       onWheel={onWheelHandler}
       ref={exploreWrapperRef}
     >
+      {header}
       <div className={classes["explore-inner-wrapper"]}>
-        {header}
+        
         {altMessages}
-        <ExploreFeed
-          feedList={feedList}
-          modalState={modalState}
-          setModalState={setModalState}
-        />
+        <div>
+          <ExploreFeed
+            feedList={feedList}
+            modalState={modalState}
+            setModalState={setModalState}
+          />
+        </div>
+        
       </div>
     </div>
   );
