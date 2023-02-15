@@ -178,7 +178,7 @@ const GoalDetailShow = (props) => {
         src={warning}
       />
       <div>
-        <p style={{ lineHeight: "40%" }}>아직 완료되지 않은 TODO가 있습니다.</p>
+        <p>아직 완료되지 않은 TODO가 있습니다.</p>
       </div>
     </div>
   );

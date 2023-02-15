@@ -89,7 +89,7 @@ const PlanTodoListLeftItem = (props) => {
         src={warning}
       />
       <div>
-        <p style={{ lineHeight: "40%" }}>
+        <p>
           TODO의 제목은 25자 이하로 작성해야 합니다.
         </p>
       </div>
@@ -114,8 +114,7 @@ const PlanTodoListLeftItem = (props) => {
           src={warning}
         />
         <div>
-          <p style={{ lineHeight: "40%" }}>삭제 시 복구할 수 없습니다.</p>
-          <p style={{ lineHeight: "40%" }}>정말로 삭제 하시겠습니까?</p>
+          <p>삭제 시 복구할 수 없습니다. <br/>정말로 삭제 하시겠습니까?</p>
         </div>
         <div
           style={{

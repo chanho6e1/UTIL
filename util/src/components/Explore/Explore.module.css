@@ -13,14 +13,19 @@
   height: auto;
   display: flex;
   justify-content: center;
+  flex-direction: column;
 }
 
 .alt-message-wrapper {
   margin-top: 100px;
-  font-size: 24px;
+  /* font-size: 24px;
   font-weight: 700;
-  color: rgb(130, 130, 130);
+  color: rgb(130, 130, 130); */
   white-space: pre-line;
+
+  margin-top: 40px;
+  font-size: x-large;
+  color: #aaacae;
 }
 
 @media all and (max-width: 768px) {
@@ -112,7 +117,7 @@
 
 .explore-inner-wrapper {
   flex:1;
-overflow: scroll;
-overflow-x: hidden;
+  overflow: scroll;
+  overflow-x: hidden;
 
 }

@@ -240,7 +240,7 @@ const PostTag = (props) => {
         src={warning}
       />
       <div>
-        <p style={{ lineHeight: "40%" }}>{alertText}</p>
+        <p>{alertText}</p>
         {/* <p style={{lineHeight: '40%'}}>날짜 범위를 미만 & 초과할 수 없습니다.</p> */}
       </div>
     </div>

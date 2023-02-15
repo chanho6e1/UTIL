@@ -16,5 +16,6 @@ export const postUserProfilePicUpload = (formData) => {
     .catch((err) => {
       console.log(err);
       console.log("이미지 업로드 실패하였습니다.");
+      throw err
     });
 };

@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../util/APIUtils";
 import { useDispatch } from "react-redux";
 import { userAuthSliceActions } from "../../redux/userAuthSlice";
+import warning from "../../img/Warning.png";
+import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 
 const UserProfileChange = (props) => {
   const [userData, setUserData] = useState("");
@@ -84,14 +86,49 @@ const UserProfileChange = (props) => {
       formData.append("file", userData.uploadImage);
       postUserProfilePicUpload(formData).then((res) => {
         updateUserData(userData, res.data, newTagList);
-      });
+      })
+      .catch((err) => {
+        if (err.response.data.message === "파일 확장자는 jpg png만 가능합니다") {
+          setAlertNotiState(() => true)
+        }
+      })
     } else {
       updateUserData(userData, userData.imageUrl, newTagList);
     }
   };
 
+
+  const imageError = (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-evenly",
+        alignItems: "center",
+      }}
+    >
+      <img
+        style={{ width: "40px", height: "40px", marginRight: "12px" }}
+        src={warning}
+      />
+      <div>
+        <p>
+          프로필 이미지의 확장자는 PNG, JPG, JPEG만 가능합니다.
+        </p>
+      </div>
+    </div>
+  );
+
+  const [alertNotiState, setAlertNotiState] = useState(false);
+
   return (
     <div className={classes[`profilecard-wrapper`]}>
+      {alertNotiState && <NotiDeliverer
+          content={imageError}
+          stateHandler={setAlertNotiState}
+          passToFixed={true}
+          duration={5000}
+          width={400}
+      />}
       {userData && userTagList && (
         <UserProfileChangeCard
           imageUrl={userData.imageUrl}

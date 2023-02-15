@@ -86,8 +86,7 @@ const PlanItem = (props) => {
           src={warning}
         />
         <div>
-          <p style={{ lineHeight: "40%" }}>삭제 시 복구할 수 없습니다.</p>
-          <p style={{ lineHeight: "40%" }}>정말로 삭제 하시겠습니까?</p>
+          <p>삭제 시 복구할 수 없습니다. <br/>정말로 삭제 하시겠습니까?</p>
         </div>
         <div
           style={{

@@ -146,7 +146,7 @@ const ExploreForm = () => {
     }
   };
 
-  const message1 = "관심 태그가 없어요\n\n마이 프로필에서 태그를 설정해 보세요";
+  const message1 = "관심 태그가 없어요\n마이 프로필에서 태그를 설정해 보세요";
   const message2 = "관련 태그에 맞는 게시물이 없어요";
   const message3 = "팔로우 중인 회원의 피드가 없어요";
 
@@ -155,7 +155,7 @@ const ExploreForm = () => {
       {criteria !== 0 && myTagList.length === 0 && (
         <div className={classes["alt-message-wrapper"]}>{message1}</div>
       )}
-      {criteria !== 0 && feedList.length === 0 && (
+      {criteria !== 0 && myTagList.length !== 0 && feedList.length === 0 && (
         <div className={classes["alt-message-wrapper"]}>{message2}</div>
       )}
       {criteria === 0 && feedList.length === 0 && (

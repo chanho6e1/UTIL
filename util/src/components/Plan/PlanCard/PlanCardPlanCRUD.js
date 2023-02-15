@@ -125,7 +125,7 @@ const PlanCardPlanCRUD = (props) => {
           src={warning}
         />
         <div>
-          <p style={{ lineHeight: "40%" }}>{notiContent}</p>
+          <p>{notiContent}</p>
           {/* <p style={{lineHeight: '40%'}}>날짜 범위를 미만 & 초과할 수 없습니다.</p> */}
         </div>
       </div>
@@ -159,8 +159,7 @@ const PlanCardPlanCRUD = (props) => {
           src={warning}
         />
         <div>
-          <p style={{ lineHeight: "40%" }}>삭제 시 복구할 수 없습니다.</p>
-          <p style={{ lineHeight: "40%" }}>정말로 삭제 하시겠습니까?</p>
+          <p>삭제 시 복구할 수 없습니다. <br/>정말로 삭제 하시겠습니까?</p>
         </div>
         <div
           style={{

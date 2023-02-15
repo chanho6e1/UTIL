@@ -12,8 +12,9 @@ const BlogPostFormRender = (props) => {
     props.forReview ? true : false
   );
   const [showScopePicker, setShowScopePicker] = useState(true);
+  console.log(props.editPost)
   const [selectedPlan, setSelectedPlan] = useState(
-    props.queryString.goal ? props.queryString.goal : null
+    props.editPost ? plans[props.editPost.goalId] : (props.queryString.goal ? props.queryString.goal : null)
   );
   const [selectedScope, setSelectedScope] = useState(2);
 
@@ -37,13 +38,21 @@ const BlogPostFormRender = (props) => {
   };
 
   const onClickSubmitHandler = () => {
-    if (props.forReview === true) {
-      props.reviewSubmitHandler(selectedPlan?.goalId);
-      props.modalHandler();
+
+    if (props.edit === true) {
+      props.postEditHandler(selectedScope, selectedPlan?.goalId)
     } else {
-      props.postSubmitHandler(selectedScope, selectedPlan?.goalId);
-      props.modalHandler();
+      if (props.forReview === true) {
+        props.reviewSubmitHandler(selectedPlan?.goalId);
+        props.modalHandler();
+      } else {
+        props.postSubmitHandler(selectedScope, selectedPlan?.goalId);
+        props.modalHandler();
+      }
     }
+      
+    
+    
   };
 
   const plansRender = Object.keys(plans).map((el, idx) => {
@@ -67,9 +76,9 @@ const BlogPostFormRender = (props) => {
         >
           <b>{plans[el].title}</b>
           <div className={styles["small-text"]}>
-            {startDate.getFullYear()}년 {startDate.getMonth()}월{" "}
+            {startDate.getFullYear()}년 {startDate.getMonth() + 1}월{" "}
             {startDate.getDate()}일 ~ {endDate.getFullYear()}년{" "}
-            {endDate.getMonth()}월 {endDate.getDate()}일
+            {endDate.getMonth() + 1}월 {endDate.getDate()}일
           </div>
         </div>
       );
@@ -225,6 +234,8 @@ const BlogPostForm = (props) => {
           plans={plans}
           postSubmitHandler={props.postSubmitHandler}
           reviewSubmitHandler={props.reviewSubmitHandler}
+          postEditHandler={props.postEditHandler}
+          editPost={props.editPost}
           forReview={props.forReview}
           edit={props.edit}
           queryString={props.queryString}

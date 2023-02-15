@@ -6,6 +6,21 @@ const Tab = (props) => {
   const tabIndicatorRef = useRef();
   const [tabIndex, setTabIndex] = useState(props.initialValue ? props.initialValue : 0);
 
+
+  useEffect(() => {
+    const resize = () => {
+      tabIndicatorRef.current.style.left = `${tabItemsRef.current[0].clientWidth * tabIndex}px`;
+      tabIndicatorRef.current.style.width = `${tabItemsRef?.current[0]?.clientWidth}px`
+    };
+
+    window.addEventListener(`resize`, resize);
+    return () => {
+      window.removeEventListener(`resize`, resize);
+    };
+  });
+
+
+
   useEffect(() => {
     if (tabIndicatorRef?.current) {
       tabIndicatorRef.current.style.left = `${tabItemsRef.current[0].clientWidth * tabIndex}px`;

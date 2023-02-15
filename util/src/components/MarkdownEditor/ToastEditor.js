@@ -102,7 +102,7 @@ const ToastEditorForm = (props) => {
     uploadPost(
       {
         title: title,
-        content: editorRef.current.getInstance().getHTML(),
+        content: editorRef.current.getInstance().getMarkdown(),
         postFileList: images,
         isPrivate: selectedScope,
         goalId: selectedGoalId,
@@ -143,7 +143,7 @@ const ToastEditorForm = (props) => {
   const reviewSubmitHandler = (selectedGoalId) => {
     uploadReview(selectedGoalId, {
       title: title,
-      content: editorRef.current.getInstance().getHTML(),
+      content: editorRef.current.getInstance().getMarkdown(),
     })
       .then((res) => {
         if (selectedGoalId) {
@@ -194,14 +194,14 @@ const ToastEditorForm = (props) => {
       });
   };
 
-  const postEditHandler = () => {
+  const postEditHandler = (scope, goalId) => {
     editPostAPI(
       {
         title: title,
-        content: editorRef.current.getInstance().getHTML(),
+        content: editorRef.current.getInstance().getMarkdown(),
         postFileList: images,
-        isPrivate: props.editContent.isPrivate,
-        goalId: props.editContent.goalId,
+        isPrivate: scope, //props.editContent.isPrivate,
+        goalId: goalId//props.editContent.goalId,
       },
       { skill: tags },
       props.editIdx
@@ -225,13 +225,15 @@ const ToastEditorForm = (props) => {
       setAlertText("글 내용을 작성해야 합니다.");
       setAlertNotiState(true);
     } else {
-      setContent(editorRef.current.getInstance().getHTML());
+      setContent(editorRef.current.getInstance().getMarkdown());
 
       if (props.edit === true) {
+        
+
         if (props.forReview === true) {
           reviewEditHandler();
         } else {
-          postEditHandler();
+          setModalState(true);
         }
       } else {
         setModalState(true);
@@ -263,7 +265,7 @@ const ToastEditorForm = (props) => {
         src={warning}
       />
       <div>
-        <p style={{ lineHeight: "40%" }}>{alertText}</p>
+        <p>{alertText}</p>
       </div>
     </div>
   );
@@ -281,8 +283,7 @@ const ToastEditorForm = (props) => {
         src={complete}
       />
       <div>
-        <p style={{ lineHeight: "40%" }}>축하드립니다!</p>
-        <p style={{ lineHeight: "40%" }}>목표를 완료하였습니다!</p>
+        <p>축하드립니다! <br/>목표를 완료하였습니다!</p>
       </div>
     </div>
   );
@@ -390,9 +391,12 @@ const ToastEditorForm = (props) => {
           <BlogPostForm
             postSubmitHandler={postSubmitHandler}
             reviewSubmitHandler={reviewSubmitHandler}
+            postEditHandler={postEditHandler}
             forReview={props.forReview}
             edit={props.edit}
+            editPost={props.editContent}
             queryString={queryString}
+
           />
         }
         noBtn={true}
@@ -419,7 +423,8 @@ const ToastEditorForm = (props) => {
       <Editor
         ref={editorRef}
         language="ko-KR"
-        initialValue={props.editInitialContent || " "} // content는 글 수정시 사용
+        initialValue={props.editContent.content || " "} // content는 글 수정시 사용
+        // props.editInitialContent
         placeholder="내용을 입력해주세요."
         previewStyle={`${
           editorWrapperRef?.current?.clientWidth > 470 ? "vertical" : "tab"

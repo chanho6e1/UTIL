@@ -216,7 +216,7 @@ const UserProfileChangeCard = (props) => {
           >
             <Avatar
               src={imageUrl}
-              sx={{ width: 100, height: 100, marginRight: "20px" }}
+              sx={{ width: 100, height: 100 }}
               className={classes[`avatar-img`]}
             />
             {isHover && (
@@ -230,7 +230,7 @@ const UserProfileChangeCard = (props) => {
               onChange={fileChangeHandler}
             />
           </IconButton>
-          {props.userName}
+          <div style={{ margin: "0 0 0 20px" }}>{props.userName}</div>
         </div>
         <div className={classes.userdata}>
           <div className={classes.nickname}>
