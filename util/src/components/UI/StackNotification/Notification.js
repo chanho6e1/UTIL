@@ -11,24 +11,8 @@ const Notification = (props) => {
   const contentWrapperRef = useRef();
   const dispatch = useDispatch();
   const duration = props.duration;
-  // const fixed = useSelector(state => state.notificationSlice.stack)
 
   useEffect(() => {
-    // if (props.passToFixed === true) {
-    //     let key = Object.keys(fixed)[Object.keys(fixed).length - 1] + 1
-    //     // const key = (Object.keys(stack).length * 100) + randNum
-
-    //     const data = {
-
-    //         content: props.content,
-    //         duration: props.duration,
-    //         width: props.width,
-    //         height: props.height,
-
-    //     }
-    //     dispatch(notificationSliceActions.fixedPush(data))
-    //     console.log(data)
-    // }
 
     if (indicatorRef.current) {
       indicatorRef.current.style.transitionProperty = "width";

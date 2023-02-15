@@ -97,12 +97,14 @@ const UserPageForm = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [category, setCategory] = useState("전체 글");
 
+
+
   const navigate = useNavigate();
 
   const plans = useSelector((state) => state.planSlice.allPlans);
   const PlanCardItemList = () => {
     return Object.keys(plans).map((id, arrIdx) => {
-      return <PlanList plan={plans[id]} />;
+      return <PlanList plan={plans[id]} key={`plan-card-item-list-${plans[id].title}-${arrIdx}`} />;
     });
   };
 
@@ -110,7 +112,6 @@ const UserPageForm = (props) => {
     setIsLoading(true);
     if (myData.userId === props.id) {
       if (searchParams.get("category") === "1") {
-        console.log("북마크fetch");
         setCategory("북마크");
         getBookmarkPosts(criteria[criteriaIdx], page, size).then((res) => {
           setPostBookmarkList(() => res.content);
@@ -118,14 +119,16 @@ const UserPageForm = (props) => {
           setTimeout(() => {
             setIsLoading(false);
           }, 500);
-          containerRef.current.scrollTo({
-            left: 0,
-            top: postWrapperRef.current.offsetTop - 14,
-            behavior: "smooth",
-          });
+          if (containerRef.current.scrollTop !== 0) {
+            containerRef.current.scrollTo({
+              left: 0,
+              top: postWrapperRef.current.offsetTop - 14,
+              behavior: "smooth",
+            });
+          }
+          
         });
       } else if (searchParams.get("category") === "2") {
-        console.log("좋아요fetch");
         setCategory("좋아요");
         getLikePosts(criteria[criteriaIdx], page, size).then((res) => {
           setPostLikeList(() => res.content);
@@ -133,14 +136,15 @@ const UserPageForm = (props) => {
           setTimeout(() => {
             setIsLoading(false);
           }, 500);
-          containerRef.current.scrollTo({
-            left: 0,
-            top: postWrapperRef.current.offsetTop - 14,
-            behavior: "smooth",
-          });
+          if (containerRef.current.scrollTop !== 0) {
+            containerRef.current.scrollTo({
+              left: 0,
+              top: postWrapperRef.current.offsetTop - 14,
+              behavior: "smooth",
+            });
+          }
         });
       } else {
-        console.log("전체 글fetch");
         setCategory("전체 글");
         getMyPosts(criteria[criteriaIdx], page, size).then((res) => {
           setPostList(() => res.content);
@@ -148,11 +152,13 @@ const UserPageForm = (props) => {
           setTimeout(() => {
             setIsLoading(false);
           }, 500);
-          containerRef.current.scrollTo({
-            left: 0,
-            top: postWrapperRef.current.offsetTop - 14,
-            behavior: "smooth",
-          });
+          if (containerRef.current.scrollTop !== 0) {
+            containerRef.current.scrollTo({
+              left: 0,
+              top: postWrapperRef.current.offsetTop - 14,
+              behavior: "smooth",
+            });
+          }
         });
       }
     } else {
@@ -175,7 +181,6 @@ const UserPageForm = (props) => {
     setIsLoading(true);
     if (myData.userId === props.id) {
       if (searchParams.get("category") === "1") {
-        console.log("북마크 모바일")
         setCategory("북마크");
         getBookmarkPosts(criteria[criteriaIdx], page + 1, size).then((res) => {
           setPostBookmarkList((prev) => [...prev, ...res.content]);
@@ -186,7 +191,6 @@ const UserPageForm = (props) => {
           }, 500);
         });
       } else {
-        console.log("전체 글 모바일")
         setCategory("전체 글");
         getMyPosts(criteria[criteriaIdx], page + 1, size).then((res) => {
           setPostList((prev) => [...prev, ...res.content]);
@@ -224,6 +228,8 @@ const UserPageForm = (props) => {
     }
   }, [fetchStart]);
 
+
+  
   // 초기 데이터
   useEffect(() => {
 
@@ -235,10 +241,8 @@ const UserPageForm = (props) => {
       searchParams.set("page", 1);
       setSearchParams(searchParams);
     } else if (searchParams.get("category") === "0") {
-      console.log("초기 전체글");
       setCategory("전체 글");
     } else if (searchParams.get("category") === "1") {
-      console.log("초기 북마크");
       setCategory("북마크");
     } else if (searchParams.get("category") === '2') {
       setCategory('목표')
@@ -269,17 +273,13 @@ const UserPageForm = (props) => {
       );
     }
 
-    // My Data API
-    // getMyData().then((res) => {
-    //   setMyData(() => res);
-    //   console.log("ssafy me", res);
-    // });
-
     // User Data API, Tag Data
     getUserData(props.id).then((res) => {
       setUserData(() => res);
       setUserTagList(() => res.tags);
     });
+
+
   }, [props.id]);
 
   // Follow Data API
@@ -750,26 +750,6 @@ const UserPageForm = (props) => {
         {header}
 
         <div className={classes["body-header"]}>
-          {/* <div>
-            <DropDown
-              dropDownItems={categoryDropDownItems}
-              dropDownState={categoryDropDownState}
-              setDropDownState={setCategoryDropDownState}
-              width={"152px"}
-              itemHeight={"48px"}
-              direction={"down"}
-              borderRadius={"5px"}
-            />
-            <div
-              className={classes["dropdown"]}
-              onClick={() => {
-                setCategoryDropDownState(() => true);
-              }}
-            >
-              <li className={classes["drop-down-li-tag"]} />
-              {category}
-            </div>
-          </div> */}
           <div className={classes["tab-wrapper"]}>
             {myData.userId === props.id && (
               <Tab
@@ -809,7 +789,6 @@ const UserPageSet = (props) => {
   useEffect(() => {
     if (nickname !== undefined) {
       getUserDataByNickname(nickname).then((res) => {
-        console.log("res", res);
         setUserData(() => res);
       });
     }
@@ -840,7 +819,6 @@ const UserPage = (props) => {
       <div id="index-overlay-root"></div>
 
       <Routes>
-        {/* <Route path="*" element={<UserPageForm id={userId === null ? myData.userId : userId} />} /> */}
         <Route
           path="/"
           element={
@@ -854,18 +832,8 @@ const UserPage = (props) => {
           }
         />
         <Route path="index/:nickname/*" element={<UserPageSet />} />
-
-        {/* <Route path="index/goal/:id" element={<GoalDetail />} />
-          <Route path="index/post/:id" element={<DetailItem />} /> */}
         <Route path="index/goal/:id" element={<GoalDetail />} />
         <Route path="index/:nickname/post/:id" element={<DetailItem />} />
-        {/* <Route path="index/:nickname/m/modal/post/:id" element={<UserPageSet />} /> */}
-
-        {/* `/${url}/${props.nickname}/m/modal/post/${props.id}` */}
-        {/* <Route
-            path="indexes/:nickname"
-            element={myData !== null && userData.userId && userData.nickname && <UserPageForm id={userData.userId} nickname={userData.nickname} />}
-          /> */}
       </Routes>
     </div>
   );

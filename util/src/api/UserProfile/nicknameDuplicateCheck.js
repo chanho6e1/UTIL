@@ -15,7 +15,6 @@ export const nicknameDuplicateCheck = (nickname) => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
       console.log("닉네임 중복 조회에 실패하였습니다.");
     });
 };

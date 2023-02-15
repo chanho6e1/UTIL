@@ -17,7 +17,6 @@ const FollowCard = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(props.userData);
     getIsFollowing(props.userData.userId).then((res) => {
       setIsFollowing(() => res);
     });

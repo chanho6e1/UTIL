@@ -96,9 +96,6 @@ const MarkdownEditor = (props) => {
   const sendImageData = (data, order) => {
     const frm = new FormData();
     frm.append("image", data);
-    for (let value of frm.values()) {
-      console.log(value);
-    }
 
     axios({
       method: "post",
@@ -129,14 +126,14 @@ const MarkdownEditor = (props) => {
 
       let formData = [];
       const htmlChildNodes = [].slice.call(html.children);
-      console.log(htmlChildNodes);
+
       let sel, range;
       sel = window.getSelection();
       htmlChildNodes.forEach((element) => {
         range = sel.getRangeAt(0);
         range.deleteContents();
         const img = element.getElementsByTagName("img");
-        console.log(img);
+
         if (img.length !== 0) {
           const processedImg = imageProcessor(img[0].src);
           formData.push(processedImg.image);
@@ -145,7 +142,6 @@ const MarkdownEditor = (props) => {
           formData.push(element.textContent);
           // range.insertNode( document.createTextNode(element.textContent + '\n') );
         }
-        console.log(formData);
       });
       // const range = document.createRange();
       // range.selectNodeContents(editorWrapperRef.current);
@@ -172,7 +168,6 @@ const MarkdownEditor = (props) => {
       const domLine = lineRef.current;
       const root = createRoot(domLine);
       root.render(renderOutput);
-      console.log(lineRef);
     };
 
     editorWrapperRef.current.addEventListener("paste", pasteProcessor);

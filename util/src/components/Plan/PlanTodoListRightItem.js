@@ -45,7 +45,6 @@ const PlanTodoListRightItem = (props) => {
           goalId: props.plan.goalId,
           data: res,
         };
-        console.log("PlanTodoListRightItem : editTodosAPI");
         dispatch(
           modifyPlanSliceActions.responseTodos(JSON.stringify(processing))
         );

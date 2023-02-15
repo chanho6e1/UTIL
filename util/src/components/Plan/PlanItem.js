@@ -42,7 +42,6 @@ const PlanItem = (props) => {
     };
     editPlanAPI(props.plan.goalId, processing)
       .then((res) => {
-        console.log("PlanItem : editPlanAPI");
         dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)));
       })
       .then((res) => {
@@ -70,7 +69,6 @@ const PlanItem = (props) => {
   const deletePlan = () => {
     delPlanAPI(props.plan.goalId)
       .then((res) => {
-        console.log("PlanItem : delPlanAPI");
         dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)));
       })
       .catch((err) => {

@@ -149,16 +149,6 @@ const PlanCardItem = (props) => {
       : state.planSlice.todos[props?.plan?.goalId];
   });
 
-  // useEffect(() => {
-  //   recvTodayTodosAPI()
-  //   .then((res) => {
-  //     dispatch(modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res)))
-  //   })
-  //   .catch((err) => {
-  //     console.log('PlanCardItem : recvTodayTodosAPI => ', err)
-  //   })
-  // }, [todos])
-
   useEffect(() => {
     if (props.today === true) {
       recvTodayTodosAPI()
@@ -177,7 +167,7 @@ const PlanCardItem = (props) => {
             goalId: props.plan.goalId,
             data: res,
           };
-          console.log("PlanCardItem : recvTodosAPI");
+
           dispatch(
             modifyPlanSliceActions.responseTodos(JSON.stringify(processing))
           );

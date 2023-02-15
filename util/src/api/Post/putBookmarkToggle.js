@@ -14,7 +14,6 @@ export const putBookmarkToggle = (postId) => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
       console.log("북마크 실패");
     });
 };

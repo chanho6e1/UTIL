@@ -14,7 +14,6 @@ export const postFollow = (toUserId) => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
       console.log("팔로우 실패");
     });
 };

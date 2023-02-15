@@ -14,7 +14,6 @@ export const getPostByNickname = (criteria, offset, size, nickName) => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
       console.log("게시물 목록 조회에 실패하였습니다.");
     });
 };

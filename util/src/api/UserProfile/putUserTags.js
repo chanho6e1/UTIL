@@ -17,7 +17,6 @@ export const putUserTags = (userTagList) => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
       console.log("유저 태그 정보 업데이트 실패");
     });
 };

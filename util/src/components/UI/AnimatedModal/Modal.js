@@ -21,8 +21,6 @@ const ModalOverlay = (props) => {
 
   useEffect(() => {
     mountModalHandler();
-    console.log("떴다!!!");
-    console.log(match);
     if (!match) {
       unmountModalHandler();
     }
@@ -77,7 +75,9 @@ const ModalOverlay = (props) => {
     await modalExecute();
 
     const displayCorrection = setTimeout(async () => {
-      contentRef.current.style.position = "static";
+      if (contentRef?.current?.style) {
+        contentRef.current.style.position = "static";
+      }
       modalRef.current.style.display = "flex";
       modalRef.current.style.justifyContent = "center";
       modalRef.current.style.alignItems = "center";
@@ -136,7 +136,7 @@ const ModalOverlay = (props) => {
 
   const content = React.cloneElement(props.component, {
     unmountModalHandler: unmountModalHandler,
-    ref: propsRef,
+    // ref: propsRef,
   });
 
   return (
@@ -162,7 +162,6 @@ const ModalOverlay = (props) => {
 
 const Modal = (props) => {
   const match = useMatch(`${props.url}`);
-  // console.log(props.url, match)
   const rootElement = document.getElementById(`${props.rootId}`);
   const condition = match || props.toggleBoolean;
   const modal =

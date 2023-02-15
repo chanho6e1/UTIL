@@ -87,7 +87,6 @@ const SearchForm = (props) => {
             setFeedList(() => res.content);
           }
           setIsLoading(false);
-          console.log("getPostSearch", res.content);
         });
       } else if (api === 1) {
         getPostByTagName(criteriaData[criteria], offset, size, searchInput).then((res) => {
@@ -95,7 +94,6 @@ const SearchForm = (props) => {
             setFeedList(() => res.content);
           }
           setIsLoading(false);
-          console.log("getPostByTagName", res.content);
         });
       } else {
         getPostByNickname(criteriaData[criteria], offset, size, searchInput).then((res) => {
@@ -103,7 +101,6 @@ const SearchForm = (props) => {
             setFeedList(() => res.content);
           }
           setIsLoading(false);
-          console.log("getPostByNickname", res.content);
         });
       }
     }
@@ -129,7 +126,6 @@ const SearchForm = (props) => {
           setFeedList(() => res.content);
         }
         setIsLoading(false);
-        console.log("getPostByNickname", res.content);
       });
     }
   };
@@ -139,7 +135,6 @@ const SearchForm = (props) => {
     const scrollTop = searchFeedWrapperRef.current.scrollTop;
     const clientHeight = searchFeedWrapperRef.current.clientHeight;
     if (scrollTop + clientHeight >= scrollHeight - 10 && isLoading === false) {
-      console.log(scrollTop, clientHeight, scrollHeight);
       fetchMoreData();
     }
   };

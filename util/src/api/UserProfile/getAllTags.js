@@ -14,7 +14,6 @@ export const getAllTags = () => {
     })
     .catch((err) => {
       console.log(err);
-      console.log(TOKEN());
       console.log("모든 태그 조회에 실패하였습니다.");
     });
 };

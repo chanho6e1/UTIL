@@ -46,7 +46,6 @@ const App = () => {
   const loadCurrentlyLoggedInUser = () => {
     getCurrentUser()
       .then((response) => {
-        console.log("getMy!!!");
         dispatch(userAuthSliceActions.changeAuthenticated("true"));
         dispatch(
           userAuthSliceActions.changeCurrentUser(JSON.stringify(response.data))
