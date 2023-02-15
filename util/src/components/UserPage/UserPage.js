@@ -7,7 +7,6 @@ import {
   useParams,
 } from "react-router-dom";
 import classes from "./UserPage.module.css";
-import PostCardItem from "../UI/PostCard/PostCardItem";
 import TagDataList from "../UI/Tag/TagDataList";
 import { Avatar, Pagination } from "@mui/material";
 import Button from "../UI/Button/Button";
@@ -22,12 +21,9 @@ import { getUserFollower } from "../../api/Post/getUserFollower";
 import { getUserFollowing } from "../../api/Post/getUserFollowing";
 import { deleteFollow } from "../../api/Post/deleteUnfollow";
 import { postFollow } from "../../api/Post/postFollow";
-import { getUserTag } from "../../api/Post/getUserTag";
-import { getMyData } from "../../api/UserProfile/getMyData";
 import { useNavigate, Navigate } from "react-router-dom";
 import UserPageResponsive from "./UserPageResponsive";
-import useDidMountEffect from "../../hooks/useDidMountEffect";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Swipe from "react-easy-swipe";
 import GoalDetail from "../Goal/GoalDetail";
 import DetailItem from "../Detail/DetailItem";
@@ -41,7 +37,6 @@ import FollowModal from "../UI/FollowModal/FollowModal";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import Tab from "../UI/Tab/Tab";
 import { getUserDataByNickname } from "../../api/Post/getUserDataByNickname";
-import { useCalendarState } from "@mui/x-date-pickers/internals";
 
 const postCardItemList = (postList) => {
   return postList?.map((post) => {
@@ -97,14 +92,17 @@ const UserPageForm = (props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [category, setCategory] = useState("전체 글");
 
-
-
   const navigate = useNavigate();
 
   const plans = useSelector((state) => state.planSlice.allPlans);
   const PlanCardItemList = () => {
     return Object.keys(plans).map((id, arrIdx) => {
-      return <PlanList plan={plans[id]} key={`plan-card-item-list-${plans[id].title}-${arrIdx}`} />;
+      return (
+        <PlanList
+          plan={plans[id]}
+          key={`plan-card-item-list-${plans[id].title}-${arrIdx}`}
+        />
+      );
     });
   };
 
@@ -126,7 +124,6 @@ const UserPageForm = (props) => {
               behavior: "smooth",
             });
           }
-          
         });
       } else if (searchParams.get("category") === "2") {
         setCategory("좋아요");
@@ -228,12 +225,8 @@ const UserPageForm = (props) => {
     }
   }, [fetchStart]);
 
-
-  
   // 초기 데이터
   useEffect(() => {
-
-    
     // Post API
     setIsLoading(true);
     if (searchParams.get("category") === null) {
@@ -244,8 +237,8 @@ const UserPageForm = (props) => {
       setCategory("전체 글");
     } else if (searchParams.get("category") === "1") {
       setCategory("북마크");
-    } else if (searchParams.get("category") === '2') {
-      setCategory('목표')
+    } else if (searchParams.get("category") === "2") {
+      setCategory("목표");
     }
     if (myData.userId === props.id) {
       getMyPosts(criteria[criteriaIdx], offset, size).then((res) => {
@@ -278,8 +271,6 @@ const UserPageForm = (props) => {
       setUserData(() => res);
       setUserTagList(() => res.tags);
     });
-
-
   }, [props.id]);
 
   // Follow Data API
@@ -396,7 +387,7 @@ const UserPageForm = (props) => {
       searchParams.get("category") === "0" &&
       offset !== searchParams.get("page") &&
       searchParams.get("page") !== null &&
-      !isLoading && 
+      !isLoading &&
       document.body.clientWidth > 1080
     ) {
       setCategory("전체 글");
@@ -405,7 +396,7 @@ const UserPageForm = (props) => {
       searchParams.get("category") === "1" &&
       offsetBookmark !== searchParams.get("bookmark") &&
       searchParams.get("bookmark") !== null &&
-      !isLoading && 
+      !isLoading &&
       document.body.clientWidth > 1080
     ) {
       setCategory("북마크");
@@ -434,7 +425,10 @@ const UserPageForm = (props) => {
         }
       }
 
-      if (searchParams.get("category") === "1" && offsetBookmark < totalBookmarkPage) {
+      if (
+        searchParams.get("category") === "1" &&
+        offsetBookmark < totalBookmarkPage
+      ) {
         if (document.body.clientWidth < 1080) {
           setFetchStart(() => true);
         }

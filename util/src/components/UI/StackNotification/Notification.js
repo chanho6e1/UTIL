@@ -1,9 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import styles from "./Notification.module.css";
-import ReactDOM from "react-dom";
-
 import { notificationSliceActions } from "../../../redux/notificationSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const Notification = (props) => {
   const indicatorRef = useRef();

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./PlanTodoListLeftItem.module.css";
 import { editTodoAPI } from "../../api/Plan/editTodoAPI";
 import { modifyPlanSliceActions } from "../../redux/planSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { delTodoAPI } from "../../api/Plan/delTodoAPI";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import Button from "../UI/Button/Button";

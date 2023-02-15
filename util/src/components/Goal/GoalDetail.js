@@ -1,37 +1,22 @@
 import classes from "../Goal/GoalDetail.module.css";
 import GoalDetailL from "./GoalDetailL";
 import GoalDetailR from "./GoalDetailR";
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { modifyPostDetailSliceActions } from "../../redux/postDetailSlice";
-import { modifyPlanSliceActions } from "../../redux/planSlice";
-import { detailPlansAPI } from "../../api/Goal/detailPlansAPI";
 import { detailTodosAPI } from "../../api/Goal/detailTodosAPI";
 import { detailReviewsAPI } from "../../api/Goal/detailReviewsAPI";
 import { detailTilAPI } from "../../api/Goal/detailTilAPI";
 import { detailAllTodosAPI } from "../../api/Goal/detailAllTodosAPI";
 import { detailGoalCompleteAPI } from "../../api/Goal/detailGoalCompleteAPI";
 import GoalDetailMobile from "./GoalDetailMobile";
-import { Avatar, Pagination } from "@mui/material";
 import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 import PlanState from "../UI/PlanList/PlanState";
 import warning from "../../img/Warning.png";
-
 import { useSelector, useDispatch } from "react-redux";
 import {
-  HashRouter,
-  BrowserRouter,
-  Routes,
-  Route,
-  Link,
-  NavLink,
-  Navigate,
-  useNavigate,
-  useMatch,
-  useLocation,
-  useSearchParams,
   useParams,
 } from "react-router-dom";
-import { Fragment } from "react";
+
 
 const GoalDetailShow = (props) => {
   const dispatch = useDispatch();

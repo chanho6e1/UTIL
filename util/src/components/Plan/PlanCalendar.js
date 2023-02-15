@@ -1,9 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./PlanCalendar.module.css";
-import { useSelector, useDispatch } from "react-redux";
-import { modifyPlanSliceActions } from "../../redux/planSlice";
 import PlanCalendarDateSelector from "./PlanCalendarDateSelector";
-import Swipe from "react-easy-swipe";
 import {
   OverlayScrollbarsComponent,
   useOverlayScrollbars,

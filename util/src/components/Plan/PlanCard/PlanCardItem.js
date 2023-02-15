@@ -8,10 +8,7 @@ import styles from "./PlanCardItem.module.css";
 import FixedModal from "../../UI/FixedModal/FixedModal";
 import PlanCardTodoCRUD from "./PlanCardTodoCRUD";
 import PlanCardPlanCRUD from "./PlanCardPlanCRUD";
-import {
-  OverlayScrollbarsComponent,
-  useOverlayScrollbars,
-} from "overlayscrollbars-react";
+import { useOverlayScrollbars } from "overlayscrollbars-react";
 import { recvTodayTodosAPI } from "../../../api/Plan/recvTodayTodosAPI";
 
 const PlanCardItemForm = (props) => {

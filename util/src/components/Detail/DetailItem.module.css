@@ -61,10 +61,7 @@
   background-color: #f8f9fa;
 }
 
-.Detail {
-  /* display: grid;
-  grid-template-columns: 200px 1fr 200px; */
-}
+
 
 .DetailItem {
   /* padding-top:54px; */
@@ -77,8 +74,7 @@
   background-color: #f8f9fa;
 }
 
-/* .Detail-text-contents {
-} */
+
 
 .Detail-info {
   height: 24px;
@@ -337,8 +333,7 @@
   scrollbar-width: none; /* Firefox */
 }
 
-.DetailItem {
-}
+
 
 .header {
   position: fixed;

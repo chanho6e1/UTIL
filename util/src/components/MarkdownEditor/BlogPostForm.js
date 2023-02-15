@@ -1,13 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./BlogPostForm.module.css";
-import TextInput from "../UI/TextInput/TextInput";
 import { recvPlansAPI } from "../../api/Plan/recvPlansAPI";
 import arrow from "../../img/arrow.png";
 import Button from "../UI/Button/Button";
-import {
-  OverlayScrollbarsComponent,
-  useOverlayScrollbars,
-} from "overlayscrollbars-react";
+
 
 const BlogPostFormRender = (props) => {
   // const [plans, setPlans] = useState([])

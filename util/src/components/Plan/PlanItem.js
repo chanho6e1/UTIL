@@ -1,23 +1,11 @@
 import React, { useState } from "react";
 import arrow from "../../img/arrow.png";
-import extension from "../../img/Extension.png";
 import styles from "./PlanItem.module.css";
 import PlanTodoListLeft from "./PlanTodoListLeft";
 import { delPlanAPI } from "../../api/Plan/delPlanAPI";
 import { modifyPlanSliceActions } from "../../redux/planSlice";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  HashRouter,
-  BrowserRouter,
-  Routes,
-  Route,
-  Link,
-  NavLink,
-  Navigate,
-  useNavigate,
-  useMatch,
-  useLocation,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { editPlanAPI } from "../../api/Plan/editPlanAPI";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import Button from "../UI/Button/Button";

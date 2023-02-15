@@ -1,20 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import classes from "./PostCardItem.module.css";
-import TagDataList from "../Tag/TagDataList";
 import { IconButton, createTheme, ThemeProvider, Avatar } from "@mui/material";
 import bookmarkIconFlat from "../../../img/BookmarkIconFlat.svg";
 import bookmarkIconFill from "../../../img/BookmarkIconFill.svg";
 import likeIconFlat from "../../../img/LikeIconFlat.svg";
 import likeIconFill from "../../../img/LikeIconFill.svg";
 import PhotoCameraIcon from "../../../img/photoCameraIcon_gray.png";
-import { getPostTag } from "../../../api/Post/getPostTag";
 import { putLikeToggle } from "../../../api/Post/putLikeToggle";
 import { putBookmarkToggle } from "../../../api/Post/putBookmarkToggle";
 import Card from "../Card/Card";
 import { useNavigate } from "react-router-dom";
-import AnimatedModal from "../AnimatedModal/Modal";
-import DetailItem from "../../Detail/DetailItem";
-import Swipe from "react-easy-swipe";
+
 
 const avatarTheme = createTheme({
   components: {

@@ -1,21 +1,6 @@
 import classes from "../Goal/GoalDetail.module.css";
-import {
-  HashRouter,
-  BrowserRouter,
-  Routes,
-  Route,
-  Link,
-  NavLink,
-  Navigate,
-  useNavigate,
-  useMatch,
-  useLocation,
-  useParams,
-} from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { modifyPostDetailSliceActions } from "../../redux/postDetailSlice";
-import { tilAPI } from "../../api/Detail/tilAPI";
+import { Link } from "react-router-dom";
+import React from "react";
 
 const GoalDetailRTilItem = (props) => {
   return (

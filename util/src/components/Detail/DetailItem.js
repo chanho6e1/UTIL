@@ -1,26 +1,14 @@
 import classes from "./DetailItem.module.css";
 import { IconButton } from "@mui/material";
-import bookmarkIcon from "../../assets/bookmarkIcon.svg";
-import bookmarkfillIcon from "../../assets/bookmarkfillIcon.svg";
-import flatColorLikeIcon from "../../assets/flatColorLikeIcon.svg";
-import flatColorLikefillIcon from "../../assets/flatColorLikefillIcon.svg";
 import defaultUserPicture from "../../assets/defaultUserPicture.svg";
 import DetailComment from "../Detail/DetailComment.js";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  HashRouter,
-  BrowserRouter,
-  Routes,
-  Route,
-  Link,
-  NavLink,
-  Navigate,
   useNavigate,
-  useMatch,
   useLocation,
   useParams,
 } from "react-router-dom";
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { modifyPostDetailSliceActions } from "../../redux/postDetailSlice";
 import { tilAPI } from "../../api/Detail/tilAPI";
 import { tilDeleteAPI } from "../../api/Detail/tilDeleteAPI";

@@ -1,7 +1,6 @@
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Chip from "@mui/material/Chip";
-import { useState } from "react";
 
 const AutoCompleteMultipleTagInput = (props) => {
   return (

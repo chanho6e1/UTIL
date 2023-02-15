@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { getMyTags } from "../../api/UserProfile/getMyTags";
 import { getPostsByMyTag } from "../../api/Post/getPostsByMyTag";
-import { IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
 import ExploreFeed from "./ExploreFeed";
 import classes from "./Explore.module.css";
-import ExpandIcon from "../../img/Expand40.svg";
 import DropDown from "../UI/DropDown/DropDown";
 import { useEffect, useRef } from "react";
 import { Fragment } from "react";
@@ -14,9 +12,6 @@ import { Routes, Route } from "react-router-dom";
 import DetailItem from "../Detail/DetailItem";
 import Tab from "../UI/Tab/Tab";
 import { useLocation } from "react-router-dom";
-import FixedModal from "../UI/FixedModal/FixedModal";
-import UserRecommend from "../UserRecommend/UserRecommend";
-import UserPage from "../UserPage/UserPage";
 import { getUserFollowing } from "../../api/Post/getUserFollowing";
 
 const ExploreForm = () => {

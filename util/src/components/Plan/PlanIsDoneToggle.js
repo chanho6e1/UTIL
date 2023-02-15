@@ -5,7 +5,7 @@ import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
 import { chkTodoAPI } from "../../api/Plan/chkTodoAPI";
 import { editIsPlanDoneAPI } from "../../api/Plan/editIsPlanDoneAPI";
 import { recvIsAllTodosDoneAPI } from "../../api/Plan/recvIsAllTodosDoneAPI";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { modifyPlanSliceActions } from "../../redux/planSlice";
 import { useNavigate } from "react-router-dom";
 import complete from "../../img/Complete.png";

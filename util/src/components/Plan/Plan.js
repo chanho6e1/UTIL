@@ -1,58 +1,25 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./Plan.module.css";
 import {
-  HashRouter,
-  BrowserRouter,
-  Routes,
-  Route,
-  Link,
-  NavLink,
-  Navigate,
   useNavigate,
-  useMatch,
-  useLocation,
 } from "react-router-dom";
 import PlanCalendar from "./PlanCalendar";
 import { useSelector, useDispatch } from "react-redux";
 import { modifyPlanSliceActions } from "../../redux/planSlice";
-import Card from "../UI/Card/Card";
-import Modal from "../UI/FixedModal/FixedModal";
-import { recvPlansAPI } from "../../api/Plan/recvPlansAPI";
-import useDidMountEffect from "../../hooks/useDidMountEffect";
-import PlanLoading from "./PlanLoading";
-
-import PlanTodoListLeft from "./PlanTodoListLeft";
 import PlanItem from "./PlanItem";
 import { newPlanAPI } from "../../api/Plan/newPlanAPI";
 import { newTodoAPI } from "../../api/Plan/newTodoAPI";
 import { recvTodosAPI } from "../../api/Plan/recvTodosAPI";
-import { editTodoAPI } from "../../api/Plan/editTodoAPI";
-import { recvTotalPeriodAPI } from "../../api/Plan/recvPlansPeriodAPI";
 import { recvTodoPeriodAPI } from "../../api/Plan/recvTodoPeriodAPI";
-
 import warning from "../../img/Warning.png";
 import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
-import { recvIngPlanAPI } from "../../api/Plan/recvIngPlanAPI";
+
 
 const Plan = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //     recvIngPlanAPI()
-  //     .catch((err) => {
-  //         navigate('/login');
-  //     })
-  //     .then((res) => {
-  //         dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)))
-  //     })
-  // }, [])
-
   const plans = useSelector((state) => state.planSlice.plans);
   const todos = useSelector((state) => state.planSlice.todos);
-
-  // const [startRange, setStartRange] = useState(new Date(prototypeDate.getFullYear(),0,1))
-  // const [endRange, setEndRange] = useState(new Date(prototypeDate.setFullYear(prototypeDate.getFullYear(),12,0)))
   const [startRange, setStartRange] = useState(props.startRange);
   const [endRange, setEndRange] = useState(props.endRange);
 
