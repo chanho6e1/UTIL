@@ -45,13 +45,11 @@ public class TokenProvider {
 
     public boolean validateToken(String authToken) {
         try {
-//            logger.info("============={}",authToken);
             Jwts.parser().setSigningKey(appProperties.getAuth().getTokenSecret()).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException ex) {
             logger.error("Invalid JWT signature");
         } catch (MalformedJwtException ex) {
-//            logger.info("=============={}",);
             logger.error("Invalid JWT token");
         } catch (ExpiredJwtException ex) {
             logger.error("Expired JWT token");

@@ -31,7 +31,6 @@ public class ReviewController {
                 HttpStatus.CREATED, "등록 성공", reviewService.createReview(goalId, request)));
     }
 
-    //pagenation 구현하기
     @ApiOperation(value = "회고록 리스트 조회(기존), 예전거부터 정렬", notes = "목표에 해당하는 회고록 리스트를 반환한다.")
     @GetMapping("/{goalId}/goals")
     public ResponseEntity<CommonResponse> getReviewList기존(@PathVariable Long goalId,

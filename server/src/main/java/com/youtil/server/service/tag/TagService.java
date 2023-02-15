@@ -153,8 +153,6 @@ public class TagService {
         Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new ResourceNotFoundException("Tag", "tagId", tagId));
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-//        return tagQueryRepository.findPostListByTag(userId, tagId, criteria, PageRequest.of(offset-1, size))
-//                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
         Page<Post> page =tagQueryRepository.findPostListByTag(userId, tagId, criteria, PageRequest.of(offset-1, size));
         List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user, getTagByPost(post.getPostId()))).collect(Collectors.toList());
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
@@ -163,8 +161,6 @@ public class TagService {
     }
     public PagedResponse<PostResponse> findPostListByTagName(Long userId, String tagName, String criteria, int offset, int size) { // 테그로 포스트 조회
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-//        return tagQueryRepository.findPostListByTag(userId, tagId, criteria, PageRequest.of(offset-1, size))
-//                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
         Page<Post> page =tagQueryRepository.findPostListByTagName(userId, tagName, criteria, PageRequest.of(offset-1, size));
         List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user, getTagByPost(post.getPostId()))).collect(Collectors.toList());
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
@@ -175,8 +171,6 @@ public class TagService {
     public PagedResponse<PostResponse> findPostListByMyTag(Long userId, String criteria, int offset, int size) { // 나의 관심 테그로 포스트 조회
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-//        return tagQueryRepository.findPostListByMyTag(userId, criteria, PageRequest.of(offset-1, size))
-//                .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
         Page<Post> page = tagQueryRepository.findPostListByMyTag(userId, criteria, PageRequest.of(offset-1, size));
         List<PostResponse> responses = page.stream().map((post)-> new PostResponse(post, user, getTagByPost(post.getPostId()))).collect(Collectors.toList());
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
