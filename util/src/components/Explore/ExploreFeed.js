@@ -1,8 +1,6 @@
 import FeedCardItem from "../UI/FeedCard/FeedCardItem";
 import classes from "./ExploreFeed.module.css";
 import { Fragment } from "react";
-import FixedModal from "../UI/FixedModal/FixedModal";
-import UserRecommend from "../UserRecommend/UserRecommend";
 import { useLocation } from "react-router-dom";
 
 const ExploreFeed = (props) => {
@@ -31,14 +29,6 @@ const ExploreFeed = (props) => {
 
   return (
     <Fragment>
-      <FixedModal
-        modalState={props.modalState}
-        stateHandler={props.setModalState}
-        content={<UserRecommend />}
-        width={"80vh"}
-        height={"400px"}
-        overflow={"hidden"}
-      />
       <div className={classes["feed-wrapper"]}>{feedCardItemList}</div>
     </Fragment>
   );
