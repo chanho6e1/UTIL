@@ -2,7 +2,6 @@ package com.youtil.server.service.post;
 
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.youtil.server.common.PagedResponse;
-import com.youtil.server.common.exception.ArgumentMismatchException;
 import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.config.s3.S3Uploader;
@@ -154,8 +153,6 @@ public class PostService {
         return new PagedResponse<>(responses, page.getNumber()+1, page.getSize(), page.getTotalElements(),
                 page.getTotalPages(), page.isLast());
 
-//    return postQueryRepository.findByBookmarkPostList(criteria, user, PageRequest.of(offset - 1, size))
-//            .stream().map((post)-> new PostResponse(post, user)).collect(Collectors.toList());
     }
 
 
@@ -174,8 +171,6 @@ public class PostService {
         }
 
          if(!request.getPostFileList().isEmpty()){
-             Map<Integer, String> map =  post.getPostFileMap();
-//             post.setThubmnail(request.getPostFileList().get(0).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","")); //첫번째 사진 섬네일 등록
             for(int idx=0; idx<request.getPostFileList().size(); idx++){
                 String source = request.getPostFileList().get(idx).replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/post/","");
                 post.addPostFile(idx, source);
@@ -197,7 +192,7 @@ public class PostService {
         Post post = postRepository.findPost(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "postId", postId));
         validPostUser(userId, post.getUser().getUserId());
         post.clearUser();
-        deletePostFile(postId);  //2) 포스트별 저장하고 있는 포스트 파일 읽어와서 s3삭제  : 사용할것임!!!! 지금은 테스트 중이라 주석처리
+        deletePostFile(postId);  //2) 포스트별 저장하고 있는 포스트 파일 읽어와서 s3삭제
 
         postRepository.deletePostTag(postId);
         postRepository.deletePostLike(postId);
@@ -322,27 +317,6 @@ public class PostService {
         }
         return source;
     }
-
-
-    //post 삭제하면 안의 파일도 삭제 : 사용 안함
-    public void parseContextAndDeleteImages(Post post) {
-        Document doc = Jsoup.parse(post.getContent());
-        Elements images = doc.getElementsByTag("img");
-        String source = "";
-
-        if (images.size() > 0) {
-            for (Element image : images) {
-                try {
-                    source = URLDecoder.decode(image.attr("src").replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/", ""), "UTF-8");
-                    System.out.println(source);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                s3Uploader.deleteS3(source);
-            }
-        }
-    }
-
 
 }
 

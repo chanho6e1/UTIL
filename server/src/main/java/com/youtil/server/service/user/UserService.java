@@ -9,11 +9,9 @@ import com.youtil.server.dto.user.UserResponse;
 import com.youtil.server.dto.user.UserUpdateRequest;
 import com.youtil.server.repository.tag.UserOfTagRepository;
 import com.youtil.server.repository.user.UserRepository;
-import com.youtil.server.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,8 +37,6 @@ public class UserService {
     }
     public UserResponse getCurrentUser(Long userId) {
         UserResponse user = UserResponse.from(userRepository.findByUserId(userId), getTagLike(userId));
-//        String ImgUrl = "https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/" + user.getImageUrl();
-//        user.setImageUrl(ImgUrl);
         return user;
     }
     @Transactional
@@ -48,34 +44,24 @@ public class UserService {
         User originUser = userRepository.findByUserId(userId);
 
         String path = originUser.getImageUrl();
-//        deleteImg(path);
 
-//        logger.info("=============path : {}", path);
-//        String baseImg = "3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg";
 
         String newImg = request.getImageUrl();
 
         if(newImg==null || newImg.equals("")){
             newImg = baseImg;
-//            request.setImageUrl("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/3f26016b-a84d-45d8-a688-ed78849e4e6aser.svg");
-//            originUser.setUserProfile(baseImg.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/",""));
         }else{
             originUser.setUserProfile(path.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/",""));
-//            deleteS3Image(path, baseImg);
             newImg = newImg.replace("https://utilbucket.s3.ap-northeast-2.amazonaws.com/static/user/", "");
             if(!path.equals(newImg))
                 deleteS3Image(path, baseImg);
         }
         request.setImageUrl(newImg);
-
-//        logger.info("=============newImg : {}", request.getImageUrl());
-
         originUser.update(request);
-//        logger.info("=============originUserImg : {}", originUser.getImageUrl());
         return userId;
     }
 
-//
+
     private void deleteS3Image(String path, String baseImg) throws UnsupportedEncodingException {
 
         if(!path.equals(baseImg)) {
@@ -88,10 +74,6 @@ public class UserService {
         }
     }
 
-    public void deleteImg(String path){
-
-    }
-
     public boolean checkNickName(String nickName){
 
         return userRepository.existsByNickName(nickName).isPresent()? true: false;
@@ -101,14 +83,8 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
-    public Object deleteUser(Long id) {
-        // 유저 닉네임 "탈퇴한 회원"으로 변환
-        return null;
-    }
-
     public UserResponse getUser(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-//        return UserResponse.from(user);
         return UserResponse.from(user, getTagLike(user.getUserId()));
     }
 

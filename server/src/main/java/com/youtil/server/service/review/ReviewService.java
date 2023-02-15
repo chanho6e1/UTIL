@@ -4,7 +4,6 @@ import com.youtil.server.common.exception.ResourceForbiddenException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.review.Review;
-import com.youtil.server.domain.user.User;
 import com.youtil.server.dto.review.ReviewGoalResponse;
 import com.youtil.server.dto.review.ReviewResponse;
 import com.youtil.server.dto.review.ReviewSaveRequest;
@@ -13,13 +12,10 @@ import com.youtil.server.repository.goal.GoalRepository;
 import com.youtil.server.repository.review.ReviewQueryRepository;
 import com.youtil.server.repository.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,10 +41,6 @@ public class ReviewService {
 
     public List<ReviewResponse> getReviewList기존(Long goalId, String criteria, int offset, int size, Long userId) {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
-
-//        System.out.println(reviewQueryRepository.findReviewListByGoal(goalId, PageRequest.of(offset, size)).stream().map((review) -> new ReviewResponse(review)).collect(Collectors.toList()));
-
-//        return goalQueryRepository.findGoalListByUser(userId).stream().map((goal) -> new GoalResponse(goal)).collect(Collectors.toList());
 
         validGoalUser(userId, goal.getUser().getUserId()); //나의 목표가 아니다
 

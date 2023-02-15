@@ -10,7 +10,7 @@ import java.util.Optional;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-//뜻 찾아보기
+
 public class CommonResponse<T>{
 
     private int status;

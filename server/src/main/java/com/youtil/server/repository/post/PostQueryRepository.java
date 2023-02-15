@@ -1,10 +1,8 @@
 package com.youtil.server.repository.post;
 
 import com.querydsl.core.QueryResults;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.youtil.server.domain.post.Post;
@@ -18,16 +16,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 
-import static com.querydsl.core.types.dsl.Wildcard.count;
 import static com.youtil.server.domain.post.QPost.post;
 import static com.youtil.server.domain.post.QPostBookmark.postBookmark;
 import static com.youtil.server.domain.post.QPostLike.postLike;
 import static com.youtil.server.domain.user.QFollow.follow;
-import static com.youtil.server.domain.user.QUser.user;
-import static java.time.LocalTime.now;
 
 
 @RequiredArgsConstructor
@@ -125,12 +118,10 @@ public class PostQueryRepository {
     public Page<Post> findByPostSubscribes(PostSearch postSearch, User user, PageRequest pageRequest) {
 
         String criteria = postSearch.getCriteria();
-//        String period = postSearch.getPeriod();
 
         QueryResults<Post> content =  jpaQueryFactory.select(post)
                 .distinct().from(post)
                 .innerJoin(post.user).fetchJoin()
-//                .innerJoin(postLike).fetchJoin()
                 .where(
                         post.user.in(
                                 JPAExpressions
@@ -206,17 +197,6 @@ public class PostQueryRepository {
 
     }
 
-    private BooleanExpression isPrivate1(Long userId){ //공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
-        return
-                post.user.userId.in(JPAExpressions
-                        .select(follow.fromUser.userId).from(follow)
-                        .where(follow.toUser.userId.in(
-                                JPAExpressions.select(post.user.userId).from(post)
-                                        .where(post.isPrivate.eq(1),
-                                                follow.toUser.userId.eq(userId)
-                                        ))
-                        ));
-    }
     private BooleanExpression isPrivate(Long userId){ //or사용 / 공개이거나(2) / 이웃만 공개(1, 글쓴이가 팔로우한 사람만)
         return  post.isPrivate.eq(2).or(
                 post.user.userId.in(JPAExpressions
@@ -236,11 +216,7 @@ public class PostQueryRepository {
         } else if (criteria == null) {
             return post.createdDate.desc();
         }
-//        }else if(criteria.contains("like") && period.contains("6month")){
-//            return
-//        }else if(criteria.contains("like") && period.contains("1week")){
-//
-//        }
+
             return post.createdDate.desc();
         }
 
