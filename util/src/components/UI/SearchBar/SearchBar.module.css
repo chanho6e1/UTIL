@@ -103,7 +103,7 @@
   transition-property: background-color color;
   transition-duration: 0.2s;
   user-select: none;
-  margin-top: 14px;
+  /* margin-top: 14px; */
   /* margin-right: 8px; */
 }
 
@@ -116,4 +116,8 @@
   margin-left: 24px;
   font-size: 24px;
   margin-right: -10px;
+}
+
+.sort-dropdown {
+  margin-top: 14px;
 }

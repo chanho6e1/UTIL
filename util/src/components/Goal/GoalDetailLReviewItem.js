@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import classes from "../Goal/GoalDetail.module.css";
+import { Viewer } from "@toast-ui/react-editor";
 
 const GoalDetailLReviewItem = (props) => {
   const navigate = useNavigate();
@@ -23,7 +24,10 @@ const GoalDetailLReviewItem = (props) => {
         </div>
       </div>
       <div className={classes["goal-detail-reviews-item-content"]}>
-        {props.review.content}
+        <Viewer
+          key={props.review.content}
+          initialValue={props.review.content}
+        />
       </div>
     </li>
   );
