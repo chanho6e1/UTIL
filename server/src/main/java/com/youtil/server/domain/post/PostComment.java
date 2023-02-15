@@ -72,6 +72,7 @@ public class PostComment extends BaseEntity {
 
     public void update(PostCommentUpdateRequest request){
         this.content = request.getContent();
+        this.isPrivate = request.getIsPrivate();
     }
 
 
