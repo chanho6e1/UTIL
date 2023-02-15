@@ -240,6 +240,7 @@
   box-sizing: border-box;
   transition-property: border;
   transition-duration: 0.1s;
+  
 }
 
 .Detail-comments-contents-box {
@@ -269,6 +270,7 @@
 .Detail-comments-box {
   /* margin-left: 50px; */
   display: flex;
+  width: 100%;
 }
 
 .depth {
@@ -399,6 +401,8 @@
   flex: 1;
   display: flex;
   align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .commentUpdated {
@@ -421,6 +425,7 @@
 
 .Detail-comments-input {
   margin-top: 24px;
+  width: 100%;
 }
 
 .depth-margin {
