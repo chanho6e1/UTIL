@@ -32,7 +32,7 @@ public class UserController {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.OK, "유저 정보 조회 성공", userService.getCurrentUser(userPrincipal.getId())));
     }
-
+    @ApiIgnore
     @PutMapping
     @ApiOperation(value = "유저 정보 업데이트", notes = "현재 로그인한 유저 정보를 업데이트한다.")
     public ResponseEntity<CommonResponse> updateUserInfo(@ApiIgnore @CurrentUser UserPrincipal userPrincipal,

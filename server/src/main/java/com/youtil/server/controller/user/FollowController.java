@@ -18,12 +18,16 @@ import springfox.documentation.annotations.ApiIgnore;
 public class FollowController {
     @Autowired
     FollowService followService;
+
+    @ApiIgnore
     @ApiOperation(value = "팔로우", notes = "팔로우 한다")
     @PostMapping("/{toUserId}")
     public ResponseEntity<CommonResponse> follow(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable("toUserId") Long toUserId) throws Exception {
         return ResponseEntity.ok().body(CommonResponse.of(
                 HttpStatus.CREATED, "팔로우 성공", followService.follow(user.getId(), toUserId)));
     }
+
+    @ApiIgnore
     @ApiOperation(value = "언팔로우", notes = "언팔로우 한다")
     @DeleteMapping("/{toUserId}")
     public ResponseEntity<CommonResponse> unfollow(@ApiIgnore @CurrentUser UserPrincipal user, @PathVariable("toUserId") Long toUserId) throws Exception {
