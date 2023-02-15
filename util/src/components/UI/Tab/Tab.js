@@ -4,14 +4,11 @@ import React, { useRef, useEffect, useState } from "react";
 const Tab = (props) => {
   const tabItemsRef = useRef([]);
   const tabIndicatorRef = useRef();
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState(props.initialValue ? props.initialValue : 0);
 
   useEffect(() => {
-    console.log("fewef");
     if (tabIndicatorRef?.current) {
-      tabIndicatorRef.current.style.left = `${
-        tabItemsRef.current[0].clientWidth * tabIndex
-      }px`;
+      tabIndicatorRef.current.style.left = `${tabItemsRef.current[0].clientWidth * tabIndex}px`;
     }
   }, [tabIndex]);
 
