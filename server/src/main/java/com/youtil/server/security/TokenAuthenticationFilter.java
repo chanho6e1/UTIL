@@ -31,8 +31,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         try {
             String jwt = getJwtFromRequest(request);
 
-//            logger.info("==============jwt: {}", jwt);
-
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 Long userId = tokenProvider.getUserIdFromToken(jwt);
 
@@ -54,11 +52,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-//            logger.info("==============bearerToken: {}", bearerToken);
             return bearerToken.substring(7, bearerToken.length());
         }
 
-//        logger.info("============bearerToken: {}", bearerToken);
         return null;
     }
 }

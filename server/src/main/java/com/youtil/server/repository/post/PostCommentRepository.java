@@ -1,6 +1,5 @@
 package com.youtil.server.repository.post;
 
-import com.youtil.server.domain.post.Post;
 import com.youtil.server.domain.post.PostComment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -32,18 +31,9 @@ public interface PostCommentRepository extends JpaRepository<PostComment, Long> 
     @Query("SELECT c FROM PostComment c WHERE c.post.postId = :postId")
     Slice<PostComment> findCommentList(@Param("postId")Long postId, Pageable pageable);
 
-    @Query("SELECT c FROM PostComment c WHERE c.post.postId = :postId and ((:cop = '<' and  c.commentId < :cursor) or (:cop = '>' and  c.commentId > :cursor))")
-    Slice<PostComment> findCommentListByCursor(@Param("postId")Long postId, @Param("cursor") Long cursor, @Param("cop")String cop, Pageable pageable);
-//
-//    @Query("SELECT c FROM PostComment c, User u WHERE c.post.postId = :postId AND c.parentId is not null and ((:cop = '<' and  c.commentId < :cursor) or (:cop = '>' and  c.commentId > :cursor))")
-//    Slice<PostComment> findCommentChildrenListByCursor(@Param("postId")Long postId, @Param("cursor") Long cursor, @Param("cop")String cop, Pageable pageable);
 
     @Query("SELECT c FROM PostComment c WHERE c.post.postId = :postId")
     List<PostComment> findCommentByPostId(@Param("postId")Long postId);
 
-    @Transactional
-    @Modifying
-    @Query("update PostComment c set c.parent = null where c.post.postId = :postId")
-    void setParentNull(@Param("postId")Long postId);
 }
 
