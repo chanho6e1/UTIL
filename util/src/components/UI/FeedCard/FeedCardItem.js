@@ -23,6 +23,11 @@ import {
 import AnimatedModal from "../AnimatedModal/Modal";
 import DetailItem from "../../Detail/DetailItem";
 
+import { Viewer } from "@toast-ui/react-editor";
+import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js";
+import prism from "prismjs";
+import "prismjs/themes/prism.css";
+
 const avatarTheme = createTheme({
   components: {
     MuiAvatar: {
@@ -38,6 +43,15 @@ const FeedCardItem = (props) => {
   const [isBookmark, setIsBookmark] = useState(props.bookmarkStatus);
   const [isLike, setIsLike] = useState(props.likeStatus);
   const [likeStatusSize, setLikeStatusSize] = useState(props.likeStatusSize);
+  const viewerRef = useRef()
+  const [plainContent, setPlainContent] = useState(null)
+
+
+  useEffect(() => {
+    if (viewerRef?.current?.innerText) {
+      setPlainContent(viewerRef?.current?.innerText)
+    }
+  }, [viewerRef?.current?.innerText])
 
   const displayLikeStatusSize = (likeStatusSize) => {
     if (likeStatusSize > 1000) {
@@ -124,7 +138,10 @@ const FeedCardItem = (props) => {
         <div className={classes[`feedcard-text-contents`]}>
           <div className={classes[`text-contents`]} onClick={postClickHandler}>
             <div className={classes.title}>{props.title}</div>
-            <div className={classes.contents}>{props.contents}</div>
+            <div className={classes.contents}>{plainContent}</div>
+            {/* <div className={classes.contents}>{props.contents}</div> */}
+            
+            <div ref={viewerRef} style={{display:'none'}}><Viewer initialValue={props.contents}  plugins={[[codeSyntaxHighlight, { highlighter: prism }]]} /></div>
           </div>
           <div className={classes[`icons-div`]}>
             <IconButton

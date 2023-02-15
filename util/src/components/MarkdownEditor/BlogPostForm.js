@@ -126,7 +126,7 @@ const BlogPostFormRender = (props) => {
         >
           <b>모두 공개</b>
           <div className={styles["small-text"]}>
-            모든 사용자에게 이 글을 공개합니다.
+            모든 사용자에게 글 공개
           </div>
         </div>
         <div
@@ -141,7 +141,7 @@ const BlogPostFormRender = (props) => {
         >
           <b>팔로잉 공개</b>
           <div className={styles["small-text"]}>
-            팔로잉 한 사용자에게 이 글을 공개합니다.
+            팔로잉 한 사용자에게 글 공개
           </div>
         </div>
         <div
@@ -156,7 +156,7 @@ const BlogPostFormRender = (props) => {
         >
           <b>비공개</b>
           <div className={styles["small-text"]}>
-            다른 이용자는 이 글을 볼 수 없습니다.
+            다른 이용자는 이 글을 볼 수 없음
           </div>
         </div>
       </div>
