@@ -8,9 +8,7 @@ const Tab = (props) => {
 
   useEffect(() => {
     if (tabIndicatorRef?.current) {
-      tabIndicatorRef.current.style.left = `${
-        tabItemsRef.current[0].clientWidth * tabIndex
-      }px`;
+      tabIndicatorRef.current.style.left = `${tabItemsRef.current[0].clientWidth * tabIndex}px`;
     }
   }, [tabIndex]);
 

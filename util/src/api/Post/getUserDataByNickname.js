@@ -2,7 +2,6 @@ import { API_BASE_URL, TOKEN } from "../../constants";
 import axios from "axios";
 
 export const getUserDataByNickname = (nickname) => {
-  console.log("getbynick", nickname);
   return axios({
     method: "get",
     // url: `${API_BASE_URL}/user/search/${nickname}`,
