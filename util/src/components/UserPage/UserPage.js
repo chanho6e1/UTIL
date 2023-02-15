@@ -227,6 +227,7 @@ const UserPageForm = (props) => {
   // 초기 데이터
   useEffect(() => {
 
+    
     // Post API
     setIsLoading(true);
     if (searchParams.get("category") === null) {
@@ -239,9 +240,8 @@ const UserPageForm = (props) => {
     } else if (searchParams.get("category") === "1") {
       console.log("초기 북마크");
       setCategory("북마크");
-    } else {
-      console.log("초기 좋아요");
-      setCategory("좋아요");
+    } else if (searchParams.get("category") === '2') {
+      setCategory('목표')
     }
     if (myData.userId === props.id) {
       getMyPosts(criteria[criteriaIdx], offset, size).then((res) => {
