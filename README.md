@@ -1,6 +1,5 @@
 # UTIL
 
-<br>
 
 ## 개발기간
 
@@ -169,4 +168,4 @@ $ git clone https://lab.ssafy.com/s08-webmobile2-sub2/S08P12D210.git
 $ cd server
 ```
 
-**3. 프로젝트 폴더로 이동**
+**3. main 실행**
