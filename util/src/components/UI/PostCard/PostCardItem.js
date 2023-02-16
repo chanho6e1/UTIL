@@ -11,13 +11,10 @@ import { putBookmarkToggle } from "../../../api/Post/putBookmarkToggle";
 import Card from "../Card/Card";
 import { useNavigate } from "react-router-dom";
 
-
-
 import { Viewer } from "@toast-ui/react-editor";
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js";
 import prism from "prismjs";
 import "prismjs/themes/prism.css";
-
 
 const avatarTheme = createTheme({
   components: {
@@ -29,21 +26,29 @@ const avatarTheme = createTheme({
   },
 });
 
+const displayLikeStatusSize = (likeStatusSize) => {
+  if (likeStatusSize > 1000) {
+    return (likeStatusSize / 1000).toFixed(2) + "k";
+  } else {
+    return likeStatusSize;
+  }
+};
+
 const PostCardItem = (props) => {
   // const [tagList, setTagList] = useState(null);
   const [isBookmark, setIsBookmark] = useState(props.bookmarkStatus);
   const [isLike, setIsLike] = useState(props.likeStatus);
+  const [likeStatusSize, setLikeStatusSize] = useState(props.likeStatusSize);
   const navigate = useNavigate();
-  const viewerRef = useRef()
+  const viewerRef = useRef();
 
-  const [plainContent, setPlainContent] = useState(null)
-
+  const [plainContent, setPlainContent] = useState(null);
 
   useEffect(() => {
     if (viewerRef?.current?.innerText) {
-      setPlainContent(viewerRef?.current?.innerText)
+      setPlainContent(viewerRef?.current?.innerText);
     }
-  }, [viewerRef?.current?.innerText])
+  }, [viewerRef?.current?.innerText]);
 
   const imgErrorHandler = (event) => {
     event.target.src = PhotoCameraIcon;
@@ -61,6 +66,11 @@ const PostCardItem = (props) => {
     // 지금 유저 아이디가 아니라 포스트 아이디를 넣어줘야 함
     putLikeToggle(props.id).then((res) => {
       if (res === 200) {
+        if (isLike) {
+          setLikeStatusSize((prevState) => prevState - 1);
+        } else {
+          setLikeStatusSize((prevState) => prevState + 1);
+        }
         setIsLike((prevState) => !prevState);
       }
     });
@@ -78,36 +88,39 @@ const PostCardItem = (props) => {
     navigate(`/index/${props.nickname}/post/${props.id}`);
   };
 
-  const temp = (
-    <React.Fragment>
-      <div className={classes.iconbutton}>
-        <IconButton
-          onClick={bookmarkClickHandler}
-          style={{
-            paddingTop: 0,
-            paddingRight: 0,
-            paddingBottom: 0,
-            paddingLeft: 0,
-            marginRight: 10,
-          }}
-        >
-          <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
-        </IconButton>
-        <IconButton
-          onClick={likeClickHandler}
-          style={{
-            paddingTop: 0,
-            paddingRight: 0,
-            paddingBottom: 0,
-            paddingLeft: 0,
-          }}
-        >
-          <img src={isLike ? likeIconFill : likeIconFlat} />
-        </IconButton>
-        <div className={classes.likecount}>{props.likeCount}</div>
-      </div>
-    </React.Fragment>
-  );
+  // const temp = (
+  //   <React.Fragment>
+  //     <div className={classes.iconbutton}>
+  //       <IconButton
+  //         onClick={bookmarkClickHandler}
+  //         style={{
+  //           paddingTop: 0,
+  //           paddingRight: 0,
+  //           paddingBottom: 0,
+  //           paddingLeft: 0,
+  //           marginRight: 10,
+  //         }}
+  //       >
+  //         <img src={isBookmark ? bookmarkIconFill : bookmarkIconFlat} />
+  //       </IconButton>
+  //       <IconButton
+  //         onClick={likeClickHandler}
+  //         style={{
+  //           paddingTop: 0,
+  //           paddingRight: 0,
+  //           paddingBottom: 0,
+  //           paddingLeft: 0,
+  //         }}
+  //       >
+  //         <img src={isLike ? likeIconFill : likeIconFlat} />
+  //       </IconButton>
+  //       <div className={classes.likecount}>
+  //         gggtrd
+  //         {displayLikeStatusSize(props.likeStatusSize)}
+  //       </div>
+  //     </div>
+  //   </React.Fragment>
+  // );
 
   const buttons = (
     <div className={classes.iconbutton}>
@@ -134,7 +147,7 @@ const PostCardItem = (props) => {
       >
         <img src={isLike ? likeIconFill : likeIconFlat} />
       </IconButton>
-      <div className={classes.likecount}>{props.likeCount}</div>
+      <div className={classes.likecount}>{displayLikeStatusSize(likeStatusSize)}</div>
     </div>
   );
 
@@ -157,14 +170,21 @@ const PostCardItem = (props) => {
   );
 
   return (
-    <Card className={classes.card} >
-      <div className={classes["left-wrapper"]} onMouseOver={() => console.log(viewerRef)}>
+    <Card className={classes.card}>
+      <div
+        className={classes["left-wrapper"]}
+        onMouseOver={() => console.log(viewerRef)}
+      >
         <div className={classes["left-top"]} onClick={postClickHandler}>
           <div className={classes.title}>{props.title}</div>
           <div className={classes.contents}>{plainContent}</div>
           {/* <div className={classes.contents}>{props.content}</div> */}
-          <div ref={viewerRef} style={{display:'none'}}><Viewer initialValue={props.content}  plugins={[[codeSyntaxHighlight, { highlighter: prism }]]} /></div>
-          
+          <div ref={viewerRef} style={{ display: "none" }}>
+            <Viewer
+              initialValue={props.content}
+              plugins={[[codeSyntaxHighlight, { highlighter: prism }]]}
+            />
+          </div>
         </div>
 
         <div className={classes["left-bottom"]}>
