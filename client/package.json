@@ -56,7 +56,7 @@
     "unified": "^10.1.2",
     "web-vitals": "^2.1.4"
   },
-  "proxy": "http://i8d210.p.ssafy.io:8081",
+  "proxy": "https://i8d210.p.ssafy.io",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
