@@ -62,7 +62,7 @@ export const CurrentUser = (props) => {
 
   const userName = (
     <div className={styles["label"]}>
-      <b>{userAuth.authenticated ? userAuth.currentUser.userName : null}</b>님
+      <b>{userAuth.authenticated ? userAuth.currentUser.nickname : null}</b>님
       환영합니다!
     </div>
   );
