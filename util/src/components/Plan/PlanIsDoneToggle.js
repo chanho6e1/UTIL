@@ -128,6 +128,16 @@ const PlanIsDoneToggle = (props) => {
           .then((res) => {
             dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)));
           });
+        recvTodayTodosAPI()
+        .then((res) => {
+          dispatch(
+            modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res))
+          );
+          props.modalHandler();
+        })
+        .catch((err) => {
+          console.log("PlanCardItem : recvTodayTodosAPI => ", err);
+        });
       })
       .catch((err) => {
         console.log("PlanIsDoneToggle : editIsPlanDoneAPI => ", err);

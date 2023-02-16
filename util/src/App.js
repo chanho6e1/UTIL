@@ -32,6 +32,7 @@ import ToastEditor from "./components/MarkdownEditor/ToastEditor";
 import { modifyPlanSliceActions } from "./redux/planSlice";
 import { recvIngPlanAPI } from "./api/Plan/recvIngPlanAPI";
 import { recvIngAllPlanAPI } from "./api/Plan/recvIngAllPlanAPI";
+import { recvPlansAPI } from "./api/Plan/recvPlansAPI";
 
 const App = () => {
   const navigate = useNavigate();
@@ -73,6 +74,16 @@ const App = () => {
         dispatch(modifyPlanSliceActions.responseAllPlans(JSON.stringify(res)));
       });
   }, []);
+
+  useEffect(() => {
+    recvPlansAPI()
+      .catch((err) => {
+        navigate("/login");
+      })
+      .then((res) => {
+        dispatch(modifyPlanSliceActions.responseAllPlans(JSON.stringify(res)));
+      });
+  }, [plans])
 
   const { pathname } = useLocation();
   const wrapRef = useRef(null);
