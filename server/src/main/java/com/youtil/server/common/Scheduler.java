@@ -16,11 +16,11 @@ public class Scheduler {
 
     private final PostRepository postRepository;
 //    @Scheduled(cron = "0 0 9 ? * MON")
-    @Scheduled(cron = "0 0/10 * * * ?")
+    @Scheduled(cron = "0/10 * * * * ?")
     @Transactional
     public void run() {
         // TODO
-        System.out.println("현재 시간은 " + new Date());
+//        System.out.println("현재 시간은 " + new Date());
         postRepository.findPostByCreateTime().stream().forEach((post)-> {
             try {
                 post.setScore(post);
