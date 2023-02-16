@@ -476,7 +476,6 @@ const ToastEditor = (props) => {
           getPostTag(editIdx).then((tags) => {
             setEditContent(() => post);
             setEditTags(() => tags);
-            console.log(post)
           });
         });
       }
@@ -484,7 +483,6 @@ const ToastEditor = (props) => {
       setEditContent(() => "");
     }
   }, []);
-  console.log(props.edit)
   return (
     <React.Fragment>
       {((props.edit === true && editContent !== null) || props.edit !== true) &&

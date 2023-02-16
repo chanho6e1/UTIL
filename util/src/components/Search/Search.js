@@ -80,7 +80,6 @@ const SearchForm = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    console.log('ferwgesg', searchInput, api, criteria)
     if (searchInput !== null && searchInput !== "") {
       setIsLoading(true);
       if (api === 0) {
@@ -92,20 +91,14 @@ const SearchForm = (props) => {
         });
       } else if (api === 1) {
         getPostByTagName(criteriaData[criteria], 1, size, searchInput).then((res) => {
-          console.log('태그 검색어는', offset, size, searchInput)
-          console.log('태그 검색결과는', res)
           if (res.content.length !== 0) {
-            console.log('태그검색 실시!', res.content)
             setFeedList(() => res.content);
           }
           setIsLoading(false);
         });
       } else {
-        console.log('getPostByNickname before', searchInput, api)
         getPostByNickname(criteriaData[criteria], 1, size, searchInput).then((res) => {
-          console.log('getPostByNickname after', searchInput, api)
           if (res.content.length !== 0) {
-            console.log('getPostByNickname after valid', searchInput, api)
             setFeedList(() => res.content);
           }
           setIsLoading(false);
