@@ -241,6 +241,7 @@ const UserPageForm = (props) => {
 
   // 초기 데이터
   useEffect(() => {
+    
     // Post API
     setIsLoading(true);
     if (searchParams.get("category") === null) {
@@ -253,6 +254,9 @@ const UserPageForm = (props) => {
       setCategory("북마크");
     } else if (searchParams.get("category") === "2") {
       setCategory("목표");
+    }
+    if (myData.userId !== props.id) {
+      setCategory("전체 글");
     }
     if (myData.userId === props.id) {
       getMyPosts(criteria[criteriaIdx], offset, size).then((res) => {
