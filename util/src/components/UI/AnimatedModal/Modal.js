@@ -130,7 +130,12 @@ const ModalOverlay = (props) => {
 
     const redirect = setTimeout(() => {
       props.toggleFunction(false);
-      navigate(props.prevUrl, { replace: true });
+      if ((location.pathname + location.search) === props.url && props.prevUrl === (location.pathname + location.search)) {
+        navigate(props.prevUrl, { replace: true });
+      } else {
+        navigate((location.pathname + location.search), { replace: true });
+      }
+      
     }, 390);
 
     await modalExecute();
@@ -163,7 +168,8 @@ const ModalOverlay = (props) => {
 };
 
 const Modal = (props) => {
-  const match = useMatch(`${props.url}`);
+  const location = useLocation()
+  const match = decodeURI(location.pathname) === props.url //useMatch(`${props.url}`);
   const rootElement = document.getElementById(`${props.rootId}`);
   const condition = match || props.toggleBoolean;
   const modal =

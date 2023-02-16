@@ -19,9 +19,11 @@ import {
   Navigate,
   useNavigate,
   useLocation,
+  useSearchParams
 } from "react-router-dom";
 import AnimatedModal from "../AnimatedModal/Modal";
 import DetailItem from "../../Detail/DetailItem";
+
 
 import { Viewer } from "@toast-ui/react-editor";
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js";
@@ -93,20 +95,26 @@ const FeedCardItem = (props) => {
 
   const location = useLocation();
   const url = location.pathname.split("/")[1];
+  const toUrl = `/${url}/${props.bookmarkTab === true ? props.myNickname : props.nickname}/m/modal/post/${props.id}`
   const postClickHandler = () => {
+    console.log(location)
     if (document.body.clientWidth > 1080) {
       // navigate(`/${url}/${props.nickname}/post/${props.id}`);
-
-      navigate(`/${url}/${props.nickname}/m/modal/post/${props.id}`);
+      
+      navigate(toUrl);
+      // navigate(`/${url}/${props.nickname}/m/modal/post/${props.id}`);
       setShowModal(true);
     } else {
-      navigate(`/${url}/${props.nickname}/m/modal/post/${props.id}`);
+
+      navigate(toUrl);
+      // navigate(`/${url}/${props.nickname}/m/modal/post/${props.id}`);
       setShowModal(true);
     }
   };
 
   const ShowModalHandler = (boolean) => {
-    navigate(`/${url}/${props.nickname}/m/modal/post/${props.id}`);
+    navigate(toUrl);
+    // navigate(`/${url}/${props.nickname}/m/modal/post/${props.id}`);
     setShowModal(boolean);
   };
 
@@ -123,8 +131,9 @@ const FeedCardItem = (props) => {
       parentRef={cardRef}
       toggleFunction={ShowModalHandler}
       toggleBoolean={showModal}
-      url={`/${url}/${props.nickname}/m/modal/post/${props.id}`}
-      prevUrl={`${location.pathname}`}
+      url={toUrl}
+      // url={`/${url}/${props.nickname}/m/modal/post/${props.id}`}
+      prevUrl={`${location.pathname + location.search}`}
     />
   );
 

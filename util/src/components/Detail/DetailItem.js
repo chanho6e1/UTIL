@@ -360,7 +360,7 @@ const DetailItemShow = (props) => {
                 alt="user"
               />
               <div className={classes["Detail-user"]}>
-                <span className={classes.username}>
+                <span className={classes.username} onClick={() => {navigate(`/index/${post.writerInfo.nickname}`)}}>
                   {post.writerInfo.nickname} ·
                 </span>
                 <span className={classes["created-date"]}>{dateString}</span>
