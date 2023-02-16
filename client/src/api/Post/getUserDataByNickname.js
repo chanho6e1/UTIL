@@ -5,7 +5,7 @@ export const getUserDataByNickname = (nickname) => {
   return axios({
     method: "get",
     // url: `${API_BASE_URL}/user/search/${nickname}`,
-    url: `http://i8d210.p.ssafy.io:8081/api/user/search/${nickname}`,
+    url: `https://i8d210.p.ssafy.io/api/user/search/${nickname}`,
     headers: {
       Authorization: TOKEN(),
     },
