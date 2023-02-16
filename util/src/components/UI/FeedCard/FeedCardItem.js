@@ -61,6 +61,7 @@ const FeedCardItem = (props) => {
     } else {
       return likeStatusSize;
     }
+    
   };
 
   const imgErrorHandler = (event) => {
