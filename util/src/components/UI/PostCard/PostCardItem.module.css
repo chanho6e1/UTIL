@@ -10,7 +10,7 @@
   padding: 20px;
   flex-grow: 1;
   /* background-color: red; */
-
+  overflow: hidden;
   display: grid;
   grid-template-rows: 8.375fr 1fr;
   flex-direction: column;
@@ -110,6 +110,7 @@
   text-overflow: clip;
   font-size: 1rem;
   font-weight: 300;
+
 }
 
 .username {
