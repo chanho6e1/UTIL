@@ -95,9 +95,9 @@ const FeedCardItem = (props) => {
 
   const location = useLocation();
   const url = location.pathname.split("/")[1];
-  const toUrl = `/${url}/${props.bookmarkTab === true ? props.myNickname : props.nickname}/m/modal/post/${props.id}`
+  const toUrl = `/${url}/${props.bookmarkTab === true ? props.myNickname : props.nickname}${props.reviewPage === true ? `/goal/${props.goalId}` : ''}/m/modal/post/${props.id}`
   const postClickHandler = () => {
-    console.log(location)
+    console.log('아이디', props.id)
     if (document.body.clientWidth > 1080) {
       // navigate(`/${url}/${props.nickname}/post/${props.id}`);
       

@@ -100,7 +100,7 @@ const ExploreForm = () => {
     setIsLoading(() => true);
     criteriaAPI[criteria](criteriaList[criteria], 1, size).then(
       (res) => {
-        setFeedList(() => res?.content);
+        setFeedList(res?.content);
         setOffset(() => 1);
         setIsLoading(() => false);
       }
