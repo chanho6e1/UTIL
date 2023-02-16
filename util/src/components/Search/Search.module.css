@@ -4,6 +4,7 @@
   height: 100%;
   overflow: scroll;
   overflow-x: hidden;
+  
 }
 
 .searchbar {
@@ -19,10 +20,25 @@
 .searchfeed {
   display: flex;
   justify-content: center;
+
 }
 
 .enter-search {
   margin-top: 40px;
   font-size: x-large;
   color: #aaacae;
+}
+
+@media all and (max-width: 480px) {
+  .searchfeed {
+    margin-top: -8px;
+  }
+
+}
+
+@media all and (min-width: 480px) {
+  .searchfeed {
+    margin-top: 12px;
+  }
+
 }

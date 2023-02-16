@@ -25,7 +25,9 @@
 
 
 @media all and (max-width: 768px) {
-
+  .explore-inner-wrapper {
+    margin-bottom: 58px;
+  }
 
   .header {
     margin: 0px 0px 0px 0px;
@@ -67,7 +69,7 @@
   }
 
   .explore-inner-wrapper {
-    padding-top: 14px;
+    padding-top: 24px;
   }
 
   .alt-message-wrapper {
