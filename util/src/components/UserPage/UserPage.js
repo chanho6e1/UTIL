@@ -241,7 +241,6 @@ const UserPageForm = (props) => {
 
   // 초기 데이터
   useEffect(() => {
-    console.log('changed!! ', props.id)
     // Post API
     setIsLoading(true);
     if (searchParams.get("category") === null) {
