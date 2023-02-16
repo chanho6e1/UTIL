@@ -3,6 +3,7 @@ import SocialLoginModule from "./SocialLoginModule";
 import styles from "./SocialLogin.module.css";
 import illust1 from "../../img/5172479.png";
 import logo from "../../img/util-logo-black.png"
+import android from "../../img/android_icon.png"
 
 const SocialLogin = (props) => {
   return (
@@ -38,8 +39,9 @@ const SocialLogin = (props) => {
         </div>
         
         <SocialLoginModule />
-
-        <div style={{ color:'rgb(130,130,130)', fontSize:'14px'}}><a style={{textDecoration: 'none', color:'rgb(130,130,130)', fontSize:'14px'}} href="https://www.freepik.com/free-vector/programming-concept-illustration_7118756.htm#query=programmer&position=19&from_view=keyword&track=sph">Image by storyset</a><br/>on Freepik</div>
+        
+        <div style={{ color:'rgb(130,130,130)', fontSize:'14px', marginTop:'60px'}}><a style={{textDecoration: 'none', color:'rgb(130,130,130)', fontSize:'14px'}} href="https://www.freepik.com/free-vector/programming-concept-illustration_7118756.htm#query=programmer&position=19&from_view=keyword&track=sph">Image by storyset</a><br/>on Freepik</div>
+        
         <div/>
       </div>
       <div>

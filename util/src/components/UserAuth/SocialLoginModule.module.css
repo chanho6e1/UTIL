@@ -87,6 +87,11 @@
   height: auto;
 }
 
+.android-logo {
+  width: 25px;
+  height: auto;
+}
+
 .social-login-wrapper {
   display: flex;
   justify-content: space-around;
@@ -110,6 +115,12 @@
 .kakaotalk-login {
   border: 2px solid rgb(249, 224, 0);
   background-color: rgb(249, 224, 0);
+}
+
+.android-login {
+  border: 2px solid rgb(240, 240, 240);
+  background-color: rgb(255, 255, 255);
+  overflow: hidden;
 }
 
 .login-label {
