@@ -50,7 +50,7 @@ const UserRecommend = (props) => {
   };
 
   const altContents = () => {
-    const message = "관심 태그가 없어요. 마이 프로필에서 태그를 설정해 보세요";
+    const message = "관심 태그가 없어요. 마이 프로필에서 태그를 설정해 보세요.";
     return (
       <div className={classes[`alt-wrapper`]}>
         <div className={classes[`alt-inner-wrapper`]}>

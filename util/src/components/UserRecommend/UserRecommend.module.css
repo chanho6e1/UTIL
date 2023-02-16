@@ -69,6 +69,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 8px;
+  
 }
 
 .alt-message-icon {
@@ -82,7 +83,7 @@
   font-weight: 700; */
   white-space: pre-line;
   /* color: rgb(130, 130, 130); */
-
+  width: 80%;
   /* margin-top: 40px; */
   font-size: x-large;
   color: #aaacae;
@@ -97,7 +98,7 @@
   .alt-wrapper {
     display: flex;
     width: 90%;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     /* margin-top: 80px; */

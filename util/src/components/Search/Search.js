@@ -15,7 +15,9 @@ const SearchForm = (props) => {
   const location = useLocation();
   const [searchInput, setSearchInput] = useState("");
   const [dropDownLabel, setDropDownLabel] = useState(apiLabelList[0]);
-  const [dropDownCriteriaLabel, setDropDownCriteriaLabel] = useState(criteriaLabelList[0]);
+  const [dropDownCriteriaLabel, setDropDownCriteriaLabel] = useState(
+    criteriaLabelList[0]
+  );
   const searchFeedWrapperRef = useRef();
 
   const [api, setApi] = useState(0);
@@ -48,14 +50,29 @@ const SearchForm = (props) => {
   const onDateClick = () => {
     setCriteria(0);
     setDropDownCriteriaLabel(criteriaLabelList[0]);
+    searchFeedWrapperRef.current.scrollTo({
+      left: 0,
+      top: 0,
+      behavior: "smooth",
+    });
   };
   const onViewClick = () => {
     setCriteria(1);
     setDropDownCriteriaLabel(criteriaLabelList[1]);
+    searchFeedWrapperRef.current.scrollTo({
+      left: 0,
+      top: 0,
+      behavior: "smooth",
+    });
   };
   const onLikeClick = () => {
     setCriteria(2);
     setDropDownCriteriaLabel(criteriaLabelList[2]);
+    searchFeedWrapperRef.current.scrollTo({
+      left: 0,
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   useEffect(() => {
@@ -83,51 +100,69 @@ const SearchForm = (props) => {
     if (searchInput !== null && searchInput !== "") {
       setIsLoading(true);
       if (api === 0) {
-        getPostSearch(criteriaData[criteria], 1, size, searchInput).then((res) => {
-          if (res.content.length !== 0) {
-            setFeedList(() => res.content);
+        getPostSearch(criteriaData[criteria], 1, size, searchInput).then(
+          (res) => {
+            if (res.content.length !== 0) {
+              setFeedList(() => res.content);
+            }
+            setIsLoading(false);
           }
-          setIsLoading(false);
-        });
+        );
       } else if (api === 1) {
-        getPostByTagName(criteriaData[criteria], 1, size, searchInput).then((res) => {
-          if (res.content.length !== 0) {
-            setFeedList(() => res.content);
+        getPostByTagName(criteriaData[criteria], 1, size, searchInput).then(
+          (res) => {
+            if (res.content.length !== 0) {
+              setFeedList(() => res.content);
+            }
+            setIsLoading(false);
           }
-          setIsLoading(false);
-        });
+        );
       } else {
-        getPostByNickname(criteriaData[criteria], 1, size, searchInput).then((res) => {
-          if (res.content.length !== 0) {
-            setFeedList(() => res.content);
+        getPostByNickname(criteriaData[criteria], 1, size, searchInput).then(
+          (res) => {
+            if (res.content.length !== 0) {
+              setFeedList(() => res.content);
+            }
+            setIsLoading(false);
           }
-          setIsLoading(false);
-        });
+        );
       }
+      setOffset(2);
     }
   }, [searchInput, api, criteria]);
 
   const fetchMoreData = () => {
     setIsLoading(true);
     if (api === 0) {
-      getPostSearch(criteriaData[criteria], offset + 1, size, searchInput).then((res) => {
-        setFeedList((prevState) => [...prevState, ...res.content]);
-        setOffset((prevState) => prevState + 1);
-        setIsLoading(false);
-      });
+      getPostSearch(criteriaData[criteria], offset + 1, size, searchInput).then(
+        (res) => {
+          setFeedList((prevState) => [...prevState, ...res.content]);
+          setOffset((prevState) => prevState + 1);
+          setIsLoading(false);
+          console.log("성공");
+        }
+      );
     } else if (api === 1) {
-      getPostByTagName(criteriaData[criteria], offset + 1, size, searchInput).then((res) => {
+      getPostByTagName(
+        criteriaData[criteria],
+        offset + 1,
+        size,
+        searchInput
+      ).then((res) => {
         setFeedList((prevState) => [...prevState, ...res.content]);
         setOffset((prevState) => prevState + 1);
         setIsLoading(false);
+        console.log("성공");
       });
     } else {
-      getPostByNickname(criteriaData[criteria], offset, size, searchInput).then((res) => {
-        if (res.content.length !== 0) {
-          setFeedList(() => res.content);
+      getPostByNickname(criteriaData[criteria], offset, size, searchInput).then(
+        (res) => {
+          setFeedList((prevState) => [...prevState, ...res.content]);
+          setOffset((prevState) => prevState + 1);
+          setIsLoading(false);
+          console.log("성공");
         }
-        setIsLoading(false);
-      });
+      );
     }
   };
 
@@ -135,13 +170,18 @@ const SearchForm = (props) => {
     const scrollHeight = searchFeedWrapperRef.current.scrollHeight;
     const scrollTop = searchFeedWrapperRef.current.scrollTop;
     const clientHeight = searchFeedWrapperRef.current.clientHeight;
+    console.log(scrollHeight, scrollTop, clientHeight);
     if (scrollTop + clientHeight >= scrollHeight - 10 && isLoading === false) {
       fetchMoreData();
     }
   };
 
   return (
-    <div ref={searchFeedWrapperRef} onWheel={onWheelHandler} className={classes[`searchbar-feed`]}>
+    <div
+      ref={searchFeedWrapperRef}
+      onWheel={onWheelHandler}
+      className={classes[`searchbar-feed`]}
+    >
       <div className={classes[`searchbar`]}>
         <SearchBar
           inputChangeHandler={inputChangeHandler}
