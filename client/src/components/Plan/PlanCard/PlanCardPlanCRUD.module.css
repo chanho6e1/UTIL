@@ -1,0 +1,85 @@
+/* @media all and (max-width: 480px) {
+    
+
+    .blog-post-form {
+        width: 90vw;
+    }
+    .form-wrapper {
+        width: 90vw;
+    }
+    .picker-wrapper {
+        width: 90vw;
+    }
+    .shadow-box-wrapper {
+        width: 90vw;
+    }
+    
+}
+
+@media all and (min-width: 480px) {
+    .blog-post-form {
+        width: 440px;
+    }
+    .form-wrapper {
+        width: 440px;
+    }
+    .picker-wrapper {
+        width: 440px;
+    }
+    .shadow-box-wrapper {
+        width: 440px;
+    }
+} */
+
+.form-wrapper {
+  padding: 24px;
+  width: 100%;
+}
+
+.title-wrapper {
+  padding-bottom: 24px;
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  width: 48%;
+}
+
+.delete-button {
+  /* margin-right: 8px; */
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  border-radius: 5px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: rgb(230, 230, 238);
+}
+
+.modal-delete {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+.modal-delete:hover {
+  background-color: rgba(255, 0, 0, 0.3);
+  color: rgba(160, 0, 0, 1);
+}
+
+.modal-button {
+  width: 40%;
+}

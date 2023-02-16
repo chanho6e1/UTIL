@@ -1,0 +1,123 @@
+@media all and (max-width: 768px) {
+  .search-bar {
+    width: 100%;
+  }
+
+  .dummy {
+    display: none;
+  }
+
+  .search-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sort-dropdown {
+    display: none;
+  }
+}
+
+@media all and (min-width: 768px) {
+  .search-bar {
+    width: 500px;
+  }
+
+  .dummy {
+    width: 152px;
+  }
+
+  .search-container {
+    justify-content: space-between;
+  }
+
+  .sort-tab {
+    display: none;
+  }
+}
+
+.search-container {
+  display: flex;
+
+  margin: 0px 14px 0px 14px;
+}
+
+.search-bar {
+  height: 48px;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 5px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.search-bar-line {
+  width: 1px;
+  height: 60%;
+  border-left: 1px solid rgb(220, 220, 220);
+}
+
+.text-input {
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  width: 100%;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-size: 16px;
+}
+
+.text-input:focus {
+  outline: none;
+}
+
+.search-dropdown {
+  width: 100px;
+  height: 48px;
+  /* box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1); */
+
+  /* background-color: white; */
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition-property: background-color color;
+  transition-duration: 0.2s;
+  user-select: none;
+  /* margin-right: 8px; */
+}
+
+.dropdown {
+  width: 150px;
+  height: 48px;
+  /* box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1); */
+  border: 1px solid rgb(220, 220, 220);
+  background-color: white;
+  border-radius: 5px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  cursor: pointer;
+  transition-property: background-color color;
+  transition-duration: 0.2s;
+  user-select: none;
+  /* margin-top: 14px; */
+  /* margin-right: 8px; */
+}
+
+.dropdown:hover {
+  background-color: rgba(154, 76, 249, 0.05);
+}
+
+.drop-down-li-tag {
+  color: rgb(220, 220, 220);
+  margin-left: 24px;
+  font-size: 24px;
+  margin-right: -10px;
+}
+
+.sort-dropdown {
+  margin-top: 14px;
+}
