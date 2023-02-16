@@ -128,15 +128,15 @@ const SwipeableDock = (props) => {
   const onSwipeEnd = () => {
     movingDiv.current.style.transitionDuration = "0.3s";
     indicatorRef.current.style.transitionDuration = "0.3s";
-    if (positionx < -20 && contentCount < postData.content.length) {
+    if (positionx < -50 && contentCount < postData.content.length) {
       navigate(postData.url[contentCount], { replace: true });
       setContentCount((prev) => prev + 1);
     }
-    if (positionx > 20 && contentCount > -1) {
+    if (positionx > 50 && contentCount > -1) {
       navigate(postData.url[contentCount - 2], { replace: true });
       setContentCount((prev) => prev - 1);
     }
-    if (Math.abs(positionx) <= 20) {
+    if (Math.abs(positionx) <= 50) {
       movingDiv.current.style.transform = `translateX(${
         -width * (contentCount - 1)
       }px)`;
@@ -208,6 +208,9 @@ const SwipeableDock = (props) => {
         onMouseEnter={mouseOnHandler.bind(this, true)}
         onMouseLeave={mouseOnHandler.bind(this, false)}
       >
+        <div className={styles["mobile-indicator-wrapper"]}>
+          <div ref={indicatorRef} className={styles["mobile-indicator"]} />
+        </div>
         <div className={styles["dock-mobile"]}>
           {postData.dock.dockContracted.map((el, idx) => {
             return (
@@ -274,9 +277,9 @@ const SwipeableDock = (props) => {
           </div>
         </div>
 
-        <div className={styles["mobile-indicator-wrapper"]}>
+        {/* <div className={styles["mobile-indicator-wrapper"]}>
           <div ref={indicatorRef} className={styles["mobile-indicator"]} />
-        </div>
+        </div> */}
       </div>
     </div>
   );

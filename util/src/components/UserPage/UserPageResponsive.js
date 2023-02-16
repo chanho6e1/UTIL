@@ -34,6 +34,8 @@ const UserPageResponsive = (props) => {
           nickname={props.nickname}
           createdDate={props.createdDate}
           tagList={props.tagList}
+          bookmarkTab={props.bookmarkTab}
+          myNickname={props.myNickname}
         />
       </div>
     </React.Fragment>

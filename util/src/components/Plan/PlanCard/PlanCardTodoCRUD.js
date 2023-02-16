@@ -115,6 +115,16 @@ const PlanCardTodoCRUD = (props) => {
           );
         })
         .then((res) => {
+          recvTodayTodosAPI()
+            .then((res) => {
+              dispatch(
+                modifyPlanSliceActions.responseTodayTodos(JSON.stringify(res))
+              );
+              props.modalHandler();
+            })
+            .catch((err) => {
+              console.log("PlanCardItem : recvTodayTodosAPI => ", err);
+            });
           recvTodoPeriodAPI(props.plan.goalId)
             .then((res) => {
               const processing = {
