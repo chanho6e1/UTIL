@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import Button from "../UI/Button/Button";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import NotiDeliverer from "../UI/StackNotification/NotiDeliverer";
@@ -238,7 +238,51 @@ const PlanIsDoneToggle = (props) => {
   const [notiContent, setNotiContent] = useState();
 
   // const addBtn = []
-
+  
+  const nowTime = () => {
+    let now = new Date();
+    let nowM =
+      now.getMonth() + 1 > 9 ? now.getMonth() + 1 : "0" + (now.getMonth() + 1);
+    let nowD = now.getDate() > 9 ? now.getDate() : "0" + now.getDate();
+    return `${now.getFullYear()}-${nowM}-${nowD}`;
+  };
+  
+  const isLate = (
+    <div
+    onClick={(event) => {
+      event.stopPropagation();
+      toggleIsDone();
+    }}
+    className={styles["is-done-false-late-wrapper"]}
+    >
+      미완료
+    </div>
+  );
+  
+  const isNow = (
+    <div
+    onClick={(event) => {
+      event.stopPropagation();
+      toggleIsDone();
+    }}
+    className={styles["is-done-false-now-wrapper"]}
+    >
+      진행중
+    </div>
+  );
+  
+  const isYet = (
+    <div
+    onClick={(event) => {
+      event.stopPropagation();
+      toggleIsDone();
+    }}
+    className={styles["is-done-false-yet-wrapper"]}
+    >
+      예정됨
+    </div>
+  );
+  
   const isDoneTrue = (
     <div
       onClick={(event) => {
@@ -251,18 +295,16 @@ const PlanIsDoneToggle = (props) => {
     </div>
   );
 
-  const isDoneFalse = (
-    <div
-      onClick={(event) => {
-        event.stopPropagation();
-        toggleIsDone();
-      }}
-      className={styles["is-done-false-wrapper"]}
-    >
-      진행중
-    </div>
-  );
-
+  const isDoneFalse = () => {
+    if (props.todo.dueDate < nowTime()) {
+      return <Fragment>{isLate}</Fragment>
+    } else if (props.todo.dueDate === nowTime()) {
+      return <Fragment>{isNow}</Fragment>
+    } else {
+      return <Fragment>{isYet}</Fragment>
+    }
+  };
+  
   return (
     <React.Fragment>
       <FixedModal
@@ -284,7 +326,7 @@ const PlanIsDoneToggle = (props) => {
         />
       )}
 
-      {props.todo.state ? isDoneTrue : isDoneFalse}
+      {props.todo.state ? isDoneTrue : isDoneFalse()}
     </React.Fragment>
   );
 };
