@@ -26,7 +26,7 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
             "case when TIMESTAMPDIFF(YEAR, max(end_date), min(start_date)) = 0 " +
             "then DATE_ADD(min(start_date), INTERVAL 1 YEAR) " +
             "else max(end_date) end as endDate " +
-            "from goal where goal.user_id = :userId "
+            "from goal where goal.user_id = :userId and state = 0 "
             ,nativeQuery = true)
     Map<String, String> findGoalPeriod(@Param("userId")Long userId);
 
