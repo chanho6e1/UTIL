@@ -119,10 +119,11 @@ public class GoalService {
         Goal goal = goalRepository.findGoalByGoalId(goalId).orElseThrow(() -> new ResourceNotFoundException("Goal", "goalId", goalId));
         validGoalUser(userId, goal.getUser().getUserId());
         String path = goal.getImageUrl();
-        
+
         deleteS3Image(path, baseImg);
         reviewRepository.deleteByGoalId(goalId);
         todoRepository.deleteByGoalId(goalId);
+        goalRepository.updatePostGoal(goalId);
         goalRepository.deleteById(goalId);
         return goalId;
     }
