@@ -1,0 +1,59 @@
+CREATE DATABASE  IF NOT EXISTS `youtil` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `youtil`;
+-- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
+--
+-- Host: i8d210.p.ssafy.io    Database: youtil
+-- ------------------------------------------------------
+-- Server version	8.0.29
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `post_bookmark`
+--
+
+DROP TABLE IF EXISTS `post_bookmark`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `post_bookmark` (
+  `bookmark_id` bigint NOT NULL AUTO_INCREMENT,
+  `status` bit(1) DEFAULT NULL,
+  `post_id` bigint NOT NULL,
+  `user_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`bookmark_id`),
+  KEY `FK54fow49m6pckmpe1v1to861d1` (`post_id`),
+  KEY `FKca7pciex06ly9kat3xfcquke5` (`user_id`),
+  CONSTRAINT `FK54fow49m6pckmpe1v1to861d1` FOREIGN KEY (`post_id`) REFERENCES `post` (`post_id`),
+  CONSTRAINT `FKca7pciex06ly9kat3xfcquke5` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `post_bookmark`
+--
+
+LOCK TABLES `post_bookmark` WRITE;
+/*!40000 ALTER TABLE `post_bookmark` DISABLE KEYS */;
+INSERT INTO `post_bookmark` VALUES (1,NULL,6,4),(7,NULL,7,4),(9,NULL,20,4),(10,NULL,19,4),(53,NULL,112,11),(57,NULL,110,11),(64,NULL,120,11),(65,NULL,122,11),(68,NULL,100,11),(83,NULL,13,11),(85,NULL,154,11),(86,NULL,118,11),(87,NULL,114,11),(90,NULL,12,11),(93,NULL,102,11),(94,NULL,14,11),(95,NULL,140,20),(98,NULL,219,31),(99,NULL,226,11),(100,NULL,220,11),(101,NULL,216,11),(102,NULL,217,11),(103,NULL,207,20),(104,NULL,207,1),(105,NULL,229,4),(106,NULL,228,4),(107,NULL,224,4),(108,NULL,222,4),(109,NULL,219,4),(110,NULL,218,4),(111,NULL,210,4),(112,NULL,206,4),(113,NULL,211,4),(114,NULL,236,32);
+/*!40000 ALTER TABLE `post_bookmark` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-02-14 15:56:33
