@@ -9,7 +9,7 @@ const PlanList = (props) => {
   return (
     // <Card>
     <Card
-      onClick={() => navigate(`/index/goal/${props.plan.goalId}`)}
+      onClick={() => navigate(`/index/${props.nickname}/goal/${props.plan.goalId}`)}
       className={classes["plan"]}
     >
       <div className={classes['plan-string-wrapper']}>
@@ -17,9 +17,12 @@ const PlanList = (props) => {
         
       </div>
       <div className={classes["plan-date-state-wrapper"]}>
-      <div className={classes["plan-date"]}>
+      <div className={classes["plan-date-pc"]}>
           {props.plan.startDate} ~ {props.plan.endDate}
-        </div>
+      </div>
+      <div className={classes["plan-date-mobile"]}>
+          {props.plan.startDate} ~<br/>{props.plan.endDate}
+      </div>
       <div className={classes["plan-state"]}>
         
         <PlanState

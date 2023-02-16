@@ -259,7 +259,7 @@ const GoalDetailShow = (props) => {
 };
 
 const GoalDetail = (props) => {
-  const idx = useParams().id;
+  const idx = useParams().goalId;
   const plans = useSelector((state) => state.planSlice.allPlans);
 
   return (

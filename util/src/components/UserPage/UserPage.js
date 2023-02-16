@@ -107,6 +107,7 @@ const UserPageForm = (props) => {
       return (
         <PlanList
           plan={plans[id]}
+          nickname={myData.nickname}
           key={`plan-card-item-list-${plans[id].title}-${arrIdx}`}
         />
       );
@@ -840,7 +841,7 @@ const UserPage = (props) => {
           }
         />
         <Route path="index/:nickname/*" element={<UserPageSet />} />
-        <Route path="index/goal/:id" element={<GoalDetail />} />
+        <Route path="index/:nickname/goal/:goalId/*" element={<GoalDetail />} />
         <Route path="index/:nickname/post/:id" element={<DetailItem />} />
       </Routes>
     </div>
