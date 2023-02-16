@@ -73,7 +73,23 @@ const UserProfileChange = (props) => {
             putUserTags(newTagList).then((res) => {
               // 성공 시 마이 유틸
               if (res.status === 200) {
-                navigate(`/index`);
+                
+                getCurrentUser()
+                  .then((response) => {
+
+                    dispatch(userAuthSliceActions.changeAuthenticated("true"));
+                    dispatch(
+                      userAuthSliceActions.changeCurrentUser(
+                        JSON.stringify(response.data)
+                      )
+                    );
+                    dispatch(userAuthSliceActions.changeLoading("false"));
+                    navigate(`/index`);
+                  })
+                  .catch((error) => {
+                    dispatch(userAuthSliceActions.changeLoading("false"));
+                  });
+                  
               }
             });
           }
