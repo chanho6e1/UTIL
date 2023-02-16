@@ -93,12 +93,14 @@ const ToastEditorForm = (props) => {
   }, []);
 
   const navigateToReviewPost = () => {
-    navigate(`/create/review?goal_id=${queryString.goal.goalId}`, {
+    navigate(`/create/review?goal_id=${searchParams.get("goal_id")}`, {
       replace: true,
     });
   };
 
   const postSubmitHandler = (selectedScope, selectedGoalId) => {
+    searchParams.set('goal_id', selectedGoalId)
+    setSearchParams(searchParams)
     uploadPost(
       {
         title: title,
@@ -156,20 +158,20 @@ const ToastEditorForm = (props) => {
                 })
                 .then((res) => {
                   setTimeout(function () {
-                    navigate(`/index/goal/${selectedGoalId}`, {
+                    navigate(`/index/${userAuth.nickname}/goal/${selectedGoalId}`, {
                       replace: true,
                     });
                     
                   }, 1000);
                 });
             } else {
-              navigate(`/index/goal/${selectedGoalId}`, {
+              navigate(`/index/${userAuth.nickname}/goal/${selectedGoalId}`, {
                 replace: true,
               });
             }
           });
         } else {
-          navigate(`/index/goal/${selectedGoalId}`, {
+          navigate(`/index/${userAuth.nickname}/goal/${selectedGoalId}`, {
             replace: true,
           });
         }
@@ -185,7 +187,7 @@ const ToastEditorForm = (props) => {
       content: editorRef.current.getInstance().getHTML(),
     })
       .then((res) => {
-        navigate(`/index/goal/${res.goalId}`, { replace: true });
+        navigate(`/index/${userAuth.nickname}/goal/${res.goalId}`, { replace: true });
 
         // navigate(`/index`, { replace: true });
       })

@@ -183,8 +183,8 @@ const ExploreForm = () => {
   return (
     <div
       className={classes["explore-wrapper"]}
-      onWheel={onWheelHandler}
-      ref={exploreWrapperRef}
+      
+      
     >
       <FixedModal
         modalState={modalState}
@@ -196,7 +196,7 @@ const ExploreForm = () => {
       />
 
       {header}
-      <div className={classes["explore-inner-wrapper"]}>
+      <div className={classes["explore-inner-wrapper"]} ref={exploreWrapperRef} onWheel={onWheelHandler}>
         
         {altMessages}
         {feedList.length !== 0 &&
