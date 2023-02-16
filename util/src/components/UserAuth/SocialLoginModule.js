@@ -6,6 +6,7 @@ import {
   GOOGLE_AUTH_URL,
   KAKAO_AUTH_URL,
 } from "../../constants";
+import android from "../../img/android_icon.png"
 
 const SocialLoginModule = (props) => {
   return (
@@ -30,6 +31,20 @@ const SocialLoginModule = (props) => {
         </div>
         <div className={styles["login-label"]}>Continue with Kakaotalk</div>
       </a>
+
+      <a className={styles["social-login-button"]} href={'https://url.kr/khpg5j'}>
+        <div
+          className={`${styles["social-login-wrapper"]} ${styles["android-login"]}`}
+          
+        >
+          <img className={styles["android-logo"]} src={android} />
+        </div>
+        <div className={styles["login-label"]}>Download Application</div>
+      </a>
+
+
+
+      
     </div>
   );
 };

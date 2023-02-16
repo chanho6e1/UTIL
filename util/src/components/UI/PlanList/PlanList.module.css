@@ -1,3 +1,29 @@
+@media all and (max-width: 480px) {
+  .plan-date-pc {
+    display:none;
+  }
+  
+}
+
+@media all and (min-width: 480px) {
+
+  
+  .plan-date-mobile {
+    display: none;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 .plan {
   /* display: grid;
   grid-template-columns: 1fr 150px; */
@@ -19,8 +45,13 @@
   -webkit-line-clamp: 1;
 }
 
-.plan-date {
+.plan-date-pc {
   margin-left: 20px;
+}
+
+.plan-date-mobile {
+  margin-left: 20px;
+  font-size: 12px;
 }
 
 .plan-string-wrapper {
