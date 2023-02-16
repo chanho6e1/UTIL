@@ -73,7 +73,7 @@ const UserProfileChangeCard = (props) => {
 
   // 관심 태그
   const [myTagList, setMyTagList] = useState(
-    props.myTagList ? props.myTagList : []
+    isNewUser ? ["python", "java"] : props.myTagList ? props.myTagList : []
   );
   const [myTagOverFive, setMyTagOverFive] = useState(
     isTagOverFive(myTagList.length)

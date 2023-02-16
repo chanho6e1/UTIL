@@ -45,7 +45,9 @@ const GoalDetailMobile = (props) => {
             ref={props.postWrapperRef}
             className={classes["goal-detail-mobile-feedcard"]}
           >
-            {props.postList?.map((til) => (
+            {props.postList?.map((til) => {
+              console.log('리뷰 글', til)
+            return(
               <FeedCardItem
                 id={til.postId}
                 key={til.postId}
@@ -58,8 +60,11 @@ const GoalDetailMobile = (props) => {
                 profileImg={til.writerInfo.profileImg}
                 nickname={til.writerInfo.nickname}
                 createdDate={til.createdDate}
+                goalId={props.plan?.goalId}
+                reviewPage={true}
               />
-            ))}
+              )
+            })}
           </div>
         </div>
       </Fragment>
