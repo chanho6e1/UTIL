@@ -19,7 +19,7 @@ import FixedModal from "../UI/FixedModal/FixedModal";
 const ExploreForm = () => {
   const [criteria, setCriteria] = useState(0);
   const criteriaLabelList = ["피드", "최신", "조회수", "좋아요"];
-  const criteriaList = ["date", "view", "like"];
+  const criteriaList = ["dummy", "date", "view", "like"];
   const criteriaAPI = [
     getSubscribePosts,
     getPostsByMyTag,
