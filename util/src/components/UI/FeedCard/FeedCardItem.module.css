@@ -9,7 +9,10 @@
 }
 
 
-
+.text-contents {
+  height: 105px;
+  overflow: hidden;
+}
 
 
 
@@ -31,7 +34,7 @@
   overflow: hidden;
   padding: 0 4px 0 4px;
   text-overflow: clip;
-
+  /* height: 70px; */
   
 }
 

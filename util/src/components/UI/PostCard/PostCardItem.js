@@ -173,7 +173,6 @@ const PostCardItem = (props) => {
     <Card className={classes.card}>
       <div
         className={classes["left-wrapper"]}
-        onMouseOver={() => console.log(viewerRef)}
       >
         <div className={classes["left-top"]} onClick={postClickHandler}>
           <div className={classes.title}>{props.title}</div>

@@ -46,7 +46,6 @@ const GoalDetailMobile = (props) => {
             className={classes["goal-detail-mobile-feedcard"]}
           >
             {props.postList?.map((til) => {
-              console.log('리뷰 글', til)
             return(
               <FeedCardItem
                 id={til.postId}
