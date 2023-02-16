@@ -150,8 +150,10 @@ const FeedCardItem = (props) => {
             <div className={classes.title}>{props.title}</div>
             <div className={classes.contents}>{plainContent}</div>
             {/* <div className={classes.contents}>{props.contents}</div> */}
-            
+
             <div ref={viewerRef} style={{display:'none'}}><Viewer initialValue={props.contents}  plugins={[[codeSyntaxHighlight, { highlighter: prism }]]} /></div>
+
+            
           </div>
           <div className={classes[`icons-div`]}>
             <IconButton
