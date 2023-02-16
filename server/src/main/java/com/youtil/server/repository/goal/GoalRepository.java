@@ -3,9 +3,11 @@ package com.youtil.server.repository.goal;
 import com.youtil.server.domain.goal.Goal;
 import com.youtil.server.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.Optional;
@@ -29,5 +31,10 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
             "from goal where goal.user_id = :userId and state = 0 "
             ,nativeQuery = true)
     Map<String, String> findGoalPeriod(@Param("userId")Long userId);
+
+    @Transactional
+    @Modifying(clearAutomatically = true) // 영속성 컨텍스트 초기화
+    @Query("update Post p set p.goal.goalId = null where p.goal.goalId = :goalId")
+    void updatePostGoal(@Param("goalId")Long goalId);
 
 }
