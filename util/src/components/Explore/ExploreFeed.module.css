@@ -2,6 +2,7 @@
   display: grid;
   grid-template-rows: 424px;
   overflow: hidden;
+
   
 }
 
@@ -13,7 +14,7 @@
   .feed-wrapper {
     width: 100vw;
     grid-template-columns: repeat(1);
-    padding: 14px 14px 50px 14px;
+    padding: 14px 14px 0px 14px;
     box-sizing: border-box;
     /* padding: 0px; */
   }
