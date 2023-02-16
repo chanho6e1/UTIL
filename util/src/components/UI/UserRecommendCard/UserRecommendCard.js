@@ -43,12 +43,14 @@ const UserRecommendCard = (props) => {
       deleteFollow(props.userData.userId).then((res) => {
         if (res === 200) {
           setIsFollowing((prevState) => !prevState);
+          props.onDone()
         }
       });
     } else {
       postFollow(props.userData.userId).then((res) => {
         if (res === 200) {
           setIsFollowing((prevState) => !prevState);
+          props.onDone()
         }
       });
     }

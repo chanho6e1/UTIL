@@ -17,7 +17,7 @@ const UserRecommend = (props) => {
 
   const UserRecommendCardList = (userList) => {
     return userList?.map((user) => {
-      return <UserRecommendCard userData={user} key={`user-recommend-card-${user.userId}`} />;
+      return <UserRecommendCard userData={user} key={`user-recommend-card-${user.userId}`} onDone={props.onDone} />;
     });
   };
 
