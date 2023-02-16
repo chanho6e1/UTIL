@@ -1,0 +1,124 @@
+.userprofile {
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  background-color: white;
+  margin: 10px auto;
+  padding: 20px;
+}
+
+.userprofile-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  /* margin: 0 auto; */
+  font-weight: bold;
+  font-size: xx-large;
+}
+
+.iconbutton {
+  position: relative;
+}
+
+.iconbutton :hover {
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+.avatar-img {
+  border: 2px solid #c9c9c9;
+  border-radius: 70%;
+  overflow-clip-margin: content-box;
+  overflow: clip;
+  object-fit: contain;
+  margin-right: auto;
+}
+
+.camera {
+  position: absolute;
+  object-fit: contain;
+  top: 10px;
+  left: 10px;
+  width: 100px;
+  height: 100px;
+}
+
+.userdata {
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.nickname {
+  padding: 40px 0px 0px 0px;
+}
+
+.description {
+  padding: 40px 0px 0px 0px;
+}
+
+.skill {
+  padding: 40px 0px 0px 0px;
+}
+
+.button-wrap {
+  display: flex;
+  justify-content: space-between;
+  text-align: end;
+  padding: 20px 0px 0px 0px;
+}
+
+.button-cancel {
+  width: 80px;
+  height: 40px;
+  min-width: fit-content;
+  min-height: fit-content;
+  margin-right: 10px;
+}
+
+.button-save {
+  width: 80px;
+  height: 40px;
+  min-width: fit-content;
+  min-height: fit-content;
+}
+
+.button-save :disabled {
+  background-color: rgb(170, 220, 190);
+}
+
+@media screen and (max-width: 1024px) {
+  .userprofile {
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    border: none;
+    box-shadow: none;
+  }
+  .header {
+    /* width: 80%; */
+    font-size: x-large;
+  }
+  .userdata {
+    width: 90%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .button-logout {
+    display: none;
+  }
+}
+

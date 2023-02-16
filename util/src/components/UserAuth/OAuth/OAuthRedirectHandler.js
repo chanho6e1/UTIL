@@ -1,41 +1,58 @@
-import React, {useEffect} from "react";
-import { ACCESS_TOKEN } from '../../../constants';
-import { Navigate, useLocation } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import { userAuthSliceActions } from '../../../redux/userAuthSlice'
+import React, { useEffect } from "react";
+import { ACCESS_TOKEN } from "../../../constants";
+import { Navigate, useLocation, useSearchParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { userAuthSliceActions } from "../../../redux/userAuthSlice";
 
 const OAuthRedirectHandler = (props) => {
-  const location = useLocation()
-  const dispatch = useDispatch()
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const getUrlParameter = (name) => {
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+  const token = searchParams.get("token");
+  const error = searchParams.get("error");
+  const code = searchParams.get("code");
 
-    var results = regex.exec(location.search);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-  }
-
-  const token = getUrlParameter('token');
-  const error = getUrlParameter('error');
-
-  if(token) {
+  if (token) {
     // 성공
     localStorage.setItem(ACCESS_TOKEN, token);
-    dispatch(userAuthSliceActions.changeToken(token))
-    return <Navigate to={{
-        pathname: "/",
-        state: { from: location }
-    }}/>; 
+    dispatch(userAuthSliceActions.changeToken(token));
+
+    if (code === "201") {
+      // 회원가입 시
+      return (
+        <Navigate
+          to={{
+            pathname: "/profile",
+            state: { from: location },
+          }}
+        />
+      );
+    } else if (code === "200") {
+      // 기존 유저 로그인 시
+      return (
+        <Navigate
+          to={{
+            pathname: "/index",
+            state: { from: location },
+          }}
+        />
+      );
+    }
   } else {
     // 실패
-      return <Navigate to={{
+    return (
+      <Navigate
+        to={{
           pathname: "/login",
-          state: { 
-              from: location,
-              error: error 
-          }
-      }}/>; 
+          state: {
+            from: location,
+            error: error,
+          },
+        }}
+      />
+    );
   }
-}
+};
 
-export default OAuthRedirectHandler
+export default OAuthRedirectHandler;

@@ -1,13 +1,11 @@
-
 .plans-wrapper {
-    display: flex;
-    /* height:30vh; */
-    width: 100%;
-    /* height: 100%; */
-    flex: 1;
-    overflow: hidden;
-    /* background-color: rgb(240, 240, 245); */
-    
+  display: flex;
+  /* height:30vh; */
+  width: 100%;
+  /* height: 100%; */
+  flex: 1;
+  overflow: hidden;
+  /* background-color: rgb(240, 240, 245); */
 }
 
 /* .plans-navbar {
@@ -29,76 +27,65 @@
     margin-right: 20px;
 } */
 
-
 .plans-titles {
-    /* padding-top: 50px; */
-    display: flex;
-    flex-direction: column;
-    z-index: 2;
-    transition-property: box-shadow;
-    transition-duration: 0.3s;
-    /* overflow: scroll; */
-    position: relative;
-    
+  /* padding-top: 50px; */
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  transition-property: box-shadow;
+  transition-duration: 0.3s;
+  /* overflow: scroll; */
+  position: relative;
 }
-
-
 
 .plans-titles-inner {
-    /* position: absolute; */
-    transition-property: box-shadow;
-    transition-duration: 0.3s;
-    
+  /* position: absolute; */
+  transition-property: box-shadow;
+  transition-duration: 0.3s;
 }
 
-
-
-
 .plans-title-wrapper {
-    display: flex;
-    flex-direction: column;
-    
+  display: flex;
+  flex-direction: column;
 }
 
 .plan-title-bar {
-    /* 겉 테두리 없애기 */
-    border-left: 1px solid transparent;
-    border-right: 2px solid rgba(230, 230, 235);
-    border-top: 1px solid transparent;
-    border-bottom: 1px solid transparent;
+  /* 겉 테두리 없애기 */
+  border-left: 1px solid transparent;
+  border-right: 2px solid rgba(230, 230, 235);
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
 
-    background-color: rgb(244, 245, 247);
-    width: 240px;
-    padding-left: 10px;
-    min-height: 48px;
-    /* background-color: rgb(235, 235, 240); */
-    /* border: 1px solid rgba(220, 220, 225); */
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    font-size: 14px;
-    font-weight: 500;
-    user-select: none;
-    
-    transition-property: background-color;
-    transition-duration: 0.3s;
+  background-color: rgb(244, 245, 247);
+  /* width: 240px; */
+  padding-left: 10px;
+  min-height: 48px;
+  /* background-color: rgb(235, 235, 240); */
+  /* border: 1px solid rgba(220, 220, 225); */
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  font-size: 14px;
+  font-weight: 500;
+  user-select: none;
+
+  transition-property: background-color;
+  transition-duration: 0.3s;
 }
 
-
-
 .delete-icon {
-    color:rgb(100, 100, 100);
-    /* display: none; */
-    visibility: hidden;
-    opacity: 0;
-    transition-property: opacity;
-    transition-duration: 0.3s;
+  color: rgb(100, 100, 100);
+  /* display: none; */
+  visibility: hidden;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 0.3s;
 }
 
 .plan-title-bar-button:hover .delete-icon {
-    /* display: block; */
-    visibility: visible;
-    opacity: 255;
+  /* display: block; */
+  visibility: visible;
+  opacity: 255;
 }
 
 /* .plan-title-bar:hover {
@@ -107,104 +94,107 @@
 } */
 
 .plan-title-bar-button {
-    width:75%;
-    height:32px;
-    display: flex;
-    padding-left: 8px;;
-    padding-right: 8px;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 5px;
-    transition-property: background-color;
-    transition-duration: 0.3s;
-    cursor: pointer;
+  width: 75%;
+  height: 32px;
+  display: flex;
+  padding-left: 8px;
+  padding-right: 8px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  cursor: pointer;
 }
 
 .plan-title-bar-button:hover {
-    background-color: rgb(220, 220, 228);
+  background-color: rgb(220, 220, 228);
 }
 
 .plan-title-bar-icon-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width:32px;
-    height:32px;
-    border-radius: 5px;
-    transition-property: background-color;
-    transition-duration: 0.3s;
-    cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 5px;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  cursor: pointer;
 }
 
 .plan-title-bar-icon-wrapper:hover {
-    background-color: rgb(220, 220, 228);
+  background-color: rgb(220, 220, 228);
 }
 
-
 .title-odd {
-    background-color: rgb(240, 240, 245);
+  background-color: rgb(240, 240, 245);
 }
 
 .plan-title-bar-space {
-    /* 겉 테두리 없애기 */
-    border-left: 1px solid transparent;
-    border-right: 2px solid rgba(230, 230, 235);
-    border-top: 1px solid transparent;
-    border-bottom: 2px solid rgba(230, 230, 235);
-    background-color: rgb(244, 245, 247);
-    width: 250px;
-    min-height: 48px;
-    /* background-color: rgb(235, 235, 240); */
-    /* box-shadow: 2px -5px 10px 0px rgb(77, 71, 71, 0.2); */
-    /* border: 1px solid rgba(220, 220, 225); */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 3;
+  /* 겉 테두리 없애기 */
+  border-left: 1px solid transparent;
+  border-right: 2px solid rgba(230, 230, 235);
+  border-top: 1px solid transparent;
+  border-bottom: 2px solid rgba(230, 230, 235);
+  background-color: rgb(244, 245, 247);
+  /* width: 250px; */
+  min-height: 48px;
+  /* background-color: rgb(235, 235, 240); */
+  /* box-shadow: 2px -5px 10px 0px rgb(77, 71, 71, 0.2); */
+  /* border: 1px solid rgba(220, 220, 225); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
 }
 
-
-
-
 .arrow-icon {
-    margin-right: 12px;
-    opacity: 50%;
-    transition-property: background-color transform;
-    transition-duration: 0.3s;
+  margin-right: 12px;
+  opacity: 50%;
+  transition-property: background-color transform;
+  transition-duration: 0.3s;
 }
 
 .plan-space {
-    border-left: 1px solid transparent;
-    border-right: 2px solid rgba(230, 230, 235);
-    /* border-top: 1px solid transparent; */
-    /* border-bottom: 1px solid transparent; */
-    box-shadow: inset 0px 10px 10px -10px rgb(77, 71, 71, 0.2);
-    flex: 1;
-    background-color: rgb(244, 245, 247);
-    z-index: 3;
+  border-left: 1px solid transparent;
+  border-right: 2px solid rgba(230, 230, 235);
+  /* border-top: 1px solid transparent; */
+  /* border-bottom: 1px solid transparent; */
+  box-shadow: inset 0px 10px 10px -10px rgb(77, 71, 71, 0.2);
+  flex: 1;
+  background-color: rgb(244, 245, 247);
+  z-index: 3;
 }
 
 .new-plan {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.new-plan-button:hover {
+  cursor: pointer;
+  background-color: rgb(220, 220, 228);
 }
 
 .new-plan-input {
-    padding-left:12px;
-    padding-right:12px;
-    width: 79%;
-    background-color: rgb(220, 220, 228);
-    border-radius: 5px;
-    height:26px;
-    border: none;
-    transition-property: background-color;
-    transition-duration: 0.3s;
+  margin-left: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  width: 75%;
+  background-color: rgb(220, 220, 228);
+  border-radius: 5px;
+  height: 26px;
+  border: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
 }
 
 .new-plan-input:focus {
-    outline: none;
+  outline: none;
 }
 
 .new-plan-input:hover {
-    background-color: rgb(200, 200, 208);
+  background-color: rgb(200, 200, 208);
 }
