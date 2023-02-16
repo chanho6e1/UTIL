@@ -180,6 +180,7 @@ const SearchForm = (props) => {
     <div
       ref={searchFeedWrapperRef}
       onWheel={onWheelHandler}
+      onTouchMove={onWheelHandler}
       className={classes[`searchbar-feed`]}
     >
       <div className={classes[`searchbar`]}>
