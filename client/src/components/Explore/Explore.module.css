@@ -1,0 +1,145 @@
+.explore-wrapper {
+  height: 100vh;
+  /* overflow: scroll;
+  overflow-x: hidden; */
+  display: flex;
+  /* justify-content: center; */
+
+  box-sizing: border-box;
+}
+
+.explore-inner-wrapper {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  /* flex-direction: column; */
+  
+}
+
+.feed-outer-wrapper {
+  
+}
+
+
+
+@media all and (max-width: 768px) {
+  .explore-inner-wrapper {
+    margin-bottom: 58px;
+  }
+
+  .header {
+    margin: 0px 0px 0px 0px;
+    width: 100vw;
+    height: 54px;
+  }
+
+  .explore-wrapper {
+    padding-top: 54px;
+  }
+
+  .alt-message-wrapper {
+    margin-top: 100px;
+    /* font-size: 24px;
+    font-weight: 700;
+    color: rgb(130, 130, 130); */
+    white-space: pre-line;
+  
+    margin-top: 40px;
+    font-size: 18px;
+    color: #aaacae;
+  }
+
+
+
+
+}
+
+@media all and (min-width: 768px) {
+  .header {
+    /* margin: 0px 0px 24px 0px; */
+    /* padding-top: 24px; */
+    height: 77px;
+
+  }
+
+  .explore-wrapper {
+    padding-top: 77px;
+  }
+
+  .explore-inner-wrapper {
+    padding-top: 24px;
+  }
+
+  .alt-message-wrapper {
+    margin-top: 100px;
+    /* font-size: 24px;
+    font-weight: 700;
+    color: rgb(130, 130, 130); */
+    white-space: pre-line;
+  
+    margin-top: 40px;
+    font-size: x-large;
+    color: #aaacae;
+  }
+
+  
+
+
+
+}
+
+.dropdown {
+  width: 135px;
+  height: 40px;
+  /* box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1); */
+  border: 1px solid rgb(220, 220, 220);
+  background-color: white;
+  border-radius: 5px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  cursor: pointer;
+  transition-property: background-color color;
+  transition-duration: 0.2s;
+  user-select: none;
+  margin-right: 8px;
+  margin-bottom: 6px;
+}
+
+.dropdown:hover {
+  background-color: rgba(154, 76, 249, 0.05);
+}
+
+.drop-down-li-tag {
+  color: rgb(220, 220, 220);
+  margin-left: 24px;
+  font-size: 24px;
+  margin-right: -10px;
+}
+
+.tab-wrapper {
+  margin-right: 12px;
+}
+
+
+.header {
+  background-color: rgb(250,250,250);
+  box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.05);
+  /* position: -webkit-sticky; */
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.explore-inner-wrapper {
+  flex:1;
+  overflow: scroll;
+  overflow-x: hidden;
+
+}

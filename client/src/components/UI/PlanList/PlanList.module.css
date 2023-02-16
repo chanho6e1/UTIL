@@ -1,0 +1,155 @@
+@media all and (max-width: 480px) {
+  .plan-date-pc {
+    display:none;
+  }
+  
+}
+
+@media all and (min-width: 480px) {
+
+  
+  .plan-date-mobile {
+    display: none;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.plan {
+  /* display: grid;
+  grid-template-columns: 1fr 150px; */
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  margin-bottom: 14px;
+  cursor: pointer;
+}
+
+.plan-title {
+  font-size: 22px;
+  font-weight: 700;
+  overflow: hidden;
+  /* margin-bottom: 10px; */
+  text-overflow: clip;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.plan-date-pc {
+  margin-left: 20px;
+}
+
+.plan-date-mobile {
+  margin-left: 20px;
+  font-size: 12px;
+}
+
+.plan-string-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.plan-state {
+  /* margin: auto; */
+  height: 52px;
+  width: 96px;
+  font-size: 20px;
+  margin-left: 24px;
+}
+
+.plan-date-state-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.planComplete-wrapper {
+  background-color: rgb(190, 240, 210);
+  color: rgb(0, 120, 40);
+
+  height: 100%;
+  width: 100%;
+  /* padding:4px; */
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  /* cursor: pointer; */
+}
+
+.planComplete-wrapper:hover {
+  background-color: rgb(170, 220, 190);
+}
+
+.planUnComplete-wrapper {
+  background-color: rgb(241, 191, 163);
+  color: rgb(149, 16, 16);
+
+  height: 100%;
+  width: 100%;
+  /* padding:4px; */
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  /* cursor: pointer; */
+}
+
+.planUnComplete-wrapper:hover {
+  background-color: rgb(221, 171, 143);
+}
+
+.planRunning-wrapper {
+  background-color: rgb(220, 220, 228);
+  color: rgb(50, 50, 50);
+
+  height: 100%;
+  width: 100%;
+  /* padding:4px; */
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  /* cursor: pointer; */
+}
+
+.planRunning-wrapper:hover {
+  background-color: rgb(200, 200, 208);
+}
+
+.plancomming-wrapper {
+  background-color: rgb(240, 240, 248);
+  color: rgb(90, 90, 90);
+  /* background-color: rgb(154, 154, 241);
+  color: rgb(32, 23, 130); */
+
+  height: 100%;
+  width: 100%;
+  /* padding:4px; */
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  /* cursor: pointer; */
+}
+
+.plancomming-wrapper:hover {
+  background-color: rgb(220, 220, 228);
+}

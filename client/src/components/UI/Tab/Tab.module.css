@@ -1,0 +1,33 @@
+.tab-wrapper {
+}
+
+.tab-inner-wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.tab-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  cursor: pointer;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+
+  /* border: 1px solid red; */
+}
+
+.tab-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.indicator {
+  width: 0px;
+  height: 2px;
+  background-color: black;
+  position: relative;
+  transition-property: left;
+  transition-duration: 0.3s;
+}

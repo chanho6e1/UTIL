@@ -1,0 +1,15 @@
+.text-area {
+  border: 0px solid rgba(0, 0, 0, 0.2);
+  background-color: rgb(245, 246, 249);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  box-sizing: border-box;
+  padding: 10px;
+  transition-property: border;
+  transition-duration: 0.1s;
+}
+
+.text-area:focus {
+  outline: none;
+  /* border: 3px solid rgba(38, 0, 69, 0.2); */
+}

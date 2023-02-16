@@ -1,0 +1,155 @@
+.card {
+  width: 100%;
+  height: 240px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-wrapper {
+  padding: 20px;
+  flex-grow: 1;
+  /* background-color: red; */
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 8.375fr 1fr;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  align-items: baseline;
+  /* width: 100%; */
+}
+
+.card-image-wrapper {
+  display: flex;
+  align-items: center;
+  width: 200px;
+  height: 100%;
+  border-left: 1px solid #c9c9c9;
+
+  cursor: pointer;
+}
+
+.card-image-wrapper img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+.left-bottom {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.user {
+  display: flex;
+}
+
+.function-wrapper {
+  display: flex;
+}
+
+.tags {
+  display: flex;
+  width: 30%;
+  box-sizing: border-box;
+  overflow: scroll;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  margin-left: 0px;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 5%,
+    rgba(0, 0, 0, 1) 95%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 5%,
+    rgba(0, 0, 0, 1) 95%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.tags::-webkit-scrollbar {
+  display: none;
+}
+
+.tags {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.left-top {
+  text-align: start;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-overflow: clip;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.contents {
+  display: -webkit-box;
+  margin-top: 20px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: clip;
+  font-size: 1rem;
+  font-weight: 300;
+
+}
+
+.username {
+  margin-right: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon-user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.iconbutton {
+  display: flex;
+  align-items: center;
+}
+
+.likecount {
+  margin-left: 4px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  font-family: Inter;
+  font-size: 0.8rem;
+  font-weight: 300;
+  margin-right: 10px;
+}
+
+.nickname {
+  margin-right: 4px;
+  text-overflow: clip;
+}
+
+.date {
+  color: #585858;
+}
