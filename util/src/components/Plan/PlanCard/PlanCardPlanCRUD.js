@@ -105,7 +105,6 @@ const PlanCardPlanCRUD = (props) => {
           }
         })
         .then((res) => {
-          console.log(res)
           dispatch(modifyPlanSliceActions.responsePlans(JSON.stringify(res)));
           props.modalHandler();
         });
