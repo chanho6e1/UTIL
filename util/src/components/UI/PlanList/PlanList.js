@@ -12,19 +12,24 @@ const PlanList = (props) => {
       onClick={() => navigate(`/index/goal/${props.plan.goalId}`)}
       className={classes["plan"]}
     >
-      <div>
+      <div className={classes['plan-string-wrapper']}>
         <div className={classes["plan-title"]}>{props.plan.title}</div>
-        <div className={classes["plan-date"]}>
+        
+      </div>
+      <div className={classes["plan-date-state-wrapper"]}>
+      <div className={classes["plan-date"]}>
           {props.plan.startDate} ~ {props.plan.endDate}
         </div>
-      </div>
       <div className={classes["plan-state"]}>
+        
         <PlanState
           state={props.plan.state}
           startDate={props.plan.startDate}
           endDate={props.plan.endDate}
         />
       </div>
+      </div>
+      
     </Card>
     // </Card>
   );

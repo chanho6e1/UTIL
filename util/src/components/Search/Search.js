@@ -65,11 +65,12 @@ const SearchForm = (props) => {
       setSearchInput(() => tagName);
       setApi(() => 1);
       setDropDownLabel(() => apiLabelList[1]);
-    } else {
-      setApi(() => 0);
-      setDropDownLabel(() => apiLabelList[0]);
     }
-  }, []);
+    // } else {
+    //   setDropDownLabel(() => apiLabelList[0]);
+    //   setApi(() => 0);
+    // }
+  }, [location.search]);
 
   const [feedList, setFeedList] = useState([]);
   // const criteria = ["date", "view", "like"];
@@ -83,22 +84,25 @@ const SearchForm = (props) => {
     if (searchInput !== null && searchInput !== "") {
       setIsLoading(true);
       if (api === 0) {
-        getPostSearch(criteriaData[criteria], offset, size, searchInput).then((res) => {
+        getPostSearch(criteriaData[criteria], 1, size, searchInput).then((res) => {
           if (res.content.length !== 0) {
             setFeedList(() => res.content);
           }
           setIsLoading(false);
         });
       } else if (api === 1) {
-        getPostByTagName(criteriaData[criteria], offset, size, searchInput).then((res) => {
+        getPostByTagName(criteriaData[criteria], 1, size, searchInput).then((res) => {
+          console.log('태그 검색어는', offset, size, searchInput)
+          console.log('태그 검색결과는', res)
           if (res.content.length !== 0) {
+            console.log('태그검색 실시!', res.content)
             setFeedList(() => res.content);
           }
           setIsLoading(false);
         });
       } else {
         console.log('getPostByNickname before', searchInput, api)
-        getPostByNickname(criteriaData[criteria], offset, size, searchInput).then((res) => {
+        getPostByNickname(criteriaData[criteria], 1, size, searchInput).then((res) => {
           console.log('getPostByNickname after', searchInput, api)
           if (res.content.length !== 0) {
             console.log('getPostByNickname after valid', searchInput, api)
@@ -165,7 +169,7 @@ const SearchForm = (props) => {
           <div className={classes[`enter-search`]}>검색어를 입력하세요</div>
         ) : (
           // <SearchFeed api={api} searchInput={searchInput} criteria={criteria} />
-          <ExploreFeed feedList={feedList} />
+          <ExploreFeed feedList={feedList} key={searchInput} />
         )}
       </div>
     </div>

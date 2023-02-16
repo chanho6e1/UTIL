@@ -10,6 +10,7 @@ import Button from "../UI/Button/Button";
 import warning from "../../img/Warning.png";
 import FixedModal from "../UI/FixedModal/FixedModal";
 import { Viewer } from "@toast-ui/react-editor";
+import { useNavigate } from "react-router-dom";
 
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js";
 import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
@@ -18,6 +19,7 @@ import "prismjs/themes/prism.css";
 
 const DetailComment = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [depthComment, setdepthComment] = useState(false);
   const [editCommentOpen, seteditCommentOpen] = useState(false);
 
@@ -274,7 +276,7 @@ const DetailComment = (props) => {
           <div className={classes["Comment-user"]}>
             <img className={classes["user-picture"]} src={userImg} alt="user" />
             <div className={classes["Comment-user-text"]}>
-              <div className={classes.commentUser}>
+              <div className={classes.commentUser} onClick={() => {navigate(`/index/${props.comment.writerInfo.nickname}`)}}>
                 {props.comment.writerInfo.nickname}
               </div>
               <div className={classes.commentUpdated}>{createdDateString}</div>
@@ -406,7 +408,7 @@ const DetailComment = (props) => {
           <div className={classes["Comment-user"]}>
             <img className={classes["user-picture"]} src={userImg} alt="user" />
             <div className={classes["Comment-user-text"]}>
-              <div className={classes.commentUser}>
+              <div className={classes.commentUser} onClick={() => {navigate(`/index/${props.comment.writerInfo.nickname}`)}}>
                 {props.comment.writerInfo.nickname}
               </div>
               <div className={classes.commentUpdated}>

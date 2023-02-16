@@ -26,7 +26,7 @@ const GoalDetailMobile = (props) => {
       },
     },
     {
-      content: "Check List",
+      content: "목표",
       function: () => {
         setCategory("Check List");
       },
