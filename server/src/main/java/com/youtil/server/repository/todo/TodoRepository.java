@@ -22,7 +22,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     @Modifying
     @Query("delete from Todo t where t.todoId = :todoId")
     void deleteByTodoId(@Param("todoId") Long todoId);
-    @Query("SELECT t FROM Todo t join Goal g on t.goal.goalId = g.goalId WHERE t.dueDate = :dueDate and g.user.userId = :userId")
+    @Query("SELECT t FROM Todo t join Goal g on t.goal.goalId = g.goalId WHERE t.dueDate = :dueDate and g.user.userId = :userId and g.state = false ")
     List<Todo> findByDate(@Param("userId") Long userId, @Param("dueDate") String dueDate);
 
     @Transactional
