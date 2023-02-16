@@ -1,6 +1,7 @@
 package com.youtil.server.service.user;
 
 import com.amazonaws.services.s3.model.AmazonS3Exception;
+import com.youtil.server.common.exception.ArgumentMismatchException;
 import com.youtil.server.common.exception.ResourceNotFoundException;
 import com.youtil.server.config.s3.S3Uploader;
 import com.youtil.server.domain.user.User;
@@ -47,6 +48,10 @@ public class UserService {
 
 
         String newImg = request.getImageUrl();
+
+        if (checkNickName(request.getNickName())==true){
+            throw new ArgumentMismatchException("중복된 닉네임입니다");
+        }
 
         if(newImg==null || newImg.equals("")){
             newImg = baseImg;
