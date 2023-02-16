@@ -189,7 +189,7 @@ const ExploreForm = () => {
         
         {altMessages}
         {feedList.length !== 0 &&
-          <div>
+          <div className={classes['feed-outer-wrapper']}>
             <ExploreFeed
               feedList={feedList}
             />

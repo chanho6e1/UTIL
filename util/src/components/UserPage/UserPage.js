@@ -38,26 +38,7 @@ import FixedModal from "../UI/FixedModal/FixedModal";
 import Tab from "../UI/Tab/Tab";
 import { getUserDataByNickname } from "../../api/Post/getUserDataByNickname";
 
-const postCardItemList = (postList) => {
-  return postList?.map((post) => {
-    return (
-      <UserPageResponsive
-        id={post.postId}
-        key={post.postId}
-        thumbnail={post.thumbnail}
-        title={post.title}
-        content={post.content}
-        likeStatusSize={post.likeStatusSize}
-        likeStatus={post.likeStatus}
-        bookmarkStatus={post.bookmarkStatus}
-        profileImg={post.writerInfo.profileImg}
-        nickname={post.writerInfo.nickname}
-        createdDate={post.createdDate}
-        tagList={post.tags}
-      />
-    );
-  });
-};
+
 
 const UserPageForm = (props) => {
   const containerRef = useRef();
@@ -95,6 +76,32 @@ const UserPageForm = (props) => {
   const navigate = useNavigate();
 
   const plans = useSelector((state) => state.planSlice.allPlans);
+
+
+  const postCardItemList = (postList) => {
+    return postList?.map((post) => {
+      return (
+        <UserPageResponsive
+          id={post.postId}
+          key={post.postId}
+          thumbnail={post.thumbnail}
+          title={post.title}
+          content={post.content}
+          likeStatusSize={post.likeStatusSize}
+          likeStatus={post.likeStatus}
+          bookmarkStatus={post.bookmarkStatus}
+          profileImg={post.writerInfo.profileImg}
+          nickname={post.writerInfo.nickname}
+          createdDate={post.createdDate}
+          tagList={post.tags}
+          bookmarkTab={category == "북마크" ? true : false}
+          myNickname={myData.nickname}
+        />
+      );
+    });
+  };
+
+
   const PlanCardItemList = () => {
     return Object.keys(plans).map((id, arrIdx) => {
       return (
@@ -105,6 +112,12 @@ const UserPageForm = (props) => {
       );
     });
   };
+
+  const navigateToProfile = () => {
+    if (myData.userId === props.id) {
+      navigate('/profile')
+    }
+  }
 
   const fetchUserPostData = (criteriaIdx, page, size) => {
     setIsLoading(true);
@@ -227,6 +240,7 @@ const UserPageForm = (props) => {
 
   // 초기 데이터
   useEffect(() => {
+    console.log('changed!! ', props.id)
     // Post API
     setIsLoading(true);
     if (searchParams.get("category") === null) {
@@ -522,7 +536,7 @@ const UserPageForm = (props) => {
         overflow={"hidden"}
       />
       <div className={classes[`user-page-upper-inner`]}>
-        <div className={classes[`avatar-username`]}>
+        <div className={classes[`avatar-username`]} onClick={navigateToProfile}>
           <Avatar
             src={userData.imageUrl}
             sx={{
@@ -542,7 +556,7 @@ const UserPageForm = (props) => {
           <div className={classes["user-wrapper"]}>
             <div>
               <div className={classes["user-column"]}>
-                <div className={classes.nickname}>{userData.nickname}</div>
+                <div className={classes.nickname} onClick={navigateToProfile}>{userData.nickname}</div>
                 <div className={classes.follow}>
                   <div className={classes["follow-text-wrapper"]}>
                     <div
