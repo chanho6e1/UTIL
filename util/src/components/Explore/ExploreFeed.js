@@ -14,7 +14,7 @@ const ExploreFeed = (props) => {
           // key={`explore-feed-card-${post.postId}`}
           thumbnail={post.thumbnail}
           title={post.title}
-          contents={post.contents}
+          contents={post.content}
           likeStatusSize={post.likeStatusSize}
           likeStatus={post.likeStatus}
           bookmarkStatus={post.bookmarkStatus}
