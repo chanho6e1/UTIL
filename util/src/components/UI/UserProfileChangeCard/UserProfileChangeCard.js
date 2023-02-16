@@ -8,6 +8,11 @@ import { nicknameDuplicateCheck } from "../../../api/UserProfile/nicknameDuplica
 import { getAllTags } from "../../../api/UserProfile/getAllTags";
 import { useNavigate } from "react-router-dom";
 
+import { userAuthSliceActions } from "../../../redux/userAuthSlice";
+import { ACCESS_TOKEN } from "../../../constants";
+import { useSelector, useDispatch } from "react-redux";
+
+
 const isUnderTwoChars = (value) =>
   typeof value === "string" ? value.trim().length < 2 : false;
 const isOverTenChars = (value) =>
@@ -18,6 +23,7 @@ const UserProfileChangeCard = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
   const [isInit, setIsInit] = useState(true);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // 신규 유저 체크
   const [isNewUser, setIsNewUser] = useState(
@@ -28,6 +34,8 @@ const UserProfileChangeCard = (props) => {
   const [imageUrl, setImageUrl] = useState(props.imageUrl);
   const [uploadImage, setUploadImage] = useState(null);
   const [isHover, setIsHover] = useState(false);
+
+  
 
   // 프로필 사진 업로드
   const fileInput = useRef(null);
@@ -202,6 +210,14 @@ const UserProfileChangeCard = (props) => {
     });
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem(ACCESS_TOKEN);
+    dispatch(userAuthSliceActions.changeAuthenticated("false"));
+    dispatch(userAuthSliceActions.changeCurrentUser(null));
+    navigate("/login");
+  };
+
+
   return (
     <div className={classes.userprofile}>
       <form onSubmit={confirmHandler} className={classes["userprofile-form"]}>
@@ -300,26 +316,33 @@ const UserProfileChangeCard = (props) => {
             </FormControl>
           </div>
           <div className={classes[`button-wrap`]}>
+            <div>
+              {!isNewUser && <Button onClick={handleLogout} className={classes[`button-logout`]}>로그아웃</Button>}
+            </div>
+            
             {/* 신규유저라면 취소버튼을 숨긴다 */}
-            {!isNewUser && (
+            <div>
+              {!isNewUser && (
+                <Button
+                  type="button"
+                  variant="contained"
+                  sx={{ mr: 2 }}
+                  onClick={onCancelClicked}
+                  className={classes[`button-cancel`]}
+                >
+                  취소
+                </Button>
+              )}
               <Button
-                type="button"
+                type="submit"
                 variant="contained"
-                sx={{ mr: 2 }}
-                onClick={onCancelClicked}
-                className={classes[`button-cancel`]}
+                disabled={!formIsValid}
+                className={classes[`button-save`]}
               >
-                취소
+                저장
               </Button>
-            )}
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={!formIsValid}
-              className={classes[`button-save`]}
-            >
-              저장
-            </Button>
+            </div>
+            
           </div>
         </div>
       </form>

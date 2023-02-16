@@ -155,6 +155,7 @@ const ExploreForm = () => {
     const scrollHeight = exploreWrapperRef.current.scrollHeight;
     const scrollTop = exploreWrapperRef.current.scrollTop;
     const clientHeight = exploreWrapperRef.current.clientHeight;
+    console.log(scrollHeight, scrollTop, clientHeight)
     if (scrollTop + clientHeight >= scrollHeight - 10 && isLoading === false) {
       fetchMoreData();
     }
@@ -196,7 +197,7 @@ const ExploreForm = () => {
       />
 
       {header}
-      <div className={classes["explore-inner-wrapper"]} ref={exploreWrapperRef} onWheel={onWheelHandler}>
+      <div className={classes["explore-inner-wrapper"]} ref={exploreWrapperRef} onWheel={onWheelHandler} onTouchMove={onWheelHandler}>
         
         {altMessages}
         {feedList.length !== 0 &&
