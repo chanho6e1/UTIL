@@ -96,6 +96,17 @@ const ExploreForm = () => {
     );
   };
 
+  const fetchAgain = () => {
+    setIsLoading(() => true);
+    criteriaAPI[criteria](criteriaList[criteria], 1, size).then(
+      (res) => {
+        setFeedList(() => res?.content);
+        setOffset(() => 1);
+        setIsLoading(() => false);
+      }
+    );
+  };
+
   const dropDownCriteriaItems = {
     label: ["최신", "조회수", "좋아요"],
     description: ["", ""],
@@ -178,7 +189,7 @@ const ExploreForm = () => {
       <FixedModal
         modalState={modalState}
         stateHandler={setModalState}
-        content={<UserRecommend onDone={fetchMoreData} />}
+        content={<UserRecommend onDone={fetchAgain} />}
         width={"80vh"}
         height={"600px"}
         overflow={"hidden"}
